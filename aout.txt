@@ -1,0 +1,152 @@
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [import]
+Lexxed token [(]
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [arg]
+Lexxed token [)]
+node "var_decl": [arg] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list] 1234ab5 unroll done
+Lexxed token [end]
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [import]
+node "func_def": [import] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (1/1)
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [export]
+Lexxed token [(]
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [arg]
+Lexxed token [)]
+node "var_decl": [arg] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list] 1234ab5 unroll done
+Lexxed token [end]
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [export]
+node "func_def": [export] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [print]
+Lexxed token [(]
+Lexxed token [string]
+node "typename": [string] (0/0)
+Lexxed token [str]
+Lexxed token [)]
+node "var_decl": [str] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list] 1234ab5 unroll done
+Lexxed token [end]
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [print]
+node "func_def": [print] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [main]
+Lexxed token [(]
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [argc]
+Lexxed token [,]
+node "var_decl": [argc] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+Lexxed token [int]
+node "typename": [int] (0/0)
+Lexxed token [argv]
+Lexxed token [)]
+node "var_decl": [argv] (0/1)
+node "var_decl_list_ne": [(null)] (0/2)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list] 1234abcabd55 unroll done
+Lexxed token [if]
+Lexxed token [(]
+Lexxed token [argc]
+node "expr_id": [argc] (0/0)
+Lexxed token [=]
+Lexxed token [0]
+node "expr_const": [0] (1/0)
+Lexxed token [)]
+node "expr_=": [(null)] (10/2)
+Lexxed token [then]
+Lexxed token [print]
+node "expr_id": [print] (0/0)
+Lexxed token [(]
+Lexxed token ["usage: a.exe arg1 arg2"]
+node "expr_const": ["usage: a.exe arg1 arg2"] (1/0)
+Lexxed token [)]
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list] 1234ab5 unroll done
+node "expr_call": [(null)] (3/2)
+Lexxed token [;]
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [return]
+Lexxed token [1]
+node "expr_const": [1] (1/0)
+Lexxed token [;]
+node "imp_stmt": [(null)] (4/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [else]
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list] 1234abcabd55 unroll done
+node "if_start": [(null)] (0/2)
+Lexxed token [float]
+node "typename": [float] (0/0)
+Lexxed token [A]
+Lexxed token [=]
+Lexxed token [import]
+node "expr_id": [import] (0/0)
+Lexxed token [(]
+Lexxed token [argc]
+node "expr_id": [argc] (0/0)
+Lexxed token [)]
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list] 1234ab5 unroll done
+node "expr_call": [(null)] (3/2)
+Lexxed token [;]
+node "var_decl_assign": [A] (1/2)
+node "decl_stmt": [(null)] (2/1)
+node "stmt": [(null)] (1/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [A]
+node "expr_id": [A] (0/0)
+Lexxed token [=]
+Lexxed token [A]
+node "expr_id": [A] (0/0)
+Lexxed token [*]
+Lexxed token [argv]
+node "expr_id": [argv] (0/0)
+Lexxed token [;]
+node "expr_*": [(null)] (7/2)
+node "expr_=": [(null)] (10/2)
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [export]
+node "expr_id": [export] (0/0)
+Lexxed token [(]
+Lexxed token [A]
+node "expr_id": [A] (0/0)
+Lexxed token [)]
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list] 1234ab5 unroll done
+node "expr_call": [(null)] (3/2)
+Lexxed token [;]
+node "imp

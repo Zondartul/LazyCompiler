@@ -1,0 +1,11 @@
+class horse
+ float fluff;
+ int boop()
+  shoot.lazors(1+5);
+ end	
+end
+
+int main(int argc, char argv)
+ class horse Neigh = 5;
+ Neigh = Neigh.boop();
+end
