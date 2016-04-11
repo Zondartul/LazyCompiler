@@ -3,6 +3,7 @@ int export(int arg) end
 int print(string str) end
 
 int main(int argc, int argv)
+	char C;
 	if(argc = 0) then
 		print("usage: a.exe arg1 arg2");
 		return 1;
@@ -16,5 +17,13 @@ int main(int argc, int argv)
 			if(A = 1) then return 1; end
 		end
 		return 0;
+	end
+	string boop;
+end
+
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
 	end
 end

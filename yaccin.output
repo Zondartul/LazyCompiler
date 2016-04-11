@@ -60,32 +60,37 @@ Grammar
    38             | expr
 
    39 expr: ID
-   40     | CONSTANT
-   41     | '(' expr ')'
-   42     | expr '(' expr_list ')'
-   43     | expr '.' expr
-   44     | expr '^' expr
-   45     | expr '/' expr
-   46     | expr '*' expr
-   47     | expr '-' expr
-   48     | expr '+' expr
-   49     | expr '=' expr
+   40     | INTEGER
+   41     | INTEGERX
+   42     | INTEGERB
+   43     | FLOATING
+   44     | CHARACTER
+   45     | STRING
+   46     | '(' expr ')'
+   47     | expr '(' expr_list ')'
+   48     | expr '.' expr
+   49     | expr '^' expr
+   50     | expr '/' expr
+   51     | expr '*' expr
+   52     | expr '-' expr
+   53     | expr '+' expr
+   54     | expr '=' expr
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'(' (40) 23 32 33 34 41 42
-')' (41) 23 32 33 34 41 42
-'*' (42) 46
-'+' (43) 48
+'(' (40) 23 32 33 34 46 47
+')' (41) 23 32 33 34 46 47
+'*' (42) 51
+'+' (43) 53
 ',' (44) 28 37
-'-' (45) 47
-'.' (46) 43
-'/' (47) 45
+'-' (45) 52
+'.' (46) 48
+'/' (47) 50
 ';' (59) 10 17 18 19
-'=' (61) 25 49
-'^' (94) 44
+'=' (61) 25 54
+'^' (94) 49
 error (256)
 RETURN (258) 18 19
 CLASS (259) 20 22
@@ -97,54 +102,59 @@ THEN (264) 32 33
 ELSE (265) 31
 ELSEIF (266) 33
 WHILE (267) 34
-CONSTANT (268) 40
+INTEGER (268) 40
+INTEGERX (269) 41
+INTEGERB (270) 42
+FLOATING (271) 43
+CHARACTER (272) 44
+STRING (273) 45
 
 
 Nonterminals, with rules where they appear
 
-$accept (25)
+$accept (30)
     on left: 0
-program (26)
+program (31)
     on left: 1, on right: 0
-stmt (27)
+stmt (32)
     on left: 2 3, on right: 6 7
-stmt_list (28)
+stmt_list (33)
     on left: 4 5, on right: 23 31 32 33 34
-stmt_list_ne (29)
+stmt_list_ne (34)
     on left: 6 7, on right: 4 6
-decl_stmt (30)
+decl_stmt (35)
     on left: 8 9 10, on right: 3 13 14
-decl_stmt_list (31)
+decl_stmt_list (36)
     on left: 11 12, on right: 1 20
-decl_stmt_list_ne (32)
+decl_stmt_list_ne (37)
     on left: 13 14, on right: 11 13
-imp_stmt (33)
+imp_stmt (38)
     on left: 15 16 17 18 19, on right: 2
-class_def (34)
+class_def (39)
     on left: 20, on right: 8
-typename (35)
+typename (40)
     on left: 21 22, on right: 23 24 25
-func_def (36)
+func_def (41)
     on left: 23, on right: 9
-var_decl (37)
+var_decl (42)
     on left: 24 25, on right: 10 28 29
-var_decl_list (38)
+var_decl_list (43)
     on left: 26 27, on right: 23
-var_decl_list_ne (39)
+var_decl_list_ne (44)
     on left: 28 29, on right: 26 28
-if_block (40)
+if_block (45)
     on left: 30 31, on right: 15
-if_then (41)
+if_then (46)
     on left: 32 33, on right: 30 31 33
-while_loop (42)
+while_loop (47)
     on left: 34, on right: 16
-expr_list (43)
-    on left: 35 36, on right: 42
-expr_list_ne (44)
+expr_list (48)
+    on left: 35 36, on right: 47
+expr_list_ne (49)
     on left: 37 38, on right: 35 37
-expr (45)
-    on left: 39 40 41 42 43 44 45 46 47 48 49, on right: 17 19 25 32
-    33 34 37 38 41 42 43 44 45 46 47 48 49
+expr (50)
+    on left: 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54, on right:
+    17 19 25 32 33 34 37 38 46 47 48 49 50 51 52 53 54
 
 
 state 0
@@ -313,26 +323,31 @@ state 17
 
    25 var_decl: typename ID '=' . expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    expr  go to state 23
+    expr  go to state 28
 
 
 state 18
 
    23 func_def: typename ID '(' . var_decl_list ')' stmt_list END
 
-    CLASS  shift, and go to state 24
+    CLASS  shift, and go to state 29
     TYPE   shift, and go to state 2
 
     $default  reduce using rule 27 (var_decl_list)
 
-    typename          go to state 25
-    var_decl          go to state 26
-    var_decl_list     go to state 27
-    var_decl_list_ne  go to state 28
+    typename          go to state 30
+    var_decl          go to state 31
+    var_decl_list     go to state 32
+    var_decl_list_ne  go to state 33
 
 
 state 19
@@ -351,208 +366,288 @@ state 20
 
 state 21
 
-   40 expr: CONSTANT .
+   40 expr: INTEGER .
 
     $default  reduce using rule 40 (expr)
 
 
 state 22
 
-   41 expr: '(' . expr ')'
+   41 expr: INTEGERX .
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-
-    expr  go to state 29
+    $default  reduce using rule 41 (expr)
 
 
 state 23
 
-   25 var_decl: typename ID '=' expr .
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   42 expr: INTEGERB .
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-
-    $default  reduce using rule 25 (var_decl)
+    $default  reduce using rule 42 (expr)
 
 
 state 24
 
-   22 typename: CLASS . ID
+   43 expr: FLOATING .
 
-    ID  shift, and go to state 38
+    $default  reduce using rule 43 (expr)
 
 
 state 25
 
-   24 var_decl: typename . ID
-   25         | typename . ID '=' expr
+   44 expr: CHARACTER .
 
-    ID  shift, and go to state 39
+    $default  reduce using rule 44 (expr)
 
 
 state 26
+
+   45 expr: STRING .
+
+    $default  reduce using rule 45 (expr)
+
+
+state 27
+
+   46 expr: '(' . expr ')'
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    expr  go to state 34
+
+
+state 28
+
+   25 var_decl: typename ID '=' expr .
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
+
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+
+    $default  reduce using rule 25 (var_decl)
+
+
+state 29
+
+   22 typename: CLASS . ID
+
+    ID  shift, and go to state 43
+
+
+state 30
+
+   24 var_decl: typename . ID
+   25         | typename . ID '=' expr
+
+    ID  shift, and go to state 44
+
+
+state 31
 
    29 var_decl_list_ne: var_decl .
 
     $default  reduce using rule 29 (var_decl_list_ne)
 
 
-state 27
+state 32
 
    23 func_def: typename ID '(' var_decl_list . ')' stmt_list END
 
-    ')'  shift, and go to state 40
-
-
-state 28
-
-   26 var_decl_list: var_decl_list_ne .
-   28 var_decl_list_ne: var_decl_list_ne . ',' var_decl
-
-    ','  shift, and go to state 41
-
-    $default  reduce using rule 26 (var_decl_list)
-
-
-state 29
-
-   41 expr: '(' expr . ')'
-   42     | expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
-
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ')'  shift, and go to state 42
-
-
-state 30
-
-   49 expr: expr '=' . expr
-
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-
-    expr  go to state 43
-
-
-state 31
-
-   48 expr: expr '+' . expr
-
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-
-    expr  go to state 44
-
-
-state 32
-
-   47 expr: expr '-' . expr
-
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-
-    expr  go to state 45
+    ')'  shift, and go to state 45
 
 
 state 33
 
-   44 expr: expr '^' . expr
+   26 var_decl_list: var_decl_list_ne .
+   28 var_decl_list_ne: var_decl_list_ne . ',' var_decl
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ','  shift, and go to state 46
 
-    expr  go to state 46
+    $default  reduce using rule 26 (var_decl_list)
 
 
 state 34
 
-   45 expr: expr '/' . expr
+   46 expr: '(' expr . ')'
+   47     | expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-
-    expr  go to state 47
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ')'  shift, and go to state 47
 
 
 state 35
 
-   46 expr: expr '*' . expr
+   54 expr: expr '=' . expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     expr  go to state 48
 
 
 state 36
 
-   43 expr: expr '.' . expr
+   53 expr: expr '+' . expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     expr  go to state 49
 
 
 state 37
 
-   42 expr: expr '(' . expr_list ')'
+   52 expr: expr '-' . expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    $default  reduce using rule 36 (expr_list)
-
-    expr_list     go to state 50
-    expr_list_ne  go to state 51
-    expr          go to state 52
+    expr  go to state 50
 
 
 state 38
+
+   49 expr: expr '^' . expr
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    expr  go to state 51
+
+
+state 39
+
+   50 expr: expr '/' . expr
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    expr  go to state 52
+
+
+state 40
+
+   51 expr: expr '*' . expr
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    expr  go to state 53
+
+
+state 41
+
+   48 expr: expr '.' . expr
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    expr  go to state 54
+
+
+state 42
+
+   47 expr: expr '(' . expr_list ')'
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+
+    $default  reduce using rule 36 (expr_list)
+
+    expr_list     go to state 55
+    expr_list_ne  go to state 56
+    expr          go to state 57
+
+
+state 43
 
    22 typename: CLASS ID .
 
     $default  reduce using rule 22 (typename)
 
 
-state 39
+state 44
 
    24 var_decl: typename ID .
    25         | typename ID . '=' expr
@@ -562,756 +657,811 @@ state 39
     $default  reduce using rule 24 (var_decl)
 
 
-state 40
+state 45
 
    23 func_def: typename ID '(' var_decl_list ')' . stmt_list END
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 5 (stmt_list)
 
-    stmt          go to state 56
-    stmt_list     go to state 57
-    stmt_list_ne  go to state 58
-    decl_stmt     go to state 59
-    imp_stmt      go to state 60
+    stmt          go to state 61
+    stmt_list     go to state 62
+    stmt_list_ne  go to state 63
+    decl_stmt     go to state 64
+    imp_stmt      go to state 65
     class_def     go to state 7
     typename      go to state 8
     func_def      go to state 9
     var_decl      go to state 10
-    if_block      go to state 61
-    if_then       go to state 62
-    while_loop    go to state 63
-    expr          go to state 64
-
-
-state 41
-
-   28 var_decl_list_ne: var_decl_list_ne ',' . var_decl
-
-    CLASS  shift, and go to state 24
-    TYPE   shift, and go to state 2
-
-    typename  go to state 25
-    var_decl  go to state 65
-
-
-state 42
-
-   41 expr: '(' expr ')' .
-
-    $default  reduce using rule 41 (expr)
-
-
-state 43
-
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
-   49     | expr '=' expr .
-
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-
-    $default  reduce using rule 49 (expr)
-
-
-state 44
-
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   48     | expr '+' expr .
-   49     | expr . '=' expr
-
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-
-    $default  reduce using rule 48 (expr)
-
-
-state 45
-
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   47     | expr '-' expr .
-   48     | expr . '+' expr
-   49     | expr . '=' expr
-
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-
-    $default  reduce using rule 47 (expr)
+    if_block      go to state 66
+    if_then       go to state 67
+    while_loop    go to state 68
+    expr          go to state 69
 
 
 state 46
 
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   44     | expr '^' expr .
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   28 var_decl_list_ne: var_decl_list_ne ',' . var_decl
 
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
+    CLASS  shift, and go to state 29
+    TYPE   shift, and go to state 2
 
-    $default  reduce using rule 44 (expr)
+    typename  go to state 30
+    var_decl  go to state 70
 
 
 state 47
 
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   45     | expr '/' expr .
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
-
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-
-    $default  reduce using rule 45 (expr)
-
-
-state 48
-
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   46     | expr '*' expr .
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
-
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
+   46 expr: '(' expr ')' .
 
     $default  reduce using rule 46 (expr)
 
 
+state 48
+
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
+   54     | expr '=' expr .
+
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+
+    $default  reduce using rule 54 (expr)
+
+
 state 49
 
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   43     | expr '.' expr .
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   53     | expr '+' expr .
+   54     | expr . '=' expr
 
-    '('  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
 
-    $default  reduce using rule 43 (expr)
+    $default  reduce using rule 53 (expr)
 
 
 state 50
 
-   42 expr: expr '(' expr_list . ')'
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   52     | expr '-' expr .
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    ')'  shift, and go to state 66
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+
+    $default  reduce using rule 52 (expr)
 
 
 state 51
 
-   35 expr_list: expr_list_ne .
-   37 expr_list_ne: expr_list_ne . ',' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   49     | expr '^' expr .
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    ','  shift, and go to state 67
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
 
-    $default  reduce using rule 35 (expr_list)
+    $default  reduce using rule 49 (expr)
 
 
 state 52
 
-   38 expr_list_ne: expr .
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   50     | expr '/' expr .
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
 
-    $default  reduce using rule 38 (expr_list_ne)
+    $default  reduce using rule 50 (expr)
 
 
 state 53
 
-   18 imp_stmt: RETURN . ';'
-   19         | RETURN . expr ';'
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   51     | expr '*' expr .
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
-    ';'       shift, and go to state 68
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
 
-    expr  go to state 69
+    $default  reduce using rule 51 (expr)
 
 
 state 54
 
-   32 if_then: IF . '(' expr ')' THEN stmt_list
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   48     | expr '.' expr .
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '('  shift, and go to state 70
+    '('  shift, and go to state 42
+
+    $default  reduce using rule 48 (expr)
 
 
 state 55
 
-   34 while_loop: WHILE . '(' expr ')' stmt_list END
+   47 expr: expr '(' expr_list . ')'
 
-    '('  shift, and go to state 71
+    ')'  shift, and go to state 71
 
 
 state 56
+
+   35 expr_list: expr_list_ne .
+   37 expr_list_ne: expr_list_ne . ',' expr
+
+    ','  shift, and go to state 72
+
+    $default  reduce using rule 35 (expr_list)
+
+
+state 57
+
+   38 expr_list_ne: expr .
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
+
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+
+    $default  reduce using rule 38 (expr_list_ne)
+
+
+state 58
+
+   18 imp_stmt: RETURN . ';'
+   19         | RETURN . expr ';'
+
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
+    ';'        shift, and go to state 73
+
+    expr  go to state 74
+
+
+state 59
+
+   32 if_then: IF . '(' expr ')' THEN stmt_list
+
+    '('  shift, and go to state 75
+
+
+state 60
+
+   34 while_loop: WHILE . '(' expr ')' stmt_list END
+
+    '('  shift, and go to state 76
+
+
+state 61
 
     7 stmt_list_ne: stmt .
 
     $default  reduce using rule 7 (stmt_list_ne)
 
 
-state 57
+state 62
 
    23 func_def: typename ID '(' var_decl_list ')' stmt_list . END
 
-    END  shift, and go to state 72
+    END  shift, and go to state 77
 
 
-state 58
+state 63
 
     4 stmt_list: stmt_list_ne .
     6 stmt_list_ne: stmt_list_ne . stmt
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 4 (stmt_list)
 
-    stmt        go to state 73
-    decl_stmt   go to state 59
-    imp_stmt    go to state 60
+    stmt        go to state 78
+    decl_stmt   go to state 64
+    imp_stmt    go to state 65
     class_def   go to state 7
     typename    go to state 8
     func_def    go to state 9
     var_decl    go to state 10
-    if_block    go to state 61
-    if_then     go to state 62
-    while_loop  go to state 63
-    expr        go to state 64
+    if_block    go to state 66
+    if_then     go to state 67
+    while_loop  go to state 68
+    expr        go to state 69
 
 
-state 59
+state 64
 
     3 stmt: decl_stmt .
 
     $default  reduce using rule 3 (stmt)
 
 
-state 60
+state 65
 
     2 stmt: imp_stmt .
 
     $default  reduce using rule 2 (stmt)
 
 
-state 61
+state 66
 
    15 imp_stmt: if_block .
 
     $default  reduce using rule 15 (imp_stmt)
 
 
-state 62
+state 67
 
    30 if_block: if_then . END
    31         | if_then . ELSE stmt_list END
    33 if_then: if_then . ELSEIF '(' expr ')' THEN stmt_list
 
-    END     shift, and go to state 74
-    ELSE    shift, and go to state 75
-    ELSEIF  shift, and go to state 76
+    END     shift, and go to state 79
+    ELSE    shift, and go to state 80
+    ELSEIF  shift, and go to state 81
 
 
-state 63
+state 68
 
    16 imp_stmt: while_loop .
 
     $default  reduce using rule 16 (imp_stmt)
 
 
-state 64
+state 69
 
    17 imp_stmt: expr . ';'
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ';'  shift, and go to state 77
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ';'  shift, and go to state 82
 
 
-state 65
+state 70
 
    28 var_decl_list_ne: var_decl_list_ne ',' var_decl .
 
     $default  reduce using rule 28 (var_decl_list_ne)
 
 
-state 66
+state 71
 
-   42 expr: expr '(' expr_list ')' .
+   47 expr: expr '(' expr_list ')' .
 
-    $default  reduce using rule 42 (expr)
+    $default  reduce using rule 47 (expr)
 
 
-state 67
+state 72
 
    37 expr_list_ne: expr_list_ne ',' . expr
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    expr  go to state 78
+    expr  go to state 83
 
 
-state 68
+state 73
 
    18 imp_stmt: RETURN ';' .
 
     $default  reduce using rule 18 (imp_stmt)
 
 
-state 69
+state 74
 
    19 imp_stmt: RETURN expr . ';'
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ';'  shift, and go to state 79
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ';'  shift, and go to state 84
 
 
-state 70
+state 75
 
    32 if_then: IF '(' . expr ')' THEN stmt_list
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    expr  go to state 80
+    expr  go to state 85
 
 
-state 71
+state 76
 
    34 while_loop: WHILE '(' . expr ')' stmt_list END
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    expr  go to state 81
+    expr  go to state 86
 
 
-state 72
+state 77
 
    23 func_def: typename ID '(' var_decl_list ')' stmt_list END .
 
     $default  reduce using rule 23 (func_def)
 
 
-state 73
+state 78
 
     6 stmt_list_ne: stmt_list_ne stmt .
 
     $default  reduce using rule 6 (stmt_list_ne)
 
 
-state 74
+state 79
 
    30 if_block: if_then END .
 
     $default  reduce using rule 30 (if_block)
 
 
-state 75
+state 80
 
    31 if_block: if_then ELSE . stmt_list END
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 5 (stmt_list)
 
-    stmt          go to state 56
-    stmt_list     go to state 82
-    stmt_list_ne  go to state 58
-    decl_stmt     go to state 59
-    imp_stmt      go to state 60
+    stmt          go to state 61
+    stmt_list     go to state 87
+    stmt_list_ne  go to state 63
+    decl_stmt     go to state 64
+    imp_stmt      go to state 65
     class_def     go to state 7
     typename      go to state 8
     func_def      go to state 9
     var_decl      go to state 10
-    if_block      go to state 61
-    if_then       go to state 62
-    while_loop    go to state 63
-    expr          go to state 64
+    if_block      go to state 66
+    if_then       go to state 67
+    while_loop    go to state 68
+    expr          go to state 69
 
 
-state 76
+state 81
 
    33 if_then: if_then ELSEIF . '(' expr ')' THEN stmt_list
 
-    '('  shift, and go to state 83
+    '('  shift, and go to state 88
 
 
-state 77
+state 82
 
    17 imp_stmt: expr ';' .
 
     $default  reduce using rule 17 (imp_stmt)
 
 
-state 78
+state 83
 
    37 expr_list_ne: expr_list_ne ',' expr .
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
 
     $default  reduce using rule 37 (expr_list_ne)
 
 
-state 79
+state 84
 
    19 imp_stmt: RETURN expr ';' .
 
     $default  reduce using rule 19 (imp_stmt)
 
 
-state 80
+state 85
 
    32 if_then: IF '(' expr . ')' THEN stmt_list
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ')'  shift, and go to state 84
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ')'  shift, and go to state 89
 
 
-state 81
+state 86
 
    34 while_loop: WHILE '(' expr . ')' stmt_list END
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ')'  shift, and go to state 85
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ')'  shift, and go to state 90
 
 
-state 82
+state 87
 
    31 if_block: if_then ELSE stmt_list . END
 
-    END  shift, and go to state 86
+    END  shift, and go to state 91
 
 
-state 83
+state 88
 
    33 if_then: if_then ELSEIF '(' . expr ')' THEN stmt_list
 
-    ID        shift, and go to state 20
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    ID         shift, and go to state 20
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
-    expr  go to state 87
+    expr  go to state 92
 
 
-state 84
+state 89
 
    32 if_then: IF '(' expr ')' . THEN stmt_list
 
-    THEN  shift, and go to state 88
+    THEN  shift, and go to state 93
 
 
-state 85
+state 90
 
    34 while_loop: WHILE '(' expr ')' . stmt_list END
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 5 (stmt_list)
 
-    stmt          go to state 56
-    stmt_list     go to state 89
-    stmt_list_ne  go to state 58
-    decl_stmt     go to state 59
-    imp_stmt      go to state 60
+    stmt          go to state 61
+    stmt_list     go to state 94
+    stmt_list_ne  go to state 63
+    decl_stmt     go to state 64
+    imp_stmt      go to state 65
     class_def     go to state 7
     typename      go to state 8
     func_def      go to state 9
     var_decl      go to state 10
-    if_block      go to state 61
-    if_then       go to state 62
-    while_loop    go to state 63
-    expr          go to state 64
+    if_block      go to state 66
+    if_then       go to state 67
+    while_loop    go to state 68
+    expr          go to state 69
 
 
-state 86
+state 91
 
    31 if_block: if_then ELSE stmt_list END .
 
     $default  reduce using rule 31 (if_block)
 
 
-state 87
+state 92
 
    33 if_then: if_then ELSEIF '(' expr . ')' THEN stmt_list
-   42 expr: expr . '(' expr_list ')'
-   43     | expr . '.' expr
-   44     | expr . '^' expr
-   45     | expr . '/' expr
-   46     | expr . '*' expr
-   47     | expr . '-' expr
-   48     | expr . '+' expr
-   49     | expr . '=' expr
+   47 expr: expr . '(' expr_list ')'
+   48     | expr . '.' expr
+   49     | expr . '^' expr
+   50     | expr . '/' expr
+   51     | expr . '*' expr
+   52     | expr . '-' expr
+   53     | expr . '+' expr
+   54     | expr . '=' expr
 
-    '='  shift, and go to state 30
-    '+'  shift, and go to state 31
-    '-'  shift, and go to state 32
-    '^'  shift, and go to state 33
-    '/'  shift, and go to state 34
-    '*'  shift, and go to state 35
-    '.'  shift, and go to state 36
-    '('  shift, and go to state 37
-    ')'  shift, and go to state 90
+    '='  shift, and go to state 35
+    '+'  shift, and go to state 36
+    '-'  shift, and go to state 37
+    '^'  shift, and go to state 38
+    '/'  shift, and go to state 39
+    '*'  shift, and go to state 40
+    '.'  shift, and go to state 41
+    '('  shift, and go to state 42
+    ')'  shift, and go to state 95
 
 
-state 88
+state 93
 
    32 if_then: IF '(' expr ')' THEN . stmt_list
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 5 (stmt_list)
 
-    stmt          go to state 56
-    stmt_list     go to state 91
-    stmt_list_ne  go to state 58
-    decl_stmt     go to state 59
-    imp_stmt      go to state 60
+    stmt          go to state 61
+    stmt_list     go to state 96
+    stmt_list_ne  go to state 63
+    decl_stmt     go to state 64
+    imp_stmt      go to state 65
     class_def     go to state 7
     typename      go to state 8
     func_def      go to state 9
     var_decl      go to state 10
-    if_block      go to state 61
-    if_then       go to state 62
-    while_loop    go to state 63
-    expr          go to state 64
+    if_block      go to state 66
+    if_then       go to state 67
+    while_loop    go to state 68
+    expr          go to state 69
 
 
-state 89
+state 94
 
    34 while_loop: WHILE '(' expr ')' stmt_list . END
 
-    END  shift, and go to state 92
+    END  shift, and go to state 97
 
 
-state 90
+state 95
 
    33 if_then: if_then ELSEIF '(' expr ')' . THEN stmt_list
 
-    THEN  shift, and go to state 93
+    THEN  shift, and go to state 98
 
 
-state 91
+state 96
 
    32 if_then: IF '(' expr ')' THEN stmt_list .
 
     $default  reduce using rule 32 (if_then)
 
 
-state 92
+state 97
 
    34 while_loop: WHILE '(' expr ')' stmt_list END .
 
     $default  reduce using rule 34 (while_loop)
 
 
-state 93
+state 98
 
    33 if_then: if_then ELSEIF '(' expr ')' THEN . stmt_list
 
-    RETURN    shift, and go to state 53
-    CLASS     shift, and go to state 1
-    ID        shift, and go to state 20
-    TYPE      shift, and go to state 2
-    IF        shift, and go to state 54
-    WHILE     shift, and go to state 55
-    CONSTANT  shift, and go to state 21
-    '('       shift, and go to state 22
+    RETURN     shift, and go to state 58
+    CLASS      shift, and go to state 1
+    ID         shift, and go to state 20
+    TYPE       shift, and go to state 2
+    IF         shift, and go to state 59
+    WHILE      shift, and go to state 60
+    INTEGER    shift, and go to state 21
+    INTEGERX   shift, and go to state 22
+    INTEGERB   shift, and go to state 23
+    FLOATING   shift, and go to state 24
+    CHARACTER  shift, and go to state 25
+    STRING     shift, and go to state 26
+    '('        shift, and go to state 27
 
     $default  reduce using rule 5 (stmt_list)
 
-    stmt          go to state 56
-    stmt_list     go to state 94
-    stmt_list_ne  go to state 58
-    decl_stmt     go to state 59
-    imp_stmt      go to state 60
+    stmt          go to state 61
+    stmt_list     go to state 99
+    stmt_list_ne  go to state 63
+    decl_stmt     go to state 64
+    imp_stmt      go to state 65
     class_def     go to state 7
     typename      go to state 8
     func_def      go to state 9
     var_decl      go to state 10
-    if_block      go to state 61
-    if_then       go to state 62
-    while_loop    go to state 63
-    expr          go to state 64
+    if_block      go to state 66
+    if_then       go to state 67
+    while_loop    go to state 68
+    expr          go to state 69
 
 
-state 94
+state 99
 
    33 if_then: if_then ELSEIF '(' expr ')' THEN stmt_list .
 

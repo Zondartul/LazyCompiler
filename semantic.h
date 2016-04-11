@@ -27,8 +27,8 @@ symbol:
 */
 #include "vector.h"
 #include "AST.h"
-
-struct symbol_table{
+#include "stdarg.h"
+/* struct symbol_table{
 	vector classes;
 	vector functions;
 	vector variables;
@@ -37,10 +37,88 @@ struct symbol_table{
 struct symbol_class{
 };
 
+ */
+ void semantic_init();
+struct symbol;
+struct symbol_table;
+struct type_name;
+struct code_segment;
+struct varvalue{
+	union{
+		int valint;
+		float valfloat;
+		char *valstring;
+	};
+};
+struct symbol_variable{
+	struct type_name *type;
+	
+};	
+struct symbol_parameter{
+	struct type_name *type;
+	int pos;
+};
+struct symbol_function{
+	struct type_name *type;
+	struct symbol_table *scope;
+	struct code_segment *code;
+	//will add code segment here later
+};
+struct symbol_class{
+	struct symbol_table *scope;
+};
+struct symbol{
+	enum {SYMBOL_VARIABLE, SYMBOL_PARAM, SYMBOL_FUNCTION, SYMBOL_CLASS}type;
+	const char *name;
+	union{
+		struct symbol_variable symvariable;
+		struct symbol_parameter symparameter;
+		struct symbol_function symfunction;
+		struct symbol_class symclass;
+	};
+};
+struct symbol_table{
+	vector symbols;
+	struct symbol_table *parent;
+};
+struct symbol_table *new_symbol_table();
+//makes a new symbol table, pushes it as current;
+struct symbol_table *new_symbol_table_make_current();
+void push_symbol_table(struct symbol_table *ST);
+//return to old symbol table;
+void pop_symbol_table();
+struct symbol *lookup_symbol(const char *name);
+void	push_symbol(struct symbol S);
 struct type_name{
-	int primitive;
-	char *name;
-	struct symbol_class *symbol;
+	//enum{TYPE_CLASS, TYPE_INT, TYPE_FLOAT, TYPE_CHAR, TYPE_STRING, TYPE_VOID} type;
+	const char *name;
+	struct symbol *symclass;
 };
 struct type_name *semantic_get_type(const char *str);
+void print_symbol_table(struct symbol_table *T);
+
+struct code_segment{
+	struct symbol_table *scope;
+	vector commands; //vector<char*>
+};
+struct code_segment *currentCodeSegment;
+struct code_segment *new_code_segment();
+struct code_segment *new_code_segment_make_current();
+void push_code_segment(struct code_segment *CS);
+void pop_code_segment();
+void emit_code(const char *fmt, ...);
+char *IR_next_name(const char *prefix);
+void push_expr(const char *expr);
+const char *pop_expr();
+// scope1 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
 #endif

@@ -4,11 +4,13 @@
 #include "string.h"
 
 void vector_constructor(vector *this, int element_size){
+	//printf("vector_constructor\n");
 	if(element_size == 0){printf("vector error: can't have 0 element_size\n");exit(*((int*)0));}
 	this->data = 0;
 	this->size = 0;
 	this->reserved = 0;
 	this->element_size = element_size;
+	printf("vector constructed: %p\n",this);
 	vector_resize(this,1);
 	//elem_constructor = element_constructor;
 	//elem_destructor = element_destructor;
@@ -26,9 +28,12 @@ void vector_destructor(vector *this, funcptr elem_destructor){
 
 //internal function to calculate pointers
 void *vector_get_reference(vector *this, int pos){
+	//printf("vector_get_reference %d\n",pos);
+	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
 	return this->data+pos*this->element_size;
 }
 void vector_push_back(vector *this, void *newelem){
+	//printf("vector_push_back %d\n",this->size);
 	if(this->size >= this->reserved){
 		vector_resize(this, (this->reserved+1)*1.5);
 	}
@@ -39,6 +44,7 @@ void vector_push_back(vector *this, void *newelem){
 }
 
 void *vector_pop_back(vector *this){
+	//printf("vector_pop_back %d\n",this->size);
 	void *result = vector_get_copy(this, this->size-1);
 	this->size--;
 	return result;
@@ -50,10 +56,12 @@ void *vector_pop_back(vector *this){
 // 0 1 2 3 4	 -> 0 1 2 3 3 4 
 //	     3  
 void vector_insert(vector *this, void *newelem, int pos){
+	//printf("vector_insert %d\n",pos);
 	if((pos < 0) || (pos > this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
 	if(pos < this->size){
 		vector_push_back(this, 0);
-		memmove(vector_get_reference(this, pos+1), vector_get_reference(this, pos), (this->size-pos)*this->element_size);
+		//printf("vector_insert memmove");
+		memmove(vector_get_reference(this, pos+1), vector_get_reference(this, pos), (this->size-pos-1)*this->element_size);
 	}
 	vector_set(this, pos, newelem);
 }
@@ -68,6 +76,7 @@ void *vector_remove(vector *this, int pos){
 	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
 	void *result = vector_get_copy(this, pos);
 	if(pos+1 < this->size){
+		printf("vector_remove memmove\n");
 		memmove(vector_get_reference(this, pos), vector_get_reference(this, pos+1), (this->size-pos)*this->element_size);
 	}
 	vector_pop_back(this);
@@ -76,6 +85,7 @@ void *vector_remove(vector *this, int pos){
 }
 
 void *vector_get_copy(vector *this, int pos){
+	//printf("vector_get_copy %d from %p\n",pos,this);
 	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
 	void *buff = malloc(this->element_size);
 	if(!buff){printf("vector error: out of memory\n");exit(*((int*)0));}
@@ -83,7 +93,8 @@ void *vector_get_copy(vector *this, int pos){
 	return buff;
 }
 
-void vector_set(vector *this, int pos, void *newelem){	
+void vector_set(vector *this, int pos, void *newelem){
+	//printf("vector_set %d\n",pos);
 	if((pos < 0) || (pos > this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
 	if(pos < this->size){
 		memcpy(vector_get_reference(this, pos), newelem, this->element_size);
@@ -92,13 +103,19 @@ void vector_set(vector *this, int pos, void *newelem){
 	}
 }
 void vector_resize(vector *this, int newsize){
+	//printf("vector_resize %d\n",newsize);
 	//printf("resizing vector %p (d = %p, s = %d, ns = %d, es = %d)\n",this, this->data, this->size, newsize, this->element_size);
-	void *newdata = realloc(this->data, this->element_size*newsize);
+	int wantedsize = this->element_size*newsize;
+	void *newdata = realloc(this->data, wantedsize);
 	if(newdata){
+		//printf("resized, newd = %p\n",newdata);
 		this->data = newdata;
 		this->reserved = newsize;
 	}else{
-		printf("vector error: out of memory\n");
+		printf("vector error: out of memory (ns:%d, os:%d, es:%d, d:%p)\n",newsize, this->size, this->element_size,this->data); 
+		void *test = malloc(wantedsize);
+		if(test){printf("(malloc(%d) works though)\n",wantedsize);}
+		else{printf("(no malloc(%d) either)\n",wantedsize);}
 		exit(*((int*)0));
 	}
 }

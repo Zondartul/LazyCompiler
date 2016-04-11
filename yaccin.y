@@ -8,22 +8,24 @@
 	//beceomes
 	//		B = C C C C C
 	void ast_unroll_lists_helper(int nodeID2){
-		printf("a");
+		//printf("AULH_1\n");
 		struct ast_node *N2 = ast_get_node(nodeID2);
 		if(!N2->children.size){return;}
-		printf("b");
+		//printf("AULH_2\n");
 		struct ast_node *N3 = ast_get_child(N2, 0);
 		if(N2->token.type != N3->token.type){return;}
-		printf("c");
+		//printf("AULH_3\n");
 		//if there is further recursion, unroll it now.
 		ast_unroll_lists_helper(ast_get_child_id(N2, 0));
 		//otherwise, move child contents up here.
+		//printf("AULH_4\n");
 		vector_remove(&N2->children, 0);
 		int i;
 		for(i = 0; i < N3->children.size; i++){
-			printf("d");
+			//printf("AULH_5\n");
 			vector_push_back(&N2->children, vector_get_reference(&N3->children, i));
 		}
+		//printf("AULH_DONE\n");
 	}
 	//turns left-recursive lists into non-recursive ones
 	//so	A = B | empty
@@ -33,25 +35,36 @@
 	void ast_unroll_lists(int nodeID){
 		struct ast_node *N1 = ast_get_node(nodeID);
 		printf("unroll [%s] ",N1->token.type);
-		printf("1");
+		//printf("AUL_1\n");
 		if(!N1->children.size){return;}
 		struct ast_node *N2 = ast_get_child(N1, 0);
-		printf("2");
+		//printf("AUL_2\n");
 		if(!N2->children.size){return;}
 		struct ast_node *N3 = ast_get_child(N2, 0);
-		printf("3");
+		//printf("AUL_3\n");
 		//if(N2->token.type != N3->token.type){return;}
 		//otherwise, there is in fact a recursive list here!
-		printf("4");
+		//printf("AUL_4\n");
 		ast_unroll_lists_helper(ast_get_child_id(N1, 0));
+		//printf("AUL_5\n");
 		vector_remove(&N1->children, 0);
 		int i;
 		for(i = 0; i < N2->children.size; i++){
-			printf("5");
+			//printf("AUL_6\n");
 			vector_insert(&N1->children, vector_get_reference(&N2->children, i),0);
 		}
 		printf(" unroll done\n");
 	}
+	
+	void fix_decl_assign(int nodeID){
+		return;
+		struct ast_node *N1 = ast_get_node(nodeID);
+		int node_expr = *(int*)vector_get_reference(&N1->children,1);
+		vector_pop_back(&N1->children);
+		int node_ID = node((struct ast_token){"expr_id",0,N1->token.value},0);
+		int N3 = node((struct ast_token){"expr_=",0,0},2,node_ID,node_expr);
+		vector_set(&N1->children,1,&N3);
+	}	
 %}
 %code requires {
   #define YYLTYPE YYLTYPE
@@ -67,7 +80,7 @@
 %code provides{
 char *posToString(YYLTYPE pos);
 }	
-%token RETURN CLASS ID TYPE END IF THEN ELSE ELSEIF WHILE CONSTANT
+%token RETURN CLASS ID TYPE END IF THEN ELSE ELSEIF WHILE INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING
 %glr-parser
 %debug
 %error-verbose
@@ -122,7 +135,7 @@ typename	:	TYPE		{$$ = (int)node((struct ast_token){"typename",0,(char*)$1},0);}
 func_def	:	typename ID '('	var_decl_list ')' stmt_list END	{printf("FUNC_DEF ID = [%s]\n",(char*)$2);$$ = (int)node((struct ast_token){"func_def",0,(char*)$2},3,$1,$4,$6);}
 
 var_decl	:	typename ID				{$$ = (int)node((struct ast_token){"var_decl",0,(char*)$2},1,$1);}
-			|	typename ID '=' expr	{$$ = (int)node((struct ast_token){"var_decl_assign",1,(char*)$2},2,$1,$4);}
+			|	typename ID '=' expr	{$$ = (int)node((struct ast_token){"var_decl_assign",1,(char*)$2},2,$1,$4);}//fix_decl_assign($$);}
 			;
 
 var_decl_list	:	var_decl_list_ne			{$$ = (int)node((struct ast_token){"var_decl_list",0,0},1,$1); ast_unroll_lists($$);}
@@ -161,16 +174,21 @@ expr_list_ne	: expr_list_ne ',' expr	{$$ = (int)node((struct ast_token){"expr_li
 				;
 
 expr	:	ID						{$$ = (int)node((struct ast_token){"expr_id",0,(char*)$1},0);}
-		|	CONSTANT				{$$ = (int)node((struct ast_token){"expr_const",1,(char*)$1},0);}
-		|	'(' expr ')'			{$$ = (int)node((struct ast_token){"expr_subexpr",2,0},1,$1);}
-		|	expr '(' expr_list ')'	{$$ = (int)node((struct ast_token){"expr_call",3,0},2,$1,$3);}
-		|	expr '.' expr			{$$ = (int)node((struct ast_token){"expr_.",4,0},2,$1,$3);}
-		|	expr '^' expr			{$$ = (int)node((struct ast_token){"expr_^",5,0},2,$1,$3);}
-		|	expr '/' expr			{$$ = (int)node((struct ast_token){"expr_/",6,0},2,$1,$3);}
-		|	expr '*' expr			{$$ = (int)node((struct ast_token){"expr_*",7,0},2,$1,$3);}
-		|	expr '-' expr			{$$ = (int)node((struct ast_token){"expr_-",8,0},2,$1,$3);}
-		|	expr '+' expr			{$$ = (int)node((struct ast_token){"expr_+",9,0},2,$1,$3);}
-		|	expr '=' expr			{$$ = (int)node((struct ast_token){"expr_=",10,0},2,$1,$3);}
+		|	INTEGER					{$$ = (int)node((struct ast_token){"expr_const",0,(char*)$1},0);}
+		|	INTEGERX				{$$ = (int)node((struct ast_token){"expr_const",1,(char*)$1},0);}
+		|	INTEGERB				{$$ = (int)node((struct ast_token){"expr_const",2,(char*)$1},0);}
+		|	FLOATING				{$$ = (int)node((struct ast_token){"expr_const",3,(char*)$1},0);}
+		|	CHARACTER				{$$ = (int)node((struct ast_token){"expr_const",4,(char*)$1},0);}
+		|	STRING					{$$ = (int)node((struct ast_token){"expr_const",5,(char*)$1},0);}
+		|	'(' expr ')'			{$$ = (int)node((struct ast_token){"expr_subexpr",0,0},1,$1);}
+		|	expr '(' expr_list ')'	{$$ = (int)node((struct ast_token){"expr_call",0,0},2,$1,$3);}
+		|	expr '.' expr			{$$ = (int)node((struct ast_token){"expr_.",0,0},2,$1,$3);}
+		|	expr '^' expr			{$$ = (int)node((struct ast_token){"expr_^",0,0},2,$1,$3);}
+		|	expr '/' expr			{$$ = (int)node((struct ast_token){"expr_/",0,0},2,$1,$3);}
+		|	expr '*' expr			{$$ = (int)node((struct ast_token){"expr_*",0,0},2,$1,$3);}
+		|	expr '-' expr			{$$ = (int)node((struct ast_token){"expr_-",0,0},2,$1,$3);}
+		|	expr '+' expr			{$$ = (int)node((struct ast_token){"expr_+",0,0},2,$1,$3);}
+		|	expr '=' expr			{$$ = (int)node((struct ast_token){"expr_=",0,0},2,$1,$3);}
 		;
 /*			
 expr	:	expr '+' expr2	{$$ = (int)node((struct ast_token){"expr",0,0},2,$1,$2);}
@@ -208,6 +226,8 @@ int main(int argc, char **argv){
 		printf("usage: %s inputfile\n",argv[0]);
 		return 0;
 	}
+	setbuf(stdout, NULL);
+	setbuf(stderr, NULL);
 	ast_init();
 	yydebug = 1;
 	yylloc.last_line = 1;

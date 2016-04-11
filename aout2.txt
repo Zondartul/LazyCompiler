@@ -21,83 +21,110 @@ program
  | |\var_decl "str"
  | | \typename "string"
  | \stmt_list "<empty>"
+ +decl_stmt
+ |\func_def "main"
+ | +typename "int"
+ | +var_decl_list
+ | |+var_decl "argc"
+ | ||\typename "int"
+ | |\var_decl "argv"
+ | | \typename "int"
+ | \stmt_list
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl "C"
+ |  |  \typename "char"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \if_block
+ |  |  +if_then
+ |  |  |+expr_=
+ |  |  ||+expr_id "argc"
+ |  |  ||\expr_const "0"
+ |  |  |\stmt_list
+ |  |  | +stmt
+ |  |  | |\imp_stmt
+ |  |  | | \expr_call
+ |  |  | |  +expr_id "print"
+ |  |  | |  \expr_list
+ |  |  | |   \expr_const ""usage: a.exe arg1 arg2""
+ |  |  | \stmt
+ |  |  |  \imp_stmt
+ |  |  |   \expr_const "1"
+ |  |  \stmt_list
+ |  |   +stmt
+ |  |   |\decl_stmt
+ |  |   | \var_decl_assign "A"
+ |  |   |  +typename "float"
+ |  |   |  \expr_call
+ |  |   |   +expr_id "import"
+ |  |   |   \expr_list
+ |  |   |    \expr_id "argc"
+ |  |   +stmt
+ |  |   |\imp_stmt
+ |  |   | \expr_=
+ |  |   |  +expr_id "A"
+ |  |   |  \expr_*
+ |  |   |   +expr_id "A"
+ |  |   |   \expr_id "argv"
+ |  |   +stmt
+ |  |   |\imp_stmt
+ |  |   | \expr_call
+ |  |   |  +expr_id "export"
+ |  |   |  \expr_list
+ |  |   |   \expr_id "A"
+ |  |   +stmt
+ |  |   |\imp_stmt
+ |  |   | \while_loop
+ |  |   |  +expr_id "A"
+ |  |   |  \stmt_list
+ |  |   |   +stmt
+ |  |   |   |\imp_stmt
+ |  |   |   | \expr_call
+ |  |   |   |  +expr_id "print"
+ |  |   |   |  \expr_list
+ |  |   |   |   \expr_id "A"
+ |  |   |   +stmt
+ |  |   |   |\imp_stmt
+ |  |   |   | \expr_=
+ |  |   |   |  +expr_id "A"
+ |  |   |   |  \expr_/
+ |  |   |   |   +expr_id "A"
+ |  |   |   |   \expr_const "1"
+ |  |   |   \stmt
+ |  |   |    \imp_stmt
+ |  |   |     \if_block
+ |  |   |      \if_then
+ |  |   |       +expr_=
+ |  |   |       |+expr_id "A"
+ |  |   |       |\expr_const "1"
+ |  |   |       \stmt_list
+ |  |   |        \stmt
+ |  |   |         \imp_stmt
+ |  |   |          \expr_const "1"
+ |  |   \stmt
+ |  |    \imp_stmt
+ |  |     \expr_const "0"
+ |  \stmt
+ |   \decl_stmt
+ |    \var_decl "boop"
+ |     \typename "string"
  \decl_stmt
-  \func_def "main"
-   +typename "int"
-   +var_decl_list
-   |+var_decl "argc"
-   ||\typename "int"
-   |\var_decl "argv"
-   | \typename "int"
-   \stmt_list
-    \stmt
-     \imp_stmt
-      \if_block
-       +if_then
-       |+expr_=
-       ||+expr_id "argc"
-       ||\expr_const "0"
-       |\stmt_list
-       | +stmt
-       | |\imp_stmt
-       | | \expr_call
-       | |  +expr_id "print"
-       | |  \expr_list
-       | |   \expr_const ""usage: a.exe arg1 arg2""
-       | \stmt
-       |  \imp_stmt
-       |   \expr_const "1"
-       \stmt_list
-        +stmt
-        |\decl_stmt
-        | \var_decl_assign "A"
-        |  +typename "float"
-        |  \expr_call
-        |   +expr_id "import"
-        |   \expr_list
-        |    \expr_id "argc"
-        +stmt
-        |\imp_stmt
-        | \expr_=
-        |  +expr_id "A"
-        |  \expr_*
-        |   +expr_id "A"
-        |   \expr_id "argv"
-        +stmt
-        |\imp_stmt
-        | \expr_call
-        |  +expr_id "export"
-        |  \expr_list
-        |   \expr_id "A"
-        +stmt
-        |\imp_stmt
-        | \while_loop
-        |  +expr_id "A"
-        |  \stmt_list
-        |   +stmt
-        |   |\imp_stmt
-        |   | \expr_call
-        |   |  +expr_id "print"
-        |   |  \expr_list
-        |   |   \expr_id "A"
-        |   +stmt
-        |   |\imp_stmt
-        |   | \expr_=
-        |   |  +expr_id "A"
-        |   |  \expr_/
-        |   |   +expr_id "A"
-        |   |   \expr_const "1"
-        |   \stmt
-        |    \imp_stmt
-        |     \if_block
-        |      \if_then
-        |       +expr_=
-        |       |+expr_id "A"
-        |       |\expr_const "1"
-        |       \stmt_list
-        |        \stmt
-        |         \imp_stmt
-        |          \expr_const "1"
-        \stmt
-         \imp_stmt
-          \expr_const "0"
+  \class_def "horse"
+   \decl_stmt_list
+    +decl_stmt
+    |\var_decl_assign "fluff"
+    | +typename "float"
+    | \expr_const "5"
+    \decl_stmt
+     \func_def "boop"
+      +typename "int"
+      +var_decl_list "<empty>"
+      \stmt_list
+       \stmt
+        \imp_stmt
+         \expr_=
+          +expr_id "fluff"
+          \expr_+
+           +expr_id "fluff"
+           \expr_const "1"

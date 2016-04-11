@@ -60,10 +60,11 @@ else	{return(ELSE);}
 elseif	{return(ELSEIF);}
 while	{return(WHILE);}
 [a-zA-Z_][a-zA-Z_0-9]* {yylval = (int)stralloc(yytext); return(ID);}
-(0|([1-9][0-9]*)(.(0-9)+)?)	|
-(0x[0-9]+)				|
-(0b[0-1]+)				|
-\'.\' 					|
-\".*\"					{yylval = (int)stralloc(yytext); return(CONSTANT);}
+(0x[0-9]+)						{yylval = (int)stralloc(yytext); return(INTEGERX);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
+(0b[0-1]+)						{yylval = (int)stralloc(yytext); return(INTEGERB);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
+(0|([1-9][0-9]*))\.(0-9)+		{yylval = (int)stralloc(yytext); return(FLOATING);}//{float *F = malloc(sizeof(float)); sscanf(yytext,"%f",&F); yylval = (int)F; return(FLOATING);}
+(0|([1-9][0-9]*))				{yylval = (int)stralloc(yytext); return(INTEGER);}//{sscanf(yytext,"%d",&yylval); return(INTEGER);}
+\'.\' 							{yylval = (int)stralloc(yytext); return(CHARACTER);}//{sscanf(yytext,"%c",&yylval); return(CHARACTER);}
+\".*\"							{yylval = (int)stralloc(yytext); return(STRING);}
 [ \t\n]	;
 .	{return *yytext;}

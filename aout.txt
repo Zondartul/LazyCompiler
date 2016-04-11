@@ -1,152 +1,1951 @@
-Lexxed token [int]
+GNU gdb (GDB) 7.6.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "mingw32".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from C:\Stride\LazyComp\data\a.exe...done.
+(gdb) Starting program: C:\Stride\LazyComp\data/a.exe lazy2.txt
+[New Thread 1012.0x714]
+vector constructed: 00419B10
+Starting parse
+Entering state 0
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [import]
-Lexxed token [(]
-Lexxed token [int]
+vector constructed: 009B118C
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [import]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 18
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [arg]
-Lexxed token [)]
+vector constructed: 009B1204
+-> $$ = nterm typename ()
+Entering state 30
+Reading a token: Lexxed token [arg]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 44
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
 node "var_decl": [arg] (0/1)
+vector constructed: 009B12CC
+-> $$ = nterm var_decl ()
+Entering state 31
+Reducing stack 0 by rule 29 (line 146):
+   $1 = nterm var_decl ()
 node "var_decl_list_ne": [(null)] (1/1)
+vector constructed: 009B1324
+-> $$ = nterm var_decl_list_ne ()
+Entering state 33
+Next token is token ')' ()
+Reducing stack 0 by rule 26 (line 141):
+   $1 = nterm var_decl_list_ne ()
 node "var_decl_list": [(null)] (0/1)
-unroll [var_decl_list] 1234ab5 unroll done
-Lexxed token [end]
+vector constructed: 009B125C
+unroll [var_decl_list]  unroll done
+-> $$ = nterm var_decl_list ()
+Entering state 32
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 45
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 5 (line 102):
 node "stmt_list": [<empty>] (1/0)
+vector constructed: 009B8A94
+-> $$ = nterm stmt_list ()
+Entering state 62
+Next token is token END ()
+Shifting token END ()
+Entering state 77
+Reducing stack 0 by rule 23 (line 135):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '(' ()
+   $4 = nterm var_decl_list ()
+   $5 = token ')' ()
+   $6 = nterm stmt_list ()
+   $7 = token END ()
 FUNC_DEF ID = [import]
 node "func_def": [import] (0/3)
+vector constructed: 009B8AEC
+-> $$ = nterm func_def ()
+Entering state 9
+Reducing stack 0 by rule 9 (line 110):
+   $1 = nterm func_def ()
 node "decl_stmt": [(null)] (1/1)
+vector constructed: 009B137C
+-> $$ = nterm decl_stmt ()
+Entering state 4
+Reducing stack 0 by rule 14 (line 119):
+   $1 = nterm decl_stmt ()
 node "decl_stmt_list_ne": [(null)] (1/1)
-Lexxed token [int]
+vector constructed: 009B13D4
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [export]
-Lexxed token [(]
-Lexxed token [int]
+vector constructed: 009B8C9C
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [export]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 18
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [arg]
-Lexxed token [)]
+vector constructed: 009B8D34
+-> $$ = nterm typename ()
+Entering state 30
+Reading a token: Lexxed token [arg]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 44
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
 node "var_decl": [arg] (0/1)
+vector constructed: 009B8B6C
+-> $$ = nterm var_decl ()
+Entering state 31
+Reducing stack 0 by rule 29 (line 146):
+   $1 = nterm var_decl ()
 node "var_decl_list_ne": [(null)] (1/1)
+vector constructed: 009B8BC4
+-> $$ = nterm var_decl_list_ne ()
+Entering state 33
+Next token is token ')' ()
+Reducing stack 0 by rule 26 (line 141):
+   $1 = nterm var_decl_list_ne ()
 node "var_decl_list": [(null)] (0/1)
-unroll [var_decl_list] 1234ab5 unroll done
-Lexxed token [end]
+vector constructed: 009B8C1C
+unroll [var_decl_list]  unroll done
+-> $$ = nterm var_decl_list ()
+Entering state 32
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 45
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 5 (line 102):
 node "stmt_list": [<empty>] (1/0)
+vector constructed: 009B8FA4
+-> $$ = nterm stmt_list ()
+Entering state 62
+Next token is token END ()
+Shifting token END ()
+Entering state 77
+Reducing stack 0 by rule 23 (line 135):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '(' ()
+   $4 = nterm var_decl_list ()
+   $5 = token ')' ()
+   $6 = nterm stmt_list ()
+   $7 = token END ()
 FUNC_DEF ID = [export]
 node "func_def": [export] (0/3)
+vector constructed: 009B8FFC
+-> $$ = nterm func_def ()
+Entering state 9
+Reducing stack 0 by rule 9 (line 110):
+   $1 = nterm func_def ()
 node "decl_stmt": [(null)] (1/1)
+vector constructed: 009B905C
+-> $$ = nterm decl_stmt ()
+Entering state 13
+Reducing stack 0 by rule 13 (line 118):
+   $1 = nterm decl_stmt_list_ne ()
+   $2 = nterm decl_stmt ()
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [int]
+vector constructed: 009B8D8C
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [print]
-Lexxed token [(]
-Lexxed token [string]
+vector constructed: 009B8E0C
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [print]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 18
+Reading a token: Lexxed token [string]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [string] (0/0)
-Lexxed token [str]
-Lexxed token [)]
+vector constructed: 009B8EA4
+-> $$ = nterm typename ()
+Entering state 30
+Reading a token: Lexxed token [str]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 44
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
 node "var_decl": [str] (0/1)
+vector constructed: 009B8F1C
+-> $$ = nterm var_decl ()
+Entering state 31
+Reducing stack 0 by rule 29 (line 146):
+   $1 = nterm var_decl ()
 node "var_decl_list_ne": [(null)] (1/1)
+vector constructed: 009B93AC
+-> $$ = nterm var_decl_list_ne ()
+Entering state 33
+Next token is token ')' ()
+Reducing stack 0 by rule 26 (line 141):
+   $1 = nterm var_decl_list_ne ()
 node "var_decl_list": [(null)] (0/1)
-unroll [var_decl_list] 1234ab5 unroll done
-Lexxed token [end]
+vector constructed: 009B9404
+unroll [var_decl_list]  unroll done
+-> $$ = nterm var_decl_list ()
+Entering state 32
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 45
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 5 (line 102):
 node "stmt_list": [<empty>] (1/0)
+vector constructed: 009B949C
+-> $$ = nterm stmt_list ()
+Entering state 62
+Next token is token END ()
+Shifting token END ()
+Entering state 77
+Reducing stack 0 by rule 23 (line 135):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '(' ()
+   $4 = nterm var_decl_list ()
+   $5 = token ')' ()
+   $6 = nterm stmt_list ()
+   $7 = token END ()
 FUNC_DEF ID = [print]
 node "func_def": [print] (0/3)
+vector constructed: 009B94F4
+-> $$ = nterm func_def ()
+Entering state 9
+Reducing stack 0 by rule 9 (line 110):
+   $1 = nterm func_def ()
 node "decl_stmt": [(null)] (1/1)
+vector constructed: 009B9554
+-> $$ = nterm decl_stmt ()
+Entering state 13
+Reducing stack 0 by rule 13 (line 118):
+   $1 = nterm decl_stmt_list_ne ()
+   $2 = nterm decl_stmt ()
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [int]
+vector constructed: 009B90B4
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [main]
-Lexxed token [(]
-Lexxed token [int]
+vector constructed: 009B9134
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [main]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 18
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [argc]
-Lexxed token [,]
+vector constructed: 009B91CC
+-> $$ = nterm typename ()
+Entering state 30
+Reading a token: Lexxed token [argc]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 44
+Reading a token: Lexxed token [,]
+Next token is token ',' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
 node "var_decl": [argc] (0/1)
+vector constructed: 009B9244
+-> $$ = nterm var_decl ()
+Entering state 31
+Reducing stack 0 by rule 29 (line 146):
+   $1 = nterm var_decl ()
 node "var_decl_list_ne": [(null)] (1/1)
-Lexxed token [int]
+vector constructed: 009B929C
+-> $$ = nterm var_decl_list_ne ()
+Entering state 33
+Next token is token ',' ()
+Shifting token ',' ()
+Entering state 46
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
 node "typename": [int] (0/0)
-Lexxed token [argv]
-Lexxed token [)]
+vector constructed: 009B9314
+-> $$ = nterm typename ()
+Entering state 30
+Reading a token: Lexxed token [argv]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 44
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
 node "var_decl": [argv] (0/1)
+vector constructed: 009B9A0C
+-> $$ = nterm var_decl ()
+Entering state 70
+Reducing stack 0 by rule 28 (line 145):
+   $1 = nterm var_decl_list_ne ()
+   $2 = token ',' ()
+   $3 = nterm var_decl ()
 node "var_decl_list_ne": [(null)] (0/2)
+vector constructed: 009B9A64
+-> $$ = nterm var_decl_list_ne ()
+Entering state 33
+Next token is token ')' ()
+Reducing stack 0 by rule 26 (line 141):
+   $1 = nterm var_decl_list_ne ()
 node "var_decl_list": [(null)] (0/1)
-unroll [var_decl_list] 1234abcabd55 unroll done
-Lexxed token [if]
-Lexxed token [(]
-Lexxed token [argc]
-node "expr_id": [argc] (0/0)
-Lexxed token [=]
-Lexxed token [0]
-node "expr_const": [0] (1/0)
-Lexxed token [)]
-node "expr_=": [(null)] (10/2)
-Lexxed token [then]
-Lexxed token [print]
-node "expr_id": [print] (0/0)
-Lexxed token [(]
-Lexxed token ["usage: a.exe arg1 arg2"]
-node "expr_const": ["usage: a.exe arg1 arg2"] (1/0)
-Lexxed token [)]
-node "expr_list_ne": [(null)] (1/1)
-node "expr_list": [(null)] (0/1)
-unroll [expr_list] 1234ab5 unroll done
-node "expr_call": [(null)] (3/2)
-Lexxed token [;]
-node "imp_stmt": [(null)] (2/1)
-node "stmt": [(null)] (0/1)
-node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [return]
-Lexxed token [1]
-node "expr_const": [1] (1/0)
-Lexxed token [;]
-node "imp_stmt": [(null)] (4/1)
-node "stmt": [(null)] (0/1)
-node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [else]
-node "stmt_list": [(null)] (0/1)
-unroll [stmt_list] 1234abcabd55 unroll done
-node "if_start": [(null)] (0/2)
-Lexxed token [float]
-node "typename": [float] (0/0)
-Lexxed token [A]
-Lexxed token [=]
-Lexxed token [import]
-node "expr_id": [import] (0/0)
-Lexxed token [(]
-Lexxed token [argc]
-node "expr_id": [argc] (0/0)
-Lexxed token [)]
-node "expr_list_ne": [(null)] (1/1)
-node "expr_list": [(null)] (0/1)
-unroll [expr_list] 1234ab5 unroll done
-node "expr_call": [(null)] (3/2)
-Lexxed token [;]
-node "var_decl_assign": [A] (1/2)
+vector constructed: 009B9AC4
+unroll [var_decl_list] vector_remove memmove
+ unroll done
+-> $$ = nterm var_decl_list ()
+Entering state 32
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 45
+Reading a token: Lexxed token [char]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
+node "typename": [char] (0/0)
+vector constructed: 009B9BC4
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [C]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
+node "var_decl": [C] (0/1)
+vector constructed: 009B9C3C
+-> $$ = nterm var_decl ()
+Entering state 10
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 15
+Reducing stack 0 by rule 10 (line 111):
+   $1 = nterm var_decl ()
+   $2 = token ';' ()
 node "decl_stmt": [(null)] (2/1)
+vector constructed: 009B9C94
+-> $$ = nterm decl_stmt ()
+Entering state 64
+Reducing stack 0 by rule 3 (line 98):
+   $1 = nterm decl_stmt ()
 node "stmt": [(null)] (1/1)
+vector constructed: 009B9CEC
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [A]
-node "expr_id": [A] (0/0)
-Lexxed token [=]
-Lexxed token [A]
-node "expr_id": [A] (0/0)
-Lexxed token [*]
-Lexxed token [argv]
-node "expr_id": [argv] (0/0)
-Lexxed token [;]
-node "expr_*": [(null)] (7/2)
-node "expr_=": [(null)] (10/2)
-node "imp_stmt": [(null)] (2/1)
-node "stmt": [(null)] (0/1)
-node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [export]
-node "expr_id": [export] (0/0)
-Lexxed token [(]
-Lexxed token [A]
-node "expr_id": [A] (0/0)
-Lexxed token [)]
+vector constructed: 009B9D44
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [if]
+Next token is token IF ()
+Shifting token IF ()
+Entering state 59
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 75
+Reading a token: Lexxed token [argc]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [argc] (0/0)
+vector constructed: 009B95CC
+-> $$ = nterm expr ()
+Entering state 85
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 35
+Reading a token: Lexxed token [0]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [0] (0/0)
+vector constructed: 009B9644
+-> $$ = nterm expr ()
+Entering state 48
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 54 (line 191):
+   $1 = nterm expr ()
+   $2 = token '=' ()
+   $3 = nterm expr ()
+node "expr_=": [(null)] (0/2)
+vector constructed: 009B969C
+-> $$ = nterm expr ()
+Entering state 85
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 89
+Reading a token: Lexxed token [then]
+Next token is token THEN ()
+Shifting token THEN ()
+Entering state 93
+Reading a token: Lexxed token [print]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [print] (0/0)
+vector constructed: 009B971C
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 42
+Reading a token: Lexxed token ["usage: a.exe arg1 arg2"]
+Next token is token STRING ()
+Shifting token STRING ()
+Entering state 26
+Reducing stack 0 by rule 45 (line 182):
+   $1 = token STRING ()
+node "expr_const": ["usage: a.exe arg1 arg2"] (5/0)
+vector constructed: 009B97A4
+-> $$ = nterm expr ()
+Entering state 57
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 38 (line 173):
+   $1 = nterm expr ()
 node "expr_list_ne": [(null)] (1/1)
+vector constructed: 009B97FC
+-> $$ = nterm expr_list_ne ()
+Entering state 56
+Next token is token ')' ()
+Reducing stack 0 by rule 35 (line 168):
+   $1 = nterm expr_list_ne ()
 node "expr_list": [(null)] (0/1)
-unroll [expr_list] 1234ab5 unroll done
-node "expr_call": [(null)] (3/2)
-Lexxed token [;]
-node "imp
+vector constructed: 009B9854
+unroll [expr_list]  unroll done
+-> $$ = nterm expr_list ()
+Entering state 55
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 71
+Reducing stack 0 by rule 47 (line 184):
+   $1 = nterm expr ()
+   $2 = token '(' ()
+   $3 = nterm expr_list ()
+   $4 = token ')' ()
+node "expr_call": [(null)] (0/2)
+vector constructed: 009B98EC
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009B994C
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009B99A4
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
+node "stmt_list_ne": [(null)] (1/1)
+vector constructed: 009BA444
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [return]
+Next token is token RETURN ()
+Shifting token RETURN ()
+Entering state 58
+Reading a token: Lexxed token [1]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [1] (0/0)
+vector constructed: 009BA4BC
+-> $$ = nterm expr ()
+Entering state 74
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 84
+Reducing stack 0 by rule 19 (line 126):
+   $1 = token RETURN ()
+   $2 = nterm expr ()
+   $3 = token ';' ()
+node "imp_stmt": [(null)] (4/1)
+vector constructed: 009BA514
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BA56C
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BA5C4
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [else]
+Next token is token ELSE ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BA624
+unroll [stmt_list] vector_remove memmove
+ unroll done
+-> $$ = nterm stmt_list ()
+Entering state 96
+Reducing stack 0 by rule 32 (line 153):
+   $1 = token IF ()
+   $2 = token '(' ()
+   $3 = nterm expr ()
+   $4 = token ')' ()
+   $5 = token THEN ()
+   $6 = nterm stmt_list ()
+node "if_then": [(null)] (0/2)
+vector constructed: 009BA724
+-> $$ = nterm if_then ()
+Entering state 67
+Next token is token ELSE ()
+Shifting token ELSE ()
+Entering state 80
+Reading a token: Lexxed token [float]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
+node "typename": [float] (0/0)
+vector constructed: 009BA784
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 17
+Reading a token: Lexxed token [import]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [import] (0/0)
+vector constructed: 009BA81C
+-> $$ = nterm expr ()
+Entering state 28
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 42
+Reading a token: Lexxed token [argc]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [argc] (0/0)
+vector constructed: 009BA894
+-> $$ = nterm expr ()
+Entering state 57
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 38 (line 173):
+   $1 = nterm expr ()
+node "expr_list_ne": [(null)] (1/1)
+vector constructed: 009BA8EC
+-> $$ = nterm expr_list_ne ()
+Entering state 56
+Next token is token ')' ()
+Reducing stack 0 by rule 35 (line 168):
+   $1 = nterm expr_list_ne ()
+node "expr_list": [(null)] (0/1)
+vector constructed: 009B9D9C
+unroll [expr_list]  unroll done
+-> $$ = nterm expr_list ()
+Entering state 55
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 71
+Reducing stack 0 by rule 47 (line 184):
+   $1 = nterm expr ()
+   $2 = token '(' ()
+   $3 = nterm expr_list ()
+   $4 = token ')' ()
+node "expr_call": [(null)] (0/2)
+vector constructed: 009B9E34
+-> $$ = nterm expr ()
+Entering state 28
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 25 (line 138):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '=' ()
+   $4 = nterm expr ()
+node "var_decl_assign": [A] (1/2)
+vector constructed: 009B9E94
+-> $$ = nterm var_decl ()
+Entering state 10
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 15
+Reducing stack 0 by rule 10 (line 111):
+   $1 = nterm var_decl ()
+   $2 = token ';' ()
+node "decl_stmt": [(null)] (2/1)
+vector constructed: 009B9EF4
+-> $$ = nterm decl_stmt ()
+Entering state 64
+Reducing stack 0 by rule 3 (line 98):
+   $1 = nterm decl_stmt ()
+node "stmt": [(null)] (1/1)
+vector constructed: 009B9F4C
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
+node "stmt_list_ne": [(null)] (1/1)
+vector constructed: 009B9FA4
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BA01C
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 35
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BA094
+-> $$ = nterm expr ()
+Entering state 48
+Reading a token: Lexxed token [*]
+Next token is token '*' ()
+Shifting token '*' ()
+Entering state 40
+Reading a token: Lexxed token [argv]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [argv] (0/0)
+vector constructed: 009BA10C
+-> $$ = nterm expr ()
+Entering state 53
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 51 (line 188):
+   $1 = nterm expr ()
+   $2 = token '*' ()
+   $3 = nterm expr ()
+node "expr_*": [(null)] (0/2)
+vector constructed: 009BA164
+-> $$ = nterm expr ()
+Entering state 48
+Next token is token ';' ()
+Reducing stack 0 by rule 54 (line 191):
+   $1 = nterm expr ()
+   $2 = token '=' ()
+   $3 = nterm expr ()
+node "expr_=": [(null)] (0/2)
+vector constructed: 009BA1C4
+-> $$ = nterm expr ()
+Entering state 69
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009BA224
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BA27C
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BA2D4
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [export]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [export] (0/0)
+vector constructed: 009BA354
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 42
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BA3CC
+-> $$ = nterm expr ()
+Entering state 57
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 38 (line 173):
+   $1 = nterm expr ()
+node "expr_list_ne": [(null)] (1/1)
+vector constructed: 009BB354
+-> $$ = nterm expr_list_ne ()
+Entering state 56
+Next token is token ')' ()
+Reducing stack 0 by rule 35 (line 168):
+   $1 = nterm expr_list_ne ()
+node "expr_list": [(null)] (0/1)
+vector constructed: 009BB38C
+unroll [expr_list]  unroll done
+-> $$ = nterm expr_list ()
+Entering state 55
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 71
+Reducing stack 0 by rule 47 (line 184):
+   $1 = nterm expr ()
+   $2 = token '(' ()
+   $3 = nterm expr_list ()
+   $4 = token ')' ()
+node "expr_call": [(null)] (0/2)
+vector constructed: 009BB424
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009BB484
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BB4DC
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BB534
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [while]
+Next token is token WHILE ()
+Shifting token WHILE ()
+Entering state 60
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 76
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BB5B4
+-> $$ = nterm expr ()
+Entering state 86
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 90
+Reading a token: Lexxed token [print]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [print] (0/0)
+vector constructed: 009BB62C
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 42
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BB6A4
+-> $$ = nterm expr ()
+Entering state 57
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 38 (line 173):
+   $1 = nterm expr ()
+node "expr_list_ne": [(null)] (1/1)
+vector constructed: 009BB6FC
+-> $$ = nterm expr_list_ne ()
+Entering state 56
+Next token is token ')' ()
+Reducing stack 0 by rule 35 (line 168):
+   $1 = nterm expr_list_ne ()
+node "expr_list": [(null)] (0/1)
+vector constructed: 009BB754
+unroll [expr_list]  unroll done
+-> $$ = nterm expr_list ()
+Entering state 55
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 71
+Reducing stack 0 by rule 47 (line 184):
+   $1 = nterm expr ()
+   $2 = token '(' ()
+   $3 = nterm expr_list ()
+   $4 = token ')' ()
+node "expr_call": [(null)] (0/2)
+vector constructed: 009BB7EC
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009BB84C
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BB8A4
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
+node "stmt_list_ne": [(null)] (1/1)
+vector constructed: 009BB8FC
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BC8A4
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 35
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BC91C
+-> $$ = nterm expr ()
+Entering state 48
+Reading a token: Lexxed token [/]
+Next token is token '/' ()
+Shifting token '/' ()
+Entering state 39
+Reading a token: Lexxed token [1]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [1] (0/0)
+vector constructed: 009BC994
+-> $$ = nterm expr ()
+Entering state 52
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 50 (line 187):
+   $1 = nterm expr ()
+   $2 = token '/' ()
+   $3 = nterm expr ()
+node "expr_/": [(null)] (0/2)
+vector constructed: 009BC9EC
+-> $$ = nterm expr ()
+Entering state 48
+Next token is token ';' ()
+Reducing stack 0 by rule 54 (line 191):
+   $1 = nterm expr ()
+   $2 = token '=' ()
+   $3 = nterm expr ()
+node "expr_=": [(null)] (0/2)
+vector constructed: 009BCA4C
+-> $$ = nterm expr ()
+Entering state 69
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009BCAAC
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BCB04
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BCB5C
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [if]
+Next token is token IF ()
+Shifting token IF ()
+Entering state 59
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 75
+Reading a token: Lexxed token [A]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [A] (0/0)
+vector constructed: 009BCBDC
+-> $$ = nterm expr ()
+Entering state 85
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 35
+Reading a token: Lexxed token [1]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [1] (0/0)
+vector constructed: 009BCC54
+-> $$ = nterm expr ()
+Entering state 48
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 54 (line 191):
+   $1 = nterm expr ()
+   $2 = token '=' ()
+   $3 = nterm expr ()
+node "expr_=": [(null)] (0/2)
+vector constructed: 009BCCAC
+-> $$ = nterm expr ()
+Entering state 85
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 89
+Reading a token: Lexxed token [then]
+Next token is token THEN ()
+Shifting token THEN ()
+Entering state 93
+Reading a token: Lexxed token [return]
+Next token is token RETURN ()
+Shifting token RETURN ()
+Entering state 58
+Reading a token: Lexxed token [1]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [1] (0/0)
+vector constructed: 009BCD2C
+-> $$ = nterm expr ()
+Entering state 74
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 84
+Reducing stack 0 by rule 19 (line 126):
+   $1 = token RETURN ()
+   $2 = nterm expr ()
+   $3 = token ';' ()
+node "imp_stmt": [(null)] (4/1)
+vector constructed: 009BCD84
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BCDDC
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
+node "stmt_list_ne": [(null)] (1/1)
+vector constructed: 009BCE34
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BCE8C
+unroll [stmt_list]  unroll done
+-> $$ = nterm stmt_list ()
+Entering state 96
+Reducing stack 0 by rule 32 (line 153):
+   $1 = token IF ()
+   $2 = token '(' ()
+   $3 = nterm expr ()
+   $4 = token ')' ()
+   $5 = token THEN ()
+   $6 = nterm stmt_list ()
+node "if_then": [(null)] (0/2)
+vector constructed: 009BCF24
+-> $$ = nterm if_then ()
+Entering state 67
+Next token is token END ()
+Shifting token END ()
+Entering state 79
+Reducing stack 0 by rule 30 (line 149):
+   $1 = nterm if_then ()
+   $2 = token END ()
+node "if_block": [(null)] (0/1)
+vector constructed: 009BCF84
+-> $$ = nterm if_block ()
+Entering state 66
+Reducing stack 0 by rule 15 (line 122):
+   $1 = nterm if_block ()
+node "imp_stmt": [(null)] (0/1)
+vector constructed: 009BA944
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BA99C
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BA9F4
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BAA54
+unroll [stmt_list] vector_remove memmove
+vector_remove memmove
+ unroll done
+-> $$ = nterm stmt_list ()
+Entering state 94
+Next token is token END ()
+Shifting token END ()
+Entering state 97
+Reducing stack 0 by rule 34 (line 165):
+   $1 = token WHILE ()
+   $2 = token '(' ()
+   $3 = nterm expr ()
+   $4 = token ')' ()
+   $5 = nterm stmt_list ()
+   $6 = token END ()
+node "while_loop": [(null)] (0/2)
+vector constructed: 009BAB94
+-> $$ = nterm while_loop ()
+Entering state 68
+Reducing stack 0 by rule 16 (line 123):
+   $1 = nterm while_loop ()
+node "imp_stmt": [(null)] (1/1)
+vector constructed: 009BABF4
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BAC2C
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BAC84
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [return]
+Next token is token RETURN ()
+Shifting token RETURN ()
+Entering state 58
+Reading a token: Lexxed token [0]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [0] (0/0)
+vector constructed: 009BAD04
+-> $$ = nterm expr ()
+Entering state 74
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 84
+Reducing stack 0 by rule 19 (line 126):
+   $1 = token RETURN ()
+   $2 = nterm expr ()
+   $3 = token ';' ()
+node "imp_stmt": [(null)] (4/1)
+vector constructed: 009BAD5C
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BADB4
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BAE0C
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BAE6C
+unroll [stmt_list] vector_remove memmove
+vector_remove memmove
+vector_remove memmove
+vector_remove memmove
+ unroll done
+-> $$ = nterm stmt_list ()
+Entering state 87
+Next token is token END ()
+Shifting token END ()
+Entering state 91
+Reducing stack 0 by rule 31 (line 150):
+   $1 = nterm if_then ()
+   $2 = token ELSE ()
+   $3 = nterm stmt_list ()
+   $4 = token END ()
+node "if_block": [(null)] (1/2)
+vector constructed: 009BB054
+-> $$ = nterm if_block ()
+Entering state 66
+Reducing stack 0 by rule 15 (line 122):
+   $1 = nterm if_block ()
+node "imp_stmt": [(null)] (0/1)
+vector constructed: 009BB0B4
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BB0EC
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BB144
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [string]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
+node "typename": [string] (0/0)
+vector constructed: 009BB1C4
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [boop]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 24 (line 137):
+   $1 = nterm typename ()
+   $2 = token ID ()
+node "var_decl": [boop] (0/1)
+vector constructed: 009BB23C
+-> $$ = nterm var_decl ()
+Entering state 10
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 15
+Reducing stack 0 by rule 10 (line 111):
+   $1 = nterm var_decl ()
+   $2 = token ';' ()
+node "decl_stmt": [(null)] (2/1)
+vector constructed: 009BB294
+-> $$ = nterm decl_stmt ()
+Entering state 64
+Reducing stack 0 by rule 3 (line 98):
+   $1 = nterm decl_stmt ()
+node "stmt": [(null)] (1/1)
+vector constructed: 009BB2EC
+-> $$ = nterm stmt ()
+Entering state 78
+Reducing stack 0 by rule 6 (line 105):
+   $1 = nterm stmt_list_ne ()
+   $2 = nterm stmt ()
+node "stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BCFDC
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BD03C
+unroll [stmt_list] vector_remove memmove
+vector_remove memmove
+ unroll done
+-> $$ = nterm stmt_list ()
+Entering state 62
+Next token is token END ()
+Shifting token END ()
+Entering state 77
+Reducing stack 0 by rule 23 (line 135):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '(' ()
+   $4 = nterm var_decl_list ()
+   $5 = token ')' ()
+   $6 = nterm stmt_list ()
+   $7 = token END ()
+FUNC_DEF ID = [main]
+node "func_def": [main] (0/3)
+vector constructed: 009BD17C
+-> $$ = nterm func_def ()
+Entering state 9
+Reducing stack 0 by rule 9 (line 110):
+   $1 = nterm func_def ()
+node "decl_stmt": [(null)] (1/1)
+vector constructed: 009BD1DC
+-> $$ = nterm decl_stmt ()
+Entering state 13
+Reducing stack 0 by rule 13 (line 118):
+   $1 = nterm decl_stmt_list_ne ()
+   $2 = nterm decl_stmt ()
+node "decl_stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BD214
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [class]
+Next token is token CLASS ()
+Shifting token CLASS ()
+Entering state 1
+Reading a token: Lexxed token [horse]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 11
+Reading a token: Lexxed token [float]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
+node "typename": [float] (0/0)
+vector constructed: 009BD2B4
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [fluff]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 17
+Reading a token: Lexxed token [5]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [5] (0/0)
+vector constructed: 009BD34C
+-> $$ = nterm expr ()
+Entering state 28
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 25 (line 138):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '=' ()
+   $4 = nterm expr ()
+node "var_decl_assign": [fluff] (1/2)
+vector constructed: 009BD3A4
+-> $$ = nterm var_decl ()
+Entering state 10
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 15
+Reducing stack 0 by rule 10 (line 111):
+   $1 = nterm var_decl ()
+   $2 = token ';' ()
+node "decl_stmt": [(null)] (2/1)
+vector constructed: 009BB954
+-> $$ = nterm decl_stmt ()
+Entering state 4
+Reducing stack 0 by rule 14 (line 119):
+   $1 = nterm decl_stmt ()
+node "decl_stmt_list_ne": [(null)] (1/1)
+vector constructed: 009BB9AC
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [int]
+Next token is token TYPE ()
+Shifting token TYPE ()
+Entering state 2
+Reducing stack 0 by rule 21 (line 131):
+   $1 = token TYPE ()
+node "typename": [int] (0/0)
+vector constructed: 009BBA24
+-> $$ = nterm typename ()
+Entering state 8
+Reading a token: Lexxed token [boop]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 14
+Reading a token: Lexxed token [(]
+Next token is token '(' ()
+Shifting token '(' ()
+Entering state 18
+Reading a token: Lexxed token [)]
+Next token is token ')' ()
+Reducing stack 0 by rule 27 (line 142):
+node "var_decl_list": [<empty>] (1/0)
+vector constructed: 009BBA9C
+-> $$ = nterm var_decl_list ()
+Entering state 32
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 45
+Reading a token: Lexxed token [fluff]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [fluff] (0/0)
+vector constructed: 009BBB14
+-> $$ = nterm expr ()
+Entering state 69
+Reading a token: Lexxed token [=]
+Next token is token '=' ()
+Shifting token '=' ()
+Entering state 35
+Reading a token: Lexxed token [fluff]
+Next token is token ID ()
+Shifting token ID ()
+Entering state 20
+Reducing stack 0 by rule 39 (line 176):
+   $1 = token ID ()
+node "expr_id": [fluff] (0/0)
+vector constructed: 009BBB8C
+-> $$ = nterm expr ()
+Entering state 48
+Reading a token: Lexxed token [+]
+Next token is token '+' ()
+Shifting token '+' ()
+Entering state 36
+Reading a token: Lexxed token [1]
+Next token is token INTEGER ()
+Shifting token INTEGER ()
+Entering state 21
+Reducing stack 0 by rule 40 (line 177):
+   $1 = token INTEGER ()
+node "expr_const": [1] (0/0)
+vector constructed: 009BBC04
+-> $$ = nterm expr ()
+Entering state 49
+Reading a token: Lexxed token [;]
+Next token is token ';' ()
+Reducing stack 0 by rule 53 (line 190):
+   $1 = nterm expr ()
+   $2 = token '+' ()
+   $3 = nterm expr ()
+node "expr_+": [(null)] (0/2)
+vector constructed: 009BBC5C
+-> $$ = nterm expr ()
+Entering state 48
+Next token is token ';' ()
+Reducing stack 0 by rule 54 (line 191):
+   $1 = nterm expr ()
+   $2 = token '=' ()
+   $3 = nterm expr ()
+node "expr_=": [(null)] (0/2)
+vector constructed: 009BBCBC
+-> $$ = nterm expr ()
+Entering state 69
+Next token is token ';' ()
+Shifting token ';' ()
+Entering state 82
+Reducing stack 0 by rule 17 (line 124):
+   $1 = nterm expr ()
+   $2 = token ';' ()
+node "imp_stmt": [(null)] (2/1)
+vector constructed: 009BBD1C
+-> $$ = nterm imp_stmt ()
+Entering state 65
+Reducing stack 0 by rule 2 (line 97):
+   $1 = nterm imp_stmt ()
+node "stmt": [(null)] (0/1)
+vector constructed: 009BBD74
+-> $$ = nterm stmt ()
+Entering state 61
+Reducing stack 0 by rule 7 (line 106):
+   $1 = nterm stmt ()
+node "stmt_list_ne": [(null)] (1/1)
+vector constructed: 009BBDCC
+-> $$ = nterm stmt_list_ne ()
+Entering state 63
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 4 (line 101):
+   $1 = nterm stmt_list_ne ()
+node "stmt_list": [(null)] (0/1)
+vector constructed: 009BBE24
+unroll [stmt_list]  unroll done
+-> $$ = nterm stmt_list ()
+Entering state 62
+Next token is token END ()
+Shifting token END ()
+Entering state 77
+Reducing stack 0 by rule 23 (line 135):
+   $1 = nterm typename ()
+   $2 = token ID ()
+   $3 = token '(' ()
+   $4 = nterm var_decl_list ()
+   $5 = token ')' ()
+   $6 = nterm stmt_list ()
+   $7 = token END ()
+FUNC_DEF ID = [boop]
+node "func_def": [boop] (0/3)
+vector constructed: 009BBEBC
+-> $$ = nterm func_def ()
+Entering state 9
+Reducing stack 0 by rule 9 (line 110):
+   $1 = nterm func_def ()
+node "decl_stmt": [(null)] (1/1)
+vector constructed: 009BBF1C
+-> $$ = nterm decl_stmt ()
+Entering state 13
+Reducing stack 0 by rule 13 (line 118):
+   $1 = nterm decl_stmt_list_ne ()
+   $2 = nterm decl_stmt ()
+node "decl_stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BBF74
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Lexxed token [end]
+Next token is token END ()
+Reducing stack 0 by rule 11 (line 114):
+   $1 = nterm decl_stmt_list_ne ()
+node "decl_stmt_list": [(null)] (0/1)
+vector constructed: 009BBFD4
+unroll [decl_stmt_list] vector_remove memmove
+ unroll done
+-> $$ = nterm decl_stmt_list ()
+Entering state 16
+Next token is token END ()
+Shifting token END ()
+Entering state 19
+Reducing stack 0 by rule 20 (line 129):
+   $1 = token CLASS ()
+   $2 = token ID ()
+   $3 = nterm decl_stmt_list ()
+   $4 = token END ()
+FUNC_DEF ID = [horse]
+node "class_def": [horse] (0/1)
+vector constructed: 009BC0D4
+-> $$ = nterm class_def ()
+Entering state 7
+Reducing stack 0 by rule 8 (line 109):
+   $1 = nterm class_def ()
+node "decl_stmt": [(null)] (0/1)
+vector constructed: 009BC10C
+-> $$ = nterm decl_stmt ()
+Entering state 13
+Reducing stack 0 by rule 13 (line 118):
+   $1 = nterm decl_stmt_list_ne ()
+   $2 = nterm decl_stmt ()
+node "decl_stmt_list_ne": [(null)] (0/2)
+vector constructed: 009BC164
+-> $$ = nterm decl_stmt_list_ne ()
+Entering state 6
+Reading a token: Now at end of input.
+Reducing stack 0 by rule 11 (line 114):
+   $1 = nterm decl_stmt_list_ne ()
+node "decl_stmt_list": [(null)] (0/1)
+vector constructed: 009BC1C4
+unroll [decl_stmt_list] vector_remove memmove
+vector_remove memmove
+vector_remove memmove
+vector_remove memmove
+ unroll done
+-> $$ = nterm decl_stmt_list ()
+Entering state 5
+Reducing stack 0 by rule 1 (line 94):
+   $1 = nterm decl_stmt_list ()
+node "program": [(null)] (0/1)
+vector constructed: 009BC3AC
+-> $$ = nterm program ()
+Entering state 3
+Now at end of input.
+Shifting token $end ()
+Entering state 12
+Cleanup: popping token $end ()
+Cleanup: popping nterm program ()
+
+PARSING DONE
+printing ast 009BE578, 75AF29A0, 0, [program]
+printing ast 009BE55C, 75AF29A0, 0, [decl_stmt_list]
+printing ast 009BD4BC, 75AF29A0, 0, [decl_stmt]
+printing ast 009BD4A0, 75AF29A0, 0, [func_def]
+printing ast 009BD3F8, 75AF29A0, 0, [typename]
+printing ast 009BD468, 75AF29A0, 1, [var_decl_list]
+printing ast 009BD430, 75AF29A0, 0, [var_decl]
+printing ast 009BD414, 75AF29A0, 0, [typename]
+printing ast 009BD484, 75AF29A0, 2, [stmt_list]
+printing ast 009BD5B8, 75AF29A0, 1, [decl_stmt]
+printing ast 009BD59C, 75AF29A0, 0, [func_def]
+printing ast 009BD4F4, 75AF29A0, 0, [typename]
+printing ast 009BD564, 75AF29A0, 1, [var_decl_list]
+printing ast 009BD52C, 75AF29A0, 0, [var_decl]
+printing ast 009BD510, 75AF29A0, 0, [typename]
+printing ast 009BD580, 75AF29A0, 2, [stmt_list]
+printing ast 009BD6B4, 75AF29A0, 2, [decl_stmt]
+printing ast 009BD698, 75AF29A0, 0, [func_def]
+printing ast 009BD5F0, 75AF29A0, 0, [typename]
+printing ast 009BD660, 75AF29A0, 1, [var_decl_list]
+printing ast 009BD628, 75AF29A0, 0, [var_decl]
+printing ast 009BD60C, 75AF29A0, 0, [typename]
+printing ast 009BD67C, 75AF29A0, 2, [stmt_list]
+printing ast 009BE2A0, 75AF29A0, 3, [decl_stmt]
+printing ast 009BE284, 75AF29A0, 0, [func_def]
+printing ast 009BD6EC, 75AF29A0, 0, [typename]
+printing ast 009BD7B0, 75AF29A0, 1, [var_decl_list]
+printing ast 009BD724, 75AF29A0, 0, [var_decl]
+printing ast 009BD708, 75AF29A0, 0, [typename]
+printing ast 009BD778, 75AF29A0, 1, [var_decl]
+printing ast 009BD75C, 75AF29A0, 0, [typename]
+printing ast 009BE268, 75AF29A0, 2, [stmt_list]
+printing ast 009BD820, 75AF29A0, 0, [stmt]
+printing ast 009BD804, 75AF29A0, 0, [decl_stmt]
+printing ast 009BD7E8, 75AF29A0, 0, [var_decl]
+printing ast 009BD7CC, 75AF29A0, 0, [typename]
+printing ast 009BE1A4, 75AF29A0, 1, [stmt]
+printing ast 009BE188, 75AF29A0, 0, [imp_stmt]
+printing ast 009BE16C, 75AF29A0, 0, [if_block]
+printing ast 009BDA18, 75AF29A0, 0, [if_then]
+printing ast 009BD890, 75AF29A0, 0, [expr_=]
+printing ast 009BD858, 75AF29A0, 0, [expr_id]
+printing ast 009BD874, 75AF29A0, 1, [expr_const]
+printing ast 009BD9FC, 75AF29A0, 1, [stmt_list]
+printing ast 009BD954, 75AF29A0, 0, [stmt]
+printing ast 009BD938, 75AF29A0, 0, [imp_stmt]
+printing ast 009BD91C, 75AF29A0, 0, [expr_call]
+printing ast 009BD8AC, 75AF29A0, 0, [expr_id]
+printing ast 009BD900, 75AF29A0, 1, [expr_list]
+printing ast 009BD8C8, 75AF29A0, 0, [expr_const]
+printing ast 009BD9C4, 75AF29A0, 1, [stmt]
+printing ast 009BD9A8, 75AF29A0, 0, [imp_stmt]
+printing ast 009BD98C, 75AF29A0, 0, [expr_const]
+printing ast 009BE150, 75AF29A0, 1, [stmt_list]
+printing ast 009BDB14, 75AF29A0, 0, [stmt]
+printing ast 009BDAF8, 75AF29A0, 0, [decl_stmt]
+printing ast 009BDADC, 75AF29A0, 0, [var_decl_assign]
+printing ast 009BDA34, 75AF29A0, 0, [typename]
+printing ast 009BDAC0, 75AF29A0, 1, [expr_call]
+printing ast 009BDA50, 75AF29A0, 0, [expr_id]
+printing ast 009BDAA4, 75AF29A0, 1, [expr_list]
+printing ast 009BDA6C, 75AF29A0, 0, [expr_id]
+printing ast 009BDBF4, 75AF29A0, 1, [stmt]
+printing ast 009BDBD8, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDBBC, 75AF29A0, 0, [expr_=]
+printing ast 009BDB4C, 75AF29A0, 0, [expr_id]
+printing ast 009BDBA0, 75AF29A0, 1, [expr_*]
+printing ast 009BDB68, 75AF29A0, 0, [expr_id]
+printing ast 009BDB84, 75AF29A0, 1, [expr_id]
+printing ast 009BDCD4, 75AF29A0, 2, [stmt]
+printing ast 009BDCB8, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDC9C, 75AF29A0, 0, [expr_call]
+printing ast 009BDC2C, 75AF29A0, 0, [expr_id]
+printing ast 009BDC80, 75AF29A0, 1, [expr_list]
+printing ast 009BDC48, 75AF29A0, 0, [expr_id]
+printing ast 009BE0A8, 75AF29A0, 3, [stmt]
+printing ast 009BE08C, 75AF29A0, 0, [imp_stmt]
+printing ast 009BE070, 75AF29A0, 0, [while_loop]
+printing ast 009BDD0C, 75AF29A0, 0, [expr_id]
+printing ast 009BE054, 75AF29A0, 1, [stmt_list]
+printing ast 009BDDD0, 75AF29A0, 0, [stmt]
+printing ast 009BDDB4, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDD98, 75AF29A0, 0, [expr_call]
+printing ast 009BDD28, 75AF29A0, 0, [expr_id]
+printing ast 009BDD7C, 75AF29A0, 1, [expr_list]
+printing ast 009BDD44, 75AF29A0, 0, [expr_id]
+printing ast 009BDEB0, 75AF29A0, 1, [stmt]
+printing ast 009BDE94, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDE78, 75AF29A0, 0, [expr_=]
+printing ast 009BDE08, 75AF29A0, 0, [expr_id]
+printing ast 009BDE5C, 75AF29A0, 1, [expr_/]
+printing ast 009BDE24, 75AF29A0, 0, [expr_id]
+printing ast 009BDE40, 75AF29A0, 1, [expr_const]
+printing ast 009BE01C, 75AF29A0, 2, [stmt]
+printing ast 009BE000, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDFE4, 75AF29A0, 0, [if_block]
+printing ast 009BDFC8, 75AF29A0, 0, [if_then]
+printing ast 009BDF20, 75AF29A0, 0, [expr_=]
+printing ast 009BDEE8, 75AF29A0, 0, [expr_id]
+printing ast 009BDF04, 75AF29A0, 1, [expr_const]
+printing ast 009BDFAC, 75AF29A0, 1, [stmt_list]
+printing ast 009BDF74, 75AF29A0, 0, [stmt]
+printing ast 009BDF58, 75AF29A0, 0, [imp_stmt]
+printing ast 009BDF3C, 75AF29A0, 0, [expr_const]
+printing ast 009BE118, 75AF29A0, 4, [stmt]
+printing ast 009BE0FC, 75AF29A0, 0, [imp_stmt]
+printing ast 009BE0E0, 75AF29A0, 0, [expr_const]
+printing ast 009BE230, 75AF29A0, 2, [stmt]
+printing ast 009BE214, 75AF29A0, 0, [decl_stmt]
+printing ast 009BE1F8, 75AF29A0, 0, [var_decl]
+printing ast 009BE1DC, 75AF29A0, 0, [typename]
+printing ast 009BE524, 75AF29A0, 4, [decl_stmt]
+printing ast 009BE508, 75AF29A0, 0, [class_def]
+printing ast 009BE4EC, 75AF29A0, 0, [decl_stmt_list]
+printing ast 009BE32C, 75AF29A0, 0, [decl_stmt]
+printing ast 009BE310, 75AF29A0, 0, [var_decl_assign]
+printing ast 009BE2D8, 75AF29A0, 0, [typename]
+printing ast 009BE2F4, 75AF29A0, 1, [expr_const]
+printing ast 009BE4B4, 75AF29A0, 1, [decl_stmt]
+printing ast 009BE498, 75AF29A0, 0, [func_def]
+printing ast 009BE364, 75AF29A0, 0, [typename]
+printing ast 009BE380, 75AF29A0, 1, [var_decl_list]
+printing ast 009BE47C, 75AF29A0, 2, [stmt_list]
+printing ast 009BE444, 75AF29A0, 0, [stmt]
+printing ast 009BE428, 75AF29A0, 0, [imp_stmt]
+printing ast 009BE40C, 75AF29A0, 0, [expr_=]
+printing ast 009BE39C, 75AF29A0, 0, [expr_id]
+printing ast 009BE3F0, 75AF29A0, 1, [expr_+]
+printing ast 009BE3B8, 75AF29A0, 0, [expr_id]
+printing ast 009BE3D4, 75AF29A0, 1, [expr_const]
+
+PRINTING DONE
+vector constructed: 00419B34
+vector constructed: 00419B54
+vector constructed: 00419B6C
+vector constructed: 00419B44
+vector constructed: 00419B24
+got program
+vector constructed: 009B38B8
+got decl_stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B3938
+got var_decl_list
+got var_decl
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B39D8
+got var_decl_list
+got var_decl
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B3AB0
+got var_decl_list
+got var_decl
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B3B50
+got var_decl_list
+got var_decl
+got var_decl
+got stmt_list
+got stmt
+got decl_stmt
+got var_decl
+got stmt
+got stmt
+got decl_stmt
+got var_decl
+got decl_stmt
+got class_def
+vector constructed: 009B3BF0
+got decl_stmt_list
+got decl_stmt
+got var_decl
+got decl_stmt
+got func_def
+vector constructed: 009B3DB8
+got var_decl_list
+got stmt_list
+got stmt
+got decl_stmt
+got decl_stmt
+got func_def
+vector constructed: 009B3E74
+got stmt_list
+got stmt
+got imp_stmt
+got expr_=
+got expr_id
+got expr_+
+got expr_id
+got expr_const
+got decl_stmt
+got func_def
+vector constructed: 009B384C
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B4174
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B40AC
+got stmt_list
+got decl_stmt
+got func_def
+vector constructed: 009B42F4
+got stmt_list
+got stmt
+got decl_stmt
+got stmt
+got imp_stmt
+got if_block
+got if_then
+got expr_=
+got expr_id
+got expr_const
+vector constructed: 009B44F8
+vector constructed: 009B4214
+got stmt_list
+got stmt
+got stmt
+got stmt_list
+got stmt
+got imp_stmt
+got expr_call
+got expr_id
+got stmt
+got imp_stmt
+got expr_const
+got stmt_list
+got stmt
+got decl_stmt
+got stmt
+got imp_stmt
+got expr_=
+got expr_id
+got expr_*
+got expr_id
+vector error: out of memory (ns:6, os:3, es:4, d:009B3EC0)
+(no malloc(24) either)
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00409022 in vector_resize (this=0x419b34 <expr_stack>, newsize=6)
+    at vector.c:119
+119			exit(*((int*)0));
+(gdb) #0  0x00409022 in vector_resize (this=0x419b34 <expr_stack>, newsize=6)
+    at vector.c:119
+#1  0x00408c23 in vector_push_back (this=0x419b34 <expr_stack>, 
+    newelem=0x28f040) at vector.c:38
+#2  0x0040ae26 in push_expr (expr=0x9ba068 "A") at semantic.c:560
+#3  0x0040a0fa in semantic_analyze (node=0x9bdb68) at semantic.c:265
+#4  0x0040a44a in semantic_analyze (node=0x9bdba0) at semantic.c:329
+#5  0x0040a6ab in semantic_analyze (node=0x9bdbbc) at semantic.c:366
+#6  0x00409b94 in semantic_analyze (node=0x9bdbd8) at semantic.c:147
+#7  0x00409b19 in semantic_analyze (node=0x9bdbf4) at semantic.c:136
+#8  0x00409ac5 in semantic_analyze (node=0x9be150) at semantic.c:130
+#9  0x00409c66 in semantic_analyze (node=0x9be16c) at semantic.c:169
+#10 0x00409b94 in semantic_analyze (node=0x9be188) at semantic.c:147
+#11 0x00409b19 in semantic_analyze (node=0x9be1a4) at semantic.c:136
+#12 0x00409ac5 in semantic_analyze (node=0x9be268) at semantic.c:130
+#13 0x0040983b in semantic_analyze (node=0x9be284) at semantic.c:72
+#14 0x004096c8 in semantic_analyze (node=0x9be2a0) at semantic.c:38
+#15 0x00409674 in semantic_analyze (node=0x9be55c) at semantic.c:31
+#16 0x004095c4 in semantic_analyze (node=0x9be578) at semantic.c:18
+#17 0x00408834 in main (argc=2, argv=0x9b0f40) at yaccin.y:246
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 1012] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]

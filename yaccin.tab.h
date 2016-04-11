@@ -34,7 +34,7 @@
 /* "%code requires" blocks.  */
 
 /* Line 2638 of glr.c  */
-#line 56 "yaccin.y"
+#line 69 "yaccin.y"
 
   #define YYLTYPE YYLTYPE
   typedef struct YYLTYPE
@@ -67,7 +67,12 @@
      ELSE = 265,
      ELSEIF = 266,
      WHILE = 267,
-     CONSTANT = 268
+     INTEGER = 268,
+     INTEGERX = 269,
+     INTEGERB = 270,
+     FLOATING = 271,
+     CHARACTER = 272,
+     STRING = 273
    };
 #endif
 
@@ -91,14 +96,14 @@ typedef struct YYLTYPE
 /* "%code provides" blocks.  */
 
 /* Line 2638 of glr.c  */
-#line 67 "yaccin.y"
+#line 80 "yaccin.y"
 
 char *posToString(YYLTYPE pos);
 
 
 
 /* Line 2638 of glr.c  */
-#line 102 "yaccin.tab.h"
+#line 107 "yaccin.tab.h"
 
 
 extern YYSTYPE yylval;
