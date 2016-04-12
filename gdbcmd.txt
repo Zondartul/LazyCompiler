@@ -1,2 +1,2 @@
 run lazy2.txt
-backtrace
+backtrace full

@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include "string.h"
+#include "globals.h"
 vector ast_nodes;
 void ast_init(){
 	vector_constructor(&ast_nodes, sizeof(struct ast_node));
@@ -95,17 +96,17 @@ void ast_print_graph_helper(struct ast_node *N, FILE *fp, const char *str){
 	char *suffix = namebuff+len;
 	//vector_constructor(&Names, namelen);
 	if(N->token.value){
-		fprintf(fp, "%s [label = \"%s\n\\\"%s\\\"\"]\n", namebuff, N->token.type, N->token.value);
+		//fprintf(fp, "%s [label = \"%s\n\\\"%s\\\"\"]\n", namebuff, N->token.type, N->token.value);
 	}else{
-		fprintf(fp, "%s [label = \"%s\"]\n", namebuff, N->token.type);
+		//fprintf(fp, "%s [label = \"%s\"]\n", namebuff, N->token.type);
 	}
 	int i;
 	for(i = 0; i < N->children.size; i++){
 		snprintf(suffix,4,"_%d",i);
 		ast_print_graph_helper(ast_get_child(N,i),fp,namebuff);
 		if(len){
-			fprintf(fp, "%s -- ", str);
-			fprintf(fp, "%s\n", namebuff);
+			//fprintf(fp, "%s -- ", str);
+			//fprintf(fp, "%s\n", namebuff);
 		}
 	}
 }

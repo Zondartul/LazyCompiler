@@ -1,0 +1,1 @@
+a.exe lazy2.txt 1>aout.txt 2>aerr.txt

@@ -226,10 +226,11 @@ int main(int argc, char **argv){
 		printf("usage: %s inputfile\n",argv[0]);
 		return 0;
 	}
+	initallocs();
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	ast_init();
-	yydebug = 1;
+	yydebug = 0;
 	yylloc.last_line = 1;
 	lextokenend = 0;
 	lexnumtabs = 0;
@@ -243,6 +244,7 @@ int main(int argc, char **argv){
 	if(!fp){return 1;}
 	ast_print_graph(ast_get_node(finalNode),fp,"A");
 	printf("\nPRINTING DONE\n");
+	semantic_init();
 	semantic_analyze(ast_get_node(finalNode));
 	printf("\nGOOD BYE\n");
 	return 0;
@@ -284,7 +286,8 @@ int yyerror(char *s)
 	for(i = 0; i < lexnumtabs; i++){fprintf(stderr, "\t");}
 	for(i = 0; i < x1 - lexnumtabs; i++){fprintf(stderr, " ");}
 	fprintf(stderr, "^\nline %d: %s\n",y1,s);
-	exit(1);
+	error("syntax error.\n");
+	//exit(1);
 }
 
 char *posToString(YYLTYPE pos){

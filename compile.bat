@@ -1,1 +1,1 @@
-mingw32-make && gdb a.exe < gdbcmd.txt 1> aout.txt 2>&1
+mingw32-make -B && gdb a.exe < gdbcmd.txt 1> aout.txt 2> aerr.txt

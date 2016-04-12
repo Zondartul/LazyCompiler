@@ -2,10 +2,11 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include "globals.h"
 
 void vector_constructor(vector *this, int element_size){
 	//printf("vector_constructor\n");
-	if(element_size == 0){printf("vector error: can't have 0 element_size\n");exit(*((int*)0));}
+	if(element_size == 0){error("vector error: can't have 0 element_size\n");}
 	this->data = 0;
 	this->size = 0;
 	this->reserved = 0;
@@ -29,7 +30,7 @@ void vector_destructor(vector *this, funcptr elem_destructor){
 //internal function to calculate pointers
 void *vector_get_reference(vector *this, int pos){
 	//printf("vector_get_reference %d\n",pos);
-	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
+	if((pos < 0) || (pos >= this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
 	return this->data+pos*this->element_size;
 }
 void vector_push_back(vector *this, void *newelem){
@@ -57,7 +58,7 @@ void *vector_pop_back(vector *this){
 //	     3  
 void vector_insert(vector *this, void *newelem, int pos){
 	//printf("vector_insert %d\n",pos);
-	if((pos < 0) || (pos > this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
+	if((pos < 0) || (pos > this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
 	if(pos < this->size){
 		vector_push_back(this, 0);
 		//printf("vector_insert memmove");
@@ -73,7 +74,7 @@ void vector_insert(vector *this, void *newelem, int pos){
 // 	   2
 void *vector_remove(vector *this, int pos){
 	//printf("vector_remove(%d) started with %d\n",pos,this->size);
-	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
+	if((pos < 0) || (pos >= this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
 	void *result = vector_get_copy(this, pos);
 	if(pos+1 < this->size){
 		printf("vector_remove memmove\n");
@@ -86,16 +87,16 @@ void *vector_remove(vector *this, int pos){
 
 void *vector_get_copy(vector *this, int pos){
 	//printf("vector_get_copy %d from %p\n",pos,this);
-	if((pos < 0) || (pos >= this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
+	if((pos < 0) || (pos >= this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
 	void *buff = malloc(this->element_size);
-	if(!buff){printf("vector error: out of memory\n");exit(*((int*)0));}
+	if(!buff){error("vector error: out of memory\n");}
 	memcpy(buff, vector_get_reference(this, pos), this->element_size);
 	return buff;
 }
 
 void vector_set(vector *this, int pos, void *newelem){
 	//printf("vector_set %d\n",pos);
-	if((pos < 0) || (pos > this->size)){printf("vector error: index out of bounds (%d/%d)\n",pos,this->size);exit(*((int*)0));}
+	if((pos < 0) || (pos > this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
 	if(pos < this->size){
 		memcpy(vector_get_reference(this, pos), newelem, this->element_size);
 	}else{
@@ -112,10 +113,9 @@ void vector_resize(vector *this, int newsize){
 		this->data = newdata;
 		this->reserved = newsize;
 	}else{
-		printf("vector error: out of memory (ns:%d, os:%d, es:%d, d:%p)\n",newsize, this->size, this->element_size,this->data); 
+		err("vector error: out of memory (ns:%d, os:%d, es:%d, d:%p)\n",newsize, this->size, this->element_size,this->data); 
 		void *test = malloc(wantedsize);
-		if(test){printf("(malloc(%d) works though)\n",wantedsize);}
-		else{printf("(no malloc(%d) either)\n",wantedsize);}
-		exit(*((int*)0));
+		if(test){error("(malloc(%d) works though)\n",wantedsize);}
+		else{error("(no malloc(%d) either)\n",wantedsize);}
 	}
 }

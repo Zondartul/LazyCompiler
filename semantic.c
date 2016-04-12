@@ -1,5 +1,7 @@
 #include "semantic.h"
 #include "stdlib.h"
+#include "globals.h"
+#include "string.h"
 int semantic_decl;
 struct symbol_table *currentSymbolTable;
 vector ST_stack;
@@ -10,9 +12,9 @@ enum{SEMANTIC_NORMAL, SEMANTIC_PARAM} semantic_context;
 //const char *exprResult;
 
 void semantic_analyze(struct ast_node *node){
+	printmemory(stdout);
 	int i;
 	if(!strcmp(node->token.type, "program")){
-		semantic_init();
 		printf("got program\n");
 		currentSymbolTable = new_symbol_table();
 		semantic_analyze(ast_get_child(node, 0));
@@ -259,8 +261,8 @@ void semantic_analyze(struct ast_node *node){
 		return;
 	}
 	if(!strcmp(node->token.type, "expr_id")){
-		printf("got expr_id\n");
-		char *name = node->token.value;
+		printf("got expr_id = [%s]\n",node->token.value);
+		char *name = stralloc(node->token.value);
 		//exprResult = name;
 		push_expr(name);
 		//put variable <name> on the stack
@@ -292,7 +294,7 @@ void semantic_analyze(struct ast_node *node){
 		struct ast_node *N = ast_get_child(node,0);
 		struct symbol *S = lookup_symbol(N->token.value);
 		if(S->type != SYMBOL_CLASS){
-			printf("semantic error: \"%s\" is not a class\n",N->token.value);
+			error("semantic error: \"%s\" is not a class\n",N->token.value);
 		}
 		push_symbol_table(S->symclass.scope);
 		semantic_analyze(ast_get_child(node,1));
@@ -372,7 +374,7 @@ void semantic_analyze(struct ast_node *node){
 		return;
 	}
 	//unknown node type
-	printf("semantic: unknown node type: [%s]\n",node->token.type);
+	error("semantic: unknown node type: [%s]\n",node->token.type);
 	return;
 }
 
@@ -469,7 +471,7 @@ struct type_name *semantic_get_type(const char *str){
 		return T;
 	}
 	struct symbol *S = lookup_symbol(str);
-	if(!S){printf("semantic error: unknown type [%s]\n",S);}
+	if(!S){error("semantic error: unknown type [%s]\n",S);}
 	T->name = S->name;
 	T->symclass = S;
 	return T;
@@ -541,6 +543,7 @@ IR_next_name_found:
 	int len = snprintf(buff, 0, "%s%d",prefix,count);
 	buff = malloc(sizeof(char)*(len+1));
 	sprintf(buff, "%s%d",prefix,count);
+	printf("IR_next_name: returning [%s]\n",buff);
 	return buff;
 }
 void emit_code(const char *fmt, ...){
@@ -553,7 +556,7 @@ void emit_code(const char *fmt, ...){
 	va_start(ap, fmt);
 	vsnprintf(buff,len,fmt,ap);
 	va_end(ap);
-	
+	if(!currentCodeSegment){error("emit_code: no code segment\n");}
 	vector_push_back(&currentCodeSegment->commands,&buff);
 }
 void push_expr(const char *expr){
@@ -563,9 +566,176 @@ const char *pop_expr(){
 	return vector_pop_back(&expr_stack);
 }
 void semantic_init(){
+	IR_init();
 	vector_constructor(&expr_stack, sizeof(char*));
 	vector_constructor(&CS_stack, sizeof(struct code_segment));
 	vector_constructor(&ST_stack, sizeof(struct symbol_table));
 	vector_constructor(&IR_names, sizeof(char *));
 	vector_constructor(&IR_namecounts, sizeof(int*));
+	currentCodeSegment = 0;
+	currentSymbolTable = 0;
+}
+#define MAX_ALLOCS 2000
+void *allocs[MAX_ALLOCS];
+int allocsizes[MAX_ALLOCS];
+const char *allocfiles[MAX_ALLOCS];
+const char *allocfuncs[MAX_ALLOCS];
+int alloclines[MAX_ALLOCS];
+int memused;
+int numallocs;
+#define BUMP_MAX 1000000
+char bump_buff[BUMP_MAX];
+int bump_free;
+void initallocs(){
+	memused = 0;
+	numallocs = 0;
+	int i;
+	for(i = 0; i < 2000; i++){
+		allocs[i] = 0;
+	}
+	for(i = 0; i < 2000; i++){
+		allocsizes[i] = 0;
+	}
+	for(i = 0; i < 2000; i++){
+		allocfiles[i] = 0;
+	}
+	for(i = 0; i < 2000; i++){
+		allocfuncs[i] = 0;
+	}
+	for(i = 0; i < 2000; i++){
+		alloclines[i] = 0;
+	}
+	bump_free = 0;
+}
+void *bumpalloc(size_t size){
+	if((bump_free+size+2*sizeof(int))<BUMP_MAX){		
+		void *result = (void*)(bump_buff+bump_free+2*sizeof(int));
+		bump_free+=size+2*sizeof(int);
+		((int*)result)[-1]=size;
+		printf("bump %d bytes: %d bytes left\n", size, BUMP_MAX-bump_free);
+		return result;
+	}else{
+		return 0;
+	}
+}
+void *bumprlloc(void *ptr, size_t size){
+	if(ptr){
+		void *result = bumpalloc(size);
+		memcpy(result,ptr,((int*)ptr)[-1]);
+		return result;
+	}else{return bumpalloc(size);}
+}
+void *newmalloc(size_t size, void *(oldmalloc)(size_t size), const char* file, const char* func, int line){
+	#ifdef BUMP_ALLOCATOR
+	void *m = bumpalloc(size);
+	#else
+	void *m = oldmalloc(size);
+	#endif
+	if(!m){
+		err("newmalloc: malloc(%d) failed\n",size);
+		err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+	}
+	else{
+		allocs[numallocs] = m;
+		allocsizes[numallocs] = size;
+		allocfiles[numallocs] = file;
+		allocfuncs[numallocs] = func;
+		alloclines[numallocs] = line;
+		numallocs++;
+		memused += size;
+	}
+	return m;
+}
+void *newrealloc(void *ptr, size_t size, void *(oldrealloc)(void *ptr, size_t size), const char* file, const char* func, int line){
+	int i = 0;
+	int found = 0;
+	if(ptr){
+		for(i = 0; i < 2000; i++){
+			if(allocs[i] == ptr){found = 1; break;}
+		}
+		if(!found){
+			err("newrealloc: attempt to realloc(%p,%d): bad pointer\n",ptr,size);
+			error("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+	
+		}
+	}
+	#ifdef BUMP_ALLOCATOR
+	void *m = bumprlloc(ptr, size);
+	#else
+	void *m = oldrealloc(ptr, size);
+	#endif
+	if(m){
+		if(found){
+			memused -= allocsizes[i];
+			memused += size;
+			allocsizes[i] = size;
+			allocs[i] = m;
+		}else{
+			allocs[numallocs] = m;
+			allocsizes[numallocs] = size;
+			allocfiles[numallocs] = file;
+			allocfuncs[numallocs] = func;
+			alloclines[numallocs] = line;
+			numallocs++;
+			memused += size;
+		}
+	}else{
+		err("newrealloc: realloc(%p,%d) failed\n",ptr,size);
+		err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+	}
+	return m;
+}
+void newfree(void *ptr, const char *file, const char* func, int line, void (oldfree)(void *ptr)){
+	int i = 0;
+	int found = 0;
+	if(ptr){
+		for(i = 0; i < 2000; i++){
+			if(allocs[i] == ptr){found = 1; break;}
+		}
+		if(!found){
+			err("newfree: free(%d): bad pointer\n",ptr);
+			error("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+		}
+		allocs[i] = 0;
+		allocsizes[i] = 0;
+		allocfiles[i] = 0;
+		alloclines[i] = 0;
+		allocfuncs[i] = 0;
+	}else{
+		err("note: free(0)\n");
+		err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+	}
+	//oldfree(ptr);
+}
+void printmemory(FILE *fp){
+	fprintf(fp, "num allocs: %d, mem used: %d\n", numallocs, memused);
+}
+void printallocs(FILE *fp){
+	int i;
+	for(i = 0; i < 2000; i++){
+		if(allocs[i]){
+			fprintf(fp, "alloc(%d)\t=\t%p\tfrom file \"%s\"\tline %d,\tfunc \"%s\"\n", allocsizes[i],allocs[i],allocfiles[i],alloclines[i],allocfuncs[i]);
+		}
+	}
+}
+void newerror(const char *file, int line, const char *func, const char *fmt, ...){
+	//va_list ap;
+	//va_start(ap, fmt);
+	//char *buff;
+	//int len = vsnprintf(buff,0,fmt,ap);
+	//buff = malloc(sizeof(char)*(len+1));
+	//va_end(ap);
+	//va_start(ap, fmt);
+	//vsnprintf(buff,len,fmt,ap);
+	//va_end(ap);
+	va_list ap;
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
+	va_end(ap);
+	err("error: printing allocations:\n");
+	printmemory(stderr);
+	printallocs(stderr);
+	err("error: activating self-destruct\n");
+	exit(*(int*)0);
 }
