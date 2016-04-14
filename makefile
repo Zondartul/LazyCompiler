@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -fmax-errors=1 -g -Werror -Wfatal-errors
+CCFLAGS = -fmax-errors=1 -g -Werror -Wfatal-errors -Wimplicit
 SOURCEFILES = lex.yy.c yaccin.tab.c vector.c AST.c semantic.c
 LEX = flex.exe
 BISON = bison.exe

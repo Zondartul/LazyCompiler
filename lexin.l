@@ -2,7 +2,7 @@
 #include "yaccin.tab.h"
 extern YYLTYPE yylloc;
 //#define YY_USER_ACTION yylloc.last_column += yyleng; if((*yytext != ' ')&&(*yytext != '\n')&&(*yytext != '\t')){printf("Lexxed token [%s]\n", yytext);} 
-#define YY_USER_ACTION updatelloc(); if((*yytext != ' ')&&(*yytext != '\n')&&(*yytext != '\t')){printf("Lexxed token [%s]\n", yytext);} 
+#define YY_USER_ACTION updatelloc(); if((*yytext != ' ')&&(*yytext != '\n')&&(*yytext != '\t')){printf("Lexxed token [%s]\n", yytext);printmemory(stdout);} 
  
 #include "globals.h"
 int lextokenstart;

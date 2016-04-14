@@ -59,29 +59,35 @@
 	#include "globals.h"
 	#include "AST.h"
 	#include "semantic.h"
+	#include "vector2.h"
 	int finalNode;
-	
+	int yyerror(const char *s);
 	//		B = B C | C
 	//beceomes
 	//		B = C C C C C
 	void ast_unroll_lists_helper(int nodeID2){
 		//printf("AULH_1\n");
-		struct ast_node *N2 = ast_get_node(nodeID2);
+		//struct ast_node N2 = m(ast_nodes,get,nodeID2);
+		ast_node *N2 = ast_get_node(nodeID2);
 		if(!N2->children.size){return;}
 		//printf("AULH_2\n");
-		struct ast_node *N3 = ast_get_child(N2, 0);
+		//struct ast_node N3 = m(ast_nodes,get,m(N2->children,get,0));
+		ast_node *N3 = ast_get_child(N2,0);
 		if(N2->token.type != N3->token.type){return;}
 		//printf("AULH_3\n");
 		//if there is further recursion, unroll it now.
+		//ast_unroll_lists_helper(m(N2->children,get,0));
 		ast_unroll_lists_helper(ast_get_child_id(N2, 0));
 		//otherwise, move child contents up here.
 		//printf("AULH_4\n");
-		vector_remove(&N2->children, 0);
+		m(N2->children,erase,0);//vector_remove(&N2->children, 0);
 		int i;
 		for(i = 0; i < N3->children.size; i++){
 			//printf("AULH_5\n");
-			vector_push_back(&N2->children, vector_get_reference(&N3->children, i));
+			//vector_push_back(&N2->children, vector_get_reference(&N3->children, i));
+			m(N2->children,push_back,ast_get_child_id(N3,i));
 		}
+		//m(ast_nodes,set,N2,nodeID2);
 		//printf("AULH_DONE\n");
 	}
 	//turns left-recursive lists into non-recursive ones
@@ -90,42 +96,49 @@
 	//becomes	A = C C C C C C | empty
 	
 	void ast_unroll_lists(int nodeID){
-		struct ast_node *N1 = ast_get_node(nodeID);
+		//struct ast_node *N1 = m(ast_nodes,get,nodeID);
+		ast_node *N1 = ast_get_node(nodeID);
 		printf("unroll [%s] ",N1->token.type);
 		//printf("AUL_1\n");
 		if(!N1->children.size){return;}
-		struct ast_node *N2 = ast_get_child(N1, 0);
+		//struct ast_node *N2 = m(ast_nodes,get,m(N1->children,get,0));
+		ast_node *N2 = ast_get_child(N1, 0);
 		//printf("AUL_2\n");
 		if(!N2->children.size){return;}
-		struct ast_node *N3 = ast_get_child(N2, 0);
+		//struct ast_node *N3 = m(ast_nodes,get,m(N2->children,get,0));//ast_get_child(N2, 0);
 		//printf("AUL_3\n");
 		//if(N2->token.type != N3->token.type){return;}
 		//otherwise, there is in fact a recursive list here!
 		//printf("AUL_4\n");
+		//ast_unroll_lists_helper(m(N1->children,get,0));
 		ast_unroll_lists_helper(ast_get_child_id(N1, 0));
 		//printf("AUL_5\n");
-		vector_remove(&N1->children, 0);
+		//vector_remove(&N1->children, 0);
+		m(N1->children,erase,0);
 		int i;
 		for(i = 0; i < N2->children.size; i++){
 			//printf("AUL_6\n");
-			vector_insert(&N1->children, vector_get_reference(&N2->children, i),0);
+			m(N1->children,push_front,ast_get_child_id(N2,i));//vector_insert(&N1->children, vector_get_reference(&N2->children, i),0);
 		}
+		//m(ast_nodes,set,N1,nodeID);
 		printf(" unroll done\n");
 	}
 	
 	void fix_decl_assign(int nodeID){
-		return;
+		//return;
 		struct ast_node *N1 = ast_get_node(nodeID);
-		int node_expr = *(int*)vector_get_reference(&N1->children,1);
-		vector_pop_back(&N1->children);
+		//int node_expr = *(int*)vector_get_reference(&N1->children,1);
+		int node_expr = m(N1->children,pop_back);
+		//vector_pop_back(&N1->children);
 		int node_ID = node((struct ast_token){"expr_id",0,N1->token.value},0);
 		int N3 = node((struct ast_token){"expr_=",0,0},2,node_ID,node_expr);
-		vector_set(&N1->children,1,&N3);
+		//vector_set(&N1->children,1,&N3);
+		m(N1->children,push_back,N3);
 	}	
 
 
 /* Line 172 of glr.c  */
-#line 129 "yaccin.tab.c"
+#line 142 "yaccin.tab.c"
 
 
 
@@ -160,7 +173,7 @@ static YYSTYPE yyval_default;
 
 
 /* Line 243 of glr.c  */
-#line 164 "yaccin.tab.c"
+#line 177 "yaccin.tab.c"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -351,12 +364,12 @@ static const signed char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    94,    94,    97,    98,   101,   102,   105,   106,   109,
-     110,   111,   114,   115,   118,   119,   122,   123,   124,   125,
-     126,   129,   131,   132,   135,   137,   138,   141,   142,   145,
-     146,   149,   150,   153,   154,   165,   168,   169,   172,   173,
-     176,   177,   178,   179,   180,   181,   182,   183,   184,   185,
-     186,   187,   188,   189,   190,   191
+       0,   108,   108,   111,   112,   115,   116,   119,   120,   123,
+     124,   125,   128,   129,   132,   133,   136,   137,   138,   139,
+     140,   143,   145,   146,   149,   151,   152,   155,   156,   159,
+     160,   163,   164,   167,   168,   179,   182,   183,   186,   187,
+     190,   191,   192,   193,   194,   195,   196,   197,   198,   199,
+     200,   201,   202,   203,   204,   205
 };
 #endif
 
@@ -1004,385 +1017,385 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         case 2:
 
 /* Line 936 of glr.c  */
-#line 94 "yaccin.y"
+#line 108 "yaccin.y"
     {finalNode = node((struct ast_token){"program",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)); ;}
     break;
 
   case 3:
 
 /* Line 936 of glr.c  */
-#line 97 "yaccin.y"
+#line 111 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 4:
 
 /* Line 936 of glr.c  */
-#line 98 "yaccin.y"
+#line 112 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 5:
 
 /* Line 936 of glr.c  */
-#line 101 "yaccin.y"
+#line 115 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt_list",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)); ast_unroll_lists(((*yyvalp)));;}
     break;
 
   case 6:
 
 /* Line 936 of glr.c  */
-#line 102 "yaccin.y"
+#line 116 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt_list",1,"<empty>"},0);;}
     break;
 
   case 7:
 
 /* Line 936 of glr.c  */
-#line 105 "yaccin.y"
+#line 119 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt_list_ne",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 8:
 
 /* Line 936 of glr.c  */
-#line 106 "yaccin.y"
+#line 120 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"stmt_list_ne",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 9:
 
 /* Line 936 of glr.c  */
-#line 109 "yaccin.y"
+#line 123 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 10:
 
 /* Line 936 of glr.c  */
-#line 110 "yaccin.y"
+#line 124 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 11:
 
 /* Line 936 of glr.c  */
-#line 111 "yaccin.y"
+#line 125 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt",2,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 12:
 
 /* Line 936 of glr.c  */
-#line 114 "yaccin.y"
+#line 128 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt_list",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)); ast_unroll_lists(((*yyvalp)));;}
     break;
 
   case 13:
 
 /* Line 936 of glr.c  */
-#line 115 "yaccin.y"
+#line 129 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt_list",0,"<empty>"},0);;}
     break;
 
   case 14:
 
 /* Line 936 of glr.c  */
-#line 118 "yaccin.y"
+#line 132 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt_list_ne",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 15:
 
 /* Line 936 of glr.c  */
-#line 119 "yaccin.y"
+#line 133 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"decl_stmt_list_ne",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 16:
 
 /* Line 936 of glr.c  */
-#line 122 "yaccin.y"
+#line 136 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"imp_stmt",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 17:
 
 /* Line 936 of glr.c  */
-#line 123 "yaccin.y"
+#line 137 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"imp_stmt",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 18:
 
 /* Line 936 of glr.c  */
-#line 124 "yaccin.y"
+#line 138 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"imp_stmt",2,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 19:
 
 /* Line 936 of glr.c  */
-#line 125 "yaccin.y"
+#line 139 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"imp_stmt",3,0},0);;}
     break;
 
   case 20:
 
 /* Line 936 of glr.c  */
-#line 126 "yaccin.y"
+#line 140 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"imp_stmt",4,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 21:
 
 /* Line 936 of glr.c  */
-#line 129 "yaccin.y"
+#line 143 "yaccin.y"
     {printf("FUNC_DEF ID = [%s]\n",(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (4))].yystate.yysemantics.yysval));((*yyvalp)) = (int)node((struct ast_token){"class_def",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (4))].yystate.yysemantics.yysval)},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (4))].yystate.yysemantics.yysval));;}
     break;
 
   case 22:
 
 /* Line 936 of glr.c  */
-#line 131 "yaccin.y"
+#line 145 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"typename",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 23:
 
 /* Line 936 of glr.c  */
-#line 132 "yaccin.y"
+#line 146 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"typename",1,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 24:
 
 /* Line 936 of glr.c  */
-#line 135 "yaccin.y"
+#line 149 "yaccin.y"
     {printf("FUNC_DEF ID = [%s]\n",(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (7))].yystate.yysemantics.yysval));((*yyvalp)) = (int)node((struct ast_token){"func_def",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (7))].yystate.yysemantics.yysval)},3,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (7))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((4) - (7))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (7))].yystate.yysemantics.yysval));;}
     break;
 
   case 25:
 
 /* Line 936 of glr.c  */
-#line 137 "yaccin.y"
+#line 151 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval)},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 26:
 
 /* Line 936 of glr.c  */
-#line 138 "yaccin.y"
+#line 152 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl_assign",1,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (4))].yystate.yysemantics.yysval)},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (4))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((4) - (4))].yystate.yysemantics.yysval));;}
     break;
 
   case 27:
 
 /* Line 936 of glr.c  */
-#line 141 "yaccin.y"
+#line 155 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl_list",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)); ast_unroll_lists(((*yyvalp)));;}
     break;
 
   case 28:
 
 /* Line 936 of glr.c  */
-#line 142 "yaccin.y"
+#line 156 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl_list",1,"<empty>"},0);;}
     break;
 
   case 29:
 
 /* Line 936 of glr.c  */
-#line 145 "yaccin.y"
+#line 159 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl_list_ne",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 30:
 
 /* Line 936 of glr.c  */
-#line 146 "yaccin.y"
+#line 160 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"var_decl_list_ne",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 31:
 
 /* Line 936 of glr.c  */
-#line 149 "yaccin.y"
+#line 163 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"if_block",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval));;}
     break;
 
   case 32:
 
 /* Line 936 of glr.c  */
-#line 150 "yaccin.y"
+#line 164 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"if_block",1,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (4))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (4))].yystate.yysemantics.yysval));;}
     break;
 
   case 33:
 
 /* Line 936 of glr.c  */
-#line 153 "yaccin.y"
+#line 167 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"if_then",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (6))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (6))].yystate.yysemantics.yysval));;}
     break;
 
   case 34:
 
 /* Line 936 of glr.c  */
-#line 154 "yaccin.y"
+#line 168 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"if_then",2,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (7))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (7))].yystate.yysemantics.yysval));;}
     break;
 
   case 35:
 
 /* Line 936 of glr.c  */
-#line 165 "yaccin.y"
+#line 179 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"while_loop",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (6))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((5) - (6))].yystate.yysemantics.yysval));;}
     break;
 
   case 36:
 
 /* Line 936 of glr.c  */
-#line 168 "yaccin.y"
+#line 182 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_list",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));ast_unroll_lists(((*yyvalp)));;}
     break;
 
   case 37:
 
 /* Line 936 of glr.c  */
-#line 169 "yaccin.y"
+#line 183 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_list",1,"<empty>"},0);;}
     break;
 
   case 38:
 
 /* Line 936 of glr.c  */
-#line 172 "yaccin.y"
+#line 186 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_list_ne",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 39:
 
 /* Line 936 of glr.c  */
-#line 173 "yaccin.y"
+#line 187 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_list_ne",1,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval));;}
     break;
 
   case 40:
 
 /* Line 936 of glr.c  */
-#line 176 "yaccin.y"
+#line 190 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_id",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 41:
 
 /* Line 936 of glr.c  */
-#line 177 "yaccin.y"
+#line 191 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",0,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 42:
 
 /* Line 936 of glr.c  */
-#line 178 "yaccin.y"
+#line 192 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",1,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 43:
 
 /* Line 936 of glr.c  */
-#line 179 "yaccin.y"
+#line 193 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",2,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 44:
 
 /* Line 936 of glr.c  */
-#line 180 "yaccin.y"
+#line 194 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",3,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 45:
 
 /* Line 936 of glr.c  */
-#line 181 "yaccin.y"
+#line 195 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",4,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 46:
 
 /* Line 936 of glr.c  */
-#line 182 "yaccin.y"
+#line 196 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_const",5,(char*)(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval)},0);;}
     break;
 
   case 47:
 
 /* Line 936 of glr.c  */
-#line 183 "yaccin.y"
+#line 197 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_subexpr",0,0},1,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 48:
 
 /* Line 936 of glr.c  */
-#line 184 "yaccin.y"
+#line 198 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_call",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (4))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (4))].yystate.yysemantics.yysval));;}
     break;
 
   case 49:
 
 /* Line 936 of glr.c  */
-#line 185 "yaccin.y"
+#line 199 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_.",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 50:
 
 /* Line 936 of glr.c  */
-#line 186 "yaccin.y"
+#line 200 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_^",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 51:
 
 /* Line 936 of glr.c  */
-#line 187 "yaccin.y"
+#line 201 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_/",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 52:
 
 /* Line 936 of glr.c  */
-#line 188 "yaccin.y"
+#line 202 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_*",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 53:
 
 /* Line 936 of glr.c  */
-#line 189 "yaccin.y"
+#line 203 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_-",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 54:
 
 /* Line 936 of glr.c  */
-#line 190 "yaccin.y"
+#line 204 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_+",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
   case 55:
 
 /* Line 936 of glr.c  */
-#line 191 "yaccin.y"
+#line 205 "yaccin.y"
     {((*yyvalp)) = (int)node((struct ast_token){"expr_=",0,0},2,(((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (3))].yystate.yysemantics.yysval),(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval));;}
     break;
 
 
 
 /* Line 936 of glr.c  */
-#line 1386 "yaccin.tab.c"
+#line 1399 "yaccin.tab.c"
       default: break;
     }
 
@@ -3069,7 +3082,7 @@ yypdumpstack (yyGLRStack* yystackp)
 
 
 /* Line 2634 of glr.c  */
-#line 218 "yaccin.y"
+#line 232 "yaccin.y"
 
 extern FILE *yyin;
 FILE *yyin2;
@@ -3085,7 +3098,7 @@ int main(int argc, char **argv){
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	ast_init();
-	yydebug = 0;
+	yydebug = 1;
 	yylloc.last_line = 1;
 	lextokenend = 0;
 	lexnumtabs = 0;
@@ -3128,7 +3141,7 @@ char *get_source_line(int start){
    // fprintf (stderr, "%s\n", s);
 // }
 
-int yyerror(char *s)
+int yyerror(const char *s)
 {	
 	printf("\nyyerror()!\n");
 	int x1 = yylloc.first_column;

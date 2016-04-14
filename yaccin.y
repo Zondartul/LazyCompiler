@@ -2,29 +2,35 @@
 	#include "globals.h"
 	#include "AST.h"
 	#include "semantic.h"
+	#include "vector2.h"
 	int finalNode;
-	
+	int yyerror(const char *s);
 	//		B = B C | C
 	//beceomes
 	//		B = C C C C C
 	void ast_unroll_lists_helper(int nodeID2){
 		//printf("AULH_1\n");
-		struct ast_node *N2 = ast_get_node(nodeID2);
+		//struct ast_node N2 = m(ast_nodes,get,nodeID2);
+		ast_node *N2 = ast_get_node(nodeID2);
 		if(!N2->children.size){return;}
 		//printf("AULH_2\n");
-		struct ast_node *N3 = ast_get_child(N2, 0);
+		//struct ast_node N3 = m(ast_nodes,get,m(N2->children,get,0));
+		ast_node *N3 = ast_get_child(N2,0);
 		if(N2->token.type != N3->token.type){return;}
 		//printf("AULH_3\n");
 		//if there is further recursion, unroll it now.
+		//ast_unroll_lists_helper(m(N2->children,get,0));
 		ast_unroll_lists_helper(ast_get_child_id(N2, 0));
 		//otherwise, move child contents up here.
 		//printf("AULH_4\n");
-		vector_remove(&N2->children, 0);
+		m(N2->children,erase,0);//vector_remove(&N2->children, 0);
 		int i;
 		for(i = 0; i < N3->children.size; i++){
 			//printf("AULH_5\n");
-			vector_push_back(&N2->children, vector_get_reference(&N3->children, i));
+			//vector_push_back(&N2->children, vector_get_reference(&N3->children, i));
+			m(N2->children,push_back,ast_get_child_id(N3,i));
 		}
+		//m(ast_nodes,set,N2,nodeID2);
 		//printf("AULH_DONE\n");
 	}
 	//turns left-recursive lists into non-recursive ones
@@ -33,37 +39,44 @@
 	//becomes	A = C C C C C C | empty
 	
 	void ast_unroll_lists(int nodeID){
-		struct ast_node *N1 = ast_get_node(nodeID);
+		//struct ast_node *N1 = m(ast_nodes,get,nodeID);
+		ast_node *N1 = ast_get_node(nodeID);
 		printf("unroll [%s] ",N1->token.type);
 		//printf("AUL_1\n");
 		if(!N1->children.size){return;}
-		struct ast_node *N2 = ast_get_child(N1, 0);
+		//struct ast_node *N2 = m(ast_nodes,get,m(N1->children,get,0));
+		ast_node *N2 = ast_get_child(N1, 0);
 		//printf("AUL_2\n");
 		if(!N2->children.size){return;}
-		struct ast_node *N3 = ast_get_child(N2, 0);
+		//struct ast_node *N3 = m(ast_nodes,get,m(N2->children,get,0));//ast_get_child(N2, 0);
 		//printf("AUL_3\n");
 		//if(N2->token.type != N3->token.type){return;}
 		//otherwise, there is in fact a recursive list here!
 		//printf("AUL_4\n");
+		//ast_unroll_lists_helper(m(N1->children,get,0));
 		ast_unroll_lists_helper(ast_get_child_id(N1, 0));
 		//printf("AUL_5\n");
-		vector_remove(&N1->children, 0);
+		//vector_remove(&N1->children, 0);
+		m(N1->children,erase,0);
 		int i;
 		for(i = 0; i < N2->children.size; i++){
 			//printf("AUL_6\n");
-			vector_insert(&N1->children, vector_get_reference(&N2->children, i),0);
+			m(N1->children,push_front,ast_get_child_id(N2,i));//vector_insert(&N1->children, vector_get_reference(&N2->children, i),0);
 		}
+		//m(ast_nodes,set,N1,nodeID);
 		printf(" unroll done\n");
 	}
 	
 	void fix_decl_assign(int nodeID){
-		return;
+		//return;
 		struct ast_node *N1 = ast_get_node(nodeID);
-		int node_expr = *(int*)vector_get_reference(&N1->children,1);
-		vector_pop_back(&N1->children);
+		//int node_expr = *(int*)vector_get_reference(&N1->children,1);
+		int node_expr = m(N1->children,pop_back);
+		//vector_pop_back(&N1->children);
 		int node_ID = node((struct ast_token){"expr_id",0,N1->token.value},0);
 		int N3 = node((struct ast_token){"expr_=",0,0},2,node_ID,node_expr);
-		vector_set(&N1->children,1,&N3);
+		//vector_set(&N1->children,1,&N3);
+		m(N1->children,push_back,N3);
 	}	
 %}
 %code requires {
@@ -76,6 +89,7 @@
     int last_column;
     char *filename;
   } YYLTYPE;
+  int yylex();
 }
 %code provides{
 char *posToString(YYLTYPE pos);
@@ -230,7 +244,7 @@ int main(int argc, char **argv){
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	ast_init();
-	yydebug = 0;
+	yydebug = 1;
 	yylloc.last_line = 1;
 	lextokenend = 0;
 	lexnumtabs = 0;
@@ -273,7 +287,7 @@ char *get_source_line(int start){
    // fprintf (stderr, "%s\n", s);
 // }
 
-int yyerror(char *s)
+int yyerror(const char *s)
 {	
 	printf("\nyyerror()!\n");
 	int x1 = yylloc.first_column;

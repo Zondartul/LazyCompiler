@@ -1,10 +1,11 @@
 #ifndef AST_GUARD
 #define AST_GUARD
-#include "vector.h"
+//#include "vector.h"
 #include <stdio.h>
+#include "vector2.h"
 
-extern vector ast_nodes;
-struct ast_token{
+//extern vector ast_nodes;
+typedef struct ast_token{
 	const char *type;
 	int production;
 	char *value;
@@ -12,13 +13,21 @@ struct ast_token{
 	// int start_char;
 	// int end_line;
 	// int end_char;
-};
+} ast_token;
+
+definition_vector_of(int);
 
 struct ast_node{
-	struct ast_token token;
-	vector children; //ints
+	ast_token token;
+	struct vector2_int children; //ints
 	//struct ast_node* children[AST_MAX_CHILDREN];
 };
+typedef struct ast_node ast_node;
+typedef ast_node* ptr_ast_node;
+
+definition_vector_of(ptr_ast_node);
+extern vector2_ptr_ast_node ast_nodes;
+
 void ast_init(void);
 struct ast_node *ast_get_node(int id);
 int ast_get_child_id(struct ast_node *N, int num);

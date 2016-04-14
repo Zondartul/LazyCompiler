@@ -3,7 +3,7 @@
 #include "stdlib.h"
 #include "stdarg.h"
 #include "stdio.h"
-#define BUMP_ALLOCATOR
+//#define BUMP_ALLOCATOR
 extern int lextokenstart;
 extern int lextokenend;
 extern int lexlinestart;

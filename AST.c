@@ -3,35 +3,46 @@
 #include <stdlib.h>
 #include "string.h"
 #include "globals.h"
-vector ast_nodes;
+
+implementation_vector_of(ptr_ast_node);
+implementation_vector_of(int);
+vector2_ptr_ast_node ast_nodes;
+//vector ast_nodes;
 void ast_init(){
-	vector_constructor(&ast_nodes, sizeof(struct ast_node));
+	ast_nodes = vector2_ptr_ast_node_here();
+	//vector_constructor(&ast_nodes, sizeof(struct ast_node));
 }
 //create a new node, given a token, and 'n' child nodes.
 int node(struct ast_token token, int n, ...){
 	va_list ap;
 	printf("node \"%s\": [%s] (%d/%d)\n",token.type,token.value,token.production,n);
-	struct ast_node *N = malloc(sizeof(struct ast_node));
+	struct ast_node *N = malloc(sizeof(ast_node));
 	N->token = token;
-	vector_constructor(&N->children, sizeof(int));
+	N->children = vector2_int_here();
+	//vector_constructor(&N->children, sizeof(int));
 	va_start(ap, n);
 	int i;
 	for(i = 0; i < n; i++){
 		//N->children[i] = va_arg(ap, struct ast_node*);
 		int id = va_arg(ap, int);
-		vector_push_back(&N->children, &id);
+		m(N->children,push_back,id);
+		//vector_push_back(&N->children, &id);
 	}
 	va_end(ap);
-	vector_push_back(&ast_nodes, (void *)N);
+	m(ast_nodes,push_back,N);
+	//vector_push_back(&ast_nodes, (void *)N);
 	return ast_nodes.size-1;
 }
 struct ast_node *ast_get_node(int id){
-	return (struct ast_node*)vector_get_reference(&ast_nodes, id);
+	//return (struct ast_node*)vector_get_reference(&ast_nodes, id);
+	return m(ast_nodes,get,id);
 }
 int ast_get_child_id(struct ast_node *N, int num){
-	return *(int*)vector_get_reference(&N->children, num);
+	//return *(int*)vector_get_reference(&N->children, num);
+	return m(N->children, get, num);
 }
 struct ast_node *ast_get_child(struct ast_node *N, int num){
+	//return ast_get_node(ast_get_child_id(N,num));
 	return ast_get_node(ast_get_child_id(N,num));
 }
 //+--+ fancy!
