@@ -9,39 +9,862 @@ For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>...
 Reading symbols from C:\Stride\LazyComp\data\a.exe...done.
 (gdb) Starting program: C:\Stride\LazyComp\data/a.exe lazy2.txt
-[New Thread 4056.0xce8]
+[New Thread 4212.0xdb0]
+sizeof ast_node = '76'
+test diff = '4', size = '4'
 Lexxed token [int]
 num allocs: 5, mem used: 25306
 node "typename": [int] (0/0)
 Lexxed token [import]
-num allocs: 8, mem used: 25389
+num allocs: 8, mem used: 25390
 Lexxed token [(]
-num allocs: 9, mem used: 25395
+num allocs: 9, mem used: 25397
 Lexxed token [int]
-num allocs: 9, mem used: 25395
+num allocs: 9, mem used: 25397
 node "typename": [int] (0/0)
 Lexxed token [arg]
-num allocs: 11, mem used: 25474
+num allocs: 11, mem used: 25485
 Lexxed token [)]
-num allocs: 12, mem used: 25477
+num allocs: 12, mem used: 25489
 node "var_decl": [arg] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list]  unroll done
+Lexxed token [end]
+num allocs: 18, mem used: 25741
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [import]
+node "func_def": [import] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (1/1)
+Lexxed token [int]
+num allocs: 25, mem used: 26081
+node "typename": [int] (0/0)
+Lexxed token [export]
+num allocs: 27, mem used: 26161
+Lexxed token [(]
+num allocs: 28, mem used: 26168
+Lexxed token [int]
+num allocs: 28, mem used: 26168
+node "typename": [int] (0/0)
+Lexxed token [arg]
+num allocs: 30, mem used: 26272
+Lexxed token [)]
+num allocs: 31, mem used: 26276
+node "var_decl": [arg] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list]  unroll done
+Lexxed token [end]
+num allocs: 37, mem used: 26516
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [export]
+node "func_def": [export] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [int]
+num allocs: 44, mem used: 26884
+node "typename": [int] (0/0)
+Lexxed token [print]
+num allocs: 46, mem used: 26964
+Lexxed token [(]
+num allocs: 47, mem used: 26970
+Lexxed token [string]
+num allocs: 47, mem used: 26970
+node "typename": [string] (0/0)
+Lexxed token [str]
+num allocs: 49, mem used: 27053
+Lexxed token [)]
+num allocs: 50, mem used: 27057
+node "var_decl": [str] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list]  unroll done
+Lexxed token [end]
+num allocs: 56, mem used: 27297
+node "stmt_list": [<empty>] (1/0)
+FUNC_DEF ID = [print]
+node "func_def": [print] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [int]
+num allocs: 63, mem used: 27685
+node "typename": [int] (0/0)
+Lexxed token [main]
+num allocs: 65, mem used: 27765
+Lexxed token [(]
+num allocs: 66, mem used: 27770
+Lexxed token [int]
+num allocs: 66, mem used: 27770
+node "typename": [int] (0/0)
+Lexxed token [argc]
+num allocs: 68, mem used: 27850
+Lexxed token [,]
+num allocs: 69, mem used: 27855
+node "var_decl": [argc] (0/1)
+node "var_decl_list_ne": [(null)] (1/1)
+Lexxed token [int]
+num allocs: 73, mem used: 28015
+node "typename": [int] (0/0)
+Lexxed token [argv]
+num allocs: 75, mem used: 28095
+Lexxed token [)]
+num allocs: 76, mem used: 28100
+node "var_decl": [argv] (0/1)
+node "var_decl_list_ne": [(null)] (0/2)
+node "var_decl_list": [(null)] (0/1)
+unroll [var_decl_list]  unroll done
+Lexxed token [char]
+num allocs: 82, mem used: 28356
+node "typename": [char] (0/0)
+Lexxed token [C]
+num allocs: 84, mem used: 28437
+Lexxed token [;]
+num allocs: 85, mem used: 28439
+node "var_decl": [C] (0/1)
+node "decl_stmt": [(null)] (2/1)
+node "stmt": [(null)] (1/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [if]
+num allocs: 93, mem used: 28843
+Lexxed token [(]
+num allocs: 93, mem used: 28843
+Lexxed token [argc]
+num allocs: 93, mem used: 28843
+node "expr_id": [argc] (0/0)
+Lexxed token [=]
+num allocs: 95, mem used: 28924
+Lexxed token [0]
+num allocs: 95, mem used: 28924
+node "expr_const": [0] (0/0)
+Lexxed token [)]
+num allocs: 97, mem used: 29002
+node "expr_=": [(null)] (0/2)
+Lexxed token [then]
+num allocs: 99, mem used: 29090
+Lexxed token [print]
+num allocs: 99, mem used: 29090
+node "expr_id": [print] (0/0)
+Lexxed token [(]
+num allocs: 101, mem used: 29172
+Lexxed token ["usage: a.exe arg1 arg2"]
+num allocs: 101, mem used: 29172
+node "expr_const": ["usage: a.exe arg1 arg2"] (5/0)
+Lexxed token [)]
+num allocs: 103, mem used: 29273
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list]  unroll done
+node "expr_call": [(null)] (0/2)
+Lexxed token [;]
+num allocs: 109, mem used: 29521
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [return]
+num allocs: 115, mem used: 29761
+Lexxed token [1]
+num allocs: 115, mem used: 29761
+node "expr_const": [1] (0/0)
+Lexxed token [;]
+num allocs: 117, mem used: 29839
+node "imp_stmt": [(null)] (4/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [else]
+num allocs: 123, mem used: 30087
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+node "if_then": [(null)] (0/2)
+Lexxed token [float]
+num allocs: 127, mem used: 30263
+node "typename": [float] (0/0)
+Lexxed token [A]
+num allocs: 129, mem used: 30345
+Lexxed token [=]
+num allocs: 130, mem used: 30347
+Lexxed token [import]
+num allocs: 130, mem used: 30347
+node "expr_id": [import] (0/0)
+Lexxed token [(]
+num allocs: 132, mem used: 30430
+Lexxed token [argc]
+num allocs: 132, mem used: 30430
+node "expr_id": [argc] (0/0)
+Lexxed token [)]
+num allocs: 134, mem used: 30511
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list]  unroll done
+node "expr_call": [(null)] (0/2)
+Lexxed token [;]
+num allocs: 140, mem used: 30883
+node "var_decl_assign": [A] (1/2)
+node "decl_stmt": [(null)] (2/1)
+node "stmt": [(null)] (1/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [A]
+num allocs: 148, mem used: 31211
+node "expr_id": [A] (0/0)
+Lexxed token [=]
+num allocs: 150, mem used: 31289
+Lexxed token [A]
+num allocs: 150, mem used: 31289
+node "expr_id": [A] (0/0)
+Lexxed token [*]
+num allocs: 152, mem used: 31367
+Lexxed token [argv]
+num allocs: 152, mem used: 31367
+node "expr_id": [argv] (0/0)
+Lexxed token [;]
+num allocs: 154, mem used: 31448
+node "expr_*": [(null)] (0/2)
+node "expr_=": [(null)] (0/2)
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [export]
+num allocs: 164, mem used: 31872
+node "expr_id": [export] (0/0)
+Lexxed token [(]
+num allocs: 166, mem used: 31955
+Lexxed token [A]
+num allocs: 166, mem used: 31955
+node "expr_id": [A] (0/0)
+Lexxed token [)]
+num allocs: 168, mem used: 32033
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list]  unroll done
+node "expr_call": [(null)] (0/2)
+Lexxed token [;]
+num allocs: 174, mem used: 32281
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [while]
+num allocs: 180, mem used: 32529
+Lexxed token [(]
+num allocs: 180, mem used: 32529
+Lexxed token [A]
+num allocs: 180, mem used: 32529
+node "expr_id": [A] (0/0)
+Lexxed token [)]
+num allocs: 182, mem used: 32607
+Lexxed token [print]
+num allocs: 182, mem used: 32607
+node "expr_id": [print] (0/0)
+Lexxed token [(]
+num allocs: 184, mem used: 32689
+Lexxed token [A]
+num allocs: 184, mem used: 32689
+node "expr_id": [A] (0/0)
+Lexxed token [)]
+num allocs: 186, mem used: 32767
+node "expr_list_ne": [(null)] (1/1)
+node "expr_list": [(null)] (0/1)
+unroll [expr_list]  unroll done
+node "expr_call": [(null)] (0/2)
+Lexxed token [;]
+num allocs: 192, mem used: 33015
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [A]
+num allocs: 198, mem used: 33443
+node "expr_id": [A] (0/0)
+Lexxed token [=]
+num allocs: 200, mem used: 33521
+Lexxed token [A]
+num allocs: 200, mem used: 33521
+node "expr_id": [A] (0/0)
+Lexxed token [/]
+num allocs: 202, mem used: 33599
+Lexxed token [1]
+num allocs: 202, mem used: 33599
+node "expr_const": [1] (0/0)
+Lexxed token [;]
+num allocs: 204, mem used: 33677
+node "expr_/": [(null)] (0/2)
+node "expr_=": [(null)] (0/2)
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [if]
+num allocs: 214, mem used: 34101
+Lexxed token [(]
+num allocs: 214, mem used: 34101
+Lexxed token [A]
+num allocs: 214, mem used: 34101
+node "expr_id": [A] (0/0)
+Lexxed token [=]
+num allocs: 216, mem used: 34179
+Lexxed token [1]
+num allocs: 216, mem used: 34179
+node "expr_const": [1] (0/0)
+Lexxed token [)]
+num allocs: 218, mem used: 34257
+node "expr_=": [(null)] (0/2)
+Lexxed token [then]
+num allocs: 220, mem used: 34345
+Lexxed token [return]
+num allocs: 220, mem used: 34345
+Lexxed token [1]
+num allocs: 220, mem used: 34345
+node "expr_const": [1] (0/0)
+Lexxed token [;]
+num allocs: 222, mem used: 34423
+node "imp_stmt": [(null)] (4/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [end]
+num allocs: 228, mem used: 34663
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+node "if_then": [(null)] (0/2)
+node "if_block": [(null)] (0/1)
+node "imp_stmt": [(null)] (0/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [end]
+num allocs: 240, mem used: 35159
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+node "while_loop": [(null)] (0/2)
+node "imp_stmt": [(null)] (1/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [return]
+num allocs: 250, mem used: 35583
+Lexxed token [0]
+num allocs: 250, mem used: 35583
+node "expr_const": [0] (0/0)
+Lexxed token [;]
+num allocs: 252, mem used: 35661
+node "imp_stmt": [(null)] (4/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [end]
+num allocs: 258, mem used: 35909
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+node "if_block": [(null)] (1/2)
+node "imp_stmt": [(null)] (0/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [string]
+num allocs: 268, mem used: 36369
+node "typename": [string] (0/0)
+Lexxed token [boop]
+num allocs: 270, mem used: 36452
+Lexxed token [;]
+num allocs: 271, mem used: 36457
+node "var_decl": [boop] (0/1)
+node "decl_stmt": [(null)] (2/1)
+node "stmt": [(null)] (1/1)
+node "stmt_list_ne": [(null)] (0/2)
+Lexxed token [end]
+num allocs: 279, mem used: 36785
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+FUNC_DEF ID = [main]
+node "func_def": [main] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [class]
+num allocs: 287, mem used: 37129
+Lexxed token [horse]
+num allocs: 287, mem used: 37129
+Lexxed token [float]
+num allocs: 288, mem used: 37135
+node "typename": [float] (0/0)
+Lexxed token [fluff]
+num allocs: 290, mem used: 37217
+Lexxed token [=]
+num allocs: 291, mem used: 37223
+Lexxed token [5]
+num allocs: 291, mem used: 37223
+node "expr_const": [5] (0/0)
+Lexxed token [;]
+num allocs: 293, mem used: 37301
+node "var_decl_assign": [fluff] (1/2)
+node "decl_stmt": [(null)] (2/1)
+node "decl_stmt_list_ne": [(null)] (1/1)
+Lexxed token [int]
+num allocs: 299, mem used: 37829
+node "typename": [int] (0/0)
+Lexxed token [boop]
+num allocs: 301, mem used: 37909
+Lexxed token [(]
+num allocs: 302, mem used: 37914
+Lexxed token [)]
+num allocs: 302, mem used: 37914
+node "var_decl_list": [<empty>] (1/0)
+Lexxed token [fluff]
+num allocs: 303, mem used: 37990
+node "expr_id": [fluff] (0/0)
+Lexxed token [=]
+num allocs: 305, mem used: 38072
+Lexxed token [fluff]
+num allocs: 305, mem used: 38072
+node "expr_id": [fluff] (0/0)
+Lexxed token [+]
+num allocs: 307, mem used: 38154
+Lexxed token [1]
+num allocs: 307, mem used: 38154
+node "expr_const": [1] (0/0)
+Lexxed token [;]
+num allocs: 309, mem used: 38232
+node "expr_+": [(null)] (0/2)
+node "expr_=": [(null)] (0/2)
+node "imp_stmt": [(null)] (2/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+Lexxed token [end]
+num allocs: 319, mem used: 38648
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
+FUNC_DEF ID = [boop]
+node "func_def": [boop] (0/3)
+node "decl_stmt": [(null)] (1/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+Lexxed token [end]
+num allocs: 327, mem used: 38984
+node "decl_stmt_list": [(null)] (0/1)
+unroll [decl_stmt_list]  unroll done
+FUNC_DEF ID = [horse]
+node "class_def": [horse] (0/1)
+node "decl_stmt": [(null)] (0/1)
+node "decl_stmt_list_ne": [(null)] (0/2)
+node "decl_stmt_list": [(null)] (0/1)
+unroll [decl_stmt_list]  unroll done
+node "program": [(null)] (0/1)
 
-Program received signal SIGTRAP, Trace/breakpoint trap.
-0x7780152d in ntdll!RtlpNtEnumerateSubKey ()
-   from C:\Windows\system32\ntdll.dll
-(gdb) #0  0x7780152d in ntdll!RtlpNtEnumerateSubKey ()
-   from C:\Windows\system32\ntdll.dll
-No symbol table info available.
-#1  0x777e672a in ntdll!RtlImageRvaToVa () from C:\Windows\system32\ntdll.dll
-No symbol table info available.
-#2  0x777c3136 in ntdll!RtlUlonglongByteSwap ()
-   from C:\Windows\system32\ntdll.dll
-No symbol table info available.
-#3  0x00000000 in ?? ()
-No symbol table info available.
-(gdb) quit
-A debugging session is active.
+PARSING DONE
+printing ast 003CE398, 764F29A0, 0, [program]
+printing ast 003CE280, 764F29A0, 0, [decl_stmt_list]
+printing ast 003C8BA0, 764F29A0, 0, [decl_stmt]
+printing ast 003C8AD0, 764F29A0, 0, [func_def]
+printing ast 003C1180, 764F29A0, 0, [typename]
+printing ast 003C13C0, 764F29A0, 1, [var_decl_list]
+printing ast 003C12B0, 764F29A0, 0, [var_decl]
+printing ast 003C1228, 764F29A0, 0, [typename]
+printing ast 003C8A68, 764F29A0, 2, [stmt_list]
+printing ast 003C9088, 764F29A0, 1, [decl_stmt]
+printing ast 003C8FF8, 764F29A0, 0, [func_def]
+printing ast 003C8CB0, 764F29A0, 0, [typename]
+printing ast 003C8F08, 764F29A0, 1, [var_decl_list]
+printing ast 003C8E18, 764F29A0, 0, [var_decl]
+printing ast 003C8D58, 764F29A0, 0, [typename]
+printing ast 003C8F90, 764F29A0, 2, [stmt_list]
+printing ast 003C95B8, 764F29A0, 2, [decl_stmt]
+printing ast 003C9528, 764F29A0, 0, [func_def]
+printing ast 003C91F8, 764F29A0, 0, [typename]
+printing ast 003C9438, 764F29A0, 1, [var_decl_list]
+printing ast 003C9328, 764F29A0, 0, [var_decl]
+printing ast 003C92A0, 764F29A0, 0, [typename]
+printing ast 003C94C0, 764F29A0, 2, [stmt_list]
+printing ast 003CD3A0, 764F29A0, 3, [decl_stmt]
+printing ast 003CD310, 764F29A0, 0, [func_def]
+printing ast 003C9740, 764F29A0, 0, [typename]
+printing ast 003C9B40, 764F29A0, 1, [var_decl_list]
+printing ast 003C9870, 764F29A0, 0, [var_decl]
+printing ast 003C97E8, 764F29A0, 0, [typename]
+printing ast 003C9A28, 764F29A0, 1, [var_decl]
+printing ast 003C99A0, 764F29A0, 0, [typename]
+printing ast 003CD280, 764F29A0, 2, [stmt_list]
+printing ast 003C9D88, 764F29A0, 0, [stmt]
+printing ast 003C9D00, 764F29A0, 0, [decl_stmt]
+printing ast 003C9C78, 764F29A0, 0, [var_decl]
+printing ast 003C9BF0, 764F29A0, 0, [typename]
+printing ast 003CCEB8, 764F29A0, 1, [stmt]
+printing ast 003CCE50, 764F29A0, 0, [imp_stmt]
+printing ast 003CCDE8, 764F29A0, 0, [if_block]
+printing ast 003CA7B0, 764F29A0, 0, [if_then]
+printing ast 003CA050, 764F29A0, 0, [expr_=]
+printing ast 003C9640, 764F29A0, 0, [expr_id]
+printing ast 003C9FE8, 764F29A0, 1, [expr_const]
+printing ast 003CA720, 764F29A0, 1, [stmt_list]
+printing ast 003CA3E8, 764F29A0, 0, [stmt]
+printing ast 003CA360, 764F29A0, 0, [imp_stmt]
+printing ast 003CA2D0, 764F29A0, 0, [expr_call]
+printing ast 003CA0B8, 764F29A0, 0, [expr_id]
+printing ast 003CA248, 764F29A0, 1, [expr_list]
+printing ast 003CA158, 764F29A0, 0, [expr_const]
+printing ast 003CA608, 764F29A0, 1, [stmt]
+printing ast 003CA580, 764F29A0, 0, [imp_stmt]
+printing ast 003CA518, 764F29A0, 0, [expr_const]
+printing ast 003CCCD0, 764F29A0, 1, [stmt_list]
+printing ast 003CAD48, 764F29A0, 0, [stmt]
+printing ast 003CACC0, 764F29A0, 0, [decl_stmt]
+printing ast 003CAC30, 764F29A0, 0, [var_decl_assign]
+printing ast 003CA860, 764F29A0, 0, [typename]
+printing ast 003C9F20, 764F29A0, 1, [expr_call]
+printing ast 003CA908, 764F29A0, 0, [expr_id]
+printing ast 003C9E98, 764F29A0, 1, [expr_list]
+printing ast 003CA990, 764F29A0, 0, [expr_id]
+printing ast 003CB198, 764F29A0, 1, [stmt]
+printing ast 003CB110, 764F29A0, 0, [imp_stmt]
+printing ast 003CB080, 764F29A0, 0, [expr_=]
+printing ast 003CAE78, 764F29A0, 0, [expr_id]
+printing ast 003CAFF0, 764F29A0, 1, [expr_*]
+printing ast 003CAF00, 764F29A0, 0, [expr_id]
+printing ast 003CAF88, 764F29A0, 1, [expr_id]
+printing ast 003CB5E8, 764F29A0, 2, [stmt]
+printing ast 003CB560, 764F29A0, 0, [imp_stmt]
+printing ast 003CB4D0, 764F29A0, 0, [expr_call]
+printing ast 003CB2D0, 764F29A0, 0, [expr_id]
+printing ast 003CB448, 764F29A0, 1, [expr_list]
+printing ast 003CB358, 764F29A0, 0, [expr_id]
+printing ast 003CC990, 764F29A0, 3, [stmt]
+printing ast 003CC908, 764F29A0, 0, [imp_stmt]
+printing ast 003CC878, 764F29A0, 0, [while_loop]
+printing ast 003CB720, 764F29A0, 0, [expr_id]
+printing ast 003CC7E8, 764F29A0, 1, [stmt_list]
+printing ast 003CBAC0, 764F29A0, 0, [stmt]
+printing ast 003CBA38, 764F29A0, 0, [imp_stmt]
+printing ast 003CB9A8, 764F29A0, 0, [expr_call]
+printing ast 003CB7A8, 764F29A0, 0, [expr_id]
+printing ast 003CB920, 764F29A0, 1, [expr_list]
+printing ast 003CB830, 764F29A0, 0, [expr_id]
+printing ast 003CBFD0, 764F29A0, 1, [stmt]
+printing ast 003CBF48, 764F29A0, 0, [imp_stmt]
+printing ast 003CBEE0, 764F29A0, 0, [expr_=]
+printing ast 003CAAA0, 764F29A0, 0, [expr_id]
+printing ast 003CBE78, 764F29A0, 1, [expr_/]
+printing ast 003CAB28, 764F29A0, 0, [expr_id]
+printing ast 003CBE10, 764F29A0, 1, [expr_const]
+printing ast 003CC6D0, 764F29A0, 2, [stmt]
+printing ast 003CC648, 764F29A0, 0, [imp_stmt]
+printing ast 003CC5C0, 764F29A0, 0, [if_block]
+printing ast 003CC530, 764F29A0, 0, [if_then]
+printing ast 003CC1F8, 764F29A0, 0, [expr_=]
+printing ast 003CC108, 764F29A0, 0, [expr_id]
+printing ast 003CC190, 764F29A0, 1, [expr_const]
+printing ast 003CC4A8, 764F29A0, 1, [stmt_list]
+printing ast 003CC398, 764F29A0, 0, [stmt]
+printing ast 003CC310, 764F29A0, 0, [imp_stmt]
+printing ast 003CC2A8, 764F29A0, 0, [expr_const]
+printing ast 003CCBB8, 764F29A0, 4, [stmt]
+printing ast 003CCB30, 764F29A0, 0, [imp_stmt]
+printing ast 003CCAC8, 764F29A0, 0, [expr_const]
+printing ast 003CD168, 764F29A0, 2, [stmt]
+printing ast 003CD0E0, 764F29A0, 0, [decl_stmt]
+printing ast 003CD058, 764F29A0, 0, [var_decl]
+printing ast 003CCFD0, 764F29A0, 0, [typename]
+printing ast 003CE168, 764F29A0, 4, [decl_stmt]
+printing ast 003CE0E0, 764F29A0, 0, [class_def]
+printing ast 003CE050, 764F29A0, 0, [decl_stmt_list]
+printing ast 003CBBD0, 764F29A0, 0, [decl_stmt]
+printing ast 003CD608, 764F29A0, 0, [var_decl_assign]
+printing ast 003CD4F8, 764F29A0, 0, [typename]
+printing ast 003CD5A0, 764F29A0, 1, [expr_const]
+printing ast 003CDF38, 764F29A0, 1, [decl_stmt]
+printing ast 003CDEA8, 764F29A0, 0, [func_def]
+printing ast 003CBD00, 764F29A0, 0, [typename]
+printing ast 003CBD88, 764F29A0, 1, [var_decl_list]
+printing ast 003CDE20, 764F29A0, 2, [stmt_list]
+printing ast 003CDD10, 764F29A0, 0, [stmt]
+printing ast 003CDC88, 764F29A0, 0, [imp_stmt]
+printing ast 003CDBF8, 764F29A0, 0, [expr_=]
+printing ast 003CD9F0, 764F29A0, 0, [expr_id]
+printing ast 003CDB68, 764F29A0, 1, [expr_+]
+printing ast 003CDA78, 764F29A0, 0, [expr_id]
+printing ast 003CDB00, 764F29A0, 1, [expr_const]
 
-	Inferior 1 [process 4056] will be killed.
+PRINTING DONE
+num allocs: 469, mem used: 42708
+got program
+num allocs: 470, mem used: 42776
+got decl_stmt_list
+num allocs: 470, mem used: 42776
+got decl_stmt
+num allocs: 470, mem used: 42776
+got func_def
+num allocs: 473, mem used: 42872
+got var_decl_list
+num allocs: 473, mem used: 42872
+got var_decl
+num allocs: 476, mem used: 42904
+got stmt_list
+num allocs: 477, mem used: 42908
+got decl_stmt
+num allocs: 477, mem used: 42908
+got func_def
+num allocs: 480, mem used: 43004
+got var_decl_list
+num allocs: 480, mem used: 43004
+got var_decl
+num allocs: 483, mem used: 43036
+got stmt_list
+num allocs: 483, mem used: 43044
+got decl_stmt
+num allocs: 483, mem used: 43044
+got func_def
+num allocs: 486, mem used: 43140
+got var_decl_list
+num allocs: 486, mem used: 43140
+got var_decl
+num allocs: 489, mem used: 43172
+got stmt_list
+num allocs: 489, mem used: 43172
+got decl_stmt
+num allocs: 489, mem used: 43172
+got func_def
+num allocs: 492, mem used: 43268
+got var_decl_list
+num allocs: 492, mem used: 43268
+got var_decl
+num allocs: 495, mem used: 43300
+got var_decl
+num allocs: 497, mem used: 43336
+got stmt_list
+num allocs: 497, mem used: 43336
+got stmt
+num allocs: 497, mem used: 43336
+got decl_stmt
+num allocs: 497, mem used: 43336
+got var_decl
+num allocs: 499, mem used: 43364
+got stmt
+num allocs: 499, mem used: 43364
+num allocs: 499, mem used: 43364
+got stmt
+num allocs: 499, mem used: 43364
+got decl_stmt
+num allocs: 499, mem used: 43364
+got var_decl
+num allocs: 501, mem used: 43416
+got decl_stmt
+num allocs: 501, mem used: 43416
+got class_def
+num allocs: 503, mem used: 43504
+got decl_stmt_list
+num allocs: 503, mem used: 43504
+got decl_stmt
+num allocs: 503, mem used: 43504
+got var_decl
+num allocs: 506, mem used: 43536
+got decl_stmt
+num allocs: 506, mem used: 43536
+got func_def
+num allocs: 509, mem used: 43632
+got var_decl_list
+num allocs: 509, mem used: 43632
+got stmt_list
+num allocs: 509, mem used: 43632
+got stmt
+num allocs: 509, mem used: 43632
+num allocs: 509, mem used: 43640
+got decl_stmt
+num allocs: 509, mem used: 43640
+num allocs: 509, mem used: 43640
+got decl_stmt
+num allocs: 509, mem used: 43640
+got func_def
+num allocs: 513, mem used: 43724
+got stmt_list
+num allocs: 513, mem used: 43724
+got stmt
+num allocs: 513, mem used: 43724
+got imp_stmt
+num allocs: 513, mem used: 43724
+got expr_=
+num allocs: 513, mem used: 43724
+got expr_id = [fluff]
+num allocs: 515, mem used: 43734
+got expr_+
+num allocs: 515, mem used: 43734
+got expr_id = [fluff]
+num allocs: 516, mem used: 43748
+got expr_const
+IR_next_name: returning [r1]
+IR_next_name: returning [r2]
+num allocs: 525, mem used: 43810
+got decl_stmt
+num allocs: 525, mem used: 43810
+got func_def
+num allocs: 527, mem used: 43894
+got stmt_list
+num allocs: 527, mem used: 43894
+got decl_stmt
+num allocs: 527, mem used: 43894
+got func_def
+num allocs: 529, mem used: 43970
+got stmt_list
+num allocs: 529, mem used: 43970
+got decl_stmt
+num allocs: 529, mem used: 43970
+got func_def
+num allocs: 531, mem used: 44058
+got stmt_list
+num allocs: 531, mem used: 44058
+got decl_stmt
+num allocs: 531, mem used: 44058
+got func_def
+num allocs: 533, mem used: 44134
+got stmt_list
+num allocs: 533, mem used: 44134
+got stmt
+num allocs: 533, mem used: 44134
+got decl_stmt
+num allocs: 533, mem used: 44134
+num allocs: 533, mem used: 44134
+got stmt
+num allocs: 533, mem used: 44134
+got imp_stmt
+num allocs: 533, mem used: 44134
+got if_block
+num allocs: 533, mem used: 44134
+got if_then
+num allocs: 533, mem used: 44134
+got expr_=
+num allocs: 533, mem used: 44134
+got expr_id = [argc]
+num allocs: 534, mem used: 44139
+got expr_const
+IR_next_name: returning [r3]
+IR_next_name: returning [l1]
+num allocs: 543, mem used: 44366
+got stmt_list
+num allocs: 543, mem used: 44366
+got stmt
+num allocs: 543, mem used: 44366
+num allocs: 543, mem used: 44366
+got stmt
+num allocs: 543, mem used: 44366
+num allocs: 543, mem used: 44366
+got stmt_list
+num allocs: 543, mem used: 44366
+got stmt
+num allocs: 543, mem used: 44366
+got imp_stmt
+num allocs: 543, mem used: 44366
+got expr_call
+num allocs: 543, mem used: 44366
+got expr_id = [print]
+num allocs: 544, mem used: 44372
+got stmt
+num allocs: 544, mem used: 44372
+got imp_stmt
+num allocs: 544, mem used: 44372
+got expr_const
+IR_next_name: returning [r4]
+num allocs: 549, mem used: 44411
+got stmt_list
+num allocs: 549, mem used: 44411
+got stmt
+num allocs: 549, mem used: 44411
+got decl_stmt
+num allocs: 549, mem used: 44411
+num allocs: 549, mem used: 44411
+got stmt
+num allocs: 549, mem used: 44411
+got imp_stmt
+num allocs: 549, mem used: 44411
+got expr_=
+num allocs: 549, mem used: 44411
+got expr_id = [A]
+num allocs: 550, mem used: 44413
+got expr_*
+num allocs: 550, mem used: 44413
+got expr_id = [A]
+num allocs: 551, mem used: 44427
+got expr_id = [argv]
+IR_next_name: returning [r5]
+num allocs: 555, mem used: 44475
+got stmt
+num allocs: 555, mem used: 44475
+got imp_stmt
+num allocs: 555, mem used: 44475
+got expr_call
+num allocs: 555, mem used: 44475
+got expr_id = [export]
+num allocs: 556, mem used: 44482
+got stmt
+num allocs: 556, mem used: 44482
+got imp_stmt
+num allocs: 556, mem used: 44482
+got while_loop
+num allocs: 556, mem used: 44482
+got expr_id = [A]
+IR_next_name: returning [l2]
+IR_next_name: returning [l3]
+num allocs: 563, mem used: 44674
+got stmt_list
+num allocs: 563, mem used: 44674
+got stmt
+num allocs: 563, mem used: 44674
+got imp_stmt
+num allocs: 563, mem used: 44674
+got expr_call
+num allocs: 563, mem used: 44674
+got expr_id = [print]
+num allocs: 564, mem used: 44680
+got stmt
+num allocs: 564, mem used: 44680
+got imp_stmt
+num allocs: 564, mem used: 44680
+got expr_=
+num allocs: 564, mem used: 44680
+got expr_id = [A]
+num allocs: 565, mem used: 44682
+got expr_/
+num allocs: 565, mem used: 44682
+got expr_id = [A]
+num allocs: 566, mem used: 44700
+got expr_const
+IR_next_name: returning [r6]
+IR_next_name: returning [r7]
+num allocs: 572, mem used: 44747
+got stmt
+num allocs: 572, mem used: 44747
+got imp_stmt
+num allocs: 572, mem used: 44747
+got if_block
+num allocs: 572, mem used: 44747
+got if_then
+num allocs: 572, mem used: 44747
+got expr_=
+num allocs: 572, mem used: 44747
+got expr_id = [A]
+num allocs: 573, mem used: 44749
+got expr_const
+IR_next_name: returning [r8]
+IR_next_name: returning [l4]
+num allocs: 580, mem used: 44928
+got stmt_list
+num allocs: 580, mem used: 44928
+got stmt
+num allocs: 580, mem used: 44928
+num allocs: 580, mem used: 44928
+got stmt_list
+num allocs: 580, mem used: 44928
+got stmt
+num allocs: 580, mem used: 44928
+got imp_stmt
+num allocs: 580, mem used: 44928
+got expr_const
+IR_next_name: returning [r9]
+num allocs: 587, mem used: 45000
+got stmt
+num allocs: 587, mem used: 45000
+got imp_stmt
+num allocs: 587, mem used: 45000
+got expr_const
+IR_next_name: returning [r10]
+num allocs: 590, mem used: 45020
+got stmt
+num allocs: 590, mem used: 45020
+got decl_stmt
+num allocs: 590, mem used: 45020
+num allocs: 590, mem used: 45020
+got decl_stmt
+num allocs: 590, mem used: 45020
+semantic: done
+Symbol table:
+End Symbol table
 
-Quit anyway? (y or n) [answered Y; input not from terminal]
+GOOD BYE
+[Inferior 1 (process 4212) exited normally]
+(gdb) (gdb) quit

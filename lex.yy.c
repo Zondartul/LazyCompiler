@@ -451,7 +451,7 @@ void updatelloc(){
 #include "stdlib.h"
 char *stralloc(const char *str){
 	int len = strlen(str);
-	char *str2 = (char *)malloc(sizeof(char)*len);
+	char *str2 = (char *)malloc(sizeof(char)*(len+1));
 	strcpy(str2,str);
 	return str2;
 }

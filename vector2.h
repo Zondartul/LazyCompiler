@@ -116,6 +116,7 @@ void vector2_##T##_internal_resize(struct vector2_##T *this, int newsize){	\
 	void *newdata = realloc(this->data, newsize*sizeof(T));	\
 	if(newdata){	\
 		this->data = newdata;	\
+		this->capacity = newsize;	\
 	}else{	\
 		fprintf(stderr, "vector error: out of memory\n");	\
 		exit(1);	\
@@ -153,8 +154,9 @@ void vector2_##T##_insert(struct vector2_##T *this, T element, int pos){	\
 	if(this->size >= this->capacity){	\
 		vector2_##T##_internal_resize(this, (this->capacity+1)*1.5);	\
 	}	\
-	memmove(vector2_##T##_internal_get(this, pos+1), vector2_##T##_internal_get(this,pos), (this->size-pos-1)*sizeof(T));	\
+	memmove(vector2_##T##_internal_get(this, pos+1), vector2_##T##_internal_get(this,pos), (this->size-pos)*sizeof(T));	\
 	vector2_##T##_internal_set(this, &element, pos);	\
+	this->size++;	\
 }	\
 	\
 void vector2_##T##_erase(struct vector2_##T *this, int pos){	\

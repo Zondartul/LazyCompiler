@@ -240,6 +240,9 @@ int main(int argc, char **argv){
 		printf("usage: %s inputfile\n",argv[0]);
 		return 0;
 	}
+	printf("sizeof ast_node = '%d'\n",sizeof(ast_node));
+	int *test = malloc(sizeof(int));
+	printf("test diff = '%d', size = '%d'\n", (char*)(test+1)-(char*)(test),sizeof(int));
 	initallocs();
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);

@@ -596,6 +596,7 @@ const char *pop_expr(){
 void semantic_init(){
 	IR_init();
 	expr_stack = vector2_ptr_char_here();
+	CS_stack = vector2_ptr_code_segment_here();
 	ST_stack = vector2_ptr_symbol_table_here();
 	IR_names = vector2_ptr_char_here();
 	IR_namecounts = vector2_int_here();
@@ -658,6 +659,8 @@ void *bumprlloc(void *ptr, size_t size){
 	}else{return bumpalloc(size);}
 }
 void *newmalloc(size_t size, void *(oldmalloc)(size_t size), const char* file, const char* func, int line){
+	err("info: malloc(%d)",size);
+	err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	#ifdef BUMP_ALLOCATOR
 	void *m = bumpalloc(size);
 	#else
@@ -679,6 +682,7 @@ void *newmalloc(size_t size, void *(oldmalloc)(size_t size), const char* file, c
 	return m;
 }
 void *newrealloc(void *ptr, size_t size, void *(oldrealloc)(void *ptr, size_t size), const char* file, const char* func, int line){
+	err("info: reallocalloc(%p, %d)",ptr, size);
 	int i = 0;
 	int found = 0;
 	if(ptr){
@@ -698,11 +702,13 @@ void *newrealloc(void *ptr, size_t size, void *(oldrealloc)(void *ptr, size_t si
 	#endif
 	if(m){
 		if(found){
+			err("info: old size = %d\n",allocsizes[i]);
 			memused -= allocsizes[i];
 			memused += size;
 			allocsizes[i] = size;
 			allocs[i] = m;
 		}else{
+			err("info: new allocation\n");
 			allocs[numallocs] = m;
 			allocsizes[numallocs] = size;
 			allocfiles[numallocs] = file;
@@ -715,9 +721,11 @@ void *newrealloc(void *ptr, size_t size, void *(oldrealloc)(void *ptr, size_t si
 		err("newrealloc: realloc(%p,%d) failed\n",ptr,size);
 		err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	}
+	err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	return m;
 }
 void newfree(void *ptr, const char *file, const char* func, int line, void (oldfree)(void *ptr)){
+	err("info: free(%p)\n",ptr);
 	int i = 0;
 	int found = 0;
 	if(ptr){
@@ -728,6 +736,7 @@ void newfree(void *ptr, const char *file, const char* func, int line, void (oldf
 			err("newfree: free(%d): bad pointer\n",ptr);
 			error("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 		}
+		err("info: old size = %d\n",allocsizes[i]);
 		allocs[i] = 0;
 		allocsizes[i] = 0;
 		allocfiles[i] = 0;
@@ -738,6 +747,7 @@ void newfree(void *ptr, const char *file, const char* func, int line, void (oldf
 		err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	}
 	//oldfree(ptr);
+	err("@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 }
 void printmemory(FILE *fp){
 	fprintf(fp, "num allocs: %d, mem used: %d\n", numallocs, memused);
