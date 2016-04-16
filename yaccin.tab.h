@@ -34,23 +34,21 @@
 /* "%code requires" blocks.  */
 
 /* Line 2638 of glr.c  */
-#line 82 "yaccin.y"
+#line 4 "yaccin.y"
 
   #define YYLTYPE YYLTYPE
-  typedef struct YYLTYPE
-  {
-    int first_line;
-    int first_column;
-    int last_line;
-    int last_column;
-    char *filename;
-  } YYLTYPE;
-  int yylex();
+  
+  #include "globals.h"
+  #include "AST.h"
+  #include "semantic.h"
+	#include "vector2.h"
+	int finalNode;
+	int yyerror(const char *s);
 
 
 
 /* Line 2638 of glr.c  */
-#line 54 "yaccin.tab.h"
+#line 52 "yaccin.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -100,14 +98,15 @@ typedef struct YYLTYPE
 /* "%code provides" blocks.  */
 
 /* Line 2638 of glr.c  */
-#line 94 "yaccin.y"
+#line 14 "yaccin.y"
 
 char *posToString(YYLTYPE pos);
 
 
 
+
 /* Line 2638 of glr.c  */
-#line 111 "yaccin.tab.h"
+#line 110 "yaccin.tab.h"
 
 
 extern YYSTYPE yylval;

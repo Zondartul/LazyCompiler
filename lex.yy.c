@@ -427,21 +427,24 @@ int lexnumtabs;
 void updatelloc(){
 	yylloc.first_line = yylloc.last_line;
     yylloc.first_column = yylloc.last_column;
-	lextokenstart = lextokenend;
+	yylloc.start = yylloc.end;
+	//lextokenstart = lextokenend;
     int i = 0;
 	for(i = 0; yytext[i] != '\0'; i++) {
         if(yytext[i] == '\n') {
             yylloc.last_line++;
             yylloc.last_column = 0;
 			lexnumtabs = 0;
-			lextokenend+=2;
-			lexlinestart = lextokenend;
-        }
+			//lextokenend+=2;
+			yylloc.end += 2; //string ending-specific
+			//lexlinestart = lextokenend;
+			yylloc.start = yylloc.end;
+		}
         else {
 			if(yytext[i] == '\t')
 			lexnumtabs++;
             yylloc.last_column++;
-			lextokenend++;
+			yylloc.end++;//lextokenend++;
 		}
     }
 }
@@ -455,7 +458,7 @@ char *stralloc(const char *str){
 	strcpy(str2,str);
 	return str2;
 }
-#line 459 "lex.yy.c"
+#line 462 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -606,13 +609,13 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 44 "lexin.l"
+#line 47 "lexin.l"
 
 
 //yylloc.first_column = yylloc.last_column;
 
 
-#line 616 "lex.yy.c"
+#line 619 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -697,108 +700,108 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 49 "lexin.l"
+#line 52 "lexin.l"
 {return(RETURN);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "lexin.l"
+#line 53 "lexin.l"
 {return(CLASS);}
 	YY_BREAK
 case 3:
-#line 52 "lexin.l"
-case 4:
-#line 53 "lexin.l"
-case 5:
-#line 54 "lexin.l"
-case 6:
 #line 55 "lexin.l"
+case 4:
+#line 56 "lexin.l"
+case 5:
+#line 57 "lexin.l"
+case 6:
+#line 58 "lexin.l"
 case 7:
 YY_RULE_SETUP
-#line 55 "lexin.l"
+#line 58 "lexin.l"
 {yylval = (int)stralloc(yytext); return(TYPE);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 56 "lexin.l"
+#line 59 "lexin.l"
 {return(END);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 57 "lexin.l"
+#line 60 "lexin.l"
 {return(IF);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 58 "lexin.l"
+#line 61 "lexin.l"
 {return(THEN);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 59 "lexin.l"
+#line 62 "lexin.l"
 {return(ELSE);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 60 "lexin.l"
+#line 63 "lexin.l"
 {return(ELSEIF);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 61 "lexin.l"
+#line 64 "lexin.l"
 {return(WHILE);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 62 "lexin.l"
+#line 65 "lexin.l"
 {yylval = (int)stralloc(yytext); return(ID);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 63 "lexin.l"
+#line 66 "lexin.l"
 {yylval = (int)stralloc(yytext); return(INTEGERX);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 64 "lexin.l"
+#line 67 "lexin.l"
 {yylval = (int)stralloc(yytext); return(INTEGERB);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 65 "lexin.l"
+#line 68 "lexin.l"
 {yylval = (int)stralloc(yytext); return(FLOATING);}//{float *F = malloc(sizeof(float)); sscanf(yytext,"%f",&F); yylval = (int)F; return(FLOATING);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 66 "lexin.l"
+#line 69 "lexin.l"
 {yylval = (int)stralloc(yytext); return(INTEGER);}//{sscanf(yytext,"%d",&yylval); return(INTEGER);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 67 "lexin.l"
+#line 70 "lexin.l"
 {yylval = (int)stralloc(yytext); return(CHARACTER);}//{sscanf(yytext,"%c",&yylval); return(CHARACTER);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 68 "lexin.l"
+#line 71 "lexin.l"
 {yylval = (int)stralloc(yytext); return(STRING);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 69 "lexin.l"
+#line 72 "lexin.l"
 ;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 70 "lexin.l"
+#line 73 "lexin.l"
 {return *yytext;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 71 "lexin.l"
+#line 74 "lexin.l"
 ECHO;
 	YY_BREAK
-#line 802 "lex.yy.c"
+#line 805 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1684,4 +1687,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 71 "lexin.l"
+#line 74 "lexin.l"

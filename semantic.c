@@ -1,6 +1,6 @@
+#include "globals.h"
 #include "semantic.h"
 #include "stdlib.h"
-#include "globals.h"
 #include "string.h"
 implementation_vector_of(ptr_symbol);
 implementation_vector_of(ptr_symbol_table);
@@ -26,6 +26,7 @@ void semantic_analyze(struct ast_node *node){
 	semantic_analyze_pad++;
 	printf("semantic got %s,",node->token.type);
 	if(node->token.value){printf(" \"%s\",",node->token.value);}
+	printf(" @ %d-%d,",node->token.pos1.first_line,node->token.pos2.last_line);
 	if(semantic_decl){printf(" declarative pass\n");}
 	else{printf(" imperative pass\n");}
 	if(!strcmp(node->token.type, "program")){
@@ -624,7 +625,7 @@ void print_code_segment(struct code_segment *CS){
 	printf("code segment '%s'->'%s'\n",CS->name,CS->scope->name);
 	int i;
 	for(i = 0; i < CS->commands.size; i++){
-		printf("%s\n",m(CS->commands,get,i));
+		printf(" %s\n",m(CS->commands,get,i));
 	}
 	printf("end code segment\n");
 }

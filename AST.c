@@ -1,8 +1,8 @@
+#include "globals.h"
 #include "AST.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include "string.h"
-#include "globals.h"
 
 implementation_vector_of(ptr_ast_node);
 implementation_vector_of(int);

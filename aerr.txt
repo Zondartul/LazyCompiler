@@ -1,1787 +1,1787 @@
-info: malloc(4)@ file "yaccin.y", line 244, func "main"
+info: malloc(4)@ file "yaccin.y", line 260, func "main"
 Starting parse
-info: malloc(8800)@ file "yaccin.tab.c", line 1651, func "yyinitGLRStack"
-info: malloc(64)@ file "yaccin.tab.c", line 1622, func "yyinitStateSet"
-info: malloc(16)@ file "yaccin.tab.c", line 1627, func "yyinitStateSet"
+info: malloc(10400)@ file "yaccin.tab.c", line 1704, func "yyinitGLRStack"
+info: malloc(64)@ file "yaccin.tab.c", line 1675, func "yyinitStateSet"
+info: malloc(16)@ file "yaccin.tab.c", line 1680, func "yyinitStateSet"
 Entering state 0
-Reading a token: info: malloc(40)@ file "lex.yy.c", line 1649, func "yy_flex_alloc"
-info: malloc(16386)@ file "lex.yy.c", line 1649, func "yy_flex_alloc"
-info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(40)@ file "lex.yy.c", line 1652, func "yy_flex_alloc"
+info: malloc(16386)@ file "lex.yy.c", line 1652, func "yy_flex_alloc"
+info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm typename ()
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00B31018, 12)info: old size = 4
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00681018, 12)info: old size = 4
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm typename ()
+-> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 31
-Reducing stack 0 by rule 29 (line 160):
-   $1 = nterm var_decl ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 29 (line 176):
+   $1 = nterm var_decl (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B31018, 24)info: old size = 12
+info: reallocalloc(00681018, 24)info: old size = 12
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm var_decl_list_ne ()
+-> $$ = nterm var_decl_list_ne (: )
 Entering state 33
-Next token is token ')' ()
-Reducing stack 0 by rule 26 (line 155):
-   $1 = nterm var_decl_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 26 (line 171):
+   $1 = nterm var_decl_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm var_decl_list ()
+-> $$ = nterm var_decl_list (: )
 Entering state 32
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 5 (line 116):
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm stmt_list ()
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 5 (line 132):
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm stmt_list (: )
 Entering state 62
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 77
-Reducing stack 0 by rule 23 (line 149):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '(' ()
-   $4 = nterm var_decl_list ()
-   $5 = token ')' ()
-   $6 = nterm stmt_list ()
-   $7 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 23 (line 165):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '(' (: )
+   $4 = nterm var_decl_list (: )
+   $5 = token ')' (: )
+   $6 = nterm stmt_list (: )
+   $7 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B38B38, 12)info: old size = 4
+info: reallocalloc(00681420, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B31018, 40)info: old size = 24
+info: reallocalloc(00681018, 40)info: old size = 24
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm func_def ()
+-> $$ = nterm func_def (: )
 Entering state 9
-Reducing stack 0 by rule 9 (line 124):
-   $1 = nterm func_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 9 (line 140):
+   $1 = nterm func_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 4
-Reducing stack 0 by rule 14 (line 133):
-   $1 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 14 (line 149):
+   $1 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00B38B60, 64)info: old size = 40
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00689328, 64)info: old size = 40
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm typename ()
+-> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 31
-Reducing stack 0 by rule 29 (line 160):
-   $1 = nterm var_decl ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 29 (line 176):
+   $1 = nterm var_decl (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl_list_ne ()
+-> $$ = nterm var_decl_list_ne (: )
 Entering state 33
-Next token is token ')' ()
-Reducing stack 0 by rule 26 (line 155):
-   $1 = nterm var_decl_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 26 (line 171):
+   $1 = nterm var_decl_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm var_decl_list ()
+-> $$ = nterm var_decl_list (: )
 Entering state 32
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 5 (line 116):
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm stmt_list ()
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 5 (line 132):
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm stmt_list (: )
 Entering state 62
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 77
-Reducing stack 0 by rule 23 (line 149):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '(' ()
-   $4 = nterm var_decl_list ()
-   $5 = token ')' ()
-   $6 = nterm stmt_list ()
-   $7 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 23 (line 165):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '(' (: )
+   $4 = nterm var_decl_list (: )
+   $5 = token ')' (: )
+   $6 = nterm stmt_list (: )
+   $7 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39060, 12)info: old size = 4
+info: reallocalloc(00689A20, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm func_def ()
+-> $$ = nterm func_def (: )
 Entering state 9
-Reducing stack 0 by rule 9 (line 124):
-   $1 = nterm func_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 9 (line 140):
+   $1 = nterm func_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B38DC0, 100)info: old size = 64
+info: reallocalloc(00689668, 100)info: old size = 64
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 13
-Reducing stack 0 by rule 13 (line 132):
-   $1 = nterm decl_stmt_list_ne ()
-   $2 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 13 (line 148):
+   $1 = nterm decl_stmt_list_ne (: )
+   $2 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B38DC0, 12)info: old size = 4
+info: reallocalloc(00689668, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 31
-Reducing stack 0 by rule 29 (line 160):
-   $1 = nterm var_decl ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 29 (line 176):
+   $1 = nterm var_decl (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl_list_ne ()
+-> $$ = nterm var_decl_list_ne (: )
 Entering state 33
-Next token is token ')' ()
-Reducing stack 0 by rule 26 (line 155):
-   $1 = nterm var_decl_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 26 (line 171):
+   $1 = nterm var_decl_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm var_decl_list ()
+-> $$ = nterm var_decl_list (: )
 Entering state 32
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 5 (line 116):
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm stmt_list ()
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 5 (line 132):
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm stmt_list (: )
 Entering state 62
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 77
-Reducing stack 0 by rule 23 (line 149):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '(' ()
-   $4 = nterm var_decl_list ()
-   $5 = token ')' ()
-   $6 = nterm stmt_list ()
-   $7 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 23 (line 165):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '(' (: )
+   $4 = nterm var_decl_list (: )
+   $5 = token ')' (: )
+   $6 = nterm stmt_list (: )
+   $7 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39590, 12)info: old size = 4
+info: reallocalloc(0068A148, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm func_def ()
+-> $$ = nterm func_def (: )
 Entering state 9
-Reducing stack 0 by rule 9 (line 124):
-   $1 = nterm func_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 9 (line 140):
+   $1 = nterm func_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39110, 156)info: old size = 100
+info: reallocalloc(00689B08, 156)info: old size = 100
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 13
-Reducing stack 0 by rule 13 (line 132):
-   $1 = nterm decl_stmt_list_ne ()
-   $2 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 13 (line 148):
+   $1 = nterm decl_stmt_list_ne (: )
+   $2 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B396F8, 12)info: old size = 4
+info: reallocalloc(00689B08, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ',' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ',' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 31
-Reducing stack 0 by rule 29 (line 160):
-   $1 = nterm var_decl ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 29 (line 176):
+   $1 = nterm var_decl (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl_list_ne ()
+-> $$ = nterm var_decl_list_ne (: )
 Entering state 33
-Next token is token ',' ()
-Shifting token ',' ()
+Next token is token ',' (: )
+Shifting token ',' (: )
 Entering state 46
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 70
-Reducing stack 0 by rule 28 (line 159):
-   $1 = nterm var_decl_list_ne ()
-   $2 = token ',' ()
-   $3 = nterm var_decl ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 28 (line 175):
+   $1 = nterm var_decl_list_ne (: )
+   $2 = token ',' (: )
+   $3 = nterm var_decl (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39B18, 12)info: old size = 4
+info: reallocalloc(0068A8C8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl_list_ne ()
+-> $$ = nterm var_decl_list_ne (: )
 Entering state 33
-Next token is token ')' ()
-Reducing stack 0 by rule 26 (line 155):
-   $1 = nterm var_decl_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 26 (line 171):
+   $1 = nterm var_decl_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B39BA8, 12)info: old size = 4
+info: reallocalloc(0068A990, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl_list ()
+-> $$ = nterm var_decl_list (: )
 Entering state 32
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 45
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 10
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 15
-Reducing stack 0 by rule 10 (line 125):
-   $1 = nterm var_decl ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 10 (line 141):
+   $1 = nterm var_decl (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 64
-Reducing stack 0 by rule 3 (line 112):
-   $1 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 3 (line 128):
+   $1 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39640, 240)info: old size = 156
+info: reallocalloc(0068A230, 240)info: old size = 156
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token IF ()
-Shifting token IF ()
+Reading a token: Next token is token IF (: )
+Shifting token IF (: )
 Entering state 59
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 75
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 85
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 54 (line 205):
-   $1 = nterm expr ()
-   $2 = token '=' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 54 (line 221):
+   $1 = nterm expr (: )
+   $2 = token '=' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B396A8, 12)info: old size = 4
+info: reallocalloc(0068A270, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 85
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 89
-Reading a token: Next token is token THEN ()
-Shifting token THEN ()
+Reading a token: Next token is token THEN (: )
+Shifting token THEN (: )
 Entering state 93
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(25)@ file "lexin.l", line 39, func "stralloc"
-Next token is token STRING ()
-Shifting token STRING ()
+Reading a token: info: malloc(25)@ file "lexin.l", line 42, func "stralloc"
+Next token is token STRING (: )
+Shifting token STRING (: )
 Entering state 26
-Reducing stack 0 by rule 45 (line 196):
-   $1 = token STRING ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 45 (line 212):
+   $1 = token STRING (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 38 (line 187):
-   $1 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 38 (line 203):
+   $1 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr_list_ne ()
+-> $$ = nterm expr_list_ne (: )
 Entering state 56
-Next token is token ')' ()
-Reducing stack 0 by rule 35 (line 182):
-   $1 = nterm expr_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 35 (line 198):
+   $1 = nterm expr_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm expr_list ()
+-> $$ = nterm expr_list (: )
 Entering state 55
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 71
-Reducing stack 0 by rule 47 (line 198):
-   $1 = nterm expr ()
-   $2 = token '(' ()
-   $3 = nterm expr_list ()
-   $4 = token ')' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 47 (line 214):
+   $1 = nterm expr (: )
+   $2 = token '(' (: )
+   $3 = nterm expr_list (: )
+   $4 = token ')' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3A338, 12)info: old size = 4
+info: reallocalloc(0068B3F8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token RETURN ()
-Shifting token RETURN ()
+Reading a token: Next token is token RETURN (: )
+Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 84
-Reducing stack 0 by rule 19 (line 140):
-   $1 = token RETURN ()
-   $2 = nterm expr ()
-   $3 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 19 (line 156):
+   $1 = token RETURN (: )
+   $2 = nterm expr (: )
+   $3 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3A6F8, 12)info: old size = 4
+info: reallocalloc(0068B940, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token ELSE ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ELSE (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3A788, 12)info: old size = 4
+info: reallocalloc(0068BA08, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 96
-Reducing stack 0 by rule 32 (line 167):
-   $1 = token IF ()
-   $2 = token '(' ()
-   $3 = nterm expr ()
-   $4 = token ')' ()
-   $5 = token THEN ()
-   $6 = nterm stmt_list ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 32 (line 183):
+   $1 = token IF (: )
+   $2 = token '(' (: )
+   $3 = nterm expr (: )
+   $4 = token ')' (: )
+   $5 = token THEN (: )
+   $6 = nterm stmt_list (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3A818, 12)info: old size = 4
+info: reallocalloc(0068BAD0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm if_then ()
+-> $$ = nterm if_then (: )
 Entering state 67
-Next token is token ELSE ()
-Shifting token ELSE ()
+Next token is token ELSE (: )
+Shifting token ELSE (: )
 Entering state 80
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 17
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 38 (line 187):
-   $1 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 38 (line 203):
+   $1 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B39E98, 364)info: old size = 240
+info: reallocalloc(0068AD98, 364)info: old size = 240
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm expr_list_ne ()
+-> $$ = nterm expr_list_ne (: )
 Entering state 56
-Next token is token ')' ()
-Reducing stack 0 by rule 35 (line 182):
-   $1 = nterm expr_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 35 (line 198):
+   $1 = nterm expr_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm expr_list ()
+-> $$ = nterm expr_list (: )
 Entering state 55
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 71
-Reducing stack 0 by rule 47 (line 198):
-   $1 = nterm expr ()
-   $2 = token '(' ()
-   $3 = nterm expr_list ()
-   $4 = token ')' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 47 (line 214):
+   $1 = nterm expr (: )
+   $2 = token '(' (: )
+   $3 = nterm expr_list (: )
+   $4 = token ')' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3AC08, 12)info: old size = 4
+info: reallocalloc(0068AE58, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 25 (line 152):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '=' ()
-   $4 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 25 (line 168):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '=' (: )
+   $4 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3AC98, 12)info: old size = 4
+info: reallocalloc(0068AE80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 10
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 15
-Reducing stack 0 by rule 10 (line 125):
-   $1 = nterm var_decl ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 10 (line 141):
+   $1 = nterm var_decl (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 64
-Reducing stack 0 by rule 3 (line 112):
-   $1 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 3 (line 128):
+   $1 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '*' ()
-Shifting token '*' ()
+Reading a token: Next token is token '*' (: )
+Shifting token '*' (: )
 Entering state 40
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 53
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 51 (line 202):
-   $1 = nterm expr ()
-   $2 = token '*' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 51 (line 218):
+   $1 = nterm expr (: )
+   $2 = token '*' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3B058, 12)info: old size = 4
+info: reallocalloc(0068C608, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 48
-Next token is token ';' ()
-Reducing stack 0 by rule 54 (line 205):
-   $1 = nterm expr ()
-   $2 = token '=' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ';' (: )
+Reducing stack 0 by rule 54 (line 221):
+   $1 = nterm expr (: )
+   $2 = token '=' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3B0E8, 12)info: old size = 4
+info: reallocalloc(0068C6D0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3B288, 12)info: old size = 4
+info: reallocalloc(0068C918, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 38 (line 187):
-   $1 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 38 (line 203):
+   $1 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr_list_ne ()
+-> $$ = nterm expr_list_ne (: )
 Entering state 56
-Next token is token ')' ()
-Reducing stack 0 by rule 35 (line 182):
-   $1 = nterm expr_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 35 (line 198):
+   $1 = nterm expr_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm expr_list ()
+-> $$ = nterm expr_list (: )
 Entering state 55
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 71
-Reducing stack 0 by rule 47 (line 198):
-   $1 = nterm expr ()
-   $2 = token '(' ()
-   $3 = nterm expr_list ()
-   $4 = token ')' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 47 (line 214):
+   $1 = nterm expr (: )
+   $2 = token '(' (: )
+   $3 = nterm expr_list (: )
+   $4 = token ')' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3B538, 12)info: old size = 4
+info: reallocalloc(0068CCE0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3B6D8, 12)info: old size = 4
+info: reallocalloc(0068CF28, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token WHILE ()
-Shifting token WHILE ()
+Reading a token: Next token is token WHILE (: )
+Shifting token WHILE (: )
 Entering state 60
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 76
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 86
-Reading a token: Next token is token ')' ()
-Shifting token ')' ()
+Reading a token: Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 90
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 38 (line 187):
-   $1 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 38 (line 203):
+   $1 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr_list_ne ()
+-> $$ = nterm expr_list_ne (: )
 Entering state 56
-Next token is token ')' ()
-Reducing stack 0 by rule 35 (line 182):
-   $1 = nterm expr_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ')' (: )
+Reducing stack 0 by rule 35 (line 198):
+   $1 = nterm expr_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm expr_list ()
+-> $$ = nterm expr_list (: )
 Entering state 55
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 71
-Reducing stack 0 by rule 47 (line 198):
-   $1 = nterm expr ()
-   $2 = token '(' ()
-   $3 = nterm expr_list ()
-   $4 = token ')' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 47 (line 214):
+   $1 = nterm expr (: )
+   $2 = token '(' (: )
+   $3 = nterm expr_list (: )
+   $4 = token ')' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3BA10, 12)info: old size = 4
+info: reallocalloc(0068D3B0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3AA80, 552)info: old size = 364
+info: reallocalloc(0068BE18, 552)info: old size = 364
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '/' ()
-Shifting token '/' ()
+Reading a token: Next token is token '/' (: )
+Shifting token '/' (: )
 Entering state 39
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 52
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 50 (line 201):
-   $1 = nterm expr ()
-   $2 = token '/' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 50 (line 217):
+   $1 = nterm expr (: )
+   $2 = token '/' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3ABB0, 12)info: old size = 4
+info: reallocalloc(0068D9B8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 48
-Next token is token ';' ()
-Reducing stack 0 by rule 54 (line 205):
-   $1 = nterm expr ()
-   $2 = token '=' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ';' (: )
+Reducing stack 0 by rule 54 (line 221):
+   $1 = nterm expr (: )
+   $2 = token '=' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3ABD8, 12)info: old size = 4
+info: reallocalloc(0068DA80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3C0C0, 12)info: old size = 4
+info: reallocalloc(0068DCC8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token IF ()
-Shifting token IF ()
+Reading a token: Next token is token IF (: )
+Shifting token IF (: )
 Entering state 59
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 75
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 85
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 54 (line 205):
-   $1 = nterm expr ()
-   $2 = token '=' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 54 (line 221):
+   $1 = nterm expr (: )
+   $2 = token '=' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3C260, 12)info: old size = 4
+info: reallocalloc(0068DF10, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 85
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 89
-Reading a token: Next token is token THEN ()
-Shifting token THEN ()
+Reading a token: Next token is token THEN (: )
+Shifting token THEN (: )
 Entering state 93
-Reading a token: Next token is token RETURN ()
-Shifting token RETURN ()
+Reading a token: Next token is token RETURN (: )
+Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 84
-Reducing stack 0 by rule 19 (line 140):
-   $1 = token RETURN ()
-   $2 = nterm expr ()
-   $3 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 19 (line 156):
+   $1 = token RETURN (: )
+   $2 = nterm expr (: )
+   $3 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 96
-Reducing stack 0 by rule 32 (line 167):
-   $1 = token IF ()
-   $2 = token '(' ()
-   $3 = nterm expr ()
-   $4 = token ')' ()
-   $5 = token THEN ()
-   $6 = nterm stmt_list ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 32 (line 183):
+   $1 = token IF (: )
+   $2 = token '(' (: )
+   $3 = nterm expr (: )
+   $4 = token ')' (: )
+   $5 = token THEN (: )
+   $6 = nterm stmt_list (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3C598, 12)info: old size = 4
+info: reallocalloc(0068E398, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm if_then ()
+-> $$ = nterm if_then (: )
 Entering state 67
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 79
-Reducing stack 0 by rule 30 (line 163):
-   $1 = nterm if_then ()
-   $2 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 30 (line 179):
+   $1 = nterm if_then (: )
+   $2 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm if_block ()
+-> $$ = nterm if_block (: )
 Entering state 66
-Reducing stack 0 by rule 15 (line 136):
-   $1 = nterm if_block ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 15 (line 152):
+   $1 = nterm if_block (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3C7C0, 12)info: old size = 4
+info: reallocalloc(0068E6A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3C850, 12)info: old size = 4
+info: reallocalloc(0068E768, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 94
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 97
-Reducing stack 0 by rule 34 (line 179):
-   $1 = token WHILE ()
-   $2 = token '(' ()
-   $3 = nterm expr ()
-   $4 = token ')' ()
-   $5 = nterm stmt_list ()
-   $6 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 34 (line 195):
+   $1 = token WHILE (: )
+   $2 = token '(' (: )
+   $3 = nterm expr (: )
+   $4 = token ')' (: )
+   $5 = nterm stmt_list (: )
+   $6 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3C8E0, 12)info: old size = 4
+info: reallocalloc(0068E830, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm while_loop ()
+-> $$ = nterm while_loop (: )
 Entering state 68
-Reducing stack 0 by rule 16 (line 137):
-   $1 = nterm while_loop ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 16 (line 153):
+   $1 = nterm while_loop (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CA80, 12)info: old size = 4
+info: reallocalloc(0068EA78, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token RETURN ()
-Shifting token RETURN ()
+Reading a token: Next token is token RETURN (: )
+Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' ()
-Shifting token ';' ()
+Reading a token: Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 84
-Reducing stack 0 by rule 19 (line 140):
-   $1 = token RETURN ()
-   $2 = nterm expr ()
-   $3 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 19 (line 156):
+   $1 = token RETURN (: )
+   $2 = nterm expr (: )
+   $3 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CCA8, 12)info: old size = 4
+info: reallocalloc(0068ED80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CA80, 24)info: old size = 12
+info: reallocalloc(0068EA78, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CCA8, 24)info: old size = 12
+info: reallocalloc(0068ED80, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3CD38, 12)info: old size = 4
+info: reallocalloc(0068EE48, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CCA8, 24)info: old size = 12
+info: reallocalloc(0068ED80, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 87
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 91
-Reducing stack 0 by rule 31 (line 164):
-   $1 = nterm if_then ()
-   $2 = token ELSE ()
-   $3 = nterm stmt_list ()
-   $4 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 31 (line 180):
+   $1 = nterm if_then (: )
+   $2 = token ELSE (: )
+   $3 = nterm stmt_list (: )
+   $4 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CD38, 12)info: old size = 4
+info: reallocalloc(0068EE48, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm if_block ()
+-> $$ = nterm if_block (: )
 Entering state 66
-Reducing stack 0 by rule 15 (line 136):
-   $1 = nterm if_block ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 15 (line 152):
+   $1 = nterm if_block (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3CF88, 12)info: old size = 4
+info: reallocalloc(0068F178, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 24 (line 151):
-   $1 = nterm typename ()
-   $2 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 24 (line 167):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 10
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 15
-Reducing stack 0 by rule 10 (line 125):
-   $1 = nterm var_decl ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 10 (line 141):
+   $1 = nterm var_decl (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 64
-Reducing stack 0 by rule 3 (line 112):
-   $1 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 3 (line 128):
+   $1 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 78
-Reducing stack 0 by rule 6 (line 119):
-   $1 = nterm stmt_list_ne ()
-   $2 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 6 (line 135):
+   $1 = nterm stmt_list_ne (: )
+   $2 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3D258, 12)info: old size = 4
+info: reallocalloc(0068F560, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3D2E8, 12)info: old size = 4
+info: reallocalloc(0068F628, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 62
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 77
-Reducing stack 0 by rule 23 (line 149):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '(' ()
-   $4 = nterm var_decl_list ()
-   $5 = token ')' ()
-   $6 = nterm stmt_list ()
-   $7 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 23 (line 165):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '(' (: )
+   $4 = nterm var_decl_list (: )
+   $5 = token ')' (: )
+   $6 = nterm stmt_list (: )
+   $7 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3D378, 12)info: old size = 4
+info: reallocalloc(0068F6F0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm func_def ()
+-> $$ = nterm func_def (: )
 Entering state 9
-Reducing stack 0 by rule 9 (line 124):
-   $1 = nterm func_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 9 (line 140):
+   $1 = nterm func_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 13
-Reducing stack 0 by rule 13 (line 132):
-   $1 = nterm decl_stmt_list_ne ()
-   $2 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 13 (line 148):
+   $1 = nterm decl_stmt_list_ne (: )
+   $2 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3D490, 12)info: old size = 4
+info: reallocalloc(0068F878, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: Next token is token CLASS ()
-Shifting token CLASS ()
+Reading a token: Next token is token CLASS (: )
+Shifting token CLASS (: )
 Entering state 1
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 11
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 17
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 25 (line 152):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '=' ()
-   $4 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 25 (line 168):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '=' (: )
+   $4 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3D670, 12)info: old size = 4
+info: reallocalloc(0068FB00, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3BBD0, 832)info: old size = 552
+info: reallocalloc(0068D618, 832)info: old size = 552
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
--> $$ = nterm var_decl ()
+-> $$ = nterm var_decl (: )
 Entering state 10
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 15
-Reducing stack 0 by rule 10 (line 125):
-   $1 = nterm var_decl ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 10 (line 141):
+   $1 = nterm var_decl (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 4
-Reducing stack 0 by rule 14 (line 133):
-   $1 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 14 (line 149):
+   $1 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-Next token is token TYPE ()
-Shifting token TYPE ()
+Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Next token is token TYPE (: )
+Shifting token TYPE (: )
 Entering state 2
-Reducing stack 0 by rule 21 (line 145):
-   $1 = token TYPE ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm typename ()
+Reducing stack 0 by rule 21 (line 161):
+   $1 = token TYPE (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' ()
-Shifting token '(' ()
+Reading a token: Next token is token '(' (: )
+Shifting token '(' (: )
 Entering state 18
-Reading a token: Next token is token ')' ()
-Reducing stack 0 by rule 27 (line 156):
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm var_decl_list ()
+Reading a token: Next token is token ')' (: )
+Reducing stack 0 by rule 27 (line 172):
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm var_decl_list (: )
 Entering state 32
-Next token is token ')' ()
-Shifting token ')' ()
+Next token is token ')' (: )
+Shifting token ')' (: )
 Entering state 45
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' ()
-Shifting token '=' ()
+Reading a token: Next token is token '=' (: )
+Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-Next token is token ID ()
-Shifting token ID ()
+Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
 Entering state 20
-Reducing stack 0 by rule 39 (line 190):
-   $1 = token ID ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '+' ()
-Shifting token '+' ()
+Reading a token: Next token is token '+' (: )
+Shifting token '+' (: )
 Entering state 36
-Reading a token: info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-Next token is token INTEGER ()
-Shifting token INTEGER ()
+Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Next token is token INTEGER (: )
+Shifting token INTEGER (: )
 Entering state 21
-Reducing stack 0 by rule 40 (line 191):
-   $1 = token INTEGER ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
--> $$ = nterm expr ()
+Reducing stack 0 by rule 40 (line 207):
+   $1 = token INTEGER (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
 Entering state 49
-Reading a token: Next token is token ';' ()
-Reducing stack 0 by rule 53 (line 204):
-   $1 = nterm expr ()
-   $2 = token '+' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token ';' (: )
+Reducing stack 0 by rule 53 (line 220):
+   $1 = nterm expr (: )
+   $2 = token '+' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3DBD0, 12)info: old size = 4
+info: reallocalloc(0068D818, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 48
-Next token is token ';' ()
-Reducing stack 0 by rule 54 (line 205):
-   $1 = nterm expr ()
-   $2 = token '=' ()
-   $3 = nterm expr ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Next token is token ';' (: )
+Reducing stack 0 by rule 54 (line 221):
+   $1 = nterm expr (: )
+   $2 = token '=' (: )
+   $3 = nterm expr (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3DC60, 12)info: old size = 4
+info: reallocalloc(00540368, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm expr ()
+-> $$ = nterm expr (: )
 Entering state 69
-Next token is token ';' ()
-Shifting token ';' ()
+Next token is token ';' (: )
+Shifting token ';' (: )
 Entering state 82
-Reducing stack 0 by rule 17 (line 138):
-   $1 = nterm expr ()
-   $2 = token ';' ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 17 (line 154):
+   $1 = nterm expr (: )
+   $2 = token ';' (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm imp_stmt ()
+-> $$ = nterm imp_stmt (: )
 Entering state 65
-Reducing stack 0 by rule 2 (line 111):
-   $1 = nterm imp_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt ()
+-> $$ = nterm stmt (: )
 Entering state 61
-Reducing stack 0 by rule 7 (line 120):
-   $1 = nterm stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm stmt_list_ne ()
+-> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 4 (line 115):
-   $1 = nterm stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
--> $$ = nterm stmt_list ()
+-> $$ = nterm stmt_list (: )
 Entering state 62
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 77
-Reducing stack 0 by rule 23 (line 149):
-   $1 = nterm typename ()
-   $2 = token ID ()
-   $3 = token '(' ()
-   $4 = nterm var_decl_list ()
-   $5 = token ')' ()
-   $6 = nterm stmt_list ()
-   $7 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 23 (line 165):
+   $1 = nterm typename (: )
+   $2 = token ID (: )
+   $3 = token '(' (: )
+   $4 = nterm var_decl_list (: )
+   $5 = token ')' (: )
+   $6 = nterm stmt_list (: )
+   $7 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3DF10, 12)info: old size = 4
+info: reallocalloc(00540730, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm func_def ()
+-> $$ = nterm func_def (: )
 Entering state 9
-Reducing stack 0 by rule 9 (line 124):
-   $1 = nterm func_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 9 (line 140):
+   $1 = nterm func_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 13
-Reducing stack 0 by rule 13 (line 132):
-   $1 = nterm decl_stmt_list_ne ()
-   $2 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 13 (line 148):
+   $1 = nterm decl_stmt_list_ne (: )
+   $2 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3E028, 12)info: old size = 4
+info: reallocalloc(005408B8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: Next token is token END ()
-Reducing stack 0 by rule 11 (line 128):
-   $1 = nterm decl_stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reading a token: Next token is token END (: )
+Reducing stack 0 by rule 11 (line 144):
+   $1 = nterm decl_stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3E0B8, 12)info: old size = 4
+info: reallocalloc(00540980, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list ()
+-> $$ = nterm decl_stmt_list (: )
 Entering state 16
-Next token is token END ()
-Shifting token END ()
+Next token is token END (: )
+Shifting token END (: )
 Entering state 19
-Reducing stack 0 by rule 20 (line 143):
-   $1 = token CLASS ()
-   $2 = token ID ()
-   $3 = nterm decl_stmt_list ()
-   $4 = token END ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 20 (line 159):
+   $1 = token CLASS (: )
+   $2 = token ID (: )
+   $3 = nterm decl_stmt_list (: )
+   $4 = token END (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm class_def ()
+-> $$ = nterm class_def (: )
 Entering state 7
-Reducing stack 0 by rule 8 (line 123):
-   $1 = nterm class_def ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 8 (line 139):
+   $1 = nterm class_def (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt ()
+-> $$ = nterm decl_stmt (: )
 Entering state 13
-Reducing stack 0 by rule 13 (line 132):
-   $1 = nterm decl_stmt_list_ne ()
-   $2 = nterm decl_stmt ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 13 (line 148):
+   $1 = nterm decl_stmt_list_ne (: )
+   $2 = nterm decl_stmt (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3E258, 12)info: old size = 4
+info: reallocalloc(00540BC8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list_ne ()
+-> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
 Reading a token: Now at end of input.
-Reducing stack 0 by rule 11 (line 128):
-   $1 = nterm decl_stmt_list_ne ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 11 (line 144):
+   $1 = nterm decl_stmt_list_ne (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3D490, 24)info: old size = 12
+info: reallocalloc(0068F878, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3E258, 24)info: old size = 12
+info: reallocalloc(00540BC8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00B3E2E8, 12)info: old size = 4
+info: reallocalloc(00540C90, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00B3E258, 24)info: old size = 12
+info: reallocalloc(00540BC8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm decl_stmt_list ()
+-> $$ = nterm decl_stmt_list (: )
 Entering state 5
-Reducing stack 0 by rule 1 (line 108):
-   $1 = nterm decl_stmt_list ()
-info: malloc(76)@ file "AST.c", line 19, func "node"
+Reducing stack 0 by rule 1 (line 124):
+   $1 = nterm decl_stmt_list (: )
+info: malloc(132)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
--> $$ = nterm program ()
+-> $$ = nterm program (: )
 Entering state 3
 Now at end of input.
-Shifting token $end ()
+Shifting token $end (: )
 Entering state 12
-Cleanup: popping token $end ()
-Cleanup: popping nterm program ()
-info: free(00B327D0)
-info: old size = 8800
-@ file "yaccin.tab.c", line 1731, func "yyfreeGLRStack"
-info: free(00B30F98)
+Cleanup: popping token $end (: )
+Cleanup: popping nterm program (: )
+info: free(006827D0)
+info: old size = 10400
+@ file "yaccin.tab.c", line 1784, func "yyfreeGLRStack"
+info: free(00680F98)
 info: old size = 64
-@ file "yaccin.tab.c", line 1638, func "yyfreeStateSet"
-info: free(00B30FF0)
+@ file "yaccin.tab.c", line 1691, func "yyfreeStateSet"
+info: free(00680FF0)
 info: old size = 16
-@ file "yaccin.tab.c", line 1639, func "yyfreeStateSet"
+@ file "yaccin.tab.c", line 1692, func "yyfreeStateSet"
 info: malloc(6)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(8)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(10)@ file "AST.c", line 105, func "ast_print_graph_helper"
@@ -1912,224 +1912,239 @@ info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(3)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(3)@ file "lexin.l", line 42, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: reallocalloc(00530F80, 12)info: old size = 4
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: reallocalloc(00543900, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00530F60, 12)info: old size = 4
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(005438E0, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(005310F0, 12)info: old size = 4
+info: reallocalloc(00543A70, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00531078, 24)info: old size = 12
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(005439F8, 24)info: old size = 12
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: reallocalloc(005314C8, 12)info: old size = 4
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: reallocalloc(00543E48, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00531250, 24)info: old size = 12
+info: reallocalloc(00543BD0, 24)info: old size = 12
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00531328, 40)info: old size = 24
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(00543CA8, 40)info: old size = 24
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: reallocalloc(00531650, 12)info: old size = 4
+info: reallocalloc(00543FD0, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(3)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00530F00, 12)info: old size = 4
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(3)@ file "lexin.l", line 42, func "stralloc"
+info: reallocalloc(00543880, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00530F20, 12)info: old size = 4
+info: reallocalloc(005438A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00530F20, 12)info: old size = 4
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00531910, 24)info: old size = 12
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(18)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(005438A0, 12)info: old size = 4
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(18)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00531A88, 12)info: old size = 4
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(17)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(14)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00531B10, 12)info: old size = 4
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(005442E0, 24)info: old size = 12
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531820, 24)info: old size = 12
+info: malloc(27)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(005444F8, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00531848, 24)info: old size = 12
+info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544578, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(14)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544550, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+info: reallocalloc(005441A0, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(005441C8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(16)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00531780, 12)info: old size = 4
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(00544100, 12)info: old size = 4
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00531D58, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544840, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00531B80, 24)info: old size = 12
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544550, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531B30, 24)info: old size = 12
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+info: reallocalloc(00544600, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00531DF0, 40)info: old size = 24
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(13)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544550, 64)info: old size = 40
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(13)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00531E60, 40)info: old size = 24
+info: reallocalloc(00544940, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(19)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00532180, 12)info: old size = 4
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(19)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544C58, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00532210, 24)info: old size = 12
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(27)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544CE8, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(13)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00530FF0, 24)info: old size = 12
+info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(13)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544D70, 40)info: old size = 24
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(00543970, 24)info: old size = 12
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: reallocalloc(00531A58, 40)info: old size = 24
+info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: reallocalloc(005444C8, 40)info: old size = 24
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00532498, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00544FC0, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(005322A8, 40)info: old size = 24
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(10)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00531EE8, 64)info: old size = 40
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
-info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(6)@ file "semantic.c", line 666, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 676, func "emit_code"
-info: reallocalloc(00532790, 12)info: old size = 4
+info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(00545210, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(16)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(6)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
+info: reallocalloc(005452B8, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 No stack.

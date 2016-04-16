@@ -12,21 +12,24 @@ int lexnumtabs;
 void updatelloc(){
 	yylloc.first_line = yylloc.last_line;
     yylloc.first_column = yylloc.last_column;
-	lextokenstart = lextokenend;
+	yylloc.start = yylloc.end;
+	//lextokenstart = lextokenend;
     int i = 0;
 	for(i = 0; yytext[i] != '\0'; i++) {
         if(yytext[i] == '\n') {
             yylloc.last_line++;
             yylloc.last_column = 0;
 			lexnumtabs = 0;
-			lextokenend+=2;
-			lexlinestart = lextokenend;
-        }
+			//lextokenend+=2;
+			yylloc.end += 2; //string ending-specific
+			//lexlinestart = lextokenend;
+			yylloc.start = yylloc.end;
+		}
         else {
 			if(yytext[i] == '\t')
 			lexnumtabs++;
             yylloc.last_column++;
-			lextokenend++;
+			yylloc.end++;//lextokenend++;
 		}
     }
 }

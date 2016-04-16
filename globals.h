@@ -22,4 +22,15 @@ void printmemory(FILE *fp);
 #define error(...) newerror(__FILE__,__LINE__,__func__,__VA_ARGS__)
 void newerror(const char* file, int line, const char* func, const char *fmt, ...);
 #define err(...) fprintf(stderr, __VA_ARGS__)
+int yylex();
+typedef struct YYLTYPE
+{
+int first_line;
+int first_column;
+int last_line;
+int last_column;
+int start;
+int end;
+char *filename;
+} YYLTYPE;
 #endif
