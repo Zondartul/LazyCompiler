@@ -1,5 +1,7 @@
 int import(int arg) end
-int export(int arg) end
+int export(int arg)
+	return arg;
+end
 int print(string str) end
 
 int main(int argc, int argv)

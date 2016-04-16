@@ -23,6 +23,7 @@ void printmemory(FILE *fp);
 void newerror(const char* file, int line, const char* func, const char *fmt, ...);
 #define err(...) fprintf(stderr, __VA_ARGS__)
 int yylex();
+char *get_source_text(int start, int end);
 typedef struct YYLTYPE
 {
 int first_line;

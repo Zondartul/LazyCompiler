@@ -2,34 +2,39 @@
 #include "yaccin.tab.h"
 extern YYLTYPE yylloc;
 //#define YY_USER_ACTION yylloc.last_column += yyleng; if((*yytext != ' ')&&(*yytext != '\n')&&(*yytext != '\t')){printf("Lexxed token [%s]\n", yytext);} 
-#define YY_USER_ACTION updatelloc(); if((*yytext != ' ')&&(*yytext != '\n')&&(*yytext != '\t')){printf("Lexxed token [%s]\n", yytext);printmemory(stdout);} 
+#define YY_USER_ACTION updatelloc();printf("Lexxed token [%s]=[%s]\n", yytext,get_source_text(yylloc.start,yylloc.end));printmemory(stdout);
  
 #include "globals.h"
 int lextokenstart;
 int lextokenend; 
 int lexlinestart;
 int lexnumtabs;
+int lexnewline = 0;
 void updatelloc(){
-	yylloc.first_line = yylloc.last_line;
-    yylloc.first_column = yylloc.last_column;
+	//yylloc.first_line = yylloc.last_line;
+    //yylloc.first_column = yylloc.last_column;	
 	yylloc.start = yylloc.end;
 	//lextokenstart = lextokenend;
     int i = 0;
 	for(i = 0; yytext[i] != '\0'; i++) {
+		yylloc.end++; 
         if(yytext[i] == '\n') {
-            yylloc.last_line++;
-            yylloc.last_column = 0;
-			lexnumtabs = 0;
+			//yylloc.end++;
+            //yylloc.last_line++;
+            //yylloc.last_column = 0;
+			//lexnumtabs = 0;
 			//lextokenend+=2;
-			yylloc.end += 2; //string ending-specific
+			//string ending-specific
 			//lexlinestart = lextokenend;
-			yylloc.start = yylloc.end;
+			printf("lex: newline i=%d\n",i);
+			//lexnewline = 1;
 		}
-        else {
-			if(yytext[i] == '\t')
-			lexnumtabs++;
-            yylloc.last_column++;
-			yylloc.end++;//lextokenend++;
+        else{
+			//if(yytext[i] == '\t')
+			//lexnumtabs++;
+            //yylloc.last_column++;
+			//lextokenend++;
+			//lexnewline = 0;
 		}
     }
 }
@@ -69,5 +74,5 @@ while	{return(WHILE);}
 (0|([1-9][0-9]*))				{yylval = (int)stralloc(yytext); return(INTEGER);}//{sscanf(yytext,"%d",&yylval); return(INTEGER);}
 \'.\' 							{yylval = (int)stralloc(yytext); return(CHARACTER);}//{sscanf(yytext,"%c",&yylval); return(CHARACTER);}
 \".*\"							{yylval = (int)stralloc(yytext); return(STRING);}
-[ \t\n]	;
+[ \t\n\r]							;
 .	{return *yytext;}

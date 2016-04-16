@@ -9,12 +9,7 @@ typedef struct ast_token{
 	const char *type;
 	int production;
 	char *value;
-	YYLTYPE pos1;
-	YYLTYPE pos2;
-	// int start_line;
-	// int start_char;
-	// int end_line;
-	// int end_char;
+	YYLTYPE pos;
 } ast_token;
 
 definition_vector_of(int);

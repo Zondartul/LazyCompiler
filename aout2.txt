@@ -13,7 +13,10 @@ program
  | +var_decl_list
  | |\var_decl "arg"
  | | \typename "int"
- | \stmt_list "<empty>"
+ | \stmt_list
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_id "arg"
  +decl_stmt
  |\func_def "print"
  | +typename "int"

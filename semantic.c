@@ -26,9 +26,11 @@ void semantic_analyze(struct ast_node *node){
 	semantic_analyze_pad++;
 	printf("semantic got %s,",node->token.type);
 	if(node->token.value){printf(" \"%s\",",node->token.value);}
-	printf(" @ %d-%d,",node->token.pos1.first_line,node->token.pos2.last_line);
+	printf(" @ %d-%d,",node->token.pos.start,node->token.pos.end);
 	if(semantic_decl){printf(" declarative pass\n");}
 	else{printf(" imperative pass\n");}
+	printf("-----------------\n%s\n-----------------\n",
+		get_source_text(node->token.pos.start,node->token.pos.end));
 	if(!strcmp(node->token.type, "program")){
 		//printf("got program\n");
 		new_symbol_table();
@@ -91,7 +93,10 @@ void semantic_analyze(struct ast_node *node){
 			currentSymbolTable = S->symfunction.scope;
 			push_code_segment();
 			new_code_segment();
-			emit_code("//function %s",name);
+			YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
+			YYLTYPE pos2 = ast_get_child(node,1)->token.pos;
+			
+			emit_code("/* %s %s(%s) */",get_source_text(pos1.start,pos1.end), name, get_source_text(pos2.start,pos2.end));
 			semantic_analyze(ast_get_child(node,2));
 			S->symfunction.code = currentCodeSegment;
 			pop_code_segment();
@@ -171,14 +176,27 @@ void semantic_analyze(struct ast_node *node){
 		//printf("got imp_stmt\n");
 		switch(node->token.production){
 			case(0)://if_block
+				semantic_analyze(ast_get_child(node,0));
+				break;
 			case(1)://while_loop
+				semantic_analyze(ast_get_child(node,0));
+				break;
 			case(2)://expr
+				emit_code("/* %s */",
+					get_source_text(node->token.pos.start,
+									node->token.pos.end));
 				semantic_analyze(ast_get_child(node,0));
 				break;
 			case(3)://return
+				emit_code("/* %s */",
+					get_source_text(node->token.pos.start,
+									node->token.pos.end));
 				emit_code("RETURN");
 				break;
 			case(4)://return expr
+				emit_code("/* %s */",
+					get_source_text(node->token.pos.start,
+									node->token.pos.end));
 				semantic_analyze(ast_get_child(node,0));
 				emit_code("RETURN %s",pop_expr());
 				break;
@@ -206,13 +224,16 @@ void semantic_analyze(struct ast_node *node){
 		//imperative pass: 
 		//printf("got if_then\n");
 		const char *CSname;
+		YYLTYPE pos;
 		switch(node->token.production){
 			case(0): //IF ( expr ) THEN stmt_list
 				//push new symbol table
-				emit_code("//if (expr) then stmt_list");
+				pos = ast_get_child(node,0)->token.pos;
+				emit_code("/* if(%s) */",get_source_text(pos.start,pos.end));
 				semantic_analyze(ast_get_child(node,0));
 				const char *nextLabel = IR_next_name("lbl");
 				emit_code("IFNOT %s %s", pop_expr(), nextLabel); 
+				emit_code("/* then */");
 				push_symbol_table();
 				new_symbol_table();
 				push_code_segment();
@@ -226,6 +247,7 @@ void semantic_analyze(struct ast_node *node){
 				pop_symbol_table();
 				emit_code("INSERT %s", CSname);
 				emit_code("LABEL %s", nextLabel);
+				emit_code("/* end */");
 				//pop symbol table
 				break;
 			case(1): //if_then ELSEIF ( expr ) THEN stmt_list
@@ -256,6 +278,8 @@ void semantic_analyze(struct ast_node *node){
 		//imperative pass: 
 		//printf("got while_loop\n");
 		semantic_analyze(ast_get_child(node,0));
+		YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
+		emit_code("/* while(%s) */",get_source_text(pos1.start,pos1.end));
 		const char *label1 = IR_next_name("lbl");
 		const char *label2 = IR_next_name("lbl");
 		emit_code("LABEL %s",label1);
@@ -271,6 +295,7 @@ void semantic_analyze(struct ast_node *node){
 		emit_code("INSERT %s",CSname);
 		emit_code("GOTO %s",label1);
 		emit_code("LABEL %s",label2);
+		emit_code("/* end */");
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "class_def")){

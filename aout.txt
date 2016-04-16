@@ -9,316 +9,529 @@ For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>...
 Reading symbols from C:\Stride\LazyComp\data\a.exe...done.
 (gdb) Starting program: C:\Stride\LazyComp\data/a.exe lazy2.txt
-[New Thread 2408.0xce8]
-sizeof ast_node = '132'
+[New Thread 2600.0xdc0]
+sizeof ast_node = '104'
 test diff = '4', size = '4'
-Lexxed token [int]
-num allocs: 5, mem used: 26906
+Lexxed token [int]=[int]
+num allocs: 6, mem used: 26910
 node "typename": [int] (0/0)
-Lexxed token [import]
-num allocs: 8, mem used: 27046
-Lexxed token [(]
-num allocs: 9, mem used: 27053
-Lexxed token [int]
-num allocs: 9, mem used: 27053
+Lexxed token [ ]=[ ]
+num allocs: 10, mem used: 27024
+Lexxed token [import]=[import]
+num allocs: 11, mem used: 27031
+Lexxed token [(]=[(]
+num allocs: 13, mem used: 27040
+Lexxed token [int]=[int]
+num allocs: 14, mem used: 27044
 node "typename": [int] (0/0)
-Lexxed token [arg]
-num allocs: 11, mem used: 27197
-Lexxed token [)]
-num allocs: 12, mem used: 27201
+Lexxed token [ ]=[ ]
+num allocs: 17, mem used: 27162
+Lexxed token [arg]=[arg]
+num allocs: 18, mem used: 27166
+Lexxed token [)]=[)]
+num allocs: 20, mem used: 27172
 node "var_decl": [arg] (0/1)
 node "var_decl_list_ne": [(null)] (1/1)
 node "var_decl_list": [(null)] (0/1)
 unroll [var_decl_list]  unroll done
-Lexxed token [end]
-num allocs: 18, mem used: 27621
+Lexxed token [ ]=[ ]
+num allocs: 27, mem used: 27510
+Lexxed token [end]=[end]
+num allocs: 28, mem used: 27514
 node "stmt_list": [<empty>] (1/0)
 FUNC_DEF ID = [import]
 node "func_def": [import] (0/3)
 node "decl_stmt": [(null)] (1/1)
 node "decl_stmt_list_ne": [(null)] (1/1)
-Lexxed token [int]
-num allocs: 25, mem used: 28185
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 36, mem used: 27968
+Lexxed token [int]=[int]
+num allocs: 37, mem used: 27972
 node "typename": [int] (0/0)
-Lexxed token [export]
-num allocs: 27, mem used: 28321
-Lexxed token [(]
-num allocs: 28, mem used: 28328
-Lexxed token [int]
-num allocs: 28, mem used: 28328
+Lexxed token [ ]=[ ]
+num allocs: 40, mem used: 28082
+Lexxed token [export]=[export]
+num allocs: 41, mem used: 28089
+Lexxed token [(]=[(]
+num allocs: 43, mem used: 28098
+Lexxed token [int]=[int]
+num allocs: 44, mem used: 28102
 node "typename": [int] (0/0)
-Lexxed token [arg]
-num allocs: 30, mem used: 28488
-Lexxed token [)]
-num allocs: 31, mem used: 28492
+Lexxed token [ ]=[ ]
+num allocs: 47, mem used: 28236
+Lexxed token [arg]=[arg]
+num allocs: 48, mem used: 28240
+Lexxed token [)]=[)]
+num allocs: 50, mem used: 28246
 node "var_decl": [arg] (0/1)
 node "var_decl_list_ne": [(null)] (1/1)
 node "var_decl_list": [(null)] (0/1)
 unroll [var_decl_list]  unroll done
-Lexxed token [end]
-num allocs: 37, mem used: 28900
-node "stmt_list": [<empty>] (1/0)
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 57, mem used: 28572
+Lexxed token [	]=[	]
+num allocs: 58, mem used: 28574
+Lexxed token [return]=[return]
+num allocs: 59, mem used: 28581
+Lexxed token [ ]=[ ]
+num allocs: 60, mem used: 28583
+Lexxed token [arg]=[arg]
+num allocs: 61, mem used: 28587
+node "expr_id": [arg] (0/0)
+Lexxed token [;]=[;]
+num allocs: 64, mem used: 28697
+node "imp_stmt": [(null)] (4/1)
+node "stmt": [(null)] (0/1)
+node "stmt_list_ne": [(null)] (1/1)
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 71, mem used: 29059
+Lexxed token [end]=[end]
+num allocs: 72, mem used: 29063
+node "stmt_list": [(null)] (0/1)
+unroll [stmt_list]  unroll done
 FUNC_DEF ID = [export]
 node "func_def": [export] (0/3)
 node "decl_stmt": [(null)] (1/1)
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [int]
-num allocs: 44, mem used: 29492
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 81, mem used: 29513
+Lexxed token [int]=[int]
+num allocs: 82, mem used: 29517
 node "typename": [int] (0/0)
-Lexxed token [print]
-num allocs: 46, mem used: 29628
-Lexxed token [(]
-num allocs: 47, mem used: 29634
-Lexxed token [string]
-num allocs: 47, mem used: 29634
+Lexxed token [ ]=[ ]
+num allocs: 85, mem used: 29627
+Lexxed token [print]=[print]
+num allocs: 86, mem used: 29633
+Lexxed token [(]=[(]
+num allocs: 88, mem used: 29641
+Lexxed token [string]=[string]
+num allocs: 89, mem used: 29648
 node "typename": [string] (0/0)
-Lexxed token [str]
-num allocs: 49, mem used: 29773
-Lexxed token [)]
-num allocs: 50, mem used: 29777
+Lexxed token [ ]=[ ]
+num allocs: 92, mem used: 29761
+Lexxed token [str]=[str]
+num allocs: 93, mem used: 29765
+Lexxed token [)]=[)]
+num allocs: 95, mem used: 29771
 node "var_decl": [str] (0/1)
 node "var_decl_list_ne": [(null)] (1/1)
 node "var_decl_list": [(null)] (0/1)
 unroll [var_decl_list]  unroll done
-Lexxed token [end]
-num allocs: 56, mem used: 30185
+Lexxed token [ ]=[ ]
+num allocs: 102, mem used: 30153
+Lexxed token [end]=[end]
+num allocs: 103, mem used: 30157
 node "stmt_list": [<empty>] (1/0)
 FUNC_DEF ID = [print]
 node "func_def": [print] (0/3)
 node "decl_stmt": [(null)] (1/1)
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [int]
-num allocs: 63, mem used: 30797
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 111, mem used: 30603
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 112, mem used: 30605
+Lexxed token [int]=[int]
+num allocs: 113, mem used: 30609
 node "typename": [int] (0/0)
-Lexxed token [main]
-num allocs: 65, mem used: 30933
-Lexxed token [(]
-num allocs: 66, mem used: 30938
-Lexxed token [int]
-num allocs: 66, mem used: 30938
+Lexxed token [ ]=[ ]
+num allocs: 116, mem used: 30719
+Lexxed token [main]=[main]
+num allocs: 117, mem used: 30724
+Lexxed token [(]=[(]
+num allocs: 119, mem used: 30731
+Lexxed token [int]=[int]
+num allocs: 120, mem used: 30735
 node "typename": [int] (0/0)
-Lexxed token [argc]
-num allocs: 68, mem used: 31074
-Lexxed token [,]
-num allocs: 69, mem used: 31079
+Lexxed token [ ]=[ ]
+num allocs: 123, mem used: 30845
+Lexxed token [argc]=[argc]
+num allocs: 124, mem used: 30850
+Lexxed token [,]=[,]
+num allocs: 126, mem used: 30857
 node "var_decl": [argc] (0/1)
 node "var_decl_list_ne": [(null)] (1/1)
-Lexxed token [int]
-num allocs: 73, mem used: 31351
+Lexxed token [ ]=[ ]
+num allocs: 131, mem used: 31075
+Lexxed token [int]=[int]
+num allocs: 132, mem used: 31079
 node "typename": [int] (0/0)
-Lexxed token [argv]
-num allocs: 75, mem used: 31487
-Lexxed token [)]
-num allocs: 76, mem used: 31492
+Lexxed token [ ]=[ ]
+num allocs: 135, mem used: 31189
+Lexxed token [argv]=[argv]
+num allocs: 136, mem used: 31194
+Lexxed token [)]=[)]
+num allocs: 138, mem used: 31201
 node "var_decl": [argv] (0/1)
 node "var_decl_list_ne": [(null)] (0/2)
 node "var_decl_list": [(null)] (0/1)
 unroll [var_decl_list]  unroll done
-Lexxed token [char]
-num allocs: 82, mem used: 31916
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 145, mem used: 31543
+Lexxed token [	]=[	]
+num allocs: 146, mem used: 31545
+Lexxed token [char]=[char]
+num allocs: 147, mem used: 31550
 node "typename": [char] (0/0)
-Lexxed token [C]
-num allocs: 84, mem used: 32053
-Lexxed token [;]
-num allocs: 85, mem used: 32055
+Lexxed token [ ]=[ ]
+num allocs: 150, mem used: 31745
+Lexxed token [C]=[C]
+num allocs: 151, mem used: 31747
+Lexxed token [;]=[;]
+num allocs: 153, mem used: 31751
 node "var_decl": [C] (0/1)
 node "decl_stmt": [(null)] (2/1)
 node "stmt": [(null)] (1/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [if]
-num allocs: 93, mem used: 32683
-Lexxed token [(]
-num allocs: 93, mem used: 32683
-Lexxed token [argc]
-num allocs: 93, mem used: 32683
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 162, mem used: 32185
+Lexxed token [	]=[	]
+num allocs: 163, mem used: 32187
+Lexxed token [if]=[if]
+num allocs: 164, mem used: 32190
+Lexxed token [(]=[(]
+num allocs: 165, mem used: 32192
+Lexxed token [argc]=[argc]
+num allocs: 166, mem used: 32197
 node "expr_id": [argc] (0/0)
-Lexxed token [=]
-num allocs: 95, mem used: 32820
-Lexxed token [0]
-num allocs: 95, mem used: 32820
+Lexxed token [ ]=[ ]
+num allocs: 169, mem used: 32308
+Lexxed token [=]=[=]
+num allocs: 170, mem used: 32310
+Lexxed token [ ]=[ ]
+num allocs: 171, mem used: 32312
+Lexxed token [0]=[0]
+num allocs: 172, mem used: 32314
 node "expr_const": [0] (0/0)
-Lexxed token [)]
-num allocs: 97, mem used: 32954
+Lexxed token [)]=[)]
+num allocs: 175, mem used: 32422
 node "expr_=": [(null)] (0/2)
-Lexxed token [then]
-num allocs: 99, mem used: 33098
-Lexxed token [print]
-num allocs: 99, mem used: 33098
+Lexxed token [ ]=[ ]
+num allocs: 178, mem used: 32540
+Lexxed token [then]=[then]
+num allocs: 179, mem used: 32545
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 180, mem used: 32547
+Lexxed token [	]=[	]
+num allocs: 181, mem used: 32549
+Lexxed token [	]=[	]
+num allocs: 182, mem used: 32551
+Lexxed token [print]=[print]
+num allocs: 183, mem used: 32557
 node "expr_id": [print] (0/0)
-Lexxed token [(]
-num allocs: 101, mem used: 33236
-Lexxed token ["usage: a.exe arg1 arg2"]
-num allocs: 101, mem used: 33236
+Lexxed token [(]=[(]
+num allocs: 186, mem used: 32669
+Lexxed token ["usage: a.exe arg1 arg2"]=["usage: a.exe arg1 arg2"]
+num allocs: 187, mem used: 32694
 node "expr_const": ["usage: a.exe arg1 arg2"] (5/0)
-Lexxed token [)]
-num allocs: 103, mem used: 33393
+Lexxed token [)]=[)]
+num allocs: 190, mem used: 32825
 node "expr_list_ne": [(null)] (1/1)
 node "expr_list": [(null)] (0/1)
 unroll [expr_list]  unroll done
 node "expr_call": [(null)] (0/2)
-Lexxed token [;]
-num allocs: 109, mem used: 33809
+Lexxed token [;]=[;]
+num allocs: 197, mem used: 33159
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [return]
-num allocs: 115, mem used: 34217
-Lexxed token [1]
-num allocs: 115, mem used: 34217
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 204, mem used: 33485
+Lexxed token [	]=[	]
+num allocs: 205, mem used: 33487
+Lexxed token [	]=[	]
+num allocs: 206, mem used: 33489
+Lexxed token [return]=[return]
+num allocs: 207, mem used: 33496
+Lexxed token [ ]=[ ]
+num allocs: 208, mem used: 33498
+Lexxed token [1]=[1]
+num allocs: 209, mem used: 33500
 node "expr_const": [1] (0/0)
-Lexxed token [;]
-num allocs: 117, mem used: 34351
+Lexxed token [;]=[;]
+num allocs: 212, mem used: 33608
 node "imp_stmt": [(null)] (4/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [else]
-num allocs: 123, mem used: 34767
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 219, mem used: 33942
+Lexxed token [	]=[	]
+num allocs: 220, mem used: 33944
+Lexxed token [else]=[else]
+num allocs: 221, mem used: 33949
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 node "if_then": [(null)] (0/2)
-Lexxed token [float]
-num allocs: 127, mem used: 35055
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 226, mem used: 34307
+Lexxed token [	]=[	]
+num allocs: 227, mem used: 34309
+Lexxed token [	]=[	]
+num allocs: 228, mem used: 34311
+Lexxed token [float]=[float]
+num allocs: 229, mem used: 34317
 node "typename": [float] (0/0)
-Lexxed token [A]
-num allocs: 129, mem used: 35193
-Lexxed token [=]
-num allocs: 130, mem used: 35195
-Lexxed token [import]
-num allocs: 130, mem used: 35195
+Lexxed token [ ]=[ ]
+num allocs: 232, mem used: 34429
+Lexxed token [A]=[A]
+num allocs: 233, mem used: 34431
+Lexxed token [ ]=[ ]
+num allocs: 235, mem used: 34435
+Lexxed token [=]=[=]
+num allocs: 236, mem used: 34437
+Lexxed token [ ]=[ ]
+num allocs: 237, mem used: 34439
+Lexxed token [import]=[import]
+num allocs: 238, mem used: 34446
 node "expr_id": [import] (0/0)
-Lexxed token [(]
-num allocs: 132, mem used: 35334
-Lexxed token [argc]
-num allocs: 132, mem used: 35334
+Lexxed token [(]=[(]
+num allocs: 241, mem used: 34559
+Lexxed token [argc]=[argc]
+num allocs: 242, mem used: 34564
 node "expr_id": [argc] (0/0)
-Lexxed token [)]
-num allocs: 134, mem used: 35471
+Lexxed token [)]=[)]
+num allocs: 245, mem used: 34675
 node "expr_list_ne": [(null)] (1/1)
 node "expr_list": [(null)] (0/1)
 unroll [expr_list]  unroll done
 node "expr_call": [(null)] (0/2)
-Lexxed token [;]
-num allocs: 140, mem used: 36011
+Lexxed token [;]=[;]
+num allocs: 252, mem used: 35009
 node "var_decl_assign": [A] (1/2)
 node "decl_stmt": [(null)] (2/1)
 node "stmt": [(null)] (1/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [A]
-num allocs: 148, mem used: 36563
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 261, mem used: 35451
+Lexxed token [	]=[	]
+num allocs: 262, mem used: 35453
+Lexxed token [	]=[	]
+num allocs: 263, mem used: 35455
+Lexxed token [A]=[A]
+num allocs: 264, mem used: 35457
 node "expr_id": [A] (0/0)
-Lexxed token [=]
-num allocs: 150, mem used: 36697
-Lexxed token [A]
-num allocs: 150, mem used: 36697
+Lexxed token [ ]=[ ]
+num allocs: 267, mem used: 35565
+Lexxed token [=]=[=]
+num allocs: 268, mem used: 35567
+Lexxed token [ ]=[ ]
+num allocs: 269, mem used: 35569
+Lexxed token [A]=[A]
+num allocs: 270, mem used: 35571
 node "expr_id": [A] (0/0)
-Lexxed token [*]
-num allocs: 152, mem used: 36831
-Lexxed token [argv]
-num allocs: 152, mem used: 36831
+Lexxed token [*]=[*]
+num allocs: 273, mem used: 35679
+Lexxed token [argv]=[argv]
+num allocs: 274, mem used: 35684
 node "expr_id": [argv] (0/0)
-Lexxed token [;]
-num allocs: 154, mem used: 36968
+Lexxed token [;]=[;]
+num allocs: 277, mem used: 35795
 node "expr_*": [(null)] (0/2)
 node "expr_=": [(null)] (0/2)
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [export]
-num allocs: 164, mem used: 37672
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 288, mem used: 36361
+Lexxed token [	]=[	]
+num allocs: 289, mem used: 36363
+Lexxed token [	]=[	]
+num allocs: 290, mem used: 36365
+Lexxed token [export]=[export]
+num allocs: 291, mem used: 36372
 node "expr_id": [export] (0/0)
-Lexxed token [(]
-num allocs: 166, mem used: 37811
-Lexxed token [A]
-num allocs: 166, mem used: 37811
+Lexxed token [(]=[(]
+num allocs: 294, mem used: 36485
+Lexxed token [A]=[A]
+num allocs: 295, mem used: 36487
 node "expr_id": [A] (0/0)
-Lexxed token [)]
-num allocs: 168, mem used: 37945
+Lexxed token [)]=[)]
+num allocs: 298, mem used: 36595
 node "expr_list_ne": [(null)] (1/1)
 node "expr_list": [(null)] (0/1)
 unroll [expr_list]  unroll done
 node "expr_call": [(null)] (0/2)
-Lexxed token [;]
-num allocs: 174, mem used: 38361
+Lexxed token [;]=[;]
+num allocs: 305, mem used: 36929
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [while]
-num allocs: 180, mem used: 38777
-Lexxed token [(]
-num allocs: 180, mem used: 38777
-Lexxed token [A]
-num allocs: 180, mem used: 38777
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 312, mem used: 37263
+Lexxed token [	]=[	]
+num allocs: 313, mem used: 37265
+Lexxed token [	]=[	]
+num allocs: 314, mem used: 37267
+Lexxed token [while]=[while]
+num allocs: 315, mem used: 37273
+Lexxed token [(]=[(]
+num allocs: 316, mem used: 37275
+Lexxed token [A]=[A]
+num allocs: 317, mem used: 37277
 node "expr_id": [A] (0/0)
-Lexxed token [)]
-num allocs: 182, mem used: 38911
-Lexxed token [print]
-num allocs: 182, mem used: 38911
+Lexxed token [)]=[)]
+num allocs: 320, mem used: 37385
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 321, mem used: 37387
+Lexxed token [	]=[	]
+num allocs: 322, mem used: 37389
+Lexxed token [	]=[	]
+num allocs: 323, mem used: 37391
+Lexxed token [	]=[	]
+num allocs: 324, mem used: 37393
+Lexxed token [print]=[print]
+num allocs: 325, mem used: 37399
 node "expr_id": [print] (0/0)
-Lexxed token [(]
-num allocs: 184, mem used: 39049
-Lexxed token [A]
-num allocs: 184, mem used: 39049
+Lexxed token [(]=[(]
+num allocs: 328, mem used: 37511
+Lexxed token [A]=[A]
+num allocs: 329, mem used: 37513
 node "expr_id": [A] (0/0)
-Lexxed token [)]
-num allocs: 186, mem used: 39183
+Lexxed token [)]=[)]
+num allocs: 332, mem used: 37621
 node "expr_list_ne": [(null)] (1/1)
 node "expr_list": [(null)] (0/1)
 unroll [expr_list]  unroll done
 node "expr_call": [(null)] (0/2)
-Lexxed token [;]
-num allocs: 192, mem used: 39599
+Lexxed token [;]=[;]
+num allocs: 339, mem used: 38143
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [A]
-num allocs: 198, mem used: 40195
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 346, mem used: 38469
+Lexxed token [	]=[	]
+num allocs: 347, mem used: 38471
+Lexxed token [	]=[	]
+num allocs: 348, mem used: 38473
+Lexxed token [	]=[	]
+num allocs: 349, mem used: 38475
+Lexxed token [A]=[A]
+num allocs: 350, mem used: 38477
 node "expr_id": [A] (0/0)
-Lexxed token [=]
-num allocs: 200, mem used: 40329
-Lexxed token [A]
-num allocs: 200, mem used: 40329
+Lexxed token [ ]=[ ]
+num allocs: 353, mem used: 38585
+Lexxed token [=]=[=]
+num allocs: 354, mem used: 38587
+Lexxed token [ ]=[ ]
+num allocs: 355, mem used: 38589
+Lexxed token [A]=[A]
+num allocs: 356, mem used: 38591
 node "expr_id": [A] (0/0)
-Lexxed token [/]
-num allocs: 202, mem used: 40463
-Lexxed token [1]
-num allocs: 202, mem used: 40463
+Lexxed token [/]=[/]
+num allocs: 359, mem used: 38699
+Lexxed token [1]=[1]
+num allocs: 360, mem used: 38701
 node "expr_const": [1] (0/0)
-Lexxed token [;]
-num allocs: 204, mem used: 40597
+Lexxed token [;]=[;]
+num allocs: 363, mem used: 38809
 node "expr_/": [(null)] (0/2)
 node "expr_=": [(null)] (0/2)
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [if]
-num allocs: 214, mem used: 41301
-Lexxed token [(]
-num allocs: 214, mem used: 41301
-Lexxed token [A]
-num allocs: 214, mem used: 41301
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 374, mem used: 39375
+Lexxed token [	]=[	]
+num allocs: 375, mem used: 39377
+Lexxed token [	]=[	]
+num allocs: 376, mem used: 39379
+Lexxed token [	]=[	]
+num allocs: 377, mem used: 39381
+Lexxed token [if]=[if]
+num allocs: 378, mem used: 39384
+Lexxed token [(]=[(]
+num allocs: 379, mem used: 39386
+Lexxed token [A]=[A]
+num allocs: 380, mem used: 39388
 node "expr_id": [A] (0/0)
-Lexxed token [=]
-num allocs: 216, mem used: 41435
-Lexxed token [1]
-num allocs: 216, mem used: 41435
+Lexxed token [ ]=[ ]
+num allocs: 383, mem used: 39496
+Lexxed token [=]=[=]
+num allocs: 384, mem used: 39498
+Lexxed token [ ]=[ ]
+num allocs: 385, mem used: 39500
+Lexxed token [1]=[1]
+num allocs: 386, mem used: 39502
 node "expr_const": [1] (0/0)
-Lexxed token [)]
-num allocs: 218, mem used: 41569
+Lexxed token [)]=[)]
+num allocs: 389, mem used: 39610
 node "expr_=": [(null)] (0/2)
-Lexxed token [then]
-num allocs: 220, mem used: 41713
-Lexxed token [return]
-num allocs: 220, mem used: 41713
-Lexxed token [1]
-num allocs: 220, mem used: 41713
+Lexxed token [ ]=[ ]
+num allocs: 392, mem used: 39728
+Lexxed token [then]=[then]
+num allocs: 393, mem used: 39733
+Lexxed token [ ]=[ ]
+num allocs: 394, mem used: 39735
+Lexxed token [return]=[return]
+num allocs: 395, mem used: 39742
+Lexxed token [ ]=[ ]
+num allocs: 396, mem used: 39744
+Lexxed token [1]=[1]
+num allocs: 397, mem used: 39746
 node "expr_const": [1] (0/0)
-Lexxed token [;]
-num allocs: 222, mem used: 41847
+Lexxed token [;]=[;]
+num allocs: 400, mem used: 39854
 node "imp_stmt": [(null)] (4/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [end]
-num allocs: 228, mem used: 42255
+Lexxed token [ ]=[ ]
+num allocs: 407, mem used: 40180
+Lexxed token [end]=[end]
+num allocs: 408, mem used: 40184
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 node "if_then": [(null)] (0/2)
@@ -326,110 +539,210 @@ node "if_block": [(null)] (0/1)
 node "imp_stmt": [(null)] (0/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [end]
-num allocs: 240, mem used: 43087
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 421, mem used: 40850
+Lexxed token [	]=[	]
+num allocs: 422, mem used: 40852
+Lexxed token [	]=[	]
+num allocs: 423, mem used: 40854
+Lexxed token [end]=[end]
+num allocs: 424, mem used: 40858
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 node "while_loop": [(null)] (0/2)
 node "imp_stmt": [(null)] (1/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [return]
-num allocs: 250, mem used: 43791
-Lexxed token [0]
-num allocs: 250, mem used: 43791
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 435, mem used: 41424
+Lexxed token [	]=[	]
+num allocs: 436, mem used: 41426
+Lexxed token [	]=[	]
+num allocs: 437, mem used: 41428
+Lexxed token [return]=[return]
+num allocs: 438, mem used: 41435
+Lexxed token [ ]=[ ]
+num allocs: 439, mem used: 41437
+Lexxed token [0]=[0]
+num allocs: 440, mem used: 41439
 node "expr_const": [0] (0/0)
-Lexxed token [;]
-num allocs: 252, mem used: 43925
+Lexxed token [;]=[;]
+num allocs: 443, mem used: 41547
 node "imp_stmt": [(null)] (4/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [end]
-num allocs: 258, mem used: 44341
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 450, mem used: 41881
+Lexxed token [	]=[	]
+num allocs: 451, mem used: 41883
+Lexxed token [end]=[end]
+num allocs: 452, mem used: 41887
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 node "if_block": [(null)] (1/2)
 node "imp_stmt": [(null)] (0/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [string]
-num allocs: 268, mem used: 45081
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 463, mem used: 42489
+Lexxed token [	]=[	]
+num allocs: 464, mem used: 42491
+Lexxed token [string]=[string]
+num allocs: 465, mem used: 42498
 node "typename": [string] (0/0)
-Lexxed token [boop]
-num allocs: 270, mem used: 45220
-Lexxed token [;]
-num allocs: 271, mem used: 45225
+Lexxed token [ ]=[ ]
+num allocs: 468, mem used: 42611
+Lexxed token [boop]=[boop]
+num allocs: 469, mem used: 42616
+Lexxed token [;]=[;]
+num allocs: 471, mem used: 42623
 node "var_decl": [boop] (0/1)
 node "decl_stmt": [(null)] (2/1)
 node "stmt": [(null)] (1/1)
 node "stmt_list_ne": [(null)] (0/2)
-Lexxed token [end]
-num allocs: 279, mem used: 45777
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 480, mem used: 43065
+Lexxed token [end]=[end]
+num allocs: 481, mem used: 43069
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 FUNC_DEF ID = [main]
 node "func_def": [main] (0/3)
 node "decl_stmt": [(null)] (1/1)
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [class]
-num allocs: 287, mem used: 46345
-Lexxed token [horse]
-num allocs: 287, mem used: 46345
-Lexxed token [float]
-num allocs: 288, mem used: 46351
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 490, mem used: 43807
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 491, mem used: 43809
+Lexxed token [class]=[class]
+num allocs: 492, mem used: 43815
+Lexxed token [ ]=[ ]
+num allocs: 493, mem used: 43817
+Lexxed token [horse]=[horse]
+num allocs: 494, mem used: 43823
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 496, mem used: 43831
+Lexxed token [	]=[	]
+num allocs: 497, mem used: 43833
+Lexxed token [float]=[float]
+num allocs: 498, mem used: 43839
 node "typename": [float] (0/0)
-Lexxed token [fluff]
-num allocs: 290, mem used: 46489
-Lexxed token [=]
-num allocs: 291, mem used: 46495
-Lexxed token [5]
-num allocs: 291, mem used: 46495
+Lexxed token [ ]=[ ]
+num allocs: 501, mem used: 43951
+Lexxed token [fluff]=[fluff]
+num allocs: 502, mem used: 43957
+Lexxed token [ ]=[ ]
+num allocs: 504, mem used: 43965
+Lexxed token [=]=[=]
+num allocs: 505, mem used: 43967
+Lexxed token [ ]=[ ]
+num allocs: 506, mem used: 43969
+Lexxed token [5]=[5]
+num allocs: 507, mem used: 43971
 node "expr_const": [5] (0/0)
-Lexxed token [;]
-num allocs: 293, mem used: 46629
+Lexxed token [;]=[;]
+num allocs: 510, mem used: 44079
 node "var_decl_assign": [fluff] (1/2)
 node "decl_stmt": [(null)] (2/1)
 node "decl_stmt_list_ne": [(null)] (1/1)
-Lexxed token [int]
-num allocs: 299, mem used: 47325
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 517, mem used: 44413
+Lexxed token [	]=[	]
+num allocs: 518, mem used: 44415
+Lexxed token [int]=[int]
+num allocs: 519, mem used: 44419
 node "typename": [int] (0/0)
-Lexxed token [boop]
-num allocs: 301, mem used: 47461
-Lexxed token [(]
-num allocs: 302, mem used: 47466
-Lexxed token [)]
-num allocs: 302, mem used: 47466
+Lexxed token [ ]=[ ]
+num allocs: 522, mem used: 44529
+Lexxed token [boop]=[boop]
+num allocs: 523, mem used: 44534
+Lexxed token [(]=[(]
+num allocs: 525, mem used: 44541
+Lexxed token [)]=[)]
+num allocs: 526, mem used: 44543
 node "var_decl_list": [<empty>] (1/0)
-Lexxed token [fluff]
-num allocs: 303, mem used: 47598
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 528, mem used: 44649
+Lexxed token [	]=[	]
+num allocs: 529, mem used: 44651
+Lexxed token [	]=[	]
+num allocs: 530, mem used: 44653
+Lexxed token [fluff]=[fluff]
+num allocs: 531, mem used: 44659
 node "expr_id": [fluff] (0/0)
-Lexxed token [=]
-num allocs: 305, mem used: 47736
-Lexxed token [fluff]
-num allocs: 305, mem used: 47736
+Lexxed token [ ]=[ ]
+num allocs: 534, mem used: 44771
+Lexxed token [=]=[=]
+num allocs: 535, mem used: 44773
+Lexxed token [ ]=[ ]
+num allocs: 536, mem used: 44775
+Lexxed token [fluff]=[fluff]
+num allocs: 537, mem used: 44781
 node "expr_id": [fluff] (0/0)
-Lexxed token [+]
-num allocs: 307, mem used: 47874
-Lexxed token [1]
-num allocs: 307, mem used: 47874
+Lexxed token [+]=[+]
+num allocs: 540, mem used: 44893
+Lexxed token [1]=[1]
+num allocs: 541, mem used: 44895
 node "expr_const": [1] (0/0)
-Lexxed token [;]
-num allocs: 309, mem used: 48008
+Lexxed token [;]=[;]
+num allocs: 544, mem used: 45003
 node "expr_+": [(null)] (0/2)
 node "expr_=": [(null)] (0/2)
 node "imp_stmt": [(null)] (2/1)
 node "stmt": [(null)] (0/1)
 node "stmt_list_ne": [(null)] (1/1)
-Lexxed token [end]
-num allocs: 319, mem used: 48704
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 555, mem used: 45561
+Lexxed token [	]=[	]
+num allocs: 556, mem used: 45563
+Lexxed token [end]=[end]
+num allocs: 557, mem used: 45567
 node "stmt_list": [(null)] (0/1)
 unroll [stmt_list]  unroll done
 FUNC_DEF ID = [boop]
 node "func_def": [boop] (0/3)
 node "decl_stmt": [(null)] (1/1)
 node "decl_stmt_list_ne": [(null)] (0/2)
-Lexxed token [end]
-num allocs: 327, mem used: 49264
+lex: newline i=0
+Lexxed token [
+]=[
+]
+num allocs: 566, mem used: 46017
+Lexxed token [end]=[end]
+num allocs: 567, mem used: 46021
 node "decl_stmt_list": [(null)] (0/1)
 unroll [decl_stmt_list]  unroll done
 FUNC_DEF ID = [horse]
@@ -441,303 +754,985 @@ unroll [decl_stmt_list]  unroll done
 node "program": [(null)] (0/1)
 
 PARSING DONE
-printing ast 00540D40, 761729A0, 0, [program]
-printing ast 00540BF0, 761729A0, 0, [decl_stmt_list]
-printing ast 00689368, 761729A0, 0, [decl_stmt]
-printing ast 00689288, 761729A0, 0, [func_def]
-printing ast 00681180, 761729A0, 0, [typename]
-printing ast 00689148, 761729A0, 1, [var_decl_list]
-printing ast 00681320, 761729A0, 0, [var_decl]
-printing ast 00681260, 761729A0, 0, [typename]
-printing ast 006891E8, 761729A0, 2, [stmt_list]
-printing ast 00689A48, 761729A0, 1, [decl_stmt]
-printing ast 00689980, 761729A0, 0, [func_def]
-printing ast 006894E8, 761729A0, 0, [typename]
-printing ast 00689820, 761729A0, 1, [var_decl_list]
-printing ast 006896C0, 761729A0, 0, [var_decl]
-printing ast 006895C8, 761729A0, 0, [typename]
-printing ast 006898E0, 761729A0, 2, [stmt_list]
-printing ast 0068A170, 761729A0, 2, [decl_stmt]
-printing ast 0068A0A8, 761729A0, 0, [func_def]
-printing ast 00689C28, 761729A0, 0, [typename]
-printing ast 00689F48, 761729A0, 1, [var_decl_list]
-printing ast 00689DC8, 761729A0, 0, [var_decl]
-printing ast 00689D08, 761729A0, 0, [typename]
-printing ast 0068A008, 761729A0, 2, [stmt_list]
-printing ast 0068F718, 761729A0, 3, [decl_stmt]
-printing ast 0068F650, 761729A0, 0, [func_def]
-printing ast 0068A388, 761729A0, 0, [typename]
-printing ast 0068A8F0, 761729A0, 1, [var_decl_list]
-printing ast 0068A508, 761729A0, 0, [var_decl]
-printing ast 0068A448, 761729A0, 0, [typename]
-printing ast 0068A768, 761729A0, 1, [var_decl]
-printing ast 0068A6A8, 761729A0, 0, [typename]
-printing ast 0068F588, 761729A0, 2, [stmt_list]
-printing ast 0068AC18, 761729A0, 0, [stmt]
-printing ast 0068AB58, 761729A0, 0, [decl_stmt]
-printing ast 0068AA98, 761729A0, 0, [var_decl]
-printing ast 0068A9D8, 761729A0, 0, [typename]
-printing ast 0068F038, 761729A0, 1, [stmt]
-printing ast 0068EF98, 761729A0, 0, [imp_stmt]
-printing ast 0068EEF8, 761729A0, 0, [if_block]
-printing ast 0068BA30, 761729A0, 0, [if_then]
-printing ast 0068AFE0, 761729A0, 0, [expr_=]
-printing ast 0068AEA0, 761729A0, 0, [expr_id]
-printing ast 0068AF40, 761729A0, 1, [expr_const]
-printing ast 0068B968, 761729A0, 1, [stmt_list]
-printing ast 0068B4E0, 761729A0, 0, [stmt]
-printing ast 0068B420, 761729A0, 0, [imp_stmt]
-printing ast 0068B358, 761729A0, 0, [expr_call]
-printing ast 0068B080, 761729A0, 0, [expr_id]
-printing ast 0068B298, 761729A0, 1, [expr_list]
-printing ast 0068B158, 761729A0, 0, [expr_const]
-printing ast 0068B7E0, 761729A0, 1, [stmt]
-printing ast 0068B720, 761729A0, 0, [imp_stmt]
-printing ast 0068B680, 761729A0, 0, [expr_const]
-printing ast 0068EDA8, 761729A0, 1, [stmt_list]
-printing ast 0068C1A8, 761729A0, 0, [stmt]
-printing ast 0068C108, 761729A0, 0, [decl_stmt]
-printing ast 0068C040, 761729A0, 0, [var_decl_assign]
-printing ast 0068BB18, 761729A0, 0, [typename]
-printing ast 0068BFA0, 761729A0, 1, [expr_call]
-printing ast 0068BBF8, 761729A0, 0, [expr_id]
-printing ast 0068AD98, 761729A0, 1, [expr_list]
-printing ast 0068BCB8, 761729A0, 0, [expr_id]
-printing ast 0068C7B8, 761729A0, 1, [stmt]
-printing ast 0068C6F8, 761729A0, 0, [imp_stmt]
-printing ast 0068C630, 761729A0, 0, [expr_=]
-printing ast 0068C348, 761729A0, 0, [expr_id]
-printing ast 0068C568, 761729A0, 1, [expr_*]
-printing ast 0068C408, 761729A0, 0, [expr_id]
-printing ast 0068C4C8, 761729A0, 1, [expr_id]
-printing ast 0068CDC8, 761729A0, 2, [stmt]
-printing ast 0068CD08, 761729A0, 0, [imp_stmt]
-printing ast 0068CC40, 761729A0, 0, [expr_call]
-printing ast 0068C960, 761729A0, 0, [expr_id]
-printing ast 0068CB80, 761729A0, 1, [expr_list]
-printing ast 0068CA20, 761729A0, 0, [expr_id]
-printing ast 0068E918, 761729A0, 3, [stmt]
-printing ast 0068E858, 761729A0, 0, [imp_stmt]
-printing ast 0068E790, 761729A0, 0, [while_loop]
-printing ast 0068CF70, 761729A0, 0, [expr_id]
-printing ast 0068E6C8, 761729A0, 1, [stmt_list]
-printing ast 0068D498, 761729A0, 0, [stmt]
-printing ast 0068D3D8, 761729A0, 0, [imp_stmt]
-printing ast 0068D310, 761729A0, 0, [expr_call]
-printing ast 0068D030, 761729A0, 0, [expr_id]
-printing ast 0068D250, 761729A0, 1, [expr_list]
-printing ast 0068D0F0, 761729A0, 0, [expr_id]
-printing ast 0068DB68, 761729A0, 1, [stmt]
-printing ast 0068DAA8, 761729A0, 0, [imp_stmt]
-printing ast 0068D9E0, 761729A0, 0, [expr_=]
-printing ast 0068BE38, 761729A0, 0, [expr_id]
-printing ast 0068D918, 761729A0, 1, [expr_/]
-printing ast 0068BEF8, 761729A0, 0, [expr_id]
-printing ast 0068D878, 761729A0, 1, [expr_const]
-printing ast 0068E540, 761729A0, 2, [stmt]
-printing ast 0068E480, 761729A0, 0, [imp_stmt]
-printing ast 0068E3C0, 761729A0, 0, [if_block]
-printing ast 0068E2F8, 761729A0, 0, [if_then]
-printing ast 0068DE70, 761729A0, 0, [expr_=]
-printing ast 0068DD10, 761729A0, 0, [expr_id]
-printing ast 0068DDD0, 761729A0, 1, [expr_const]
-printing ast 0068E238, 761729A0, 1, [stmt_list]
-printing ast 0068E0B8, 761729A0, 0, [stmt]
-printing ast 0068DFF8, 761729A0, 0, [imp_stmt]
-printing ast 0068DF58, 761729A0, 0, [expr_const]
-printing ast 0068EC20, 761729A0, 4, [stmt]
-printing ast 0068EB60, 761729A0, 0, [imp_stmt]
-printing ast 0068EAC0, 761729A0, 0, [expr_const]
-printing ast 0068F400, 761729A0, 2, [stmt]
-printing ast 0068F340, 761729A0, 0, [decl_stmt]
-printing ast 0068F280, 761729A0, 0, [var_decl]
-printing ast 0068F1C0, 761729A0, 0, [typename]
-printing ast 00540A68, 761729A0, 4, [decl_stmt]
-printing ast 005409A8, 761729A0, 0, [class_def]
-printing ast 005408E0, 761729A0, 0, [decl_stmt_list]
-printing ast 0068FE80, 761729A0, 0, [decl_stmt]
-printing ast 0068FA60, 761729A0, 0, [var_decl_assign]
-printing ast 0068F8E0, 761729A0, 0, [typename]
-printing ast 0068F9C0, 761729A0, 1, [expr_const]
-printing ast 00540758, 761729A0, 1, [decl_stmt]
-printing ast 00540690, 761729A0, 0, [func_def]
-printing ast 0068D658, 761729A0, 0, [typename]
-printing ast 0068D718, 761729A0, 1, [var_decl_list]
-printing ast 005405D0, 761729A0, 2, [stmt_list]
-printing ast 00540450, 761729A0, 0, [stmt]
-printing ast 00540390, 761729A0, 0, [imp_stmt]
-printing ast 005402C8, 761729A0, 0, [expr_=]
-printing ast 00540048, 761729A0, 0, [expr_id]
-printing ast 00540228, 761729A0, 1, [expr_+]
-printing ast 005400E8, 761729A0, 0, [expr_id]
-printing ast 00540188, 761729A0, 1, [expr_const]
+printing ast 005428F8, 761729A0, 0, [program]
+printing ast 005427C8, 761729A0, 0, [decl_stmt_list]
+printing ast 00C3A3E8, 761729A0, 0, [decl_stmt]
+printing ast 00C3A300, 761729A0, 0, [func_def]
+printing ast 00C31180, 761729A0, 0, [typename]
+printing ast 00C3A1C0, 761729A0, 1, [var_decl_list]
+printing ast 00C3A0C0, 761729A0, 0, [var_decl]
+printing ast 00C312E0, 761729A0, 0, [typename]
+printing ast 00C3A280, 761729A0, 2, [stmt_list]
+printing ast 00C3AEA8, 761729A0, 1, [decl_stmt]
+printing ast 00C3AE00, 761729A0, 0, [func_def]
+printing ast 00C3A568, 761729A0, 0, [typename]
+printing ast 00C3A900, 761729A0, 1, [var_decl_list]
+printing ast 00C3A7C0, 761729A0, 0, [var_decl]
+printing ast 00C3A6A8, 761729A0, 0, [typename]
+printing ast 00C3AD60, 761729A0, 2, [stmt_list]
+printing ast 00C3ABA0, 761729A0, 0, [stmt]
+printing ast 00C3AB00, 761729A0, 0, [imp_stmt]
+printing ast 00C3AA60, 761729A0, 0, [expr_id]
+printing ast 00C3B610, 761729A0, 2, [decl_stmt]
+printing ast 00C3B568, 761729A0, 0, [func_def]
+printing ast 00C3B050, 761729A0, 0, [typename]
+printing ast 00C3AC40, 761729A0, 1, [var_decl_list]
+printing ast 00C3B290, 761729A0, 0, [var_decl]
+printing ast 00C3B190, 761729A0, 0, [typename]
+printing ast 00C3B4E8, 761729A0, 2, [stmt_list]
+printing ast 005411B8, 761729A0, 3, [decl_stmt]
+printing ast 00541110, 761729A0, 0, [func_def]
+printing ast 00C3B7D8, 761729A0, 0, [typename]
+printing ast 00C3BE00, 761729A0, 1, [var_decl_list]
+printing ast 00C3BA18, 761729A0, 0, [var_decl]
+printing ast 00C3B918, 761729A0, 0, [typename]
+printing ast 00C3BCB8, 761729A0, 1, [var_decl]
+printing ast 00C3BBB8, 761729A0, 0, [typename]
+printing ast 00541068, 761729A0, 2, [stmt_list]
+printing ast 00C3C1D0, 761729A0, 0, [stmt]
+printing ast 00C3C130, 761729A0, 0, [decl_stmt]
+printing ast 00C3C0B0, 761729A0, 0, [var_decl]
+printing ast 00C3BF28, 761729A0, 0, [typename]
+printing ast 00540AF8, 761729A0, 1, [stmt]
+printing ast 00540A78, 761729A0, 0, [imp_stmt]
+printing ast 005409F8, 761729A0, 0, [if_block]
+printing ast 00C3D120, 761729A0, 0, [if_then]
+printing ast 00C3C590, 761729A0, 0, [expr_=]
+printing ast 00C3C3D0, 761729A0, 0, [expr_id]
+printing ast 00C3C4F0, 761729A0, 1, [expr_const]
+printing ast 00C3D078, 761729A0, 1, [stmt_list]
+printing ast 00C3CB70, 761729A0, 0, [stmt]
+printing ast 00C3CAD0, 761729A0, 0, [imp_stmt]
+printing ast 00C3CA08, 761729A0, 0, [expr_call]
+printing ast 00C3C718, 761729A0, 0, [expr_id]
+printing ast 00C3C968, 761729A0, 1, [expr_list]
+printing ast 00C3C828, 761729A0, 0, [expr_const]
+printing ast 00C3CED0, 761729A0, 1, [stmt]
+printing ast 00C3CE30, 761729A0, 0, [imp_stmt]
+printing ast 00C3CD90, 761729A0, 0, [expr_const]
+printing ast 005408C8, 761729A0, 1, [stmt_list]
+printing ast 00C3D940, 761729A0, 0, [stmt]
+printing ast 00C3D8A0, 761729A0, 0, [decl_stmt]
+printing ast 00C3D7F8, 761729A0, 0, [var_decl_assign]
+printing ast 00C3D350, 761729A0, 0, [typename]
+printing ast 00C3D730, 761729A0, 1, [expr_call]
+printing ast 00C3D470, 761729A0, 0, [expr_id]
+printing ast 00C3D690, 761729A0, 1, [expr_list]
+printing ast 00C3D550, 761729A0, 0, [expr_id]
+printing ast 00C3DFB0, 761729A0, 1, [stmt]
+printing ast 00C3DF10, 761729A0, 0, [imp_stmt]
+printing ast 00C3DE68, 761729A0, 0, [expr_=]
+printing ast 00C3DB20, 761729A0, 0, [expr_id]
+printing ast 00C3DDC0, 761729A0, 1, [expr_*]
+printing ast 00C3DC40, 761729A0, 0, [expr_id]
+printing ast 00C3DD20, 761729A0, 1, [expr_id]
+printing ast 00C3E5C0, 761729A0, 2, [stmt]
+printing ast 00C3E520, 761729A0, 0, [imp_stmt]
+printing ast 00C3E458, 761729A0, 0, [expr_call]
+printing ast 00C3E198, 761729A0, 0, [expr_id]
+printing ast 00C3E3B8, 761729A0, 1, [expr_list]
+printing ast 00C3E278, 761729A0, 0, [expr_id]
+printing ast 005403B8, 761729A0, 3, [stmt]
+printing ast 00540318, 761729A0, 0, [imp_stmt]
+printing ast 00540270, 761729A0, 0, [while_loop]
+printing ast 00C3E7E8, 761729A0, 0, [expr_id]
+printing ast 005401C8, 761729A0, 1, [stmt_list]
+printing ast 00C3EE48, 761729A0, 0, [stmt]
+printing ast 00C3D290, 761729A0, 0, [imp_stmt]
+printing ast 00C3D1C8, 761729A0, 0, [expr_call]
+printing ast 00C3E948, 761729A0, 0, [expr_id]
+printing ast 00C3EB68, 761729A0, 1, [expr_list]
+printing ast 00C3EA28, 761729A0, 0, [expr_id]
+printing ast 00C3F4B8, 761729A0, 1, [stmt]
+printing ast 00C3F418, 761729A0, 0, [imp_stmt]
+printing ast 00C3F370, 761729A0, 0, [expr_=]
+printing ast 00C3F028, 761729A0, 0, [expr_id]
+printing ast 00C3F2C8, 761729A0, 1, [expr_/]
+printing ast 00C3F148, 761729A0, 0, [expr_id]
+printing ast 00C3F228, 761729A0, 1, [expr_const]
+printing ast 00540048, 761729A0, 2, [stmt]
+printing ast 00C3FEF0, 761729A0, 0, [imp_stmt]
+printing ast 00C3FE50, 761729A0, 0, [if_block]
+printing ast 00C3FDA8, 761729A0, 0, [if_then]
+printing ast 00C3F8C0, 761729A0, 0, [expr_=]
+printing ast 00C3F700, 761729A0, 0, [expr_id]
+printing ast 00C3F820, 761729A0, 1, [expr_const]
+printing ast 00C3FD08, 761729A0, 1, [stmt_list]
+printing ast 00C3FB88, 761729A0, 0, [stmt]
+printing ast 00C3FAE8, 761729A0, 0, [imp_stmt]
+printing ast 00C3FA48, 761729A0, 0, [expr_const]
+printing ast 00540720, 761729A0, 4, [stmt]
+printing ast 00540680, 761729A0, 0, [imp_stmt]
+printing ast 005405E0, 761729A0, 0, [expr_const]
+printing ast 00540EE0, 761729A0, 2, [stmt]
+printing ast 00540E40, 761729A0, 0, [decl_stmt]
+printing ast 00540DA0, 761729A0, 0, [var_decl]
+printing ast 00540CA0, 761729A0, 0, [typename]
+printing ast 00542680, 761729A0, 4, [decl_stmt]
+printing ast 005425E0, 761729A0, 0, [class_def]
+printing ast 00542538, 761729A0, 0, [decl_stmt_list]
+printing ast 00541838, 761729A0, 0, [decl_stmt]
+printing ast 00541790, 761729A0, 0, [var_decl_assign]
+printing ast 005415B0, 761729A0, 0, [typename]
+printing ast 005416F0, 761729A0, 1, [expr_const]
+printing ast 005423B0, 761729A0, 1, [decl_stmt]
+printing ast 00542308, 761729A0, 0, [func_def]
+printing ast 005419F8, 761729A0, 0, [typename]
+printing ast 00541B18, 761729A0, 1, [var_decl_list]
+printing ast 00542268, 761729A0, 2, [stmt_list]
+printing ast 005420C8, 761729A0, 0, [stmt]
+printing ast 00542028, 761729A0, 0, [imp_stmt]
+printing ast 00541F80, 761729A0, 0, [expr_=]
+printing ast 00541C38, 761729A0, 0, [expr_id]
+printing ast 00541ED8, 761729A0, 1, [expr_+]
+printing ast 00541D58, 761729A0, 0, [expr_id]
+printing ast 00541E38, 761729A0, 1, [expr_const]
 
 PRINTING DONE
-semantic got program, @ 1-29, imperative pass
+semantic got program, @ 0-430, imperative pass
+-----------------
+int import(int arg) end
+int export(int arg)
+	return arg;
+end
+int print(string str) end
+
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
 IR_next_name: returning [ST1]
- semantic got decl_stmt_list, @ 1-29, declarative pass
-  semantic got decl_stmt, @ 1-1, declarative pass
-   semantic got func_def, "import", @ 1-1, declarative pass
+ semantic got decl_stmt_list, @ 0-430, declarative pass
+-----------------
+int import(int arg) end
+int export(int arg)
+	return arg;
+end
+int print(string str) end
+
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
+  semantic got decl_stmt, @ 0-23, declarative pass
+-----------------
+int import(int arg) end
+-----------------
+   semantic got func_def, "import", @ 0-23, declarative pass
+-----------------
+int import(int arg) end
+-----------------
 IR_next_name: returning [ST2]
-    semantic got var_decl_list, @ 1-1, declarative pass
-     semantic got var_decl, "arg", @ 1-1, declarative pass
-  semantic got decl_stmt, @ 2-2, declarative pass
-   semantic got func_def, "export", @ 2-2, declarative pass
+    semantic got var_decl_list, @ 11-18, declarative pass
+-----------------
+int arg
+-----------------
+     semantic got var_decl, "arg", @ 11-18, declarative pass
+-----------------
+int arg
+-----------------
+  semantic got decl_stmt, @ 24-60, declarative pass
+-----------------
+int export(int arg)
+	return arg;
+end
+-----------------
+   semantic got func_def, "export", @ 24-60, declarative pass
+-----------------
+int export(int arg)
+	return arg;
+end
+-----------------
 IR_next_name: returning [ST3]
-    semantic got var_decl_list, @ 2-2, declarative pass
-     semantic got var_decl, "arg", @ 2-2, declarative pass
-  semantic got decl_stmt, @ 3-3, declarative pass
-   semantic got func_def, "print", @ 3-3, declarative pass
+    semantic got var_decl_list, @ 35-42, declarative pass
+-----------------
+int arg
+-----------------
+     semantic got var_decl, "arg", @ 35-42, declarative pass
+-----------------
+int arg
+-----------------
+  semantic got decl_stmt, @ 61-86, declarative pass
+-----------------
+int print(string str) end
+-----------------
+   semantic got func_def, "print", @ 61-86, declarative pass
+-----------------
+int print(string str) end
+-----------------
 IR_next_name: returning [ST4]
-    semantic got var_decl_list, @ 3-3, declarative pass
-     semantic got var_decl, "str", @ 3-3, declarative pass
-  semantic got decl_stmt, @ 5-22, declarative pass
-   semantic got func_def, "main", @ 5-22, declarative pass
+    semantic got var_decl_list, @ 71-81, declarative pass
+-----------------
+string str
+-----------------
+     semantic got var_decl, "str", @ 71-81, declarative pass
+-----------------
+string str
+-----------------
+  semantic got decl_stmt, @ 88-359, declarative pass
+-----------------
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+-----------------
+   semantic got func_def, "main", @ 88-359, declarative pass
+-----------------
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+-----------------
 IR_next_name: returning [ST5]
-    semantic got var_decl_list, @ 5-5, declarative pass
-     semantic got var_decl, "argc", @ 5-5, declarative pass
-     semantic got var_decl, "argv", @ 5-5, declarative pass
-  semantic got decl_stmt, @ 24-29, declarative pass
-   semantic got class_def, "horse", @ 24-29, declarative pass
+    semantic got var_decl_list, @ 97-115, declarative pass
+-----------------
+int argc, int argv
+-----------------
+     semantic got var_decl, "argc", @ 97-105, declarative pass
+-----------------
+int argc
+-----------------
+     semantic got var_decl, "argv", @ 107-115, declarative pass
+-----------------
+int argv
+-----------------
+  semantic got decl_stmt, @ 361-430, declarative pass
+-----------------
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
+   semantic got class_def, "horse", @ 361-430, declarative pass
+-----------------
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
 IR_next_name: returning [ST6]
-    semantic got decl_stmt_list, @ 25-28, declarative pass
-     semantic got decl_stmt, @ 25-25, declarative pass
-      semantic got var_decl_assign, "fluff", @ 25-25, declarative pass
-     semantic got decl_stmt, @ 26-28, declarative pass
-      semantic got func_def, "boop", @ 26-28, declarative pass
+    semantic got decl_stmt_list, @ 374-426, declarative pass
+-----------------
+float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+-----------------
+     semantic got decl_stmt, @ 374-390, declarative pass
+-----------------
+float fluff = 5;
+-----------------
+      semantic got var_decl_assign, "fluff", @ 374-389, declarative pass
+-----------------
+float fluff = 5
+-----------------
+     semantic got decl_stmt, @ 392-426, declarative pass
+-----------------
+int boop()
+		fluff = fluff+1;
+	end
+-----------------
+      semantic got func_def, "boop", @ 392-426, declarative pass
+-----------------
+int boop()
+		fluff = fluff+1;
+	end
+-----------------
 IR_next_name: returning [ST7]
        semantic got var_decl_list, "<empty>", @ 0-0, declarative pass
- semantic got decl_stmt_list, @ 1-29, imperative pass
-  semantic got decl_stmt, @ 1-1, imperative pass
-   semantic got func_def, "import", @ 1-1, imperative pass
+-----------------
+
+-----------------
+ semantic got decl_stmt_list, @ 0-430, imperative pass
+-----------------
+int import(int arg) end
+int export(int arg)
+	return arg;
+end
+int print(string str) end
+
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
+  semantic got decl_stmt, @ 0-23, imperative pass
+-----------------
+int import(int arg) end
+-----------------
+   semantic got func_def, "import", @ 0-23, imperative pass
+-----------------
+int import(int arg) end
+-----------------
 found symbol 'import'->'ST1'
 IR_next_name: returning [CS1]
     semantic got stmt_list, "<empty>", @ 0-0, imperative pass
-  semantic got decl_stmt, @ 2-2, imperative pass
-   semantic got func_def, "export", @ 2-2, imperative pass
+-----------------
+
+-----------------
+  semantic got decl_stmt, @ 24-60, imperative pass
+-----------------
+int export(int arg)
+	return arg;
+end
+-----------------
+   semantic got func_def, "export", @ 24-60, imperative pass
+-----------------
+int export(int arg)
+	return arg;
+end
+-----------------
 found symbol 'export'->'ST1'
 IR_next_name: returning [CS2]
-    semantic got stmt_list, "<empty>", @ 0-0, imperative pass
-  semantic got decl_stmt, @ 3-3, imperative pass
-   semantic got func_def, "print", @ 3-3, imperative pass
+    semantic got stmt_list, @ 45-56, imperative pass
+-----------------
+return arg;
+-----------------
+     semantic got stmt, @ 45-56, imperative pass
+-----------------
+return arg;
+-----------------
+      semantic got imp_stmt, @ 45-56, imperative pass
+-----------------
+return arg;
+-----------------
+       semantic got expr_id, "arg", @ 52-55, imperative pass
+-----------------
+arg
+-----------------
+  semantic got decl_stmt, @ 61-86, imperative pass
+-----------------
+int print(string str) end
+-----------------
+   semantic got func_def, "print", @ 61-86, imperative pass
+-----------------
+int print(string str) end
+-----------------
 found symbol 'print'->'ST1'
 IR_next_name: returning [CS3]
     semantic got stmt_list, "<empty>", @ 0-0, imperative pass
-  semantic got decl_stmt, @ 5-22, imperative pass
-   semantic got func_def, "main", @ 5-22, imperative pass
+-----------------
+
+-----------------
+  semantic got decl_stmt, @ 88-359, imperative pass
+-----------------
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+-----------------
+   semantic got func_def, "main", @ 88-359, imperative pass
+-----------------
+int main(int argc, int argv)
+	char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+end
+-----------------
 found symbol 'main'->'ST1'
 IR_next_name: returning [CS4]
-    semantic got stmt_list, @ 6-21, imperative pass
-     semantic got stmt, @ 6-6, imperative pass
-      semantic got decl_stmt, @ 6-6, imperative pass
-       semantic got var_decl, "C", @ 6-6, imperative pass
-     semantic got stmt, @ 7-20, imperative pass
-      semantic got imp_stmt, @ 7-20, imperative pass
-       semantic got if_block, @ 7-20, imperative pass
-        semantic got if_then, @ 7-9, imperative pass
-         semantic got expr_=, @ 7-7, imperative pass
-          semantic got expr_id, "argc", @ 7-7, imperative pass
-          semantic got expr_const, "0", @ 7-7, imperative pass
+    semantic got stmt_list, @ 118-355, imperative pass
+-----------------
+char C;
+	if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+	string boop;
+-----------------
+     semantic got stmt, @ 118-125, imperative pass
+-----------------
+char C;
+-----------------
+      semantic got decl_stmt, @ 118-125, imperative pass
+-----------------
+char C;
+-----------------
+       semantic got var_decl, "C", @ 118-124, imperative pass
+-----------------
+char C
+-----------------
+     semantic got stmt, @ 127-341, imperative pass
+-----------------
+if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+-----------------
+      semantic got imp_stmt, @ 127-341, imperative pass
+-----------------
+if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+-----------------
+       semantic got if_block, @ 127-341, imperative pass
+-----------------
+if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+	else
+		float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+	end
+-----------------
+        semantic got if_then, @ 127-191, imperative pass
+-----------------
+if(argc = 0) then
+		print("usage: a.exe arg1 arg2");
+		return 1;
+-----------------
+         semantic got expr_=, @ 130-138, imperative pass
+-----------------
+argc = 0
+-----------------
+          semantic got expr_id, "argc", @ 130-134, imperative pass
+-----------------
+argc
+-----------------
+          semantic got expr_const, "0", @ 137-138, imperative pass
+-----------------
+0
+-----------------
 IR_next_name: returning [reg1]
 IR_next_name: returning [lbl1]
 IR_next_name: returning [ST8]
 IR_next_name: returning [CS5]
-         semantic got stmt_list, @ 8-9, declarative pass
-          semantic got stmt, @ 8-8, declarative pass
-           semantic got imp_stmt, @ 8-8, declarative pass
-          semantic got stmt, @ 9-9, declarative pass
-           semantic got imp_stmt, @ 9-9, declarative pass
-         semantic got stmt_list, @ 8-9, imperative pass
-          semantic got stmt, @ 8-8, imperative pass
-           semantic got imp_stmt, @ 8-8, imperative pass
-            semantic got expr_call, @ 8-8, imperative pass
-             semantic got expr_id, "print", @ 8-8, imperative pass
-          semantic got stmt, @ 9-9, imperative pass
-           semantic got imp_stmt, @ 9-9, imperative pass
-            semantic got expr_const, "1", @ 9-9, imperative pass
+         semantic got stmt_list, @ 147-191, declarative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+		return 1;
+-----------------
+          semantic got stmt, @ 147-179, declarative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+-----------------
+           semantic got imp_stmt, @ 147-179, declarative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+-----------------
+          semantic got stmt, @ 182-191, declarative pass
+-----------------
+return 1;
+-----------------
+           semantic got imp_stmt, @ 182-191, declarative pass
+-----------------
+return 1;
+-----------------
+         semantic got stmt_list, @ 147-191, imperative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+		return 1;
+-----------------
+          semantic got stmt, @ 147-179, imperative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+-----------------
+           semantic got imp_stmt, @ 147-179, imperative pass
+-----------------
+print("usage: a.exe arg1 arg2");
+-----------------
+            semantic got expr_call, @ 147-178, imperative pass
+-----------------
+print("usage: a.exe arg1 arg2")
+-----------------
+             semantic got expr_id, "print", @ 147-152, imperative pass
+-----------------
+print
+-----------------
+          semantic got stmt, @ 182-191, imperative pass
+-----------------
+return 1;
+-----------------
+           semantic got imp_stmt, @ 182-191, imperative pass
+-----------------
+return 1;
+-----------------
+            semantic got expr_const, "1", @ 189-190, imperative pass
+-----------------
+1
+-----------------
 IR_next_name: returning [reg2]
-        semantic got stmt_list, @ 11-19, imperative pass
-         semantic got stmt, @ 11-11, imperative pass
-          semantic got decl_stmt, @ 11-11, imperative pass
-           semantic got var_decl_assign, "A", @ 11-11, imperative pass
-         semantic got stmt, @ 12-12, imperative pass
-          semantic got imp_stmt, @ 12-12, imperative pass
-           semantic got expr_=, @ 12-12, imperative pass
-            semantic got expr_id, "A", @ 12-12, imperative pass
-            semantic got expr_*, @ 12-12, imperative pass
-             semantic got expr_id, "A", @ 12-12, imperative pass
-             semantic got expr_id, "argv", @ 12-12, imperative pass
+        semantic got stmt_list, @ 200-336, imperative pass
+-----------------
+float A = import(argc);
+		A = A*argv;
+		export(A);
+		while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+		return 0;
+-----------------
+         semantic got stmt, @ 200-223, imperative pass
+-----------------
+float A = import(argc);
+-----------------
+          semantic got decl_stmt, @ 200-223, imperative pass
+-----------------
+float A = import(argc);
+-----------------
+           semantic got var_decl_assign, "A", @ 200-222, imperative pass
+-----------------
+float A = import(argc)
+-----------------
+         semantic got stmt, @ 226-237, imperative pass
+-----------------
+A = A*argv;
+-----------------
+          semantic got imp_stmt, @ 226-237, imperative pass
+-----------------
+A = A*argv;
+-----------------
+           semantic got expr_=, @ 226-236, imperative pass
+-----------------
+A = A*argv
+-----------------
+            semantic got expr_id, "A", @ 226-227, imperative pass
+-----------------
+A
+-----------------
+            semantic got expr_*, @ 230-236, imperative pass
+-----------------
+A*argv
+-----------------
+             semantic got expr_id, "A", @ 230-231, imperative pass
+-----------------
+A
+-----------------
+             semantic got expr_id, "argv", @ 232-236, imperative pass
+-----------------
+argv
+-----------------
 IR_next_name: returning [reg3]
-         semantic got stmt, @ 13-13, imperative pass
-          semantic got imp_stmt, @ 13-13, imperative pass
-           semantic got expr_call, @ 13-13, imperative pass
-            semantic got expr_id, "export", @ 13-13, imperative pass
-         semantic got stmt, @ 14-18, imperative pass
-          semantic got imp_stmt, @ 14-18, imperative pass
-           semantic got while_loop, @ 14-18, imperative pass
-            semantic got expr_id, "A", @ 14-14, imperative pass
+         semantic got stmt, @ 240-250, imperative pass
+-----------------
+export(A);
+-----------------
+          semantic got imp_stmt, @ 240-250, imperative pass
+-----------------
+export(A);
+-----------------
+           semantic got expr_call, @ 240-249, imperative pass
+-----------------
+export(A)
+-----------------
+            semantic got expr_id, "export", @ 240-246, imperative pass
+-----------------
+export
+-----------------
+         semantic got stmt, @ 253-324, imperative pass
+-----------------
+while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+-----------------
+          semantic got imp_stmt, @ 253-324, imperative pass
+-----------------
+while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+-----------------
+           semantic got while_loop, @ 253-324, imperative pass
+-----------------
+while(A)
+			print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+		end
+-----------------
+            semantic got expr_id, "A", @ 259-260, imperative pass
+-----------------
+A
+-----------------
 IR_next_name: returning [lbl2]
 IR_next_name: returning [lbl3]
 IR_next_name: returning [ST9]
 IR_next_name: returning [CS6]
-            semantic got stmt_list, @ 15-17, imperative pass
-             semantic got stmt, @ 15-15, imperative pass
-              semantic got imp_stmt, @ 15-15, imperative pass
-               semantic got expr_call, @ 15-15, imperative pass
-                semantic got expr_id, "print", @ 15-15, imperative pass
-             semantic got stmt, @ 16-16, imperative pass
-              semantic got imp_stmt, @ 16-16, imperative pass
-               semantic got expr_=, @ 16-16, imperative pass
-                semantic got expr_id, "A", @ 16-16, imperative pass
-                semantic got expr_/, @ 16-16, imperative pass
-                 semantic got expr_id, "A", @ 16-16, imperative pass
-                 semantic got expr_const, "1", @ 16-16, imperative pass
+            semantic got stmt_list, @ 265-318, imperative pass
+-----------------
+print(A);
+			A = A/1;
+			if(A = 1) then return 1; end
+-----------------
+             semantic got stmt, @ 265-274, imperative pass
+-----------------
+print(A);
+-----------------
+              semantic got imp_stmt, @ 265-274, imperative pass
+-----------------
+print(A);
+-----------------
+               semantic got expr_call, @ 265-273, imperative pass
+-----------------
+print(A)
+-----------------
+                semantic got expr_id, "print", @ 265-270, imperative pass
+-----------------
+print
+-----------------
+             semantic got stmt, @ 278-286, imperative pass
+-----------------
+A = A/1;
+-----------------
+              semantic got imp_stmt, @ 278-286, imperative pass
+-----------------
+A = A/1;
+-----------------
+               semantic got expr_=, @ 278-285, imperative pass
+-----------------
+A = A/1
+-----------------
+                semantic got expr_id, "A", @ 278-279, imperative pass
+-----------------
+A
+-----------------
+                semantic got expr_/, @ 282-285, imperative pass
+-----------------
+A/1
+-----------------
+                 semantic got expr_id, "A", @ 282-283, imperative pass
+-----------------
+A
+-----------------
+                 semantic got expr_const, "1", @ 284-285, imperative pass
+-----------------
+1
+-----------------
 IR_next_name: returning [reg4]
 IR_next_name: returning [reg5]
-             semantic got stmt, @ 17-17, imperative pass
-              semantic got imp_stmt, @ 17-17, imperative pass
-               semantic got if_block, @ 17-17, imperative pass
-                semantic got if_then, @ 17-17, imperative pass
-                 semantic got expr_=, @ 17-17, imperative pass
-                  semantic got expr_id, "A", @ 17-17, imperative pass
-                  semantic got expr_const, "1", @ 17-17, imperative pass
+             semantic got stmt, @ 290-318, imperative pass
+-----------------
+if(A = 1) then return 1; end
+-----------------
+              semantic got imp_stmt, @ 290-318, imperative pass
+-----------------
+if(A = 1) then return 1; end
+-----------------
+               semantic got if_block, @ 290-318, imperative pass
+-----------------
+if(A = 1) then return 1; end
+-----------------
+                semantic got if_then, @ 290-314, imperative pass
+-----------------
+if(A = 1) then return 1;
+-----------------
+                 semantic got expr_=, @ 293-298, imperative pass
+-----------------
+A = 1
+-----------------
+                  semantic got expr_id, "A", @ 293-294, imperative pass
+-----------------
+A
+-----------------
+                  semantic got expr_const, "1", @ 297-298, imperative pass
+-----------------
+1
+-----------------
 IR_next_name: returning [reg6]
 IR_next_name: returning [lbl4]
 IR_next_name: returning [ST10]
 IR_next_name: returning [CS7]
-                 semantic got stmt_list, @ 17-17, declarative pass
-                  semantic got stmt, @ 17-17, declarative pass
-                   semantic got imp_stmt, @ 17-17, declarative pass
-                 semantic got stmt_list, @ 17-17, imperative pass
-                  semantic got stmt, @ 17-17, imperative pass
-                   semantic got imp_stmt, @ 17-17, imperative pass
-                    semantic got expr_const, "1", @ 17-17, imperative pass
+                 semantic got stmt_list, @ 305-314, declarative pass
+-----------------
+return 1;
+-----------------
+                  semantic got stmt, @ 305-314, declarative pass
+-----------------
+return 1;
+-----------------
+                   semantic got imp_stmt, @ 305-314, declarative pass
+-----------------
+return 1;
+-----------------
+                 semantic got stmt_list, @ 305-314, imperative pass
+-----------------
+return 1;
+-----------------
+                  semantic got stmt, @ 305-314, imperative pass
+-----------------
+return 1;
+-----------------
+                   semantic got imp_stmt, @ 305-314, imperative pass
+-----------------
+return 1;
+-----------------
+                    semantic got expr_const, "1", @ 312-313, imperative pass
+-----------------
+1
+-----------------
 IR_next_name: returning [reg7]
-         semantic got stmt, @ 19-19, imperative pass
-          semantic got imp_stmt, @ 19-19, imperative pass
-           semantic got expr_const, "0", @ 19-19, imperative pass
+         semantic got stmt, @ 327-336, imperative pass
+-----------------
+return 0;
+-----------------
+          semantic got imp_stmt, @ 327-336, imperative pass
+-----------------
+return 0;
+-----------------
+           semantic got expr_const, "0", @ 334-335, imperative pass
+-----------------
+0
+-----------------
 IR_next_name: returning [reg8]
-     semantic got stmt, @ 21-21, imperative pass
-      semantic got decl_stmt, @ 21-21, imperative pass
-       semantic got var_decl, "boop", @ 21-21, imperative pass
-  semantic got decl_stmt, @ 24-29, imperative pass
-   semantic got class_def, "horse", @ 24-29, imperative pass
+     semantic got stmt, @ 343-355, imperative pass
+-----------------
+string boop;
+-----------------
+      semantic got decl_stmt, @ 343-355, imperative pass
+-----------------
+string boop;
+-----------------
+       semantic got var_decl, "boop", @ 343-354, imperative pass
+-----------------
+string boop
+-----------------
+  semantic got decl_stmt, @ 361-430, imperative pass
+-----------------
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
+   semantic got class_def, "horse", @ 361-430, imperative pass
+-----------------
+class horse
+	float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+end
+-----------------
 found symbol 'horse'->'ST1'
-    semantic got decl_stmt_list, @ 25-28, imperative pass
-     semantic got decl_stmt, @ 25-25, imperative pass
-      semantic got var_decl_assign, "fluff", @ 25-25, imperative pass
-     semantic got decl_stmt, @ 26-28, imperative pass
-      semantic got func_def, "boop", @ 26-28, imperative pass
+    semantic got decl_stmt_list, @ 374-426, imperative pass
+-----------------
+float fluff = 5;
+	int boop()
+		fluff = fluff+1;
+	end
+-----------------
+     semantic got decl_stmt, @ 374-390, imperative pass
+-----------------
+float fluff = 5;
+-----------------
+      semantic got var_decl_assign, "fluff", @ 374-389, imperative pass
+-----------------
+float fluff = 5
+-----------------
+     semantic got decl_stmt, @ 392-426, imperative pass
+-----------------
+int boop()
+		fluff = fluff+1;
+	end
+-----------------
+      semantic got func_def, "boop", @ 392-426, imperative pass
+-----------------
+int boop()
+		fluff = fluff+1;
+	end
+-----------------
 found symbol 'boop'->'ST6'
 IR_next_name: returning [CS8]
-       semantic got stmt_list, @ 27-27, imperative pass
-        semantic got stmt, @ 27-27, imperative pass
-         semantic got imp_stmt, @ 27-27, imperative pass
-          semantic got expr_=, @ 27-27, imperative pass
-           semantic got expr_id, "fluff", @ 27-27, imperative pass
-           semantic got expr_+, @ 27-27, imperative pass
-            semantic got expr_id, "fluff", @ 27-27, imperative pass
-            semantic got expr_const, "1", @ 27-27, imperative pass
+       semantic got stmt_list, @ 405-421, imperative pass
+-----------------
+fluff = fluff+1;
+-----------------
+        semantic got stmt, @ 405-421, imperative pass
+-----------------
+fluff = fluff+1;
+-----------------
+         semantic got imp_stmt, @ 405-421, imperative pass
+-----------------
+fluff = fluff+1;
+-----------------
+          semantic got expr_=, @ 405-420, imperative pass
+-----------------
+fluff = fluff+1
+-----------------
+           semantic got expr_id, "fluff", @ 405-410, imperative pass
+-----------------
+fluff
+-----------------
+           semantic got expr_+, @ 413-420, imperative pass
+-----------------
+fluff+1
+-----------------
+            semantic got expr_id, "fluff", @ 413-418, imperative pass
+-----------------
+fluff
+-----------------
+            semantic got expr_const, "1", @ 419-420, imperative pass
+-----------------
+1
+-----------------
 IR_next_name: returning [reg9]
 IR_next_name: returning [reg10]
 semantic: done
@@ -805,58 +1800,75 @@ Symbol table 'ST10'->'ST9':
 End Symbol table
 printing code segments (8):
 code segment 'CS1'->'ST2'
- //function import
+ /* int import(int arg) */
 end code segment
 code segment 'CS2'->'ST3'
- //function export
+ /* int export(int arg) */
+ /* return arg; */
+ RETURN arg
 end code segment
 code segment 'CS3'->'ST4'
- //function print
+ /* int print(string str) */
 end code segment
 code segment 'CS4'->'ST5'
- //function main
- //if (expr) then stmt_list
+ /* int main(int argc, int argv) */
+ /* if(argc = 0) */
  MOV reg1 0
  MOV argc reg1
  IFNOT argc lbl1
+ /* then */
  INSERT CS5
  LABEL lbl1
+ /* end */
+ /* A = A*argv; */
  MULTIPLY reg3 A argv
  MOV A reg3
+ /* export(A); */
+ /* while(A) */
  LABEL lbl2
  IFNOT A lbl3
  INSERT CS6
  GOTO lbl2
  LABEL lbl3
+ /* end */
+ /* return 0; */
  MOV reg8 0
  RETURN reg8
 end code segment
 code segment 'CS5'->'ST8'
+ /* print("usage: a.exe arg1 arg2"); */
+ /* return 1; */
  MOV reg2 1
  RETURN reg2
 end code segment
 code segment 'CS6'->'ST9'
+ /* print(A); */
+ /* A = A/1; */
  MOV reg4 1
  DIVIDE reg5 A reg4
  MOV A reg5
- //if (expr) then stmt_list
+ /* if(A = 1) */
  MOV reg6 1
  MOV A reg6
  IFNOT A lbl4
+ /* then */
  INSERT CS7
  LABEL lbl4
+ /* end */
 end code segment
 code segment 'CS7'->'ST10'
+ /* return 1; */
  MOV reg7 1
  RETURN reg7
 end code segment
 code segment 'CS8'->'ST7'
- //function boop
+ /* int boop() */
+ /* fluff = fluff+1; */
  MOV reg9 1
  ADD reg10 fluff reg9
  MOV fluff reg10
 end code segment
 
 GOOD BYE
-[Inferior 1 (process 2408) exited normally]
+[Inferior 1 (process 2600) exited normally]
 (gdb) (gdb) quit

@@ -4,63 +4,71 @@ info: malloc(10400)@ file "yaccin.tab.c", line 1704, func "yyinitGLRStack"
 info: malloc(64)@ file "yaccin.tab.c", line 1675, func "yyinitStateSet"
 info: malloc(16)@ file "yaccin.tab.c", line 1680, func "yyinitStateSet"
 Entering state 0
-Reading a token: info: malloc(40)@ file "lex.yy.c", line 1652, func "yy_flex_alloc"
-info: malloc(16386)@ file "lex.yy.c", line 1652, func "yy_flex_alloc"
-info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(40)@ file "lex.yy.c", line 1657, func "yy_flex_alloc"
+info: malloc(16386)@ file "lex.yy.c", line 1657, func "yy_flex_alloc"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00681018, 12)info: old size = 4
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00C31200, 12)info: old size = 4
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 31
 Reducing stack 0 by rule 29 (line 176):
    $1 = nterm var_decl (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00681018, 24)info: old size = 12
+info: reallocalloc(00C31360, 24)info: old size = 12
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
 Next token is token ')' (: )
 Reducing stack 0 by rule 26 (line 171):
    $1 = nterm var_decl_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -69,9 +77,11 @@ Entering state 32
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 5 (line 132):
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm stmt_list (: )
 Entering state 62
 Next token is token END (: )
@@ -85,72 +95,81 @@ Reducing stack 0 by rule 23 (line 165):
    $5 = token ')' (: )
    $6 = nterm stmt_list (: )
    $7 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00681420, 12)info: old size = 4
+info: reallocalloc(00C3A380, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00681018, 40)info: old size = 24
+info: reallocalloc(00C31428, 40)info: old size = 24
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
 Reducing stack 0 by rule 9 (line 140):
    $1 = nterm func_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 4
 Reducing stack 0 by rule 14 (line 149):
    $1 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00689328, 64)info: old size = 40
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00C3A3A8, 64)info: old size = 40
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 31
 Reducing stack 0 by rule 29 (line 176):
    $1 = nterm var_decl (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
@@ -158,7 +177,7 @@ Entering state 33
 Next token is token ')' (: )
 Reducing stack 0 by rule 26 (line 171):
    $1 = nterm var_decl_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -167,9 +186,61 @@ Entering state 32
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END (: )
-Reducing stack 0 by rule 5 (line 132):
-info: malloc(132)@ file "AST.c", line 19, func "node"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token RETURN (: )
+Shifting token RETURN (: )
+Entering state 58
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
+Next token is token ID (: )
+Shifting token ID (: )
+Entering state 20
+Reducing stack 0 by rule 39 (line 206):
+   $1 = token ID (: )
+info: malloc(104)@ file "AST.c", line 19, func "node"
+-> $$ = nterm expr (: )
+Entering state 74
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
+Shifting token ';' (: )
+Entering state 84
+Reducing stack 0 by rule 19 (line 156):
+   $1 = token RETURN (: )
+   $2 = nterm expr (: )
+   $3 = token ';' (: )
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+-> $$ = nterm imp_stmt (: )
+Entering state 65
+Reducing stack 0 by rule 2 (line 127):
+   $1 = nterm imp_stmt (: )
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: reallocalloc(00C3A728, 100)info: old size = 64
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
+-> $$ = nterm stmt (: )
+Entering state 61
+Reducing stack 0 by rule 7 (line 136):
+   $1 = nterm stmt (: )
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+-> $$ = nterm stmt_list_ne (: )
+Entering state 63
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
+Reducing stack 0 by rule 4 (line 131):
+   $1 = nterm stmt_list_ne (: )
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+vector error: index out of bounds (0 out of max 0)
 -> $$ = nterm stmt_list (: )
 Entering state 62
 Next token is token END (: )
@@ -183,81 +254,90 @@ Reducing stack 0 by rule 23 (line 165):
    $5 = token ')' (: )
    $6 = nterm stmt_list (: )
    $7 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00689A20, 12)info: old size = 4
+info: reallocalloc(00C3AE80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
 Reducing stack 0 by rule 9 (line 140):
    $1 = nterm func_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00689668, 100)info: old size = 64
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 13
 Reducing stack 0 by rule 13 (line 148):
    $1 = nterm decl_stmt_list_ne (: )
    $2 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00689668, 12)info: old size = 4
+info: reallocalloc(00C3AFC8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 31
 Reducing stack 0 by rule 29 (line 176):
    $1 = nterm var_decl (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: reallocalloc(00C3AC40, 156)info: old size = 100
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
 Next token is token ')' (: )
 Reducing stack 0 by rule 26 (line 171):
    $1 = nterm var_decl_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -266,9 +346,11 @@ Entering state 32
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 45
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 5 (line 132):
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm stmt_list (: )
 Entering state 62
 Next token is token END (: )
@@ -282,73 +364,81 @@ Reducing stack 0 by rule 23 (line 165):
    $5 = token ')' (: )
    $6 = nterm stmt_list (: )
    $7 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068A148, 12)info: old size = 4
+info: reallocalloc(00C3B5E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
 Reducing stack 0 by rule 9 (line 140):
    $1 = nterm func_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00689B08, 156)info: old size = 100
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 13
 Reducing stack 0 by rule 13 (line 148):
    $1 = nterm decl_stmt_list_ne (: )
    $2 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00689B08, 12)info: old size = 4
+info: reallocalloc(00C3B730, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 18
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ',' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ',' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 31
 Reducing stack 0 by rule 29 (line 176):
    $1 = nterm var_decl (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
@@ -356,24 +446,29 @@ Entering state 33
 Next token is token ',' (: )
 Shifting token ',' (: )
 Entering state 46
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 30
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 44
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
@@ -382,45 +477,53 @@ Reducing stack 0 by rule 28 (line 175):
    $1 = nterm var_decl_list_ne (: )
    $2 = token ',' (: )
    $3 = nterm var_decl (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068A8C8, 12)info: old size = 4
+info: reallocalloc(00C3BDD8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
 Next token is token ')' (: )
 Reducing stack 0 by rule 26 (line 171):
    $1 = nterm var_decl_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(0068A990, 12)info: old size = 4
+info: reallocalloc(00C3BE80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list (: )
 Entering state 32
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 45
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
+info: reallocalloc(00C3B3D0, 240)info: old size = 156
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
@@ -431,97 +534,114 @@ Entering state 15
 Reducing stack 0 by rule 10 (line 141):
    $1 = nterm var_decl (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 64
 Reducing stack 0 by rule 3 (line 128):
    $1 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068A230, 240)info: old size = 156
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token IF (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(3)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token IF (: )
 Shifting token IF (: )
 Entering state 59
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 75
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 85
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 54 (line 221):
    $1 = nterm expr (: )
    $2 = token '=' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068A270, 12)info: old size = 4
+info: reallocalloc(00C3C610, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 85
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 89
-Reading a token: Next token is token THEN (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token THEN (: )
 Shifting token THEN (: )
 Entering state 93
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(25)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(25)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(25)@ file "lexin.l", line 47, func "stralloc"
 Next token is token STRING (: )
 Shifting token STRING (: )
 Entering state 26
 Reducing stack 0 by rule 45 (line 212):
    $1 = token STRING (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 38 (line 203):
    $1 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr_list_ne (: )
@@ -529,7 +649,7 @@ Entering state 56
 Next token is token ')' (: )
 Reducing stack 0 by rule 35 (line 198):
    $1 = nterm expr_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -543,65 +663,73 @@ Reducing stack 0 by rule 47 (line 214):
    $2 = token '(' (: )
    $3 = nterm expr_list (: )
    $4 = token ')' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068B3F8, 12)info: old size = 4
+info: reallocalloc(00C3CA88, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token RETURN (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token RETURN (: )
 Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 84
 Reducing stack 0 by rule 19 (line 156):
    $1 = token RETURN (: )
    $2 = nterm expr (: )
    $3 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -609,21 +737,24 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068B940, 12)info: old size = 4
+info: reallocalloc(00C3CFF0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token ELSE (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ELSE (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(0068BA08, 12)info: old size = 4
+info: reallocalloc(00C3D0F8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 96
@@ -634,67 +765,80 @@ Reducing stack 0 by rule 32 (line 183):
    $4 = token ')' (: )
    $5 = token THEN (: )
    $6 = nterm stmt_list (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068BAD0, 12)info: old size = 4
+info: reallocalloc(00C3D1A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: reallocalloc(00C3BFA8, 364)info: old size = 240
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm if_then (: )
 Entering state 67
 Next token is token ELSE (: )
 Shifting token ELSE (: )
 Entering state 80
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 17
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 38 (line 203):
    $1 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068AD98, 364)info: old size = 240
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm expr_list_ne (: )
 Entering state 56
 Next token is token ')' (: )
 Reducing stack 0 by rule 35 (line 198):
    $1 = nterm expr_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -708,23 +852,24 @@ Reducing stack 0 by rule 47 (line 214):
    $2 = token '(' (: )
    $3 = nterm expr_list (: )
    $4 = token ')' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068AE58, 12)info: old size = 4
+info: reallocalloc(00C3D7B0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 25 (line 168):
    $1 = nterm typename (: )
    $2 = token ID (: )
    $3 = token '=' (: )
    $4 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068AE80, 12)info: old size = 4
+info: reallocalloc(00C3D878, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 10
@@ -734,67 +879,78 @@ Entering state 15
 Reducing stack 0 by rule 10 (line 141):
    $1 = nterm var_decl (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 64
 Reducing stack 0 by rule 3 (line 128):
    $1 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '*' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '*' (: )
 Shifting token '*' (: )
 Entering state 40
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 53
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 51 (line 218):
    $1 = nterm expr (: )
    $2 = token '*' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068C608, 12)info: old size = 4
+info: reallocalloc(00C3DE40, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -803,10 +959,10 @@ Reducing stack 0 by rule 54 (line 221):
    $1 = nterm expr (: )
    $2 = token '=' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068C6D0, 12)info: old size = 4
+info: reallocalloc(00C3DEE8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -816,14 +972,14 @@ Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -831,38 +987,45 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068C918, 12)info: old size = 4
+info: reallocalloc(00C3E0D0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 38 (line 203):
    $1 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr_list_ne (: )
@@ -870,7 +1033,7 @@ Entering state 56
 Next token is token ')' (: )
 Reducing stack 0 by rule 35 (line 198):
    $1 = nterm expr_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -884,27 +1047,28 @@ Reducing stack 0 by rule 47 (line 214):
    $2 = token '(' (: )
    $3 = nterm expr_list (: )
    $4 = token ')' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068CCE0, 12)info: old size = 4
+info: reallocalloc(00C3E4D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -912,56 +1076,71 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068CF28, 12)info: old size = 4
+info: reallocalloc(00C3E6E0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token WHILE (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token WHILE (: )
 Shifting token WHILE (: )
 Entering state 60
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 76
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 86
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 90
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 42
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 57
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 38 (line 203):
    $1 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr_list_ne (: )
@@ -969,9 +1148,11 @@ Entering state 56
 Next token is token ')' (: )
 Reducing stack 0 by rule 35 (line 198):
    $1 = nterm expr_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: reallocalloc(00C3D1C8, 552)info: old size = 364
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 vector error: index out of bounds (0 out of max 0)
 -> $$ = nterm expr_list (: )
 Entering state 55
@@ -983,82 +1164,93 @@ Reducing stack 0 by rule 47 (line 214):
    $2 = token '(' (: )
    $3 = nterm expr_list (: )
    $4 = token ')' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068D3B0, 12)info: old size = 4
+info: reallocalloc(00C3D248, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068BE18, 552)info: old size = 364
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '/' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '/' (: )
 Shifting token '/' (: )
 Entering state 39
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 52
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 50 (line 217):
    $1 = nterm expr (: )
    $2 = token '/' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068D9B8, 12)info: old size = 4
+info: reallocalloc(00C3F348, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -1067,10 +1259,10 @@ Reducing stack 0 by rule 54 (line 221):
    $1 = nterm expr (: )
    $2 = token '=' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068DA80, 12)info: old size = 4
+info: reallocalloc(00C3F3F0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1080,14 +1272,14 @@ Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1095,100 +1287,121 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068DCC8, 12)info: old size = 4
+info: reallocalloc(00C3F5D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token IF (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(3)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token IF (: )
 Shifting token IF (: )
 Entering state 59
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 75
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 85
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 54 (line 221):
    $1 = nterm expr (: )
    $2 = token '=' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068DF10, 12)info: old size = 4
+info: reallocalloc(00C3F940, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 85
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 89
-Reading a token: Next token is token THEN (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token THEN (: )
 Shifting token THEN (: )
 Entering state 93
-Reading a token: Next token is token RETURN (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token RETURN (: )
 Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 84
 Reducing stack 0 by rule 19 (line 156):
    $1 = token RETURN (: )
    $2 = nterm expr (: )
    $3 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -1201,10 +1414,10 @@ Reducing stack 0 by rule 32 (line 183):
    $4 = token ')' (: )
    $5 = token THEN (: )
    $6 = nterm stmt_list (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068E398, 12)info: old size = 4
+info: reallocalloc(00C3FE28, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_then (: )
 Entering state 67
@@ -1214,21 +1427,21 @@ Entering state 79
 Reducing stack 0 by rule 30 (line 179):
    $1 = nterm if_then (: )
    $2 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_block (: )
 Entering state 66
 Reducing stack 0 by rule 15 (line 152):
    $1 = nterm if_block (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1236,21 +1449,25 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068E6A0, 12)info: old size = 4
+info: reallocalloc(00C3FFB0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(0068E768, 12)info: old size = 4
+info: reallocalloc(00540248, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 94
@@ -1264,23 +1481,23 @@ Reducing stack 0 by rule 34 (line 195):
    $4 = token ')' (: )
    $5 = nterm stmt_list (: )
    $6 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068E830, 12)info: old size = 4
+info: reallocalloc(005402F0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm while_loop (: )
 Entering state 68
 Reducing stack 0 by rule 16 (line 153):
    $1 = nterm while_loop (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1288,40 +1505,47 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068EA78, 12)info: old size = 4
+info: reallocalloc(005404D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token RETURN (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token RETURN (: )
 Shifting token RETURN (: )
 Entering state 58
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 74
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Shifting token ';' (: )
 Entering state 84
 Reducing stack 0 by rule 19 (line 156):
    $1 = token RETURN (: )
    $2 = nterm expr (: )
    $3 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1329,27 +1553,30 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068ED80, 12)info: old size = 4
+info: reallocalloc(00540840, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068EA78, 24)info: old size = 12
+info: reallocalloc(005404D8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068ED80, 24)info: old size = 12
+info: reallocalloc(00540840, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(0068EE48, 12)info: old size = 4
+info: reallocalloc(00540948, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068ED80, 24)info: old size = 12
+info: reallocalloc(00540840, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 87
@@ -1361,23 +1588,23 @@ Reducing stack 0 by rule 31 (line 180):
    $2 = token ELSE (: )
    $3 = nterm stmt_list (: )
    $4 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068EE48, 12)info: old size = 4
+info: reallocalloc(00540948, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_block (: )
 Entering state 66
 Reducing stack 0 by rule 15 (line 152):
    $1 = nterm if_block (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1385,31 +1612,37 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068F178, 12)info: old size = 4
+info: reallocalloc(00540BF8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 24 (line 167):
    $1 = nterm typename (: )
    $2 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
@@ -1420,14 +1653,14 @@ Entering state 15
 Reducing stack 0 by rule 10 (line 141):
    $1 = nterm var_decl (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 64
 Reducing stack 0 by rule 3 (line 128):
    $1 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
@@ -1435,21 +1668,23 @@ Entering state 78
 Reducing stack 0 by rule 6 (line 135):
    $1 = nterm stmt_list_ne (: )
    $2 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068F560, 12)info: old size = 4
+info: reallocalloc(00541000, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(0068F628, 12)info: old size = 4
+info: reallocalloc(005410E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 62
@@ -1464,75 +1699,90 @@ Reducing stack 0 by rule 23 (line 165):
    $5 = token ')' (: )
    $6 = nterm stmt_list (: )
    $7 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068F6F0, 12)info: old size = 4
+info: reallocalloc(00541190, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
 Reducing stack 0 by rule 9 (line 140):
    $1 = nterm func_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: reallocalloc(00C3EC08, 832)info: old size = 552
+@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 13
 Reducing stack 0 by rule 13 (line 148):
    $1 = nterm decl_stmt_list_ne (: )
    $2 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068F878, 12)info: old size = 4
+info: reallocalloc(00C3EC88, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: Next token is token CLASS (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token CLASS (: )
 Shifting token CLASS (: )
 Entering state 1
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 11
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 17
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 28
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 25 (line 168):
    $1 = nterm typename (: )
    $2 = token ID (: )
    $3 = token '=' (: )
    $4 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068FB00, 12)info: old size = 4
+info: reallocalloc(00541810, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068D618, 832)info: old size = 552
-@ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 10
 Next token is token ';' (: )
@@ -1541,84 +1791,102 @@ Entering state 15
 Reducing stack 0 by rule 10 (line 141):
    $1 = nterm var_decl (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 4
 Reducing stack 0 by rule 14 (line 149):
    $1 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 Next token is token TYPE (: )
 Shifting token TYPE (: )
 Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm typename (: )
 Entering state 8
-Reading a token: info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 14
-Reading a token: Next token is token '(' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '(' (: )
 Shifting token '(' (: )
 Entering state 18
-Reading a token: Next token is token ')' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ')' (: )
 Reducing stack 0 by rule 27 (line 172):
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm var_decl_list (: )
 Entering state 32
 Next token is token ')' (: )
 Shifting token ')' (: )
 Entering state 45
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 69
-Reading a token: Next token is token '=' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '=' (: )
 Shifting token '=' (: )
 Entering state 35
-Reading a token: info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
 Next token is token ID (: )
 Shifting token ID (: )
 Entering state 20
 Reducing stack 0 by rule 39 (line 206):
    $1 = token ID (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 48
-Reading a token: Next token is token '+' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token '+' (: )
 Shifting token '+' (: )
 Entering state 36
-Reading a token: info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
 Next token is token INTEGER (: )
 Shifting token INTEGER (: )
 Entering state 21
 Reducing stack 0 by rule 40 (line 207):
    $1 = token INTEGER (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 -> $$ = nterm expr (: )
 Entering state 49
-Reading a token: Next token is token ';' (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token ';' (: )
 Reducing stack 0 by rule 53 (line 220):
    $1 = nterm expr (: )
    $2 = token '+' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068D818, 12)info: old size = 4
+info: reallocalloc(00541F58, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -1627,10 +1895,10 @@ Reducing stack 0 by rule 54 (line 221):
    $1 = nterm expr (: )
    $2 = token '=' (: )
    $3 = nterm expr (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540368, 12)info: old size = 4
+info: reallocalloc(00542000, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1640,29 +1908,32 @@ Entering state 82
 Reducing stack 0 by rule 17 (line 154):
    $1 = nterm expr (: )
    $2 = token ';' (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm imp_stmt (: )
 Entering state 65
 Reducing stack 0 by rule 2 (line 127):
    $1 = nterm imp_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
 Reducing stack 0 by rule 7 (line 136):
    $1 = nterm stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 4 (line 131):
    $1 = nterm stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
@@ -1679,16 +1950,16 @@ Reducing stack 0 by rule 23 (line 165):
    $5 = token ')' (: )
    $6 = nterm stmt_list (: )
    $7 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540730, 12)info: old size = 4
+info: reallocalloc(00542388, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
 Reducing stack 0 by rule 9 (line 140):
    $1 = nterm func_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
@@ -1696,21 +1967,23 @@ Entering state 13
 Reducing stack 0 by rule 13 (line 148):
    $1 = nterm decl_stmt_list_ne (: )
    $2 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005408B8, 12)info: old size = 4
+info: reallocalloc(005424D0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
-Reading a token: Next token is token END (: )
+Reading a token: info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+Next token is token END (: )
 Reducing stack 0 by rule 11 (line 144):
    $1 = nterm decl_stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00540980, 12)info: old size = 4
+info: reallocalloc(005425B8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list (: )
 Entering state 16
@@ -1722,14 +1995,14 @@ Reducing stack 0 by rule 20 (line 159):
    $2 = token ID (: )
    $3 = nterm decl_stmt_list (: )
    $4 = token END (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm class_def (: )
 Entering state 7
 Reducing stack 0 by rule 8 (line 139):
    $1 = nterm class_def (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt (: )
@@ -1737,33 +2010,33 @@ Entering state 13
 Reducing stack 0 by rule 13 (line 148):
    $1 = nterm decl_stmt_list_ne (: )
    $2 = nterm decl_stmt (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540BC8, 12)info: old size = 4
+info: reallocalloc(005427A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
 Reading a token: Now at end of input.
 Reducing stack 0 by rule 11 (line 144):
    $1 = nterm decl_stmt_list_ne (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(0068F878, 24)info: old size = 12
+info: reallocalloc(00C3EC88, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540BC8, 24)info: old size = 12
+info: reallocalloc(005427A0, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00540C90, 12)info: old size = 4
+info: reallocalloc(00542848, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540BC8, 24)info: old size = 12
+info: reallocalloc(005427A0, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list (: )
 Entering state 5
 Reducing stack 0 by rule 1 (line 124):
    $1 = nterm decl_stmt_list (: )
-info: malloc(132)@ file "AST.c", line 19, func "node"
+info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm program (: )
@@ -1773,13 +2046,13 @@ Shifting token $end (: )
 Entering state 12
 Cleanup: popping token $end (: )
 Cleanup: popping nterm program (: )
-info: free(006827D0)
+info: free(00C327D0)
 info: old size = 10400
 @ file "yaccin.tab.c", line 1784, func "yyfreeGLRStack"
-info: free(00680F98)
+info: free(00C30F98)
 info: old size = 64
 @ file "yaccin.tab.c", line 1691, func "yyfreeStateSet"
-info: free(00680FF0)
+info: free(00C30FF0)
 info: old size = 16
 @ file "yaccin.tab.c", line 1692, func "yyfreeStateSet"
 info: malloc(6)@ file "AST.c", line 105, func "ast_print_graph_helper"
@@ -1798,6 +2071,9 @@ info: malloc(14)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(16)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(18)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(14)@ file "AST.c", line 105, func "ast_print_graph_helper"
+info: malloc(16)@ file "AST.c", line 105, func "ast_print_graph_helper"
+info: malloc(18)@ file "AST.c", line 105, func "ast_print_graph_helper"
+info: malloc(20)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(10)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(12)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(14)@ file "AST.c", line 105, func "ast_print_graph_helper"
@@ -1912,239 +2188,420 @@ info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(3)@ file "lexin.l", line 42, func "stralloc"
+info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(3)@ file "lexin.l", line 47, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: reallocalloc(00543900, 12)info: old size = 4
+info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: reallocalloc(005456E8, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(005438E0, 12)info: old size = 4
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(005456C8, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00543A70, 12)info: old size = 4
+info: reallocalloc(00545AC0, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(005439F8, 24)info: old size = 12
+info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(00545A08, 24)info: old size = 12
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(19)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: reallocalloc(00543E48, 12)info: old size = 4
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: reallocalloc(005462B8, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00543BD0, 24)info: old size = 12
+info: reallocalloc(00545CE0, 24)info: old size = 12
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
+info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(53)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 527, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(00543CA8, 40)info: old size = 24
+info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(00545E28, 40)info: old size = 24
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: reallocalloc(00543FD0, 12)info: old size = 4
+info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
+info: reallocalloc(005465C8, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
+info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(3)@ file "lexin.l", line 42, func "stralloc"
-info: reallocalloc(00543880, 12)info: old size = 4
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(3)@ file "lexin.l", line 47, func "stralloc"
+info: reallocalloc(00545668, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(005438A0, 12)info: old size = 4
+info: reallocalloc(00545688, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(18)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(26)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(005438A0, 12)info: old size = 4
+info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(00545688, 12)info: old size = 4
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(18)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(26)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(17)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(18)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00546D10, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(005442E0, 24)info: old size = 12
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(28)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(00546C90, 24)info: old size = 12
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(19)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(35)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(27)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(005444F8, 12)info: old size = 4
+info: malloc(238)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(215)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(215)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(215)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(65)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(19)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(005473F0, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
-info: reallocalloc(00000000, 4)info: new allocation
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00546E48, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544578, 12)info: old size = 4
+info: malloc(14)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00547900, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(14)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544550, 24)info: old size = 12
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
+info: reallocalloc(00546A68, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(4)@ file "lexin.l", line 42, func "stralloc"
-info: reallocalloc(005441A0, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(005441C8, 24)info: old size = 12
+info: reallocalloc(00546A90, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(00544100, 12)info: old size = 4
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(005469C8, 12)info: old size = 4
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(45)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(45)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(39)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544840, 12)info: old size = 4
+info: malloc(32)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00547E40, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544550, 40)info: old size = 24
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00547F78, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "lexin.l", line 42, func "stralloc"
-info: reallocalloc(00544600, 24)info: old size = 12
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00547A48, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(7)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(13)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544550, 64)info: old size = 40
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(137)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(23)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(18)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
+info: reallocalloc(005479F8, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548040, 64)info: old size = 40
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(15)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(13)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(54)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00544940, 40)info: old size = 24
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(15)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548980, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(19)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544C58, 12)info: old size = 4
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548390, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(27)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544CE8, 24)info: old size = 12
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(19)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548AA8, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(2)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(13)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544D70, 40)info: old size = 24
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(25)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548C48, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00543970, 24)info: old size = 12
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(13)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00545980, 24)info: old size = 12
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 435, func "new_symbol_table"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: reallocalloc(005444C8, 40)info: old size = 24
+info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: reallocalloc(00547350, 40)info: old size = 24
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00544FC0, 12)info: old size = 4
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00549180, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(10)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(12)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(8)@ file "semantic.c", line 547, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 487, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
+info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00548E68, 64)info: old size = 40
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(005483F0, 100)info: old size = 64
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(13)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(13)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(53)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "semantic.c", line 705, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(6)@ file "lexin.l", line 42, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(00545210, 12)info: old size = 4
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(23)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00549850, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(6)@ file "semantic.c", line 669, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 680, func "emit_code"
-info: malloc(16)@ file "semantic.c", line 680, func "emit_code"
-info: reallocalloc(005452B8, 24)info: old size = 12
+info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(6)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00549960, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
 No stack.
