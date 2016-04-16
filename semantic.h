@@ -59,7 +59,8 @@ struct symbol_parameter{
 	int pos;
 };
 struct symbol_function{
-	struct type_name *type;
+	struct type_name *returntype;
+	struct type_name *signature;
 	struct symbol_table *scope;
 	struct code_segment *code;
 	//will add code segment here later
@@ -103,12 +104,16 @@ void push_symbol_table(struct symbol_table *ST);
 void pop_symbol_table(); */
 void print_symbol_table(struct symbol_table *T);
 
-
+struct type_name;
+typedef struct type_name* ptr_type_name;
+struct vector2_ptr_type_name;
 struct type_name{
 	//enum{TYPE_CLASS, TYPE_INT, TYPE_FLOAT, TYPE_CHAR, TYPE_STRING, TYPE_VOID} type;
 	const char *name;
 	struct symbol *symclass;
+	struct vector2_ptr_type_name *args;
 };
+definition_vector_of(ptr_type_name);
 struct type_name *semantic_get_type(const char *str);
 
 typedef const char* ptr_char;
@@ -133,6 +138,8 @@ void emit_code(const char *fmt, ...);
 char *IR_next_name(const char *prefix);
 void push_expr(const char *expr);
 const char *pop_expr();
+void push_exprtype(struct type_name *T);
+struct type_name *pop_exprtype();
 void semantic_analyze(struct ast_node *node);
 void print_semantic();
 // scope1 

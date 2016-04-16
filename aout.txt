@@ -9,7 +9,7 @@ For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>...
 Reading symbols from C:\Stride\LazyComp\data\a.exe...done.
 (gdb) Starting program: C:\Stride\LazyComp\data/a.exe lazy2.txt
-[New Thread 2600.0xdc0]
+[New Thread 404.0xf6c]
 sizeof ast_node = '104'
 test diff = '4', size = '4'
 Lexxed token [int]=[int]
@@ -754,139 +754,139 @@ unroll [decl_stmt_list]  unroll done
 node "program": [(null)] (0/1)
 
 PARSING DONE
-printing ast 005428F8, 761729A0, 0, [program]
-printing ast 005427C8, 761729A0, 0, [decl_stmt_list]
-printing ast 00C3A3E8, 761729A0, 0, [decl_stmt]
-printing ast 00C3A300, 761729A0, 0, [func_def]
-printing ast 00C31180, 761729A0, 0, [typename]
-printing ast 00C3A1C0, 761729A0, 1, [var_decl_list]
-printing ast 00C3A0C0, 761729A0, 0, [var_decl]
-printing ast 00C312E0, 761729A0, 0, [typename]
-printing ast 00C3A280, 761729A0, 2, [stmt_list]
-printing ast 00C3AEA8, 761729A0, 1, [decl_stmt]
-printing ast 00C3AE00, 761729A0, 0, [func_def]
-printing ast 00C3A568, 761729A0, 0, [typename]
-printing ast 00C3A900, 761729A0, 1, [var_decl_list]
-printing ast 00C3A7C0, 761729A0, 0, [var_decl]
-printing ast 00C3A6A8, 761729A0, 0, [typename]
-printing ast 00C3AD60, 761729A0, 2, [stmt_list]
-printing ast 00C3ABA0, 761729A0, 0, [stmt]
-printing ast 00C3AB00, 761729A0, 0, [imp_stmt]
-printing ast 00C3AA60, 761729A0, 0, [expr_id]
-printing ast 00C3B610, 761729A0, 2, [decl_stmt]
-printing ast 00C3B568, 761729A0, 0, [func_def]
-printing ast 00C3B050, 761729A0, 0, [typename]
-printing ast 00C3AC40, 761729A0, 1, [var_decl_list]
-printing ast 00C3B290, 761729A0, 0, [var_decl]
-printing ast 00C3B190, 761729A0, 0, [typename]
-printing ast 00C3B4E8, 761729A0, 2, [stmt_list]
-printing ast 005411B8, 761729A0, 3, [decl_stmt]
-printing ast 00541110, 761729A0, 0, [func_def]
-printing ast 00C3B7D8, 761729A0, 0, [typename]
-printing ast 00C3BE00, 761729A0, 1, [var_decl_list]
-printing ast 00C3BA18, 761729A0, 0, [var_decl]
-printing ast 00C3B918, 761729A0, 0, [typename]
-printing ast 00C3BCB8, 761729A0, 1, [var_decl]
-printing ast 00C3BBB8, 761729A0, 0, [typename]
-printing ast 00541068, 761729A0, 2, [stmt_list]
-printing ast 00C3C1D0, 761729A0, 0, [stmt]
-printing ast 00C3C130, 761729A0, 0, [decl_stmt]
-printing ast 00C3C0B0, 761729A0, 0, [var_decl]
-printing ast 00C3BF28, 761729A0, 0, [typename]
-printing ast 00540AF8, 761729A0, 1, [stmt]
-printing ast 00540A78, 761729A0, 0, [imp_stmt]
-printing ast 005409F8, 761729A0, 0, [if_block]
-printing ast 00C3D120, 761729A0, 0, [if_then]
-printing ast 00C3C590, 761729A0, 0, [expr_=]
-printing ast 00C3C3D0, 761729A0, 0, [expr_id]
-printing ast 00C3C4F0, 761729A0, 1, [expr_const]
-printing ast 00C3D078, 761729A0, 1, [stmt_list]
-printing ast 00C3CB70, 761729A0, 0, [stmt]
-printing ast 00C3CAD0, 761729A0, 0, [imp_stmt]
-printing ast 00C3CA08, 761729A0, 0, [expr_call]
-printing ast 00C3C718, 761729A0, 0, [expr_id]
-printing ast 00C3C968, 761729A0, 1, [expr_list]
-printing ast 00C3C828, 761729A0, 0, [expr_const]
-printing ast 00C3CED0, 761729A0, 1, [stmt]
-printing ast 00C3CE30, 761729A0, 0, [imp_stmt]
-printing ast 00C3CD90, 761729A0, 0, [expr_const]
-printing ast 005408C8, 761729A0, 1, [stmt_list]
-printing ast 00C3D940, 761729A0, 0, [stmt]
-printing ast 00C3D8A0, 761729A0, 0, [decl_stmt]
-printing ast 00C3D7F8, 761729A0, 0, [var_decl_assign]
-printing ast 00C3D350, 761729A0, 0, [typename]
-printing ast 00C3D730, 761729A0, 1, [expr_call]
-printing ast 00C3D470, 761729A0, 0, [expr_id]
-printing ast 00C3D690, 761729A0, 1, [expr_list]
-printing ast 00C3D550, 761729A0, 0, [expr_id]
-printing ast 00C3DFB0, 761729A0, 1, [stmt]
-printing ast 00C3DF10, 761729A0, 0, [imp_stmt]
-printing ast 00C3DE68, 761729A0, 0, [expr_=]
-printing ast 00C3DB20, 761729A0, 0, [expr_id]
-printing ast 00C3DDC0, 761729A0, 1, [expr_*]
-printing ast 00C3DC40, 761729A0, 0, [expr_id]
-printing ast 00C3DD20, 761729A0, 1, [expr_id]
-printing ast 00C3E5C0, 761729A0, 2, [stmt]
-printing ast 00C3E520, 761729A0, 0, [imp_stmt]
-printing ast 00C3E458, 761729A0, 0, [expr_call]
-printing ast 00C3E198, 761729A0, 0, [expr_id]
-printing ast 00C3E3B8, 761729A0, 1, [expr_list]
-printing ast 00C3E278, 761729A0, 0, [expr_id]
-printing ast 005403B8, 761729A0, 3, [stmt]
-printing ast 00540318, 761729A0, 0, [imp_stmt]
-printing ast 00540270, 761729A0, 0, [while_loop]
-printing ast 00C3E7E8, 761729A0, 0, [expr_id]
-printing ast 005401C8, 761729A0, 1, [stmt_list]
-printing ast 00C3EE48, 761729A0, 0, [stmt]
-printing ast 00C3D290, 761729A0, 0, [imp_stmt]
-printing ast 00C3D1C8, 761729A0, 0, [expr_call]
-printing ast 00C3E948, 761729A0, 0, [expr_id]
-printing ast 00C3EB68, 761729A0, 1, [expr_list]
-printing ast 00C3EA28, 761729A0, 0, [expr_id]
-printing ast 00C3F4B8, 761729A0, 1, [stmt]
-printing ast 00C3F418, 761729A0, 0, [imp_stmt]
-printing ast 00C3F370, 761729A0, 0, [expr_=]
-printing ast 00C3F028, 761729A0, 0, [expr_id]
-printing ast 00C3F2C8, 761729A0, 1, [expr_/]
-printing ast 00C3F148, 761729A0, 0, [expr_id]
-printing ast 00C3F228, 761729A0, 1, [expr_const]
-printing ast 00540048, 761729A0, 2, [stmt]
-printing ast 00C3FEF0, 761729A0, 0, [imp_stmt]
-printing ast 00C3FE50, 761729A0, 0, [if_block]
-printing ast 00C3FDA8, 761729A0, 0, [if_then]
-printing ast 00C3F8C0, 761729A0, 0, [expr_=]
-printing ast 00C3F700, 761729A0, 0, [expr_id]
-printing ast 00C3F820, 761729A0, 1, [expr_const]
-printing ast 00C3FD08, 761729A0, 1, [stmt_list]
-printing ast 00C3FB88, 761729A0, 0, [stmt]
-printing ast 00C3FAE8, 761729A0, 0, [imp_stmt]
-printing ast 00C3FA48, 761729A0, 0, [expr_const]
-printing ast 00540720, 761729A0, 4, [stmt]
-printing ast 00540680, 761729A0, 0, [imp_stmt]
-printing ast 005405E0, 761729A0, 0, [expr_const]
-printing ast 00540EE0, 761729A0, 2, [stmt]
-printing ast 00540E40, 761729A0, 0, [decl_stmt]
-printing ast 00540DA0, 761729A0, 0, [var_decl]
-printing ast 00540CA0, 761729A0, 0, [typename]
-printing ast 00542680, 761729A0, 4, [decl_stmt]
-printing ast 005425E0, 761729A0, 0, [class_def]
-printing ast 00542538, 761729A0, 0, [decl_stmt_list]
-printing ast 00541838, 761729A0, 0, [decl_stmt]
-printing ast 00541790, 761729A0, 0, [var_decl_assign]
-printing ast 005415B0, 761729A0, 0, [typename]
-printing ast 005416F0, 761729A0, 1, [expr_const]
-printing ast 005423B0, 761729A0, 1, [decl_stmt]
-printing ast 00542308, 761729A0, 0, [func_def]
-printing ast 005419F8, 761729A0, 0, [typename]
-printing ast 00541B18, 761729A0, 1, [var_decl_list]
-printing ast 00542268, 761729A0, 2, [stmt_list]
-printing ast 005420C8, 761729A0, 0, [stmt]
-printing ast 00542028, 761729A0, 0, [imp_stmt]
-printing ast 00541F80, 761729A0, 0, [expr_=]
-printing ast 00541C38, 761729A0, 0, [expr_id]
-printing ast 00541ED8, 761729A0, 1, [expr_+]
-printing ast 00541D58, 761729A0, 0, [expr_id]
-printing ast 00541E38, 761729A0, 1, [expr_const]
+printing ast 006928F8, 761729A0, 0, [program]
+printing ast 006927C8, 761729A0, 0, [decl_stmt_list]
+printing ast 007EA3E8, 761729A0, 0, [decl_stmt]
+printing ast 007EA300, 761729A0, 0, [func_def]
+printing ast 007E1180, 761729A0, 0, [typename]
+printing ast 007EA1C0, 761729A0, 1, [var_decl_list]
+printing ast 007EA0C0, 761729A0, 0, [var_decl]
+printing ast 007E12E0, 761729A0, 0, [typename]
+printing ast 007EA280, 761729A0, 2, [stmt_list]
+printing ast 007EAEA8, 761729A0, 1, [decl_stmt]
+printing ast 007EAE00, 761729A0, 0, [func_def]
+printing ast 007EA568, 761729A0, 0, [typename]
+printing ast 007EA900, 761729A0, 1, [var_decl_list]
+printing ast 007EA7C0, 761729A0, 0, [var_decl]
+printing ast 007EA6A8, 761729A0, 0, [typename]
+printing ast 007EAD60, 761729A0, 2, [stmt_list]
+printing ast 007EABA0, 761729A0, 0, [stmt]
+printing ast 007EAB00, 761729A0, 0, [imp_stmt]
+printing ast 007EAA60, 761729A0, 0, [expr_id]
+printing ast 007EB610, 761729A0, 2, [decl_stmt]
+printing ast 007EB568, 761729A0, 0, [func_def]
+printing ast 007EB050, 761729A0, 0, [typename]
+printing ast 007EAC40, 761729A0, 1, [var_decl_list]
+printing ast 007EB290, 761729A0, 0, [var_decl]
+printing ast 007EB190, 761729A0, 0, [typename]
+printing ast 007EB4E8, 761729A0, 2, [stmt_list]
+printing ast 006911B8, 761729A0, 3, [decl_stmt]
+printing ast 00691110, 761729A0, 0, [func_def]
+printing ast 007EB7D8, 761729A0, 0, [typename]
+printing ast 007EBE00, 761729A0, 1, [var_decl_list]
+printing ast 007EBA18, 761729A0, 0, [var_decl]
+printing ast 007EB918, 761729A0, 0, [typename]
+printing ast 007EBCB8, 761729A0, 1, [var_decl]
+printing ast 007EBBB8, 761729A0, 0, [typename]
+printing ast 00691068, 761729A0, 2, [stmt_list]
+printing ast 007EC1D0, 761729A0, 0, [stmt]
+printing ast 007EC130, 761729A0, 0, [decl_stmt]
+printing ast 007EC0B0, 761729A0, 0, [var_decl]
+printing ast 007EBF28, 761729A0, 0, [typename]
+printing ast 00690AF8, 761729A0, 1, [stmt]
+printing ast 00690A78, 761729A0, 0, [imp_stmt]
+printing ast 006909F8, 761729A0, 0, [if_block]
+printing ast 007ED120, 761729A0, 0, [if_then]
+printing ast 007EC590, 761729A0, 0, [expr_=]
+printing ast 007EC3D0, 761729A0, 0, [expr_id]
+printing ast 007EC4F0, 761729A0, 1, [expr_const]
+printing ast 007ED078, 761729A0, 1, [stmt_list]
+printing ast 007ECB70, 761729A0, 0, [stmt]
+printing ast 007ECAD0, 761729A0, 0, [imp_stmt]
+printing ast 007ECA08, 761729A0, 0, [expr_call]
+printing ast 007EC718, 761729A0, 0, [expr_id]
+printing ast 007EC968, 761729A0, 1, [expr_list]
+printing ast 007EC828, 761729A0, 0, [expr_const]
+printing ast 007ECED0, 761729A0, 1, [stmt]
+printing ast 007ECE30, 761729A0, 0, [imp_stmt]
+printing ast 007ECD90, 761729A0, 0, [expr_const]
+printing ast 006908C8, 761729A0, 1, [stmt_list]
+printing ast 007ED940, 761729A0, 0, [stmt]
+printing ast 007ED8A0, 761729A0, 0, [decl_stmt]
+printing ast 007ED7F8, 761729A0, 0, [var_decl_assign]
+printing ast 007ED350, 761729A0, 0, [typename]
+printing ast 007ED730, 761729A0, 1, [expr_call]
+printing ast 007ED470, 761729A0, 0, [expr_id]
+printing ast 007ED690, 761729A0, 1, [expr_list]
+printing ast 007ED550, 761729A0, 0, [expr_id]
+printing ast 007EDFB0, 761729A0, 1, [stmt]
+printing ast 007EDF10, 761729A0, 0, [imp_stmt]
+printing ast 007EDE68, 761729A0, 0, [expr_=]
+printing ast 007EDB20, 761729A0, 0, [expr_id]
+printing ast 007EDDC0, 761729A0, 1, [expr_*]
+printing ast 007EDC40, 761729A0, 0, [expr_id]
+printing ast 007EDD20, 761729A0, 1, [expr_id]
+printing ast 007EE5C0, 761729A0, 2, [stmt]
+printing ast 007EE520, 761729A0, 0, [imp_stmt]
+printing ast 007EE458, 761729A0, 0, [expr_call]
+printing ast 007EE198, 761729A0, 0, [expr_id]
+printing ast 007EE3B8, 761729A0, 1, [expr_list]
+printing ast 007EE278, 761729A0, 0, [expr_id]
+printing ast 006903B8, 761729A0, 3, [stmt]
+printing ast 00690318, 761729A0, 0, [imp_stmt]
+printing ast 00690270, 761729A0, 0, [while_loop]
+printing ast 007EE7E8, 761729A0, 0, [expr_id]
+printing ast 006901C8, 761729A0, 1, [stmt_list]
+printing ast 007EEE48, 761729A0, 0, [stmt]
+printing ast 007ED290, 761729A0, 0, [imp_stmt]
+printing ast 007ED1C8, 761729A0, 0, [expr_call]
+printing ast 007EE948, 761729A0, 0, [expr_id]
+printing ast 007EEB68, 761729A0, 1, [expr_list]
+printing ast 007EEA28, 761729A0, 0, [expr_id]
+printing ast 007EF4B8, 761729A0, 1, [stmt]
+printing ast 007EF418, 761729A0, 0, [imp_stmt]
+printing ast 007EF370, 761729A0, 0, [expr_=]
+printing ast 007EF028, 761729A0, 0, [expr_id]
+printing ast 007EF2C8, 761729A0, 1, [expr_/]
+printing ast 007EF148, 761729A0, 0, [expr_id]
+printing ast 007EF228, 761729A0, 1, [expr_const]
+printing ast 00690048, 761729A0, 2, [stmt]
+printing ast 007EFEF0, 761729A0, 0, [imp_stmt]
+printing ast 007EFE50, 761729A0, 0, [if_block]
+printing ast 007EFDA8, 761729A0, 0, [if_then]
+printing ast 007EF8C0, 761729A0, 0, [expr_=]
+printing ast 007EF700, 761729A0, 0, [expr_id]
+printing ast 007EF820, 761729A0, 1, [expr_const]
+printing ast 007EFD08, 761729A0, 1, [stmt_list]
+printing ast 007EFB88, 761729A0, 0, [stmt]
+printing ast 007EFAE8, 761729A0, 0, [imp_stmt]
+printing ast 007EFA48, 761729A0, 0, [expr_const]
+printing ast 00690720, 761729A0, 4, [stmt]
+printing ast 00690680, 761729A0, 0, [imp_stmt]
+printing ast 006905E0, 761729A0, 0, [expr_const]
+printing ast 00690EE0, 761729A0, 2, [stmt]
+printing ast 00690E40, 761729A0, 0, [decl_stmt]
+printing ast 00690DA0, 761729A0, 0, [var_decl]
+printing ast 00690CA0, 761729A0, 0, [typename]
+printing ast 00692680, 761729A0, 4, [decl_stmt]
+printing ast 006925E0, 761729A0, 0, [class_def]
+printing ast 00692538, 761729A0, 0, [decl_stmt_list]
+printing ast 00691838, 761729A0, 0, [decl_stmt]
+printing ast 00691790, 761729A0, 0, [var_decl_assign]
+printing ast 006915B0, 761729A0, 0, [typename]
+printing ast 006916F0, 761729A0, 1, [expr_const]
+printing ast 006923B0, 761729A0, 1, [decl_stmt]
+printing ast 00692308, 761729A0, 0, [func_def]
+printing ast 006919F8, 761729A0, 0, [typename]
+printing ast 00691B18, 761729A0, 1, [var_decl_list]
+printing ast 00692268, 761729A0, 2, [stmt_list]
+printing ast 006920C8, 761729A0, 0, [stmt]
+printing ast 00692028, 761729A0, 0, [imp_stmt]
+printing ast 00691F80, 761729A0, 0, [expr_=]
+printing ast 00691C38, 761729A0, 0, [expr_id]
+printing ast 00691ED8, 761729A0, 1, [expr_+]
+printing ast 00691D58, 761729A0, 0, [expr_id]
+printing ast 00691E38, 761729A0, 1, [expr_const]
 
 PRINTING DONE
 semantic got program, @ 0-430, imperative pass
@@ -967,11 +967,7 @@ int import(int arg) end
 int import(int arg) end
 -----------------
 IR_next_name: returning [ST2]
-    semantic got var_decl_list, @ 11-18, declarative pass
------------------
-int arg
------------------
-     semantic got var_decl, "arg", @ 11-18, declarative pass
+    semantic got var_decl, "arg", @ 11-18, declarative pass
 -----------------
 int arg
 -----------------
@@ -988,11 +984,7 @@ int export(int arg)
 end
 -----------------
 IR_next_name: returning [ST3]
-    semantic got var_decl_list, @ 35-42, declarative pass
------------------
-int arg
------------------
-     semantic got var_decl, "arg", @ 35-42, declarative pass
+    semantic got var_decl, "arg", @ 35-42, declarative pass
 -----------------
 int arg
 -----------------
@@ -1005,11 +997,7 @@ int print(string str) end
 int print(string str) end
 -----------------
 IR_next_name: returning [ST4]
-    semantic got var_decl_list, @ 71-81, declarative pass
------------------
-string str
------------------
-     semantic got var_decl, "str", @ 71-81, declarative pass
+    semantic got var_decl, "str", @ 71-81, declarative pass
 -----------------
 string str
 -----------------
@@ -1056,15 +1044,11 @@ int main(int argc, int argv)
 end
 -----------------
 IR_next_name: returning [ST5]
-    semantic got var_decl_list, @ 97-115, declarative pass
------------------
-int argc, int argv
------------------
-     semantic got var_decl, "argc", @ 97-105, declarative pass
+    semantic got var_decl, "argc", @ 97-105, declarative pass
 -----------------
 int argc
 -----------------
-     semantic got var_decl, "argv", @ 107-115, declarative pass
+    semantic got var_decl, "argv", @ 107-115, declarative pass
 -----------------
 int argv
 -----------------
@@ -1115,10 +1099,6 @@ int boop()
 	end
 -----------------
 IR_next_name: returning [ST7]
-       semantic got var_decl_list, "<empty>", @ 0-0, declarative pass
------------------
-
------------------
  semantic got decl_stmt_list, @ 0-430, imperative pass
 -----------------
 int import(int arg) end
@@ -1163,7 +1143,7 @@ int import(int arg) end
 -----------------
 found symbol 'import'->'ST1'
 IR_next_name: returning [CS1]
-    semantic got stmt_list, "<empty>", @ 0-0, imperative pass
+    semantic got stmt_list, "<empty>", @ 19-19, imperative pass
 -----------------
 
 -----------------
@@ -1197,6 +1177,7 @@ return arg;
 -----------------
 arg
 -----------------
+found symbol 'arg'->'ST3'
   semantic got decl_stmt, @ 61-86, imperative pass
 -----------------
 int print(string str) end
@@ -1207,7 +1188,7 @@ int print(string str) end
 -----------------
 found symbol 'print'->'ST1'
 IR_next_name: returning [CS3]
-    semantic got stmt_list, "<empty>", @ 0-0, imperative pass
+    semantic got stmt_list, "<empty>", @ 21-21, imperative pass
 -----------------
 
 -----------------
@@ -1343,6 +1324,22 @@ if(argc = 0) then
 		print("usage: a.exe arg1 arg2");
 		return 1;
 -----------------
+IR_next_name: returning [ST8]
+IR_next_name: returning [CS5]
+         semantic got expr_=, @ 130-138, declarative pass
+-----------------
+argc = 0
+-----------------
+          semantic got expr_id, "argc", @ 130-134, declarative pass
+-----------------
+argc
+-----------------
+found symbol 'argc'->'ST5'
+          semantic got expr_const, "0", @ 137-138, declarative pass
+-----------------
+0
+-----------------
+IR_next_name: returning [reg1]
          semantic got expr_=, @ 130-138, imperative pass
 -----------------
 argc = 0
@@ -1351,14 +1348,15 @@ argc = 0
 -----------------
 argc
 -----------------
+found symbol 'argc'->'ST5'
           semantic got expr_const, "0", @ 137-138, imperative pass
 -----------------
 0
 -----------------
-IR_next_name: returning [reg1]
+IR_next_name: returning [reg2]
 IR_next_name: returning [lbl1]
-IR_next_name: returning [ST8]
-IR_next_name: returning [CS5]
+IR_next_name: returning [ST9]
+IR_next_name: returning [CS6]
          semantic got stmt_list, @ 147-191, declarative pass
 -----------------
 print("usage: a.exe arg1 arg2");
@@ -1401,6 +1399,9 @@ print("usage: a.exe arg1 arg2")
 -----------------
 print
 -----------------
+found symbol 'print'->'ST1'
+found symbol 'print'->'ST1'
+IR_next_name: returning [reg3]
           semantic got stmt, @ 182-191, imperative pass
 -----------------
 return 1;
@@ -1413,7 +1414,7 @@ return 1;
 -----------------
 1
 -----------------
-IR_next_name: returning [reg2]
+IR_next_name: returning [reg4]
         semantic got stmt_list, @ 200-336, imperative pass
 -----------------
 float A = import(argc);
@@ -1454,421 +1455,109 @@ A = A*argv
 -----------------
 A
 -----------------
-            semantic got expr_*, @ 230-236, imperative pass
------------------
-A*argv
------------------
-             semantic got expr_id, "A", @ 230-231, imperative pass
------------------
-A
------------------
-             semantic got expr_id, "argv", @ 232-236, imperative pass
------------------
-argv
------------------
-IR_next_name: returning [reg3]
-         semantic got stmt, @ 240-250, imperative pass
------------------
-export(A);
------------------
-          semantic got imp_stmt, @ 240-250, imperative pass
------------------
-export(A);
------------------
-           semantic got expr_call, @ 240-249, imperative pass
------------------
-export(A)
------------------
-            semantic got expr_id, "export", @ 240-246, imperative pass
------------------
-export
------------------
-         semantic got stmt, @ 253-324, imperative pass
------------------
-while(A)
-			print(A);
-			A = A/1;
-			if(A = 1) then return 1; end
-		end
------------------
-          semantic got imp_stmt, @ 253-324, imperative pass
------------------
-while(A)
-			print(A);
-			A = A/1;
-			if(A = 1) then return 1; end
-		end
------------------
-           semantic got while_loop, @ 253-324, imperative pass
------------------
-while(A)
-			print(A);
-			A = A/1;
-			if(A = 1) then return 1; end
-		end
------------------
-            semantic got expr_id, "A", @ 259-260, imperative pass
------------------
-A
------------------
-IR_next_name: returning [lbl2]
-IR_next_name: returning [lbl3]
-IR_next_name: returning [ST9]
-IR_next_name: returning [CS6]
-            semantic got stmt_list, @ 265-318, imperative pass
------------------
-print(A);
-			A = A/1;
-			if(A = 1) then return 1; end
------------------
-             semantic got stmt, @ 265-274, imperative pass
------------------
-print(A);
------------------
-              semantic got imp_stmt, @ 265-274, imperative pass
------------------
-print(A);
------------------
-               semantic got expr_call, @ 265-273, imperative pass
------------------
-print(A)
------------------
-                semantic got expr_id, "print", @ 265-270, imperative pass
------------------
-print
------------------
-             semantic got stmt, @ 278-286, imperative pass
------------------
-A = A/1;
------------------
-              semantic got imp_stmt, @ 278-286, imperative pass
------------------
-A = A/1;
------------------
-               semantic got expr_=, @ 278-285, imperative pass
------------------
-A = A/1
------------------
-                semantic got expr_id, "A", @ 278-279, imperative pass
------------------
-A
------------------
-                semantic got expr_/, @ 282-285, imperative pass
------------------
-A/1
------------------
-                 semantic got expr_id, "A", @ 282-283, imperative pass
------------------
-A
------------------
-                 semantic got expr_const, "1", @ 284-285, imperative pass
------------------
-1
------------------
-IR_next_name: returning [reg4]
-IR_next_name: returning [reg5]
-             semantic got stmt, @ 290-318, imperative pass
------------------
-if(A = 1) then return 1; end
------------------
-              semantic got imp_stmt, @ 290-318, imperative pass
------------------
-if(A = 1) then return 1; end
------------------
-               semantic got if_block, @ 290-318, imperative pass
------------------
-if(A = 1) then return 1; end
------------------
-                semantic got if_then, @ 290-314, imperative pass
------------------
-if(A = 1) then return 1;
------------------
-                 semantic got expr_=, @ 293-298, imperative pass
------------------
-A = 1
------------------
-                  semantic got expr_id, "A", @ 293-294, imperative pass
------------------
-A
------------------
-                  semantic got expr_const, "1", @ 297-298, imperative pass
------------------
-1
------------------
-IR_next_name: returning [reg6]
-IR_next_name: returning [lbl4]
-IR_next_name: returning [ST10]
-IR_next_name: returning [CS7]
-                 semantic got stmt_list, @ 305-314, declarative pass
------------------
-return 1;
------------------
-                  semantic got stmt, @ 305-314, declarative pass
------------------
-return 1;
------------------
-                   semantic got imp_stmt, @ 305-314, declarative pass
------------------
-return 1;
------------------
-                 semantic got stmt_list, @ 305-314, imperative pass
------------------
-return 1;
------------------
-                  semantic got stmt, @ 305-314, imperative pass
------------------
-return 1;
------------------
-                   semantic got imp_stmt, @ 305-314, imperative pass
------------------
-return 1;
------------------
-                    semantic got expr_const, "1", @ 312-313, imperative pass
------------------
-1
------------------
-IR_next_name: returning [reg7]
-         semantic got stmt, @ 327-336, imperative pass
------------------
-return 0;
------------------
-          semantic got imp_stmt, @ 327-336, imperative pass
------------------
-return 0;
------------------
-           semantic got expr_const, "0", @ 334-335, imperative pass
------------------
-0
------------------
-IR_next_name: returning [reg8]
-     semantic got stmt, @ 343-355, imperative pass
------------------
-string boop;
------------------
-      semantic got decl_stmt, @ 343-355, imperative pass
------------------
-string boop;
------------------
-       semantic got var_decl, "boop", @ 343-354, imperative pass
------------------
-string boop
------------------
-  semantic got decl_stmt, @ 361-430, imperative pass
------------------
-class horse
-	float fluff = 5;
-	int boop()
-		fluff = fluff+1;
-	end
-end
------------------
-   semantic got class_def, "horse", @ 361-430, imperative pass
------------------
-class horse
-	float fluff = 5;
-	int boop()
-		fluff = fluff+1;
-	end
-end
------------------
-found symbol 'horse'->'ST1'
-    semantic got decl_stmt_list, @ 374-426, imperative pass
------------------
-float fluff = 5;
-	int boop()
-		fluff = fluff+1;
-	end
------------------
-     semantic got decl_stmt, @ 374-390, imperative pass
------------------
-float fluff = 5;
------------------
-      semantic got var_decl_assign, "fluff", @ 374-389, imperative pass
------------------
-float fluff = 5
------------------
-     semantic got decl_stmt, @ 392-426, imperative pass
------------------
-int boop()
-		fluff = fluff+1;
-	end
------------------
-      semantic got func_def, "boop", @ 392-426, imperative pass
------------------
-int boop()
-		fluff = fluff+1;
-	end
------------------
-found symbol 'boop'->'ST6'
-IR_next_name: returning [CS8]
-       semantic got stmt_list, @ 405-421, imperative pass
------------------
-fluff = fluff+1;
------------------
-        semantic got stmt, @ 405-421, imperative pass
------------------
-fluff = fluff+1;
------------------
-         semantic got imp_stmt, @ 405-421, imperative pass
------------------
-fluff = fluff+1;
------------------
-          semantic got expr_=, @ 405-420, imperative pass
------------------
-fluff = fluff+1
------------------
-           semantic got expr_id, "fluff", @ 405-410, imperative pass
------------------
-fluff
------------------
-           semantic got expr_+, @ 413-420, imperative pass
------------------
-fluff+1
------------------
-            semantic got expr_id, "fluff", @ 413-418, imperative pass
------------------
-fluff
------------------
-            semantic got expr_const, "1", @ 419-420, imperative pass
------------------
-1
------------------
-IR_next_name: returning [reg9]
-IR_next_name: returning [reg10]
-semantic: done
 
-PRINTING SEMANTIC
-printing symbol tables (10):
-Symbol table 'ST1':
-symbol [import]: function
- type = int
- scope = ST2
- code = CS1
-symbol [export]: function
- type = int
- scope = ST3
- code = CS2
-symbol [print]: function
- type = int
- scope = ST4
- code = CS3
-symbol [main]: function
- type = int
- scope = ST5
- code = CS4
-symbol [horse]: class
- scope = ST6
-End Symbol table
-Symbol table 'ST2'->'ST1':
-symbol [arg]: parameter
- type = int
- pos = 0
-End Symbol table
-Symbol table 'ST3'->'ST1':
-symbol [arg]: parameter
- type = int
- pos = 0
-End Symbol table
-Symbol table 'ST4'->'ST1':
-symbol [str]: parameter
- type = string
- pos = 0
-End Symbol table
-Symbol table 'ST5'->'ST1':
-symbol [argc]: parameter
- type = int
- pos = 0
-symbol [argv]: parameter
- type = int
- pos = 1
-End Symbol table
-Symbol table 'ST6'->'ST1':
-symbol [fluff]: variable
- type = float
-symbol [boop]: function
- type = int
- scope = ST7
- code = CS8
-End Symbol table
-Symbol table 'ST7'->'ST6':
-End Symbol table
-Symbol table 'ST8'->'ST5':
-End Symbol table
-Symbol table 'ST9'->'ST5':
-End Symbol table
-Symbol table 'ST10'->'ST9':
-End Symbol table
-printing code segments (8):
-code segment 'CS1'->'ST2'
- /* int import(int arg) */
-end code segment
-code segment 'CS2'->'ST3'
- /* int export(int arg) */
- /* return arg; */
- RETURN arg
-end code segment
-code segment 'CS3'->'ST4'
- /* int print(string str) */
-end code segment
-code segment 'CS4'->'ST5'
- /* int main(int argc, int argv) */
- /* if(argc = 0) */
- MOV reg1 0
- MOV argc reg1
- IFNOT argc lbl1
- /* then */
- INSERT CS5
- LABEL lbl1
- /* end */
- /* A = A*argv; */
- MULTIPLY reg3 A argv
- MOV A reg3
- /* export(A); */
- /* while(A) */
- LABEL lbl2
- IFNOT A lbl3
- INSERT CS6
- GOTO lbl2
- LABEL lbl3
- /* end */
- /* return 0; */
- MOV reg8 0
- RETURN reg8
-end code segment
-code segment 'CS5'->'ST8'
- /* print("usage: a.exe arg1 arg2"); */
- /* return 1; */
- MOV reg2 1
- RETURN reg2
-end code segment
-code segment 'CS6'->'ST9'
- /* print(A); */
- /* A = A/1; */
- MOV reg4 1
- DIVIDE reg5 A reg4
- MOV A reg5
- /* if(A = 1) */
- MOV reg6 1
- MOV A reg6
- IFNOT A lbl4
- /* then */
- INSERT CS7
- LABEL lbl4
- /* end */
-end code segment
-code segment 'CS7'->'ST10'
- /* return 1; */
- MOV reg7 1
- RETURN reg7
-end code segment
-code segment 'CS8'->'ST7'
- /* int boop() */
- /* fluff = fluff+1; */
- MOV reg9 1
- ADD reg10 fluff reg9
- MOV fluff reg10
-end code segment
+Program received signal SIGSEGV, Segmentation fault.
+0x00412129 in newerror (file=0x41d200 <__func__.2945+51> "semantic.c", 
+    line=670, func=0x41dcc4 <__func__.3746> "lookup_symbol", 
+    fmt=0x41d690 <__func__.2945+1219> "semantic error: undefined symbol '%s'->'%s'\n") at semantic.c:1041
+1041		exit(*(int*)0);
+(gdb) #0  0x00412129 in newerror (file=0x41d200 <__func__.2945+51> "semantic.c", 
+    line=670, func=0x41dcc4 <__func__.3746> "lookup_symbol", 
+    fmt=0x41d690 <__func__.2945+1219> "semantic error: undefined symbol '%s'->'%s'\n") at semantic.c:1041
+        ap = 0x28e340 "è‰i"
+#1  0x00410b41 in lookup_symbol (name=0x6989e8 "A") at semantic.c:670
+        S = 0x0
+        __func__ = "lookup_symbol"
+#2  0x0040fb6e in semantic_analyze (node=0x7edb20) at semantic.c:368
+        name = 0x6989e8 "A"
+        S = 0x325aa924
+        T = 0x0
+        i = 12
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2680024, 
+          last_column = 0, start = 11, end = 1996218806, filename = 0x0}
+#3  0x0041068f in semantic_analyze (node=0x7ede68) at semantic.c:547
+        result2 = 0x28e69c ""
+        result1 = 0x0
+        i = 11
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2680568, 
+          last_column = 0, start = 18, end = 1996218806, 
+          filename = 0x698948 "A = A*argv;"}
+#4  0x0040f414 in semantic_analyze (node=0x7edf10) at semantic.c:204
+        i = 10
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2681112, 
+          last_column = 0, start = 12, end = 1996218806, filename = 0x0}
+#5  0x0040f349 in semantic_analyze (node=0x7edfb0) at semantic.c:185
+        i = 9
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2681656, 
+          last_column = 0, start = 137, end = 1996218806, filename = 0x0}
+#6  0x0040f301 in semantic_analyze (node=0x6908c8) at semantic.c:179
+        i = 1
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2682200, 
+          last_column = 0, start = 215, end = 1996218806, filename = 0x0}
+#7  0x0040f52d in semantic_analyze (node=0x6909f8) at semantic.c:232
+        i = 7
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2682744, 
+          last_column = 0, start = 215, end = 1996218806, filename = 0x0}
+#8  0x0040f3ac in semantic_analyze (node=0x690a78) at semantic.c:195
+        i = 6
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2683288, 
+          last_column = 0, start = 215, end = 1996218806, filename = 0x0}
+#9  0x0040f349 in semantic_analyze (node=0x690af8) at semantic.c:185
+        i = 5
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 2683832, 
+          last_column = 0, start = 238, end = 1996218806, filename = 0x0}
+#10 0x0040f301 in semantic_analyze (node=0x691068) at semantic.c:179
+        i = 1
+        __func__ = "semantic_analyze"
+        pos = {first_line = 0, first_column = 0, last_line = 6911784, 
+          last_column = 69, start = 2684268, end = 1996218806, 
+          filename = 0x28ffc4 "ÿÿÿÿ%c"}
+#11 0x0040f0e0 in semantic_analyze (node=0x691110) at semantic.c:116
+        S = 0x696388
+        pos1 = {first_line = 7, first_column = 0, last_line = 7, 
+          last_column = 3, start = 88, end = 91, 
+          filename = 0x76172940 <msvcrt!_iob+64> "T)\027v"}
+        pos2 = {first_line = 7, first_column = 9, last_line = 7, 
+          last_column = 27, start = 97, end = 115, 
+          filename = 0x76172940 <msvcrt!_iob+64> "T)\027v"}
+        T = 0x697650
+        name = 0x7eb898 "main"
+        i = 3
+        __func__ = "semantic_analyze"
+        pos = {first_line = 8294656, first_column = 256, last_line = 2684920, 
+          last_column = 15, start = 8294912, end = 6911232, filename = 0x0}
+#12 0x0040edd5 in semantic_analyze (node=0x6911b8) at semantic.c:64
+        i = 2
+        __func__ = "semantic_analyze"
+        pos = {first_line = 8294576, first_column = 422, last_line = 7, 
+          last_column = 430, start = 431, end = 8294569, filename = 0x0}
+#13 0x0040ed8d in semantic_analyze (node=0x6927c8) at semantic.c:53
+        i = 3
+        __func__ = "semantic_analyze"
+        pos = {first_line = 2685916, first_column = 1980625733, 
+          last_line = 18, last_column = 2685976, start = 1980645193, 
+          end = 1981229376, 
+          filename = 0x760e3f1a <msvcrt!fprintf+282> "Ã\220\220\220\220\220þÿÿÿ"}
+#14 0x0040ed3b in semantic_analyze (node=0x6928f8) at semantic.c:44
+        i = 0
+        __func__ = "semantic_analyze"
+        pos = {first_line = 2686464, first_column = 161, last_line = 2686536, 
+          last_column = 4246724, start = 0, end = 0, filename = 0x0}
+#15 0x0040b18f in main (argc=2, argv=0x7e0f40) at yaccin.y:282
+        test = 0x7e1520
+        __func__ = "main"
+        fp = 0x761729a0 <msvcrt!_iob+160>
+(gdb) quit
+A debugging session is active.
 
-GOOD BYE
-[Inferior 1 (process 2600) exited normally]
-(gdb) (gdb) quit
+	Inferior 1 [process 404] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]

@@ -426,8 +426,8 @@ int lexlinestart;
 int lexnumtabs;
 int lexnewline = 0;
 void updatelloc(){
-	//yylloc.first_line = yylloc.last_line;
-    //yylloc.first_column = yylloc.last_column;	
+	yylloc.first_line = yylloc.last_line;
+    yylloc.first_column = yylloc.last_column;	
 	yylloc.start = yylloc.end;
 	//lextokenstart = lextokenend;
     int i = 0;
@@ -435,8 +435,8 @@ void updatelloc(){
 		yylloc.end++; 
         if(yytext[i] == '\n') {
 			//yylloc.end++;
-            //yylloc.last_line++;
-            //yylloc.last_column = 0;
+            yylloc.last_line++;
+            yylloc.last_column = 0;
 			//lexnumtabs = 0;
 			//lextokenend+=2;
 			//string ending-specific
@@ -447,7 +447,7 @@ void updatelloc(){
         else{
 			//if(yytext[i] == '\t')
 			//lexnumtabs++;
-            //yylloc.last_column++;
+            yylloc.last_column++;
 			//lextokenend++;
 			//lexnewline = 0;
 		}

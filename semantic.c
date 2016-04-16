@@ -6,6 +6,7 @@ implementation_vector_of(ptr_symbol);
 implementation_vector_of(ptr_symbol_table);
 implementation_vector_of(ptr_code_segment);
 implementation_vector_of(ptr_char);
+implementation_vector_of(ptr_type_name);
 int semantic_decl;
 struct symbol_table *currentSymbolTable;
 vector2_ptr_symbol_table ST_stack;
@@ -13,6 +14,7 @@ vector2_ptr_symbol_table ST_list;
 vector2_ptr_code_segment CS_stack;
 vector2_ptr_code_segment CS_list;
 vector2_ptr_char expr_stack;
+vector2_ptr_type_name exprtype_stack;
 // vector ST_stack;
 // vector CS_stack;
 // vector expr_stack;
@@ -20,6 +22,7 @@ vector2_ptr_char expr_stack;
 enum{SEMANTIC_NORMAL, SEMANTIC_PARAM} semantic_context;
 //const char *exprResult;
 int semantic_analyze_pad = 0;
+const char *semantic_this;
 void semantic_analyze(struct ast_node *node){
 	int i;
 	for(i = 0; i < semantic_analyze_pad; i++){printf(" ");}
@@ -72,14 +75,27 @@ void semantic_analyze(struct ast_node *node){
 			S->name = name;
 			//get arguments
 			//struct symbol_table *ST = new_symbol_table();
-			S->symfunction.type = T;
+			S->symfunction.returntype = T;
 			push_symbol_table();
 			new_symbol_table();
 			S->symfunction.scope = currentSymbolTable;
 			//m(ST_stack,push_back,currentSymbolTable);
 			semantic_context = SEMANTIC_PARAM;
 				//use new separate symbol table
-			semantic_analyze(ast_get_child(node,1));
+			struct ast_node *list = ast_get_child(node,1);
+			//semantic_analyze(ast_get_child(node,1));
+			struct type_name *signature = malloc(sizeof(struct type_name));
+			signature->name = 0;
+			signature->symclass = 0;
+			signature->args = vector2_ptr_type_name_new();
+			int i;
+			for(i = 0; i < list->children.size; i++){
+				struct ast_node *arg = ast_get_child(list,i);
+				struct type_name *T2 = semantic_get_type(ast_get_child(arg,0)->token.value);
+				m((*(signature->args)),push_back,T2);
+				semantic_analyze(arg);
+			}
+			S->symfunction.signature = signature;
 				//join symbol table to definition
 			semantic_context = SEMANTIC_NORMAL;
 			//do not get code until imperative pass
@@ -230,7 +246,18 @@ void semantic_analyze(struct ast_node *node){
 				//push new symbol table
 				pos = ast_get_child(node,0)->token.pos;
 				emit_code("/* if(%s) */",get_source_text(pos.start,pos.end));
+				push_symbol_table();
+				new_symbol_table();
+				CSname = currentCodeSegment->name;
+				push_code_segment();
+				new_code_segment();
+				semantic_decl = 1;
 				semantic_analyze(ast_get_child(node,0));
+				semantic_decl = 0;
+				semantic_analyze(ast_get_child(node,0));
+				pop_code_segment();
+				pop_symbol_table();
+				emit_code("INSERT %s", CSname);
 				const char *nextLabel = IR_next_name("lbl");
 				emit_code("IFNOT %s %s", pop_expr(), nextLabel); 
 				emit_code("/* then */");
@@ -338,16 +365,63 @@ void semantic_analyze(struct ast_node *node){
 	if(!strcmp(node->token.type, "expr_id")){
 		//printf("got expr_id = [%s]\n",node->token.value);
 		char *name = stralloc(node->token.value);
+		struct symbol *S = lookup_symbol(name);
+		if((S->type != SYMBOL_VARIABLE)&&(S->type != SYMBOL_PARAM)){
+		}
+		struct type_name *T;
+		if(S->type == SYMBOL_VARIABLE){
+			T = S->symvariable.type;
+		}else if(S->type == SYMBOL_PARAM){
+			T = S->symparameter.type;
+		}else if(S->type == SYMBOL_FUNCTION){
+			T = S->symfunction.signature;
+		}else{
+			YYLTYPE pos = node->token.pos;
+			err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
+			error("semantic: '%' is not an expression\n",name);
+		}
 		//exprResult = name;
 		push_expr(name);
+		push_exprtype(T);
 		//put variable <name> on the stack
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_const")){
 		//printf("got expr_const\n");
 		char *exprResult = IR_next_name("reg");
+		//sanitize the value, maybe put it somewhere,
+		//get pointers, whatever
+		struct type_name *T = malloc(sizeof(struct type_name));
+		T->symclass = 0;
+		T->args = 0;
+		YYLTYPE pos;
+		switch(node->token.production){
+			case(0): //int
+				T->name = "int";
+			break;
+			case(1): //hex int
+				T->name = "int";
+			break;
+			case(2): //binary int
+				T->name = "int";
+			break;
+			case(3): //float
+				T->name = "float";
+			break;
+			case(4): //char
+				T->name = "char";
+			break;
+			case(5): //string
+				T->name = "string";
+			break;
+			default:
+				pos = node->token.pos;
+				err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
+				error("semantic: broken constant\n");
+		};
 		emit_code("MOV %s %s",exprResult, node->token.value);
 		push_expr(exprResult);
+		push_exprtype(T);
 		//figure out what kind of const this is?
 		goto semantic_exit;
 	}
@@ -359,6 +433,33 @@ void semantic_analyze(struct ast_node *node){
 	if(!strcmp(node->token.type, "expr_call")){
 		//printf("got expr_call\n");
 		semantic_analyze(ast_get_child(node,0));
+		const char *name = pop_expr();
+		struct symbol *S = lookup_symbol(name);
+		if(S->type != SYMBOL_FUNCTION){
+			YYLTYPE pos = node->token.pos;
+			err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
+			error("semantic error: attempt to call '%s', which is not a function in this scope\n",name);
+		}
+		struct type_name *T = S->symfunction.returntype;
+		ast_node *list = ast_get_child(node,0);
+		int i;
+		int len = 0;
+		for(i = 0; i < list->children.size; i++){
+			semantic_analyze(ast_get_child(list,i));
+			const char *expr = pop_expr();
+			len += snprintf(0,0,"%s ",expr);
+			push_expr(expr);
+		}
+		char *buff = malloc(sizeof(char)*(len+1));
+		char *buff2 = buff;
+		for(i = 0; i < list->children.size; i++){
+			const char *expr = pop_expr();
+			buff2 = buff2+sprintf(buff2,0," %s",expr);
+		}
+		const char *exprResult = IR_next_name("reg");
+		emit_code("CALL %s%s",exprResult, buff2);
+		push_expr(exprResult);
+		push_exprtype(T);
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_.")){
@@ -367,12 +468,16 @@ void semantic_analyze(struct ast_node *node){
 		//what if $0 isn't an ID? need to figure out
 		//expression type... also instance... fuck, just redo this.
 		struct ast_node *N = ast_get_child(node,0);
-		struct symbol *S = lookup_symbol(N->token.value);
-		if(S->type != SYMBOL_CLASS){
-			error("semantic error: \"%s\" is not a class\n",N->token.value);
+		struct type_name *T = pop_exprtype();
+		if(!T->symclass){
+			YYLTYPE pos = node->token.pos;
+			err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
+			error("semantic error: member access (x.y) impossible because x is a primitive (%s)\n",T->name);
 		}
-		push_symbol_table(S->symclass.scope);
+		push_symbol_table(T->symclass->symclass.scope);
+		semantic_this = pop_expr();
 		semantic_analyze(ast_get_child(node,1));
+		semantic_this = 0;
 		pop_symbol_table();
 		//emit code: member access
 		goto semantic_exit;
@@ -449,6 +554,8 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	//unknown node type
+	YYLTYPE pos = node->token.pos;
+	err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
 	error("semantic: unknown node type: [%s]\n",node->token.type);
 	semantic_exit:
 	semantic_analyze_pad--;
@@ -558,7 +665,9 @@ struct symbol *lookup_symbol(const char *name){
 	if(S){
 		return S;
 	}else{
-		error("semantic: undefined symbol '%s'->'%s'\n",name,currentSymbolTable->name);
+		//printf("SEMANTIC ERROR. printing semantic info so far:\n");
+		//print_semantic();
+		error("semantic error: undefined symbol '%s'->'%s'\n",name,currentSymbolTable->name);
 		return 0;
 	}	
 }
@@ -570,6 +679,7 @@ void push_symbol(struct symbol *S){
 
 struct type_name *semantic_get_type(const char *str){
 	struct type_name *T = malloc(sizeof(struct type_name));
+	T->args = 0;
 	if(!strcmp(str, "int")){
 		T->name = "int";
 		T->symclass = 0;
@@ -629,7 +739,7 @@ void print_symbol_table_helper(struct symbol_table *T, int indent){
 			break;
 			case(SYMBOL_FUNCTION):
 				printf("function\n");
-				padprint(indent); printf(" type = %s\n", S->symfunction.type->name);
+				padprint(indent); printf(" return type = %s\n", S->symfunction.returntype->name);
 				padprint(indent); printf(" scope = %s\n", S->symfunction.scope->name);
 				padprint(indent); printf(" code = %s\n", S->symfunction.code->name);
 				//print_symbol_table_helper(S->symfunction.scope, indent+1);
@@ -722,9 +832,16 @@ void push_expr(const char *expr){
 const char *pop_expr(){
 	return m(expr_stack,pop_back);//vector_pop_back(&expr_stack);
 }
+void push_exprtype(struct type_name *T){
+	m(exprtype_stack,push_back,T);
+}
+struct type_name *pop_exprtype(){
+	return m(exprtype_stack,pop_back);
+}
 void semantic_init(){
 	IR_init();
 	expr_stack = vector2_ptr_char_here();
+	exprtype_stack = vector2_ptr_type_name_here();
 	CS_stack = vector2_ptr_code_segment_here();
 	CS_list = vector2_ptr_code_segment_here();
 	ST_stack = vector2_ptr_symbol_table_here();

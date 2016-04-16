@@ -36,7 +36,7 @@ Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
 info: malloc(104)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00C31200, 12)info: old size = 4
+info: reallocalloc(007E1200, 12)info: old size = 4
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 30
@@ -61,7 +61,7 @@ Reducing stack 0 by rule 29 (line 176):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C31360, 24)info: old size = 12
+info: reallocalloc(007E1360, 24)info: old size = 12
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
@@ -98,9 +98,9 @@ Reducing stack 0 by rule 23 (line 165):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3A380, 12)info: old size = 4
+info: reallocalloc(007EA380, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C31428, 40)info: old size = 24
+info: reallocalloc(007E1428, 40)info: old size = 24
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
@@ -147,7 +147,7 @@ Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
 info: malloc(104)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00C3A3A8, 64)info: old size = 40
+info: reallocalloc(007EA3A8, 64)info: old size = 40
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 30
@@ -221,7 +221,7 @@ Reducing stack 0 by rule 2 (line 127):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3A728, 100)info: old size = 64
+info: reallocalloc(007EA728, 100)info: old size = 64
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm stmt (: )
 Entering state 61
@@ -257,7 +257,7 @@ Reducing stack 0 by rule 23 (line 165):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3AE80, 12)info: old size = 4
+info: reallocalloc(007EAE80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
@@ -274,7 +274,7 @@ Reducing stack 0 by rule 13 (line 148):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3AFC8, 12)info: old size = 4
+info: reallocalloc(007EAFC8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
@@ -330,7 +330,7 @@ Reducing stack 0 by rule 29 (line 176):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3AC40, 156)info: old size = 100
+info: reallocalloc(007EAC40, 156)info: old size = 100
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
@@ -367,7 +367,7 @@ Reducing stack 0 by rule 23 (line 165):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3B5E8, 12)info: old size = 4
+info: reallocalloc(007EB5E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
@@ -384,7 +384,7 @@ Reducing stack 0 by rule 13 (line 148):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3B730, 12)info: old size = 4
+info: reallocalloc(007EB730, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
@@ -480,7 +480,7 @@ Reducing stack 0 by rule 28 (line 175):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3BDD8, 12)info: old size = 4
+info: reallocalloc(007EBDD8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list_ne (: )
 Entering state 33
@@ -491,7 +491,7 @@ info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00C3BE80, 12)info: old size = 4
+info: reallocalloc(007EBE80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list (: )
 Entering state 32
@@ -508,7 +508,7 @@ Entering state 2
 Reducing stack 0 by rule 21 (line 161):
    $1 = token TYPE (: )
 info: malloc(104)@ file "AST.c", line 19, func "node"
-info: reallocalloc(00C3B3D0, 240)info: old size = 156
+info: reallocalloc(007EB3D0, 240)info: old size = 156
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename (: )
 Entering state 8
@@ -598,7 +598,7 @@ Reducing stack 0 by rule 54 (line 221):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3C610, 12)info: old size = 4
+info: reallocalloc(007EC610, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 85
@@ -666,7 +666,7 @@ Reducing stack 0 by rule 47 (line 214):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3CA88, 12)info: old size = 4
+info: reallocalloc(007ECA88, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -740,7 +740,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3CFF0, 12)info: old size = 4
+info: reallocalloc(007ECFF0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -754,7 +754,7 @@ info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00C3D0F8, 12)info: old size = 4
+info: reallocalloc(007ED0F8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 96
@@ -768,9 +768,9 @@ Reducing stack 0 by rule 32 (line 183):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3D1A0, 12)info: old size = 4
+info: reallocalloc(007ED1A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3BFA8, 364)info: old size = 240
+info: reallocalloc(007EBFA8, 364)info: old size = 240
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm if_then (: )
 Entering state 67
@@ -855,7 +855,7 @@ Reducing stack 0 by rule 47 (line 214):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3D7B0, 12)info: old size = 4
+info: reallocalloc(007ED7B0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 28
@@ -869,7 +869,7 @@ Reducing stack 0 by rule 25 (line 168):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3D878, 12)info: old size = 4
+info: reallocalloc(007ED878, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 10
@@ -950,7 +950,7 @@ Reducing stack 0 by rule 51 (line 218):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3DE40, 12)info: old size = 4
+info: reallocalloc(007EDE40, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -962,7 +962,7 @@ Reducing stack 0 by rule 54 (line 221):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3DEE8, 12)info: old size = 4
+info: reallocalloc(007EDEE8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -990,7 +990,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3E0D0, 12)info: old size = 4
+info: reallocalloc(007EE0D0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1050,7 +1050,7 @@ Reducing stack 0 by rule 47 (line 214):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3E4D8, 12)info: old size = 4
+info: reallocalloc(007EE4D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1079,7 +1079,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3E6E0, 12)info: old size = 4
+info: reallocalloc(007EE6E0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1151,7 +1151,7 @@ Reducing stack 0 by rule 35 (line 198):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3D1C8, 552)info: old size = 364
+info: reallocalloc(007ED1C8, 552)info: old size = 364
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 vector error: index out of bounds (0 out of max 0)
 -> $$ = nterm expr_list (: )
@@ -1167,7 +1167,7 @@ Reducing stack 0 by rule 47 (line 214):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3D248, 12)info: old size = 4
+info: reallocalloc(007ED248, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1250,7 +1250,7 @@ Reducing stack 0 by rule 50 (line 217):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3F348, 12)info: old size = 4
+info: reallocalloc(007EF348, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -1262,7 +1262,7 @@ Reducing stack 0 by rule 54 (line 221):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3F3F0, 12)info: old size = 4
+info: reallocalloc(007EF3F0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1290,7 +1290,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3F5D8, 12)info: old size = 4
+info: reallocalloc(007EF5D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1341,7 +1341,7 @@ Reducing stack 0 by rule 54 (line 221):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3F940, 12)info: old size = 4
+info: reallocalloc(007EF940, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 85
@@ -1417,7 +1417,7 @@ Reducing stack 0 by rule 32 (line 183):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3FE28, 12)info: old size = 4
+info: reallocalloc(007EFE28, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_then (: )
 Entering state 67
@@ -1452,7 +1452,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3FFB0, 12)info: old size = 4
+info: reallocalloc(007EFFB0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1467,7 +1467,7 @@ info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00540248, 12)info: old size = 4
+info: reallocalloc(00690248, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 94
@@ -1484,7 +1484,7 @@ Reducing stack 0 by rule 34 (line 195):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005402F0, 12)info: old size = 4
+info: reallocalloc(006902F0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm while_loop (: )
 Entering state 68
@@ -1508,7 +1508,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005404D8, 12)info: old size = 4
+info: reallocalloc(006904D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1556,7 +1556,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540840, 12)info: old size = 4
+info: reallocalloc(00690840, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1569,14 +1569,14 @@ Reducing stack 0 by rule 4 (line 131):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005404D8, 24)info: old size = 12
+info: reallocalloc(006904D8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540840, 24)info: old size = 12
+info: reallocalloc(00690840, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00540948, 12)info: old size = 4
+info: reallocalloc(00690948, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540840, 24)info: old size = 12
+info: reallocalloc(00690840, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 87
@@ -1591,7 +1591,7 @@ Reducing stack 0 by rule 31 (line 180):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540948, 12)info: old size = 4
+info: reallocalloc(00690948, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_block (: )
 Entering state 66
@@ -1615,7 +1615,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00540BF8, 12)info: old size = 4
+info: reallocalloc(00690BF8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1671,7 +1671,7 @@ Reducing stack 0 by rule 6 (line 135):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00541000, 12)info: old size = 4
+info: reallocalloc(00691000, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne (: )
 Entering state 63
@@ -1684,7 +1684,7 @@ info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(005410E8, 12)info: old size = 4
+info: reallocalloc(006910E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list (: )
 Entering state 62
@@ -1702,7 +1702,7 @@ Reducing stack 0 by rule 23 (line 165):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00541190, 12)info: old size = 4
+info: reallocalloc(00691190, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
@@ -1711,7 +1711,7 @@ Reducing stack 0 by rule 9 (line 140):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3EC08, 832)info: old size = 552
+info: reallocalloc(007EEC08, 832)info: old size = 552
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt (: )
 Entering state 13
@@ -1721,7 +1721,7 @@ Reducing stack 0 by rule 13 (line 148):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3EC88, 12)info: old size = 4
+info: reallocalloc(007EEC88, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
@@ -1781,7 +1781,7 @@ Reducing stack 0 by rule 25 (line 168):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00541810, 12)info: old size = 4
+info: reallocalloc(00691810, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl (: )
 Entering state 10
@@ -1886,7 +1886,7 @@ Reducing stack 0 by rule 53 (line 220):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00541F58, 12)info: old size = 4
+info: reallocalloc(00691F58, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 48
@@ -1898,7 +1898,7 @@ Reducing stack 0 by rule 54 (line 221):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00542000, 12)info: old size = 4
+info: reallocalloc(00692000, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr (: )
 Entering state 69
@@ -1953,7 +1953,7 @@ Reducing stack 0 by rule 23 (line 165):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00542388, 12)info: old size = 4
+info: reallocalloc(00692388, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def (: )
 Entering state 9
@@ -1970,7 +1970,7 @@ Reducing stack 0 by rule 13 (line 148):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005424D0, 12)info: old size = 4
+info: reallocalloc(006924D0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
@@ -1983,7 +1983,7 @@ info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(005425B8, 12)info: old size = 4
+info: reallocalloc(006925B8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list (: )
 Entering state 16
@@ -2013,7 +2013,7 @@ Reducing stack 0 by rule 13 (line 148):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005427A0, 12)info: old size = 4
+info: reallocalloc(006927A0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne (: )
 Entering state 6
@@ -2023,14 +2023,14 @@ Reducing stack 0 by rule 11 (line 144):
 info: malloc(104)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(00C3EC88, 24)info: old size = 12
+info: reallocalloc(007EEC88, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005427A0, 24)info: old size = 12
+info: reallocalloc(006927A0, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(00542848, 12)info: old size = 4
+info: reallocalloc(00692848, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(005427A0, 24)info: old size = 12
+info: reallocalloc(006927A0, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list (: )
 Entering state 5
@@ -2046,13 +2046,13 @@ Shifting token $end (: )
 Entering state 12
 Cleanup: popping token $end (: )
 Cleanup: popping nterm program (: )
-info: free(00C327D0)
+info: free(007E27D0)
 info: old size = 10400
 @ file "yaccin.tab.c", line 1784, func "yyfreeGLRStack"
-info: free(00C30F98)
+info: free(007E0F98)
 info: old size = 64
 @ file "yaccin.tab.c", line 1691, func "yyfreeStateSet"
-info: free(00C30FF0)
+info: free(007E0FF0)
 info: old size = 16
 @ file "yaccin.tab.c", line 1692, func "yyfreeStateSet"
 info: malloc(6)@ file "AST.c", line 105, func "ast_print_graph_helper"
@@ -2189,13 +2189,13 @@ info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
 info: malloc(3)@ file "lexin.l", line 47, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
@@ -2203,158 +2203,180 @@ info: reallocalloc(00000000, 4)info: new allocation
 info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: reallocalloc(005456E8, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: reallocalloc(006956E8, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(005456C8, 12)info: old size = 4
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(006956C8, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(12)@ file "semantic.c", line 87, func "semantic_analyze"
+info: malloc(64)@ file "semantic.c", line 9, func "vector2_ptr_type_name_new"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 87, func "semantic_analyze"
+info: malloc(64)@ file "semantic.c", line 9, func "vector2_ptr_type_name_new"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00545AC0, 12)info: old size = 4
+info: reallocalloc(00695B78, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(00545A08, 24)info: old size = 12
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(00695A10, 24)info: old size = 12
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(12)@ file "semantic.c", line 87, func "semantic_analyze"
+info: malloc(64)@ file "semantic.c", line 9, func "vector2_ptr_type_name_new"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(19)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 87, func "semantic_analyze"
+info: malloc(64)@ file "semantic.c", line 9, func "vector2_ptr_type_name_new"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: reallocalloc(006964E0, 12)info: old size = 4
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: reallocalloc(005462B8, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: reallocalloc(00696580, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00545CE0, 24)info: old size = 12
+info: reallocalloc(00695E50, 24)info: old size = 12
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
 info: malloc(53)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 552, func "new_symbol"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(00545E28, 40)info: old size = 24
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(24)@ file "semantic.c", line 659, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(00695FA0, 40)info: old size = 24
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
-info: reallocalloc(005465C8, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 87, func "semantic_analyze"
+info: malloc(64)@ file "semantic.c", line 9, func "vector2_ptr_type_name_new"
+info: reallocalloc(006964E0, 12)info: old size = 4
 @ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
 info: malloc(431)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
 info: malloc(3)@ file "lexin.l", line 47, func "stralloc"
-info: reallocalloc(00545668, 12)info: old size = 4
+info: reallocalloc(00695668, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00545688, 12)info: old size = 4
+info: reallocalloc(00695688, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
 info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(26)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(26)@ file "semantic.c", line 815, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(37)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(00545688, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(00695688, 12)info: old size = 4
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
 info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(26)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(26)@ file "semantic.c", line 815, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(18)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00546D10, 12)info: old size = 4
+info: malloc(18)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00697088, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
 info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(26)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
 info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(28)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(28)@ file "semantic.c", line 815, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(272)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(00546C90, 24)info: old size = 12
+info: malloc(12)@ file "semantic.c", line 681, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(00697008, 24)info: old size = 12
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
 info: malloc(19)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(35)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(35)@ file "semantic.c", line 815, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(238)@ file "yaccin.y", line 294, func "get_source_text"
@@ -2366,35 +2388,59 @@ info: malloc(215)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(215)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(65)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(19)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(005473F0, 12)info: old size = 4
+info: malloc(19)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00697798, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: reallocalloc(006964E0, 12)info: old size = 4
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
+info: reallocalloc(006971E0, 12)info: old size = 4
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
+info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 394, func "semantic_analyze"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(006971C0, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(14)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00697ED8, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
+info: reallocalloc(00697E20, 24)info: old size = 12
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
 info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(5)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 394, func "semantic_analyze"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: malloc(14)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00697F48, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
 info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00546E48, 12)info: old size = 4
+info: reallocalloc(00696DD8, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(14)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00547900, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(4)@ file "lexin.l", line 47, func "stralloc"
-info: reallocalloc(00546A68, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(00546A90, 24)info: old size = 12
+info: reallocalloc(00696E00, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(005469C8, 12)info: old size = 4
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
+info: malloc(5)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(16)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00697CA8, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 567, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 619, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 804, func "IR_next_name"
 info: malloc(45)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
@@ -2404,29 +2450,35 @@ info: malloc(45)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(33)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(39)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(39)@ file "semantic.c", line 815, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(32)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00547E40, 12)info: old size = 4
+info: malloc(1)@ file "semantic.c", line 453, func "semantic_analyze"
+info: malloc(5)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(26)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(006984A0, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(00697F98, 40)info: old size = 24
+@ file "semantic.c", line 9, func "vector2_ptr_type_name_internal_resize"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
+info: malloc(16)@ file "semantic.c", line 815, func "emit_code"
 info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00547F78, 24)info: old size = 12
+info: malloc(5)@ file "semantic.c", line 804, func "IR_next_name"
+info: malloc(12)@ file "semantic.c", line 394, func "semantic_analyze"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(006985B0, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00547A48, 40)info: old size = 24
+info: malloc(12)@ file "semantic.c", line 815, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 815, func "emit_code"
+info: reallocalloc(00698110, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 815, func "emit_code"
 info: malloc(137)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(24)@ file "yaccin.y", line 294, func "get_source_text"
@@ -2434,174 +2486,943 @@ info: malloc(23)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(18)@ file "semantic.c", line 705, func "emit_code"
+info: malloc(18)@ file "semantic.c", line 815, func "emit_code"
 info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
 info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(5)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "lexin.l", line 47, func "stralloc"
-info: reallocalloc(005479F8, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548040, 64)info: old size = 40
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(11)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(7)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(7)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(72)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(15)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(13)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(54)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(9)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(15)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548980, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548390, 40)info: old size = 24
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(19)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548AA8, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(29)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(25)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(2)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548C48, 40)info: old size = 24
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(13)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00545980, 24)info: old size = 12
-@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(72)@ file "semantic.c", line 460, func "new_symbol_table"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: reallocalloc(00547350, 40)info: old size = 24
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00549180, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00548E68, 64)info: old size = 40
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(005483F0, 100)info: old size = 64
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(10)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(10)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(12)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(13)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(13)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(12)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(70)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(53)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(35)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(8)@ file "semantic.c", line 572, func "semantic_get_type"
-info: malloc(72)@ file "semantic.c", line 512, func "new_code_segment"
-info: malloc(4)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(1)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(4)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(17)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(23)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00549850, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(16)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(8)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(6)@ file "lexin.l", line 47, func "stralloc"
-info: malloc(2)@ file "yaccin.y", line 294, func "get_source_text"
-info: malloc(5)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 705, func "emit_code"
-info: malloc(6)@ file "semantic.c", line 694, func "IR_next_name"
-info: malloc(21)@ file "semantic.c", line 705, func "emit_code"
-info: reallocalloc(00549960, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(16)@ file "semantic.c", line 705, func "emit_code"
-No stack.
+semantic error: undefined symbol 'A'->'ST5'
+@ file "semantic.c", line 670, func "lookup_symbol"
+error: printing allocations:
+num allocs: 934, mem used: 57698
+alloc(40)	=	007E1140	from file "lex.yy.c"	line 1657,	func "yy_flex_alloc"
+alloc(16386)	=	007E5088	from file "lex.yy.c"	line 1657,	func "yy_flex_alloc"
+alloc(4)	=	007E1578	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007E1018	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007E1180	from file "AST.c"	line 19,	func "node"
+alloc(832)	=	00691258	from file "AST.c"	line 7,	func "vector2_ptr_ast_node_internal_resize"
+alloc(2)	=	007E1220	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007E1240	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007E1260	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007E1280	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007E12A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007E12C0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007E12E0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007E1200	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007E1388	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007E13A8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007E13C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EA0C0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007E13E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA140	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007E1408	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA1C0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007E1360	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EA240	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA260	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EA280	from file "AST.c"	line 19,	func "node"
+alloc(104)	=	007EA300	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EA380	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA3E8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007E1428	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA468	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EA4E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EA508	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA528	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA548	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EA568	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EA5E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EA608	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EA628	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EA648	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA668	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA688	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EA6A8	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EA3A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA3C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EA780	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EA7A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EA7C0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EA840	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA860	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EA8E0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EA900	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EA980	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EA9A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EA9C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EA9E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EAA00	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EAA20	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EAA40	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EAA60	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EAAE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EAB00	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EAB80	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EABA0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EAC20	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EACC0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EA728	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EA748	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EAD40	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EAD60	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EADE0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EAE00	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EAE80	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EAEA8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EAF28	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EAF48	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EAFC8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EAFF0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB010	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB030	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EB050	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EB0D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EB0F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EB110	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EB130	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EB150	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EB170	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EB190	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EB210	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB230	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB250	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EB270	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EB290	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EB310	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EB330	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EB3B0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EAC40	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EB488	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EB4A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB4C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EB4E8	from file "AST.c"	line 19,	func "node"
+alloc(104)	=	007EB568	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EB5E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EB610	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EB690	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EB6B0	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EB730	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EB758	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EB778	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB798	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB7B8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EB7D8	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EB858	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EB878	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EB898	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EB8B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB8D8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EB8F8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EB918	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EB998	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EB9B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EB9D8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EB9F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EBA18	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EBA98	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EBAB8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EBB38	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EBB58	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EBB78	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EBB98	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EBBB8	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EBC38	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EBC58	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EBC78	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EBC98	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EBCB8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EBD38	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EBD58	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EBDD8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EBE00	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EBE80	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EBEA8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EBEC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EBEE8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EBF08	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EBF28	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EB3D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EB3F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EB410	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EB430	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EC0B0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EB450	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EC130	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EC1B0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EC1D0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EC250	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EC270	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EC2F0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EC310	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC330	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(3)	=	007EC350	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC370	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EC390	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EC3B0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EC3D0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EC450	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC470	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC490	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC4B0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC4D0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EC4F0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EC570	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EC590	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EC610	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EC638	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EC658	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC678	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC698	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC6B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EC6D8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EC6F8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EC718	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EC798	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(25)	=	007EC7B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(25)	=	007EC7F0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EC828	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EC8A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EC8C8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EC948	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EC968	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EC9E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ECA08	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ECA88	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007ECAB0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ECAD0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ECB50	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ECB70	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ECBF0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ECC10	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ECC90	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007ECCB0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ECCD0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ECCF0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007ECD10	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ECD30	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ECD50	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ECD70	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007ECD90	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007ECE10	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ECE30	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ECEB0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ECED0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ECF50	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ECF70	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ECFF0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007ED018	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ED038	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007ED058	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ED078	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ED0F8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED120	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ED1A0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EBFA8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EBFC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EBFE8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EC008	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EC028	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007ED350	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EC048	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC068	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EC088	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007ED3D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ED3F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007ED410	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007ED430	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007ED450	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007ED470	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007ED4F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007ED510	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007ED530	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007ED550	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007ED5D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ED5F0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED670	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED690	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED710	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED730	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ED7B0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007ED7D8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ED7F8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ED878	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED8A0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED920	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED940	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED9C0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED9E0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EDA60	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EDA80	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDAA0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDAC0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDAE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDB00	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EDB20	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EDBA0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDBC0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDBE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDC00	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EDC20	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EDC40	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EDCC0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EDCE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EDD00	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EDD20	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EDDA0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EDDC0	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EDE40	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EDE68	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EDEE8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EDF10	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EDF90	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EDFB0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EE030	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EE050	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EE0D0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EE0F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE118	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE138	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EE158	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EE178	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EE198	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EE218	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE238	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE258	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EE278	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EE2F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EE318	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EE398	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EE3B8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EE438	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EE458	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EE4D8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EE500	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EE520	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EE5A0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EE5C0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EE640	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EE660	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EE6E0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EE708	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE728	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE748	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EE768	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE788	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE7A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE7C8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EE7E8	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EE868	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE888	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE8A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE8C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE8E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EE908	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EE928	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EE948	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EE9C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EE9E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EEA08	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EEA28	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EEAA8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EEAC8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EEB48	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EEB68	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EEBE8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007ED1C8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007ED248	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007ED270	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007ED290	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED310	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EEE48	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007ED330	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EEEC8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EEF48	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EEF68	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EEF88	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EEFA8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EEFC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EEFE8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF008	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EF028	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EF0A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF0C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF0E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF108	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF128	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EF148	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EF1C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF1E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF208	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EF228	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EF2A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EF2C8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EF348	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EF370	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EF3F0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EF418	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EF498	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EF4B8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EF538	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EF558	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EF5D8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EF600	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF620	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF640	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF660	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(3)	=	007EF680	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF6A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF6C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF6E0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EF700	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EF780	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF7A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF7C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF7E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF800	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EF820	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EF8A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EF8C0	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EF940	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EF968	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	007EF988	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF9A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	007EF9C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EF9E8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EFA08	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EFA28	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	007EFA48	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EFAC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EFAE8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFB68	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EFB88	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFC08	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EFC28	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFCA8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EFCC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	007EFCE8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	007EFD08	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFD88	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EFDA8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EFE28	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EFE50	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFED0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EFEF0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFF70	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690048	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	007EFF90	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006900C8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	007EFFB0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00690148	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690168	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690188	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	006901A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	006901C8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00690248	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690270	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	006902F0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690318	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690398	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006903B8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690438	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690458	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	00690968	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00690500	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690520	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690540	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	00690560	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690580	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006905A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006905C0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	006905E0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00690660	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00690680	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690700	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690720	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006907A0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006907C0	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	00690998	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00690868	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690888	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	006908A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	006908C8	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	006909C8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006909F8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00690840	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690A78	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690948	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690AF8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006904D8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690B78	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00690BF8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00690C20	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00690C40	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	00690C60	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	00690C80	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	00690CA0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00690D20	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00690D40	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00690D60	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	00690D80	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00690DA0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690E20	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690E40	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690EC0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690EE0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00690F60	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00690F80	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00691000	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00691028	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00691048	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00691068	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	006910E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00691110	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00691190	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006911B8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00691238	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	007EEC08	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	00692868	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	007EECB0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EECD0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EECF0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EED10	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EED30	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EED50	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	007EED70	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	007EED90	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EEDB0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EEDD0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	006915B0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	007EEDF0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	007EEE10	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00691630	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	00691650	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691670	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691690	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006916B0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006916D0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	006916F0	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691770	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00691790	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00691810	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00691838	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006918B8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006918D8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00691958	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00691978	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691998	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	006919B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	006919D8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	006919F8	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691A78	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00691A98	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00691AB8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	00691AD8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691AF8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00691B18	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691B98	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691BB8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691BD8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00691BF8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00691C18	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	00691C38	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691CB8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691CD8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691CF8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00691D18	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00691D38	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	00691D58	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691DD8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691DF8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00691E18	from file "lexin.l"	line 47,	func "stralloc"
+alloc(104)	=	00691E38	from file "AST.c"	line 19,	func "node"
+alloc(2)	=	00691EB8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00691ED8	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00691F58	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00691F80	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00692000	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692028	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006920A8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006920C8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00692148	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692168	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006921E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	00692208	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	00692228	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00692248	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00692268	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	006922E8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692308	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	00692388	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006923B0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00692430	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692450	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	006924D0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(2)	=	006924F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00692518	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(104)	=	00692538	from file "AST.c"	line 19,	func "node"
+alloc(12)	=	006925B8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006925E0	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00692660	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692680	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00692700	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	00692720	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	00692898	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006927C8	from file "AST.c"	line 19,	func "node"
+alloc(24)	=	006928C8	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(104)	=	006928F8	from file "AST.c"	line 19,	func "node"
+alloc(4)	=	00692848	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(6)	=	006927A0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(8)	=	007EEC88	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(10)	=	006939C0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(12)	=	006939E8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693A10	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693A38	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693A60	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693A88	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693AB8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(10)	=	00693AE0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(12)	=	00693B08	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693B30	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693B58	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693B80	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693BA8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693BD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693C00	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693C28	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00693C58	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(10)	=	00693C88	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(12)	=	00693CB0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693CD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693D00	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693D28	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693D50	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693D80	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(10)	=	00693DA8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(12)	=	00693DD0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693DF8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693E20	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693E48	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693E70	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693EA0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693EC8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	00693EF8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693F20	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00693F48	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00693F78	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(22)	=	00693FA8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00693FD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00694000	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00694030	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(22)	=	00694060	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694090	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	006940C0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	006940F8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694130	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00694160	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00694198	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006941D0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694208	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694240	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(34)	=	00694278	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	006942B8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	006942F0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	00694328	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(22)	=	00694360	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694390	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	006943C0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	006943F8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	00694430	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	00694468	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	006944A0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	006944D8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(34)	=	00694510	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694550	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00694580	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	006945B8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006945F0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	00694628	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694660	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694698	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	006946D0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00694700	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00694738	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	00694770	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006947A8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	006947E0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694818	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00694848	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00694880	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006948B8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006948F0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694928	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(34)	=	00694960	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(36)	=	006949A0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(38)	=	006949E0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(38)	=	00694A20	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(40)	=	00694A60	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694AA0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(34)	=	00694AD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(36)	=	00694B18	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(38)	=	00694B58	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(38)	=	00694B98	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(40)	=	00694BD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(40)	=	00694C18	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(32)	=	00694C58	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(34)	=	00694C90	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(36)	=	00694CD0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(38)	=	00694D10	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(40)	=	00694D50	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(42)	=	00694D90	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(42)	=	00694DD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(40)	=	00694E20	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(42)	=	00694E60	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(44)	=	00694EA8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(46)	=	00694EF0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	00694F38	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00694F68	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00694FA0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00694FD8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00695000	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695030	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(22)	=	00695060	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(10)	=	00695090	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(12)	=	006950B8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(14)	=	006950E0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	00695108	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	00695130	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695160	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695190	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(16)	=	006951C0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(18)	=	006951E8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695218	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695248	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(20)	=	00695278	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(22)	=	006952A8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(24)	=	006952D8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(26)	=	00695308	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00695340	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(28)	=	00695378	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006953B0	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(30)	=	006953E8	from file "AST.c"	line 105,	func "ast_print_graph_helper"
+alloc(431)	=	00695420	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(72)	=	006955E8	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(3)	=	00695648	from file "lexin.l"	line 47,	func "stralloc"
+alloc(24)	=	006980B0	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(24)	=	006980E0	from file "AST.c"	line 8,	func "vector2_int_internal_resize"
+alloc(4)	=	006956A8	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(40)	=	00696A48	from file "semantic.c"	line 6,	func "vector2_ptr_symbol_table_internal_resize"
+alloc(12)	=	00695988	from file "semantic.c"	line 6,	func "vector2_ptr_symbol_table_internal_resize"
+alloc(431)	=	00695708	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	006958D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00695900	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00695930	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00695958	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	006959B0	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	006956E8	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00695A38	from file "semantic.c"	line 87,	func "semantic_analyze"
+alloc(64)	=	00695A60	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_new"
+alloc(12)	=	00695AB8	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(4)	=	006956C8	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_internal_resize"
+alloc(8)	=	00695AE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00695B00	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00695B28	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(4)	=	00695B58	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(24)	=	00696698	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(37)	=	00695B98	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(37)	=	00695BD8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00695C18	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00695C40	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	00695C70	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00695CD0	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00695CF0	from file "semantic.c"	line 87,	func "semantic_analyze"
+alloc(64)	=	00695D18	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_new"
+alloc(12)	=	00695D70	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(4)	=	00695D98	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_internal_resize"
+alloc(8)	=	00695DB8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00695DD8	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00695E00	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(4)	=	00695E30	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(26)	=	00695E78	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(26)	=	00695EB0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00695EE8	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00695F10	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	00695F40	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00695B78	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00695A10	from file "semantic.c"	line 87,	func "semantic_analyze"
+alloc(64)	=	00695FD0	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_new"
+alloc(12)	=	00696028	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(4)	=	00696050	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_internal_resize"
+alloc(11)	=	00696070	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696098	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	006960C0	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(4)	=	006960F0	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(272)	=	00696110	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(272)	=	00696238	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696360	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00696388	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	006963B8	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00696418	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00696438	from file "semantic.c"	line 87,	func "semantic_analyze"
+alloc(64)	=	00696460	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_new"
+alloc(12)	=	006964B8	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(12)	=	006965C8	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_internal_resize"
+alloc(9)	=	00696500	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696528	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00696550	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(12)	=	00696670	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(12)	=	006965A0	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(9)	=	006965F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696618	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00696640	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(70)	=	006966C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(70)	=	00696728	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00696788	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	006967B8	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00696580	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(53)	=	00696818	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(17)	=	00696868	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(16)	=	00695E50	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696898	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	006968C0	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(12)	=	00696AE0	from file "semantic.c"	line 5,	func "vector2_ptr_symbol_internal_resize"
+alloc(35)	=	006968F0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(35)	=	00696930	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696970	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(24)	=	00696998	from file "semantic.c"	line 659,	func "new_symbol"
+alloc(72)	=	006969C8	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00696A28	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00695FA0	from file "semantic.c"	line 87,	func "semantic_analyze"
+alloc(64)	=	00696A88	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_new"
+alloc(431)	=	00696B08	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00696CD0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00696D00	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696D30	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(12)	=	00697D30	from file "semantic.c"	line 7,	func "vector2_ptr_code_segment_internal_resize"
+alloc(72)	=	00696D58	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(3)	=	00696DB8	from file "lexin.l"	line 47,	func "stralloc"
+alloc(4)	=	00695668	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(24)	=	006976F8	from file "semantic.c"	line 7,	func "vector2_ptr_code_segment_internal_resize"
+alloc(8)	=	00696E28	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00696E48	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(26)	=	00696E68	from file "semantic.c"	line 815,	func "emit_code"
+alloc(4)	=	00696EA0	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(1)	=	00696EC0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(37)	=	00696EE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(37)	=	00696F20	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00696F60	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(72)	=	00696F88	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(4)	=	00696FE8	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(8)	=	00695688	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00697030	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(26)	=	00697050	from file "semantic.c"	line 815,	func "emit_code"
+alloc(12)	=	00697178	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(12)	=	006970A8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	006970D0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	006970F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00697120	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(18)	=	00697148	from file "semantic.c"	line 815,	func "emit_code"
+alloc(4)	=	00697088	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	006971A0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(12)	=	00697EF8	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(40)	=	006985D8	from file "semantic.c"	line 9,	func "vector2_ptr_type_name_internal_resize"
+alloc(11)	=	00697200	from file "semantic.c"	line 815,	func "emit_code"
+alloc(26)	=	00697228	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(26)	=	00697260	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00697298	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(72)	=	006972C0	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(4)	=	00697320	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(11)	=	00697340	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00697368	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(28)	=	00697388	from file "semantic.c"	line 815,	func "emit_code"
+alloc(4)	=	006973C0	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(1)	=	006973E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(272)	=	00697400	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(272)	=	00697528	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00697650	from file "semantic.c"	line 681,	func "semantic_get_type"
+alloc(72)	=	00697678	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(4)	=	006976D8	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(19)	=	00697728	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00697008	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(35)	=	00697758	from file "semantic.c"	line 815,	func "emit_code"
+alloc(40)	=	00698780	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(238)	=	006977B8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(8)	=	006978C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(8)	=	006978E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(7)	=	00697900	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(215)	=	00697920	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(215)	=	00697A10	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(215)	=	00697B00	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(65)	=	00697BF0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(9)	=	00697C50	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(19)	=	00697C78	from file "semantic.c"	line 815,	func "emit_code"
+alloc(72)	=	00697CD0	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	00697798	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(72)	=	00697D58	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(4)	=	006964E0	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(9)	=	00697DB8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00697DE0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00697E00	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	006971E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(4)	=	00697E48	from file "lexin.l"	line 47,	func "stralloc"
+alloc(5)	=	00697E68	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00697E88	from file "semantic.c"	line 394,	func "semantic_analyze"
+alloc(11)	=	00697EB0	from file "semantic.c"	line 815,	func "emit_code"
+alloc(24)	=	00698060	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(14)	=	00697F20	from file "semantic.c"	line 815,	func "emit_code"
+alloc(9)	=	00697F70	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00697ED8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	006971C0	from file "lexin.l"	line 47,	func "stralloc"
+alloc(2)	=	00697FC8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00697E20	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	00697FE8	from file "semantic.c"	line 394,	func "semantic_analyze"
+alloc(11)	=	00698010	from file "semantic.c"	line 815,	func "emit_code"
+alloc(14)	=	00698038	from file "semantic.c"	line 815,	func "emit_code"
+alloc(11)	=	00697F48	from file "semantic.c"	line 815,	func "emit_code"
+alloc(4)	=	00698090	from file "lexin.l"	line 47,	func "stralloc"
+alloc(5)	=	00696DD8	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(16)	=	00696DF8	from file "semantic.c"	line 815,	func "emit_code"
+alloc(11)	=	00697CA8	from file "semantic.c"	line 815,	func "emit_code"
+alloc(72)	=	00698140	from file "semantic.c"	line 567,	func "new_symbol_table"
+alloc(4)	=	006981A0	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(72)	=	006981C0	from file "semantic.c"	line 619,	func "new_code_segment"
+alloc(4)	=	00698220	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(45)	=	00698240	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(33)	=	00698288	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(33)	=	006982C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(10)	=	00698308	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(10)	=	00698330	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(45)	=	00698358	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(33)	=	006983A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(33)	=	006983E0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(33)	=	00698420	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(39)	=	00698460	from file "semantic.c"	line 815,	func "emit_code"
+alloc(24)	=	00698700	from file "semantic.c"	line 8,	func "vector2_ptr_char_internal_resize"
+alloc(32)	=	006984C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	006984F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(6)	=	00698518	from file "lexin.l"	line 47,	func "stralloc"
+alloc(1)	=	00698538	from file "semantic.c"	line 453,	func "semantic_analyze"
+alloc(5)	=	00698558	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(26)	=	00698578	from file "semantic.c"	line 815,	func "emit_code"
+alloc(10)	=	00697F98	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(10)	=	00698618	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(10)	=	00698640	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(16)	=	00698668	from file "semantic.c"	line 815,	func "emit_code"
+alloc(2)	=	006984A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(5)	=	00698690	from file "semantic.c"	line 804,	func "IR_next_name"
+alloc(12)	=	006986B0	from file "semantic.c"	line 394,	func "semantic_analyze"
+alloc(11)	=	006986D8	from file "semantic.c"	line 815,	func "emit_code"
+alloc(12)	=	006985B0	from file "semantic.c"	line 815,	func "emit_code"
+alloc(11)	=	00698730	from file "semantic.c"	line 815,	func "emit_code"
+alloc(11)	=	00698758	from file "semantic.c"	line 815,	func "emit_code"
+alloc(10)	=	00698110	from file "semantic.c"	line 815,	func "emit_code"
+alloc(137)	=	006987C0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00698868	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(24)	=	00698898	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(23)	=	006988C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	006988F8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00698920	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(12)	=	00698948	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(18)	=	00698970	from file "semantic.c"	line 815,	func "emit_code"
+alloc(11)	=	006989A0	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006989C8	from file "yaccin.y"	line 294,	func "get_source_text"
+alloc(2)	=	006989E8	from file "lexin.l"	line 47,	func "stralloc"
+error: activating self-destruct
