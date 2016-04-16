@@ -31,7 +31,7 @@ Entering state 2
 Reducing stack 0 by rule 21 (line 145):
    $1 = token TYPE ()
 info: malloc(76)@ file "AST.c", line 19, func "node"
-info: reallocalloc(003C1018, 12)info: old size = 4
+info: reallocalloc(00B31018, 12)info: old size = 4
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename ()
 Entering state 30
@@ -53,7 +53,7 @@ Reducing stack 0 by rule 29 (line 160):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C1018, 24)info: old size = 12
+info: reallocalloc(00B31018, 24)info: old size = 12
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl_list_ne ()
 Entering state 33
@@ -88,9 +88,9 @@ Reducing stack 0 by rule 23 (line 149):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C8B38, 12)info: old size = 4
+info: reallocalloc(00B38B38, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C1018, 40)info: old size = 24
+info: reallocalloc(00B31018, 40)info: old size = 24
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm func_def ()
 Entering state 9
@@ -131,7 +131,7 @@ Entering state 2
 Reducing stack 0 by rule 21 (line 145):
    $1 = token TYPE ()
 info: malloc(76)@ file "AST.c", line 19, func "node"
-info: reallocalloc(003C8B60, 64)info: old size = 40
+info: reallocalloc(00B38B60, 64)info: old size = 40
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm typename ()
 Entering state 30
@@ -186,7 +186,7 @@ Reducing stack 0 by rule 23 (line 149):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9060, 12)info: old size = 4
+info: reallocalloc(00B39060, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def ()
 Entering state 9
@@ -195,7 +195,7 @@ Reducing stack 0 by rule 9 (line 124):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C8DC0, 100)info: old size = 64
+info: reallocalloc(00B38DC0, 100)info: old size = 64
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt ()
 Entering state 13
@@ -205,7 +205,7 @@ Reducing stack 0 by rule 13 (line 132):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C8DC0, 12)info: old size = 4
+info: reallocalloc(00B38DC0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne ()
 Entering state 6
@@ -285,7 +285,7 @@ Reducing stack 0 by rule 23 (line 149):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9590, 12)info: old size = 4
+info: reallocalloc(00B39590, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def ()
 Entering state 9
@@ -294,7 +294,7 @@ Reducing stack 0 by rule 9 (line 124):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9110, 156)info: old size = 100
+info: reallocalloc(00B39110, 156)info: old size = 100
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm decl_stmt ()
 Entering state 13
@@ -304,7 +304,7 @@ Reducing stack 0 by rule 13 (line 132):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C96F8, 12)info: old size = 4
+info: reallocalloc(00B396F8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne ()
 Entering state 6
@@ -385,7 +385,7 @@ Reducing stack 0 by rule 28 (line 159):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9B18, 12)info: old size = 4
+info: reallocalloc(00B39B18, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list_ne ()
 Entering state 33
@@ -396,7 +396,7 @@ info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003C9BA8, 12)info: old size = 4
+info: reallocalloc(00B39BA8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl_list ()
 Entering state 32
@@ -448,7 +448,7 @@ Reducing stack 0 by rule 7 (line 120):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9640, 240)info: old size = 156
+info: reallocalloc(00B39640, 240)info: old size = 156
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -487,7 +487,7 @@ Reducing stack 0 by rule 54 (line 205):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C96A8, 12)info: old size = 4
+info: reallocalloc(00B396A8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 85
@@ -546,7 +546,7 @@ Reducing stack 0 by rule 47 (line 198):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CA338, 12)info: old size = 4
+info: reallocalloc(00B3A338, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -612,7 +612,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CA6F8, 12)info: old size = 4
+info: reallocalloc(00B3A6F8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -623,7 +623,7 @@ info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CA788, 12)info: old size = 4
+info: reallocalloc(00B3A788, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list ()
 Entering state 96
@@ -637,7 +637,7 @@ Reducing stack 0 by rule 32 (line 167):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CA818, 12)info: old size = 4
+info: reallocalloc(00B3A818, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_then ()
 Entering state 67
@@ -687,7 +687,7 @@ Reducing stack 0 by rule 38 (line 187):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003C9E98, 364)info: old size = 240
+info: reallocalloc(00B39E98, 364)info: old size = 240
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm expr_list_ne ()
 Entering state 56
@@ -711,7 +711,7 @@ Reducing stack 0 by rule 47 (line 198):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CAC08, 12)info: old size = 4
+info: reallocalloc(00B3AC08, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 28
@@ -724,7 +724,7 @@ Reducing stack 0 by rule 25 (line 152):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CAC98, 12)info: old size = 4
+info: reallocalloc(00B3AC98, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm var_decl ()
 Entering state 10
@@ -794,7 +794,7 @@ Reducing stack 0 by rule 51 (line 202):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CB058, 12)info: old size = 4
+info: reallocalloc(00B3B058, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 48
@@ -806,7 +806,7 @@ Reducing stack 0 by rule 54 (line 205):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CB0E8, 12)info: old size = 4
+info: reallocalloc(00B3B0E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -834,7 +834,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CB288, 12)info: old size = 4
+info: reallocalloc(00B3B288, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -887,7 +887,7 @@ Reducing stack 0 by rule 47 (line 198):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CB538, 12)info: old size = 4
+info: reallocalloc(00B3B538, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -915,7 +915,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CB6D8, 12)info: old size = 4
+info: reallocalloc(00B3B6D8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -986,7 +986,7 @@ Reducing stack 0 by rule 47 (line 198):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CBA10, 12)info: old size = 4
+info: reallocalloc(00B3BA10, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -1013,7 +1013,7 @@ Reducing stack 0 by rule 7 (line 120):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CAA80, 552)info: old size = 364
+info: reallocalloc(00B3AA80, 552)info: old size = 364
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1058,7 +1058,7 @@ Reducing stack 0 by rule 50 (line 201):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CABB0, 12)info: old size = 4
+info: reallocalloc(00B3ABB0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 48
@@ -1070,7 +1070,7 @@ Reducing stack 0 by rule 54 (line 205):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CABD8, 12)info: old size = 4
+info: reallocalloc(00B3ABD8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -1098,7 +1098,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CC0C0, 12)info: old size = 4
+info: reallocalloc(00B3C0C0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1137,7 +1137,7 @@ Reducing stack 0 by rule 54 (line 205):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CC260, 12)info: old size = 4
+info: reallocalloc(00B3C260, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 85
@@ -1204,7 +1204,7 @@ Reducing stack 0 by rule 32 (line 167):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CC598, 12)info: old size = 4
+info: reallocalloc(00B3C598, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_then ()
 Entering state 67
@@ -1239,7 +1239,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CC7C0, 12)info: old size = 4
+info: reallocalloc(00B3C7C0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1250,7 +1250,7 @@ info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CC850, 12)info: old size = 4
+info: reallocalloc(00B3C850, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list ()
 Entering state 94
@@ -1267,7 +1267,7 @@ Reducing stack 0 by rule 34 (line 179):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CC8E0, 12)info: old size = 4
+info: reallocalloc(00B3C8E0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm while_loop ()
 Entering state 68
@@ -1291,7 +1291,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCA80, 12)info: old size = 4
+info: reallocalloc(00B3CA80, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1332,7 +1332,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCCA8, 12)info: old size = 4
+info: reallocalloc(00B3CCA8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1342,14 +1342,14 @@ Reducing stack 0 by rule 4 (line 115):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCA80, 24)info: old size = 12
+info: reallocalloc(00B3CA80, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCCA8, 24)info: old size = 12
+info: reallocalloc(00B3CCA8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CCD38, 12)info: old size = 4
+info: reallocalloc(00B3CD38, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCCA8, 24)info: old size = 12
+info: reallocalloc(00B3CCA8, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list ()
 Entering state 87
@@ -1364,7 +1364,7 @@ Reducing stack 0 by rule 31 (line 164):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCD38, 12)info: old size = 4
+info: reallocalloc(00B3CD38, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm if_block ()
 Entering state 66
@@ -1388,7 +1388,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CCF88, 12)info: old size = 4
+info: reallocalloc(00B3CF88, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1438,7 +1438,7 @@ Reducing stack 0 by rule 6 (line 119):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CD258, 12)info: old size = 4
+info: reallocalloc(00B3D258, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list_ne ()
 Entering state 63
@@ -1449,7 +1449,7 @@ info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CD2E8, 12)info: old size = 4
+info: reallocalloc(00B3D2E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm stmt_list ()
 Entering state 62
@@ -1467,7 +1467,7 @@ Reducing stack 0 by rule 23 (line 149):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CD378, 12)info: old size = 4
+info: reallocalloc(00B3D378, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def ()
 Entering state 9
@@ -1484,7 +1484,7 @@ Reducing stack 0 by rule 13 (line 132):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CD490, 12)info: old size = 4
+info: reallocalloc(00B3D490, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne ()
 Entering state 6
@@ -1529,9 +1529,9 @@ Reducing stack 0 by rule 25 (line 152):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CD670, 12)info: old size = 4
+info: reallocalloc(00B3D670, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CBBD0, 832)info: old size = 552
+info: reallocalloc(00B3BBD0, 832)info: old size = 552
 @ file "AST.c", line 7, func "vector2_ptr_ast_node_internal_resize"
 -> $$ = nterm var_decl ()
 Entering state 10
@@ -1618,7 +1618,7 @@ Reducing stack 0 by rule 53 (line 204):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CDBD0, 12)info: old size = 4
+info: reallocalloc(00B3DBD0, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 48
@@ -1630,7 +1630,7 @@ Reducing stack 0 by rule 54 (line 205):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CDC60, 12)info: old size = 4
+info: reallocalloc(00B3DC60, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm expr ()
 Entering state 69
@@ -1682,7 +1682,7 @@ Reducing stack 0 by rule 23 (line 149):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CDF10, 12)info: old size = 4
+info: reallocalloc(00B3DF10, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm func_def ()
 Entering state 9
@@ -1699,7 +1699,7 @@ Reducing stack 0 by rule 13 (line 132):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CE028, 12)info: old size = 4
+info: reallocalloc(00B3E028, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne ()
 Entering state 6
@@ -1710,7 +1710,7 @@ info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CE0B8, 12)info: old size = 4
+info: reallocalloc(00B3E0B8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list ()
 Entering state 16
@@ -1740,7 +1740,7 @@ Reducing stack 0 by rule 13 (line 132):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CE258, 12)info: old size = 4
+info: reallocalloc(00B3E258, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list_ne ()
 Entering state 6
@@ -1750,14 +1750,14 @@ Reducing stack 0 by rule 11 (line 128):
 info: malloc(76)@ file "AST.c", line 19, func "node"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CD490, 24)info: old size = 12
+info: reallocalloc(00B3D490, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CE258, 24)info: old size = 12
+info: reallocalloc(00B3E258, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 vector error: index out of bounds (0 out of max 0)
-info: reallocalloc(003CE2E8, 12)info: old size = 4
+info: reallocalloc(00B3E2E8, 12)info: old size = 4
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: reallocalloc(003CE258, 24)info: old size = 12
+info: reallocalloc(00B3E258, 24)info: old size = 12
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
 -> $$ = nterm decl_stmt_list ()
 Entering state 5
@@ -1773,13 +1773,13 @@ Shifting token $end ()
 Entering state 12
 Cleanup: popping token $end ()
 Cleanup: popping nterm program ()
-info: free(003C27D0)
+info: free(00B327D0)
 info: old size = 8800
 @ file "yaccin.tab.c", line 1731, func "yyfreeGLRStack"
-info: free(003C0F98)
+info: free(00B30F98)
 info: old size = 64
 @ file "yaccin.tab.c", line 1638, func "yyfreeStateSet"
-info: free(003C0FF0)
+info: free(00B30FF0)
 info: old size = 16
 @ file "yaccin.tab.c", line 1639, func "yyfreeStateSet"
 info: malloc(6)@ file "AST.c", line 105, func "ast_print_graph_helper"
@@ -1912,189 +1912,224 @@ info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(28)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
 info: malloc(30)@ file "AST.c", line 105, func "ast_print_graph_helper"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00531000, 12)info: old size = 4
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00531368, 12)info: old size = 4
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(005313D8, 24)info: old size = 12
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: reallocalloc(00531140, 24)info: old size = 12
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(20)@ file "semantic.c", line 449, func "new_symbol"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: reallocalloc(005313D8, 12)info: old size = 4
-@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531730, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(3)@ file "lexin.l", line 39, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
 info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(16)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00531818, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(13)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: reallocalloc(00531670, 12)info: old size = 4
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: reallocalloc(005318D0, 24)info: old size = 12
-@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: malloc(8)@ file "semantic.c", line 463, func "semantic_get_type"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(12)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00531B28, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531798, 12)info: old size = 4
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: reallocalloc(005317B8, 12)info: old size = 4
-@ file "AST.c", line 8, func "vector2_int_internal_resize"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(14)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: reallocalloc(005319D8, 40)info: old size = 24
 @ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: reallocalloc(005316F0, 12)info: old size = 4
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00530F80, 12)info: old size = 4
+@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00530F60, 12)info: old size = 4
+@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: reallocalloc(005310F0, 12)info: old size = 4
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00531078, 24)info: old size = 12
+@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(005314C8, 12)info: old size = 4
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: reallocalloc(00531250, 24)info: old size = 12
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(20)@ file "semantic.c", line 524, func "new_symbol"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00531328, 40)info: old size = 24
+@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: reallocalloc(00531650, 12)info: old size = 4
+@ file "semantic.c", line 5, func "vector2_ptr_symbol_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
-info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(3)@ file "lexin.l", line 39, func "stralloc"
+info: reallocalloc(00530F00, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(00530F20, 12)info: old size = 4
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00530F20, 12)info: old size = 4
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00531910, 24)info: old size = 12
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(10)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00531D30, 12)info: old size = 4
+info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
+info: reallocalloc(00531A88, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(14)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00531B10, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(4)@ file "lexin.l", line 39, func "stralloc"
+info: reallocalloc(00531820, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: reallocalloc(00531848, 24)info: old size = 12
+@ file "AST.c", line 8, func "vector2_int_internal_resize"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(16)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00531780, 12)info: old size = 4
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00531D58, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00531B80, 24)info: old size = 12
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531770, 24)info: old size = 12
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(5)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(19)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00531D78, 24)info: old size = 12
+info: reallocalloc(00531B30, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00531DF0, 40)info: old size = 24
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
 info: malloc(7)@ file "lexin.l", line 39, func "stralloc"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00531E68, 40)info: old size = 24
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: reallocalloc(005319D8, 24)info: old size = 12
-@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(13)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
 info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: reallocalloc(00531DE8, 40)info: old size = 24
-@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(15)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00532108, 12)info: old size = 4
+info: reallocalloc(00531E60, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(19)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00532180, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
 info: malloc(2)@ file "lexin.l", line 39, func "stralloc"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00532170, 24)info: old size = 12
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00532210, 24)info: old size = 12
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(11)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(68)@ file "semantic.c", line 388, func "new_symbol_table"
-info: malloc(68)@ file "semantic.c", line 426, func "new_code_segment"
-info: malloc(3)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(13)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00530FF0, 24)info: old size = 12
+@ file "semantic.c", line 6, func "vector2_ptr_symbol_table_internal_resize"
+info: malloc(72)@ file "semantic.c", line 432, func "new_symbol_table"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: reallocalloc(00531A58, 40)info: old size = 24
+@ file "semantic.c", line 7, func "vector2_ptr_code_segment_internal_resize"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
 info: reallocalloc(00000000, 4)info: new allocation
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(10)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00532378, 12)info: old size = 4
+info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00532498, 12)info: old size = 4
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(8)@ file "semantic.c", line 580, func "emit_code"
-info: reallocalloc(00532200, 40)info: old size = 24
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(005322A8, 40)info: old size = 24
 @ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
-info: malloc(9)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(4)@ file "semantic.c", line 570, func "IR_next_name"
-info: malloc(5)@ file "semantic.c", line 580, func "emit_code"
-info: malloc(11)@ file "semantic.c", line 580, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(10)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00531EE8, 64)info: old size = 40
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(12)@ file "semantic.c", line 676, func "emit_code"
+info: malloc(8)@ file "semantic.c", line 544, func "semantic_get_type"
+info: malloc(72)@ file "semantic.c", line 484, func "new_code_segment"
+info: malloc(4)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(6)@ file "lexin.l", line 39, func "stralloc"
+info: malloc(5)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(11)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00000000, 4)info: new allocation
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(6)@ file "semantic.c", line 666, func "IR_next_name"
+info: malloc(21)@ file "semantic.c", line 676, func "emit_code"
+info: reallocalloc(00532790, 12)info: old size = 4
+@ file "semantic.c", line 8, func "vector2_ptr_char_internal_resize"
+info: malloc(16)@ file "semantic.c", line 676, func "emit_code"
 No stack.

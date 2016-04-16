@@ -9,6 +9,8 @@ typedef struct ast_token{
 	const char *type;
 	int production;
 	char *value;
+	int pos1;
+	int pos2;
 	// int start_line;
 	// int start_char;
 	// int end_line;

@@ -9,7 +9,7 @@ For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>...
 Reading symbols from C:\Stride\LazyComp\data\a.exe...done.
 (gdb) Starting program: C:\Stride\LazyComp\data/a.exe lazy2.txt
-[New Thread 4212.0xdb0]
+[New Thread 2180.0xb44]
 sizeof ast_node = '76'
 test diff = '4', size = '4'
 Lexxed token [int]
@@ -441,430 +441,415 @@ unroll [decl_stmt_list]  unroll done
 node "program": [(null)] (0/1)
 
 PARSING DONE
-printing ast 003CE398, 764F29A0, 0, [program]
-printing ast 003CE280, 764F29A0, 0, [decl_stmt_list]
-printing ast 003C8BA0, 764F29A0, 0, [decl_stmt]
-printing ast 003C8AD0, 764F29A0, 0, [func_def]
-printing ast 003C1180, 764F29A0, 0, [typename]
-printing ast 003C13C0, 764F29A0, 1, [var_decl_list]
-printing ast 003C12B0, 764F29A0, 0, [var_decl]
-printing ast 003C1228, 764F29A0, 0, [typename]
-printing ast 003C8A68, 764F29A0, 2, [stmt_list]
-printing ast 003C9088, 764F29A0, 1, [decl_stmt]
-printing ast 003C8FF8, 764F29A0, 0, [func_def]
-printing ast 003C8CB0, 764F29A0, 0, [typename]
-printing ast 003C8F08, 764F29A0, 1, [var_decl_list]
-printing ast 003C8E18, 764F29A0, 0, [var_decl]
-printing ast 003C8D58, 764F29A0, 0, [typename]
-printing ast 003C8F90, 764F29A0, 2, [stmt_list]
-printing ast 003C95B8, 764F29A0, 2, [decl_stmt]
-printing ast 003C9528, 764F29A0, 0, [func_def]
-printing ast 003C91F8, 764F29A0, 0, [typename]
-printing ast 003C9438, 764F29A0, 1, [var_decl_list]
-printing ast 003C9328, 764F29A0, 0, [var_decl]
-printing ast 003C92A0, 764F29A0, 0, [typename]
-printing ast 003C94C0, 764F29A0, 2, [stmt_list]
-printing ast 003CD3A0, 764F29A0, 3, [decl_stmt]
-printing ast 003CD310, 764F29A0, 0, [func_def]
-printing ast 003C9740, 764F29A0, 0, [typename]
-printing ast 003C9B40, 764F29A0, 1, [var_decl_list]
-printing ast 003C9870, 764F29A0, 0, [var_decl]
-printing ast 003C97E8, 764F29A0, 0, [typename]
-printing ast 003C9A28, 764F29A0, 1, [var_decl]
-printing ast 003C99A0, 764F29A0, 0, [typename]
-printing ast 003CD280, 764F29A0, 2, [stmt_list]
-printing ast 003C9D88, 764F29A0, 0, [stmt]
-printing ast 003C9D00, 764F29A0, 0, [decl_stmt]
-printing ast 003C9C78, 764F29A0, 0, [var_decl]
-printing ast 003C9BF0, 764F29A0, 0, [typename]
-printing ast 003CCEB8, 764F29A0, 1, [stmt]
-printing ast 003CCE50, 764F29A0, 0, [imp_stmt]
-printing ast 003CCDE8, 764F29A0, 0, [if_block]
-printing ast 003CA7B0, 764F29A0, 0, [if_then]
-printing ast 003CA050, 764F29A0, 0, [expr_=]
-printing ast 003C9640, 764F29A0, 0, [expr_id]
-printing ast 003C9FE8, 764F29A0, 1, [expr_const]
-printing ast 003CA720, 764F29A0, 1, [stmt_list]
-printing ast 003CA3E8, 764F29A0, 0, [stmt]
-printing ast 003CA360, 764F29A0, 0, [imp_stmt]
-printing ast 003CA2D0, 764F29A0, 0, [expr_call]
-printing ast 003CA0B8, 764F29A0, 0, [expr_id]
-printing ast 003CA248, 764F29A0, 1, [expr_list]
-printing ast 003CA158, 764F29A0, 0, [expr_const]
-printing ast 003CA608, 764F29A0, 1, [stmt]
-printing ast 003CA580, 764F29A0, 0, [imp_stmt]
-printing ast 003CA518, 764F29A0, 0, [expr_const]
-printing ast 003CCCD0, 764F29A0, 1, [stmt_list]
-printing ast 003CAD48, 764F29A0, 0, [stmt]
-printing ast 003CACC0, 764F29A0, 0, [decl_stmt]
-printing ast 003CAC30, 764F29A0, 0, [var_decl_assign]
-printing ast 003CA860, 764F29A0, 0, [typename]
-printing ast 003C9F20, 764F29A0, 1, [expr_call]
-printing ast 003CA908, 764F29A0, 0, [expr_id]
-printing ast 003C9E98, 764F29A0, 1, [expr_list]
-printing ast 003CA990, 764F29A0, 0, [expr_id]
-printing ast 003CB198, 764F29A0, 1, [stmt]
-printing ast 003CB110, 764F29A0, 0, [imp_stmt]
-printing ast 003CB080, 764F29A0, 0, [expr_=]
-printing ast 003CAE78, 764F29A0, 0, [expr_id]
-printing ast 003CAFF0, 764F29A0, 1, [expr_*]
-printing ast 003CAF00, 764F29A0, 0, [expr_id]
-printing ast 003CAF88, 764F29A0, 1, [expr_id]
-printing ast 003CB5E8, 764F29A0, 2, [stmt]
-printing ast 003CB560, 764F29A0, 0, [imp_stmt]
-printing ast 003CB4D0, 764F29A0, 0, [expr_call]
-printing ast 003CB2D0, 764F29A0, 0, [expr_id]
-printing ast 003CB448, 764F29A0, 1, [expr_list]
-printing ast 003CB358, 764F29A0, 0, [expr_id]
-printing ast 003CC990, 764F29A0, 3, [stmt]
-printing ast 003CC908, 764F29A0, 0, [imp_stmt]
-printing ast 003CC878, 764F29A0, 0, [while_loop]
-printing ast 003CB720, 764F29A0, 0, [expr_id]
-printing ast 003CC7E8, 764F29A0, 1, [stmt_list]
-printing ast 003CBAC0, 764F29A0, 0, [stmt]
-printing ast 003CBA38, 764F29A0, 0, [imp_stmt]
-printing ast 003CB9A8, 764F29A0, 0, [expr_call]
-printing ast 003CB7A8, 764F29A0, 0, [expr_id]
-printing ast 003CB920, 764F29A0, 1, [expr_list]
-printing ast 003CB830, 764F29A0, 0, [expr_id]
-printing ast 003CBFD0, 764F29A0, 1, [stmt]
-printing ast 003CBF48, 764F29A0, 0, [imp_stmt]
-printing ast 003CBEE0, 764F29A0, 0, [expr_=]
-printing ast 003CAAA0, 764F29A0, 0, [expr_id]
-printing ast 003CBE78, 764F29A0, 1, [expr_/]
-printing ast 003CAB28, 764F29A0, 0, [expr_id]
-printing ast 003CBE10, 764F29A0, 1, [expr_const]
-printing ast 003CC6D0, 764F29A0, 2, [stmt]
-printing ast 003CC648, 764F29A0, 0, [imp_stmt]
-printing ast 003CC5C0, 764F29A0, 0, [if_block]
-printing ast 003CC530, 764F29A0, 0, [if_then]
-printing ast 003CC1F8, 764F29A0, 0, [expr_=]
-printing ast 003CC108, 764F29A0, 0, [expr_id]
-printing ast 003CC190, 764F29A0, 1, [expr_const]
-printing ast 003CC4A8, 764F29A0, 1, [stmt_list]
-printing ast 003CC398, 764F29A0, 0, [stmt]
-printing ast 003CC310, 764F29A0, 0, [imp_stmt]
-printing ast 003CC2A8, 764F29A0, 0, [expr_const]
-printing ast 003CCBB8, 764F29A0, 4, [stmt]
-printing ast 003CCB30, 764F29A0, 0, [imp_stmt]
-printing ast 003CCAC8, 764F29A0, 0, [expr_const]
-printing ast 003CD168, 764F29A0, 2, [stmt]
-printing ast 003CD0E0, 764F29A0, 0, [decl_stmt]
-printing ast 003CD058, 764F29A0, 0, [var_decl]
-printing ast 003CCFD0, 764F29A0, 0, [typename]
-printing ast 003CE168, 764F29A0, 4, [decl_stmt]
-printing ast 003CE0E0, 764F29A0, 0, [class_def]
-printing ast 003CE050, 764F29A0, 0, [decl_stmt_list]
-printing ast 003CBBD0, 764F29A0, 0, [decl_stmt]
-printing ast 003CD608, 764F29A0, 0, [var_decl_assign]
-printing ast 003CD4F8, 764F29A0, 0, [typename]
-printing ast 003CD5A0, 764F29A0, 1, [expr_const]
-printing ast 003CDF38, 764F29A0, 1, [decl_stmt]
-printing ast 003CDEA8, 764F29A0, 0, [func_def]
-printing ast 003CBD00, 764F29A0, 0, [typename]
-printing ast 003CBD88, 764F29A0, 1, [var_decl_list]
-printing ast 003CDE20, 764F29A0, 2, [stmt_list]
-printing ast 003CDD10, 764F29A0, 0, [stmt]
-printing ast 003CDC88, 764F29A0, 0, [imp_stmt]
-printing ast 003CDBF8, 764F29A0, 0, [expr_=]
-printing ast 003CD9F0, 764F29A0, 0, [expr_id]
-printing ast 003CDB68, 764F29A0, 1, [expr_+]
-printing ast 003CDA78, 764F29A0, 0, [expr_id]
-printing ast 003CDB00, 764F29A0, 1, [expr_const]
+printing ast 00B3E398, 761729A0, 0, [program]
+printing ast 00B3E280, 761729A0, 0, [decl_stmt_list]
+printing ast 00B38BA0, 761729A0, 0, [decl_stmt]
+printing ast 00B38AD0, 761729A0, 0, [func_def]
+printing ast 00B31180, 761729A0, 0, [typename]
+printing ast 00B313C0, 761729A0, 1, [var_decl_list]
+printing ast 00B312B0, 761729A0, 0, [var_decl]
+printing ast 00B31228, 761729A0, 0, [typename]
+printing ast 00B38A68, 761729A0, 2, [stmt_list]
+printing ast 00B39088, 761729A0, 1, [decl_stmt]
+printing ast 00B38FF8, 761729A0, 0, [func_def]
+printing ast 00B38CB0, 761729A0, 0, [typename]
+printing ast 00B38F08, 761729A0, 1, [var_decl_list]
+printing ast 00B38E18, 761729A0, 0, [var_decl]
+printing ast 00B38D58, 761729A0, 0, [typename]
+printing ast 00B38F90, 761729A0, 2, [stmt_list]
+printing ast 00B395B8, 761729A0, 2, [decl_stmt]
+printing ast 00B39528, 761729A0, 0, [func_def]
+printing ast 00B391F8, 761729A0, 0, [typename]
+printing ast 00B39438, 761729A0, 1, [var_decl_list]
+printing ast 00B39328, 761729A0, 0, [var_decl]
+printing ast 00B392A0, 761729A0, 0, [typename]
+printing ast 00B394C0, 761729A0, 2, [stmt_list]
+printing ast 00B3D3A0, 761729A0, 3, [decl_stmt]
+printing ast 00B3D310, 761729A0, 0, [func_def]
+printing ast 00B39740, 761729A0, 0, [typename]
+printing ast 00B39B40, 761729A0, 1, [var_decl_list]
+printing ast 00B39870, 761729A0, 0, [var_decl]
+printing ast 00B397E8, 761729A0, 0, [typename]
+printing ast 00B39A28, 761729A0, 1, [var_decl]
+printing ast 00B399A0, 761729A0, 0, [typename]
+printing ast 00B3D280, 761729A0, 2, [stmt_list]
+printing ast 00B39D88, 761729A0, 0, [stmt]
+printing ast 00B39D00, 761729A0, 0, [decl_stmt]
+printing ast 00B39C78, 761729A0, 0, [var_decl]
+printing ast 00B39BF0, 761729A0, 0, [typename]
+printing ast 00B3CEB8, 761729A0, 1, [stmt]
+printing ast 00B3CE50, 761729A0, 0, [imp_stmt]
+printing ast 00B3CDE8, 761729A0, 0, [if_block]
+printing ast 00B3A7B0, 761729A0, 0, [if_then]
+printing ast 00B3A050, 761729A0, 0, [expr_=]
+printing ast 00B39640, 761729A0, 0, [expr_id]
+printing ast 00B39FE8, 761729A0, 1, [expr_const]
+printing ast 00B3A720, 761729A0, 1, [stmt_list]
+printing ast 00B3A3E8, 761729A0, 0, [stmt]
+printing ast 00B3A360, 761729A0, 0, [imp_stmt]
+printing ast 00B3A2D0, 761729A0, 0, [expr_call]
+printing ast 00B3A0B8, 761729A0, 0, [expr_id]
+printing ast 00B3A248, 761729A0, 1, [expr_list]
+printing ast 00B3A158, 761729A0, 0, [expr_const]
+printing ast 00B3A608, 761729A0, 1, [stmt]
+printing ast 00B3A580, 761729A0, 0, [imp_stmt]
+printing ast 00B3A518, 761729A0, 0, [expr_const]
+printing ast 00B3CCD0, 761729A0, 1, [stmt_list]
+printing ast 00B3AD48, 761729A0, 0, [stmt]
+printing ast 00B3ACC0, 761729A0, 0, [decl_stmt]
+printing ast 00B3AC30, 761729A0, 0, [var_decl_assign]
+printing ast 00B3A860, 761729A0, 0, [typename]
+printing ast 00B39F20, 761729A0, 1, [expr_call]
+printing ast 00B3A908, 761729A0, 0, [expr_id]
+printing ast 00B39E98, 761729A0, 1, [expr_list]
+printing ast 00B3A990, 761729A0, 0, [expr_id]
+printing ast 00B3B198, 761729A0, 1, [stmt]
+printing ast 00B3B110, 761729A0, 0, [imp_stmt]
+printing ast 00B3B080, 761729A0, 0, [expr_=]
+printing ast 00B3AE78, 761729A0, 0, [expr_id]
+printing ast 00B3AFF0, 761729A0, 1, [expr_*]
+printing ast 00B3AF00, 761729A0, 0, [expr_id]
+printing ast 00B3AF88, 761729A0, 1, [expr_id]
+printing ast 00B3B5E8, 761729A0, 2, [stmt]
+printing ast 00B3B560, 761729A0, 0, [imp_stmt]
+printing ast 00B3B4D0, 761729A0, 0, [expr_call]
+printing ast 00B3B2D0, 761729A0, 0, [expr_id]
+printing ast 00B3B448, 761729A0, 1, [expr_list]
+printing ast 00B3B358, 761729A0, 0, [expr_id]
+printing ast 00B3C990, 761729A0, 3, [stmt]
+printing ast 00B3C908, 761729A0, 0, [imp_stmt]
+printing ast 00B3C878, 761729A0, 0, [while_loop]
+printing ast 00B3B720, 761729A0, 0, [expr_id]
+printing ast 00B3C7E8, 761729A0, 1, [stmt_list]
+printing ast 00B3BAC0, 761729A0, 0, [stmt]
+printing ast 00B3BA38, 761729A0, 0, [imp_stmt]
+printing ast 00B3B9A8, 761729A0, 0, [expr_call]
+printing ast 00B3B7A8, 761729A0, 0, [expr_id]
+printing ast 00B3B920, 761729A0, 1, [expr_list]
+printing ast 00B3B830, 761729A0, 0, [expr_id]
+printing ast 00B3BFD0, 761729A0, 1, [stmt]
+printing ast 00B3BF48, 761729A0, 0, [imp_stmt]
+printing ast 00B3BEE0, 761729A0, 0, [expr_=]
+printing ast 00B3AAA0, 761729A0, 0, [expr_id]
+printing ast 00B3BE78, 761729A0, 1, [expr_/]
+printing ast 00B3AB28, 761729A0, 0, [expr_id]
+printing ast 00B3BE10, 761729A0, 1, [expr_const]
+printing ast 00B3C6D0, 761729A0, 2, [stmt]
+printing ast 00B3C648, 761729A0, 0, [imp_stmt]
+printing ast 00B3C5C0, 761729A0, 0, [if_block]
+printing ast 00B3C530, 761729A0, 0, [if_then]
+printing ast 00B3C1F8, 761729A0, 0, [expr_=]
+printing ast 00B3C108, 761729A0, 0, [expr_id]
+printing ast 00B3C190, 761729A0, 1, [expr_const]
+printing ast 00B3C4A8, 761729A0, 1, [stmt_list]
+printing ast 00B3C398, 761729A0, 0, [stmt]
+printing ast 00B3C310, 761729A0, 0, [imp_stmt]
+printing ast 00B3C2A8, 761729A0, 0, [expr_const]
+printing ast 00B3CBB8, 761729A0, 4, [stmt]
+printing ast 00B3CB30, 761729A0, 0, [imp_stmt]
+printing ast 00B3CAC8, 761729A0, 0, [expr_const]
+printing ast 00B3D168, 761729A0, 2, [stmt]
+printing ast 00B3D0E0, 761729A0, 0, [decl_stmt]
+printing ast 00B3D058, 761729A0, 0, [var_decl]
+printing ast 00B3CFD0, 761729A0, 0, [typename]
+printing ast 00B3E168, 761729A0, 4, [decl_stmt]
+printing ast 00B3E0E0, 761729A0, 0, [class_def]
+printing ast 00B3E050, 761729A0, 0, [decl_stmt_list]
+printing ast 00B3BBD0, 761729A0, 0, [decl_stmt]
+printing ast 00B3D608, 761729A0, 0, [var_decl_assign]
+printing ast 00B3D4F8, 761729A0, 0, [typename]
+printing ast 00B3D5A0, 761729A0, 1, [expr_const]
+printing ast 00B3DF38, 761729A0, 1, [decl_stmt]
+printing ast 00B3DEA8, 761729A0, 0, [func_def]
+printing ast 00B3BD00, 761729A0, 0, [typename]
+printing ast 00B3BD88, 761729A0, 1, [var_decl_list]
+printing ast 00B3DE20, 761729A0, 2, [stmt_list]
+printing ast 00B3DD10, 761729A0, 0, [stmt]
+printing ast 00B3DC88, 761729A0, 0, [imp_stmt]
+printing ast 00B3DBF8, 761729A0, 0, [expr_=]
+printing ast 00B3D9F0, 761729A0, 0, [expr_id]
+printing ast 00B3DB68, 761729A0, 1, [expr_+]
+printing ast 00B3DA78, 761729A0, 0, [expr_id]
+printing ast 00B3DB00, 761729A0, 1, [expr_const]
 
 PRINTING DONE
-num allocs: 469, mem used: 42708
-got program
-num allocs: 470, mem used: 42776
-got decl_stmt_list
-num allocs: 470, mem used: 42776
-got decl_stmt
-num allocs: 470, mem used: 42776
-got func_def
-num allocs: 473, mem used: 42872
-got var_decl_list
-num allocs: 473, mem used: 42872
-got var_decl
-num allocs: 476, mem used: 42904
-got stmt_list
-num allocs: 477, mem used: 42908
-got decl_stmt
-num allocs: 477, mem used: 42908
-got func_def
-num allocs: 480, mem used: 43004
-got var_decl_list
-num allocs: 480, mem used: 43004
-got var_decl
-num allocs: 483, mem used: 43036
-got stmt_list
-num allocs: 483, mem used: 43044
-got decl_stmt
-num allocs: 483, mem used: 43044
-got func_def
-num allocs: 486, mem used: 43140
-got var_decl_list
-num allocs: 486, mem used: 43140
-got var_decl
-num allocs: 489, mem used: 43172
-got stmt_list
-num allocs: 489, mem used: 43172
-got decl_stmt
-num allocs: 489, mem used: 43172
-got func_def
-num allocs: 492, mem used: 43268
-got var_decl_list
-num allocs: 492, mem used: 43268
-got var_decl
-num allocs: 495, mem used: 43300
-got var_decl
-num allocs: 497, mem used: 43336
-got stmt_list
-num allocs: 497, mem used: 43336
-got stmt
-num allocs: 497, mem used: 43336
-got decl_stmt
-num allocs: 497, mem used: 43336
-got var_decl
-num allocs: 499, mem used: 43364
-got stmt
-num allocs: 499, mem used: 43364
-num allocs: 499, mem used: 43364
-got stmt
-num allocs: 499, mem used: 43364
-got decl_stmt
-num allocs: 499, mem used: 43364
-got var_decl
-num allocs: 501, mem used: 43416
-got decl_stmt
-num allocs: 501, mem used: 43416
-got class_def
-num allocs: 503, mem used: 43504
-got decl_stmt_list
-num allocs: 503, mem used: 43504
-got decl_stmt
-num allocs: 503, mem used: 43504
-got var_decl
-num allocs: 506, mem used: 43536
-got decl_stmt
-num allocs: 506, mem used: 43536
-got func_def
-num allocs: 509, mem used: 43632
-got var_decl_list
-num allocs: 509, mem used: 43632
-got stmt_list
-num allocs: 509, mem used: 43632
-got stmt
-num allocs: 509, mem used: 43632
-num allocs: 509, mem used: 43640
-got decl_stmt
-num allocs: 509, mem used: 43640
-num allocs: 509, mem used: 43640
-got decl_stmt
-num allocs: 509, mem used: 43640
-got func_def
-num allocs: 513, mem used: 43724
-got stmt_list
-num allocs: 513, mem used: 43724
-got stmt
-num allocs: 513, mem used: 43724
-got imp_stmt
-num allocs: 513, mem used: 43724
-got expr_=
-num allocs: 513, mem used: 43724
-got expr_id = [fluff]
-num allocs: 515, mem used: 43734
-got expr_+
-num allocs: 515, mem used: 43734
-got expr_id = [fluff]
-num allocs: 516, mem used: 43748
-got expr_const
-IR_next_name: returning [r1]
-IR_next_name: returning [r2]
-num allocs: 525, mem used: 43810
-got decl_stmt
-num allocs: 525, mem used: 43810
-got func_def
-num allocs: 527, mem used: 43894
-got stmt_list
-num allocs: 527, mem used: 43894
-got decl_stmt
-num allocs: 527, mem used: 43894
-got func_def
-num allocs: 529, mem used: 43970
-got stmt_list
-num allocs: 529, mem used: 43970
-got decl_stmt
-num allocs: 529, mem used: 43970
-got func_def
-num allocs: 531, mem used: 44058
-got stmt_list
-num allocs: 531, mem used: 44058
-got decl_stmt
-num allocs: 531, mem used: 44058
-got func_def
-num allocs: 533, mem used: 44134
-got stmt_list
-num allocs: 533, mem used: 44134
-got stmt
-num allocs: 533, mem used: 44134
-got decl_stmt
-num allocs: 533, mem used: 44134
-num allocs: 533, mem used: 44134
-got stmt
-num allocs: 533, mem used: 44134
-got imp_stmt
-num allocs: 533, mem used: 44134
-got if_block
-num allocs: 533, mem used: 44134
-got if_then
-num allocs: 533, mem used: 44134
-got expr_=
-num allocs: 533, mem used: 44134
-got expr_id = [argc]
-num allocs: 534, mem used: 44139
-got expr_const
-IR_next_name: returning [r3]
-IR_next_name: returning [l1]
-num allocs: 543, mem used: 44366
-got stmt_list
-num allocs: 543, mem used: 44366
-got stmt
-num allocs: 543, mem used: 44366
-num allocs: 543, mem used: 44366
-got stmt
-num allocs: 543, mem used: 44366
-num allocs: 543, mem used: 44366
-got stmt_list
-num allocs: 543, mem used: 44366
-got stmt
-num allocs: 543, mem used: 44366
-got imp_stmt
-num allocs: 543, mem used: 44366
-got expr_call
-num allocs: 543, mem used: 44366
-got expr_id = [print]
-num allocs: 544, mem used: 44372
-got stmt
-num allocs: 544, mem used: 44372
-got imp_stmt
-num allocs: 544, mem used: 44372
-got expr_const
-IR_next_name: returning [r4]
-num allocs: 549, mem used: 44411
-got stmt_list
-num allocs: 549, mem used: 44411
-got stmt
-num allocs: 549, mem used: 44411
-got decl_stmt
-num allocs: 549, mem used: 44411
-num allocs: 549, mem used: 44411
-got stmt
-num allocs: 549, mem used: 44411
-got imp_stmt
-num allocs: 549, mem used: 44411
-got expr_=
-num allocs: 549, mem used: 44411
-got expr_id = [A]
-num allocs: 550, mem used: 44413
-got expr_*
-num allocs: 550, mem used: 44413
-got expr_id = [A]
-num allocs: 551, mem used: 44427
-got expr_id = [argv]
-IR_next_name: returning [r5]
-num allocs: 555, mem used: 44475
-got stmt
-num allocs: 555, mem used: 44475
-got imp_stmt
-num allocs: 555, mem used: 44475
-got expr_call
-num allocs: 555, mem used: 44475
-got expr_id = [export]
-num allocs: 556, mem used: 44482
-got stmt
-num allocs: 556, mem used: 44482
-got imp_stmt
-num allocs: 556, mem used: 44482
-got while_loop
-num allocs: 556, mem used: 44482
-got expr_id = [A]
-IR_next_name: returning [l2]
-IR_next_name: returning [l3]
-num allocs: 563, mem used: 44674
-got stmt_list
-num allocs: 563, mem used: 44674
-got stmt
-num allocs: 563, mem used: 44674
-got imp_stmt
-num allocs: 563, mem used: 44674
-got expr_call
-num allocs: 563, mem used: 44674
-got expr_id = [print]
-num allocs: 564, mem used: 44680
-got stmt
-num allocs: 564, mem used: 44680
-got imp_stmt
-num allocs: 564, mem used: 44680
-got expr_=
-num allocs: 564, mem used: 44680
-got expr_id = [A]
-num allocs: 565, mem used: 44682
-got expr_/
-num allocs: 565, mem used: 44682
-got expr_id = [A]
-num allocs: 566, mem used: 44700
-got expr_const
-IR_next_name: returning [r6]
-IR_next_name: returning [r7]
-num allocs: 572, mem used: 44747
-got stmt
-num allocs: 572, mem used: 44747
-got imp_stmt
-num allocs: 572, mem used: 44747
-got if_block
-num allocs: 572, mem used: 44747
-got if_then
-num allocs: 572, mem used: 44747
-got expr_=
-num allocs: 572, mem used: 44747
-got expr_id = [A]
-num allocs: 573, mem used: 44749
-got expr_const
-IR_next_name: returning [r8]
-IR_next_name: returning [l4]
-num allocs: 580, mem used: 44928
-got stmt_list
-num allocs: 580, mem used: 44928
-got stmt
-num allocs: 580, mem used: 44928
-num allocs: 580, mem used: 44928
-got stmt_list
-num allocs: 580, mem used: 44928
-got stmt
-num allocs: 580, mem used: 44928
-got imp_stmt
-num allocs: 580, mem used: 44928
-got expr_const
-IR_next_name: returning [r9]
-num allocs: 587, mem used: 45000
-got stmt
-num allocs: 587, mem used: 45000
-got imp_stmt
-num allocs: 587, mem used: 45000
-got expr_const
-IR_next_name: returning [r10]
-num allocs: 590, mem used: 45020
-got stmt
-num allocs: 590, mem used: 45020
-got decl_stmt
-num allocs: 590, mem used: 45020
-num allocs: 590, mem used: 45020
-got decl_stmt
-num allocs: 590, mem used: 45020
+semantic got program, imperative pass
+IR_next_name: returning [ST1]
+ semantic got decl_stmt_list, declarative pass
+  semantic got decl_stmt, declarative pass
+   semantic got func_def, "import", declarative pass
+IR_next_name: returning [ST2]
+    semantic got var_decl_list, declarative pass
+     semantic got var_decl, "arg", declarative pass
+  semantic got decl_stmt, declarative pass
+   semantic got func_def, "export", declarative pass
+IR_next_name: returning [ST3]
+    semantic got var_decl_list, declarative pass
+     semantic got var_decl, "arg", declarative pass
+  semantic got decl_stmt, declarative pass
+   semantic got func_def, "print", declarative pass
+IR_next_name: returning [ST4]
+    semantic got var_decl_list, declarative pass
+     semantic got var_decl, "str", declarative pass
+  semantic got decl_stmt, declarative pass
+   semantic got func_def, "main", declarative pass
+IR_next_name: returning [ST5]
+    semantic got var_decl_list, declarative pass
+     semantic got var_decl, "argc", declarative pass
+     semantic got var_decl, "argv", declarative pass
+  semantic got decl_stmt, declarative pass
+   semantic got class_def, "horse", declarative pass
+IR_next_name: returning [ST6]
+    semantic got decl_stmt_list, declarative pass
+     semantic got decl_stmt, declarative pass
+      semantic got var_decl_assign, "fluff", declarative pass
+     semantic got decl_stmt, declarative pass
+      semantic got func_def, "boop", declarative pass
+IR_next_name: returning [ST7]
+       semantic got var_decl_list, "<empty>", declarative pass
+ semantic got decl_stmt_list, imperative pass
+  semantic got decl_stmt, imperative pass
+   semantic got func_def, "import", imperative pass
+found symbol 'import'->'ST1'
+IR_next_name: returning [CS1]
+    semantic got stmt_list, "<empty>", imperative pass
+  semantic got decl_stmt, imperative pass
+   semantic got func_def, "export", imperative pass
+found symbol 'export'->'ST1'
+IR_next_name: returning [CS2]
+    semantic got stmt_list, "<empty>", imperative pass
+  semantic got decl_stmt, imperative pass
+   semantic got func_def, "print", imperative pass
+found symbol 'print'->'ST1'
+IR_next_name: returning [CS3]
+    semantic got stmt_list, "<empty>", imperative pass
+  semantic got decl_stmt, imperative pass
+   semantic got func_def, "main", imperative pass
+found symbol 'main'->'ST1'
+IR_next_name: returning [CS4]
+    semantic got stmt_list, imperative pass
+     semantic got stmt, imperative pass
+      semantic got decl_stmt, imperative pass
+       semantic got var_decl, "C", imperative pass
+     semantic got stmt, imperative pass
+      semantic got imp_stmt, imperative pass
+       semantic got if_block, imperative pass
+        semantic got if_then, imperative pass
+         semantic got expr_=, imperative pass
+          semantic got expr_id, "argc", imperative pass
+          semantic got expr_const, "0", imperative pass
+IR_next_name: returning [reg1]
+IR_next_name: returning [lbl1]
+IR_next_name: returning [ST8]
+IR_next_name: returning [CS5]
+         semantic got stmt_list, declarative pass
+          semantic got stmt, declarative pass
+           semantic got imp_stmt, declarative pass
+          semantic got stmt, declarative pass
+           semantic got imp_stmt, declarative pass
+         semantic got stmt_list, imperative pass
+          semantic got stmt, imperative pass
+           semantic got imp_stmt, imperative pass
+            semantic got expr_call, imperative pass
+             semantic got expr_id, "print", imperative pass
+          semantic got stmt, imperative pass
+           semantic got imp_stmt, imperative pass
+            semantic got expr_const, "1", imperative pass
+IR_next_name: returning [reg2]
+        semantic got stmt_list, imperative pass
+         semantic got stmt, imperative pass
+          semantic got decl_stmt, imperative pass
+           semantic got var_decl_assign, "A", imperative pass
+         semantic got stmt, imperative pass
+          semantic got imp_stmt, imperative pass
+           semantic got expr_=, imperative pass
+            semantic got expr_id, "A", imperative pass
+            semantic got expr_*, imperative pass
+             semantic got expr_id, "A", imperative pass
+             semantic got expr_id, "argv", imperative pass
+IR_next_name: returning [reg3]
+         semantic got stmt, imperative pass
+          semantic got imp_stmt, imperative pass
+           semantic got expr_call, imperative pass
+            semantic got expr_id, "export", imperative pass
+         semantic got stmt, imperative pass
+          semantic got imp_stmt, imperative pass
+           semantic got while_loop, imperative pass
+            semantic got expr_id, "A", imperative pass
+IR_next_name: returning [lbl2]
+IR_next_name: returning [lbl3]
+IR_next_name: returning [ST9]
+IR_next_name: returning [CS6]
+            semantic got stmt_list, imperative pass
+             semantic got stmt, imperative pass
+              semantic got imp_stmt, imperative pass
+               semantic got expr_call, imperative pass
+                semantic got expr_id, "print", imperative pass
+             semantic got stmt, imperative pass
+              semantic got imp_stmt, imperative pass
+               semantic got expr_=, imperative pass
+                semantic got expr_id, "A", imperative pass
+                semantic got expr_/, imperative pass
+                 semantic got expr_id, "A", imperative pass
+                 semantic got expr_const, "1", imperative pass
+IR_next_name: returning [reg4]
+IR_next_name: returning [reg5]
+             semantic got stmt, imperative pass
+              semantic got imp_stmt, imperative pass
+               semantic got if_block, imperative pass
+                semantic got if_then, imperative pass
+                 semantic got expr_=, imperative pass
+                  semantic got expr_id, "A", imperative pass
+                  semantic got expr_const, "1", imperative pass
+IR_next_name: returning [reg6]
+IR_next_name: returning [lbl4]
+IR_next_name: returning [ST10]
+IR_next_name: returning [CS7]
+                 semantic got stmt_list, declarative pass
+                  semantic got stmt, declarative pass
+                   semantic got imp_stmt, declarative pass
+                 semantic got stmt_list, imperative pass
+                  semantic got stmt, imperative pass
+                   semantic got imp_stmt, imperative pass
+                    semantic got expr_const, "1", imperative pass
+IR_next_name: returning [reg7]
+         semantic got stmt, imperative pass
+          semantic got imp_stmt, imperative pass
+           semantic got expr_const, "0", imperative pass
+IR_next_name: returning [reg8]
+     semantic got stmt, imperative pass
+      semantic got decl_stmt, imperative pass
+       semantic got var_decl, "boop", imperative pass
+  semantic got decl_stmt, imperative pass
+   semantic got class_def, "horse", imperative pass
+found symbol 'horse'->'ST1'
+    semantic got decl_stmt_list, imperative pass
+     semantic got decl_stmt, imperative pass
+      semantic got var_decl_assign, "fluff", imperative pass
+     semantic got decl_stmt, imperative pass
+      semantic got func_def, "boop", imperative pass
+found symbol 'boop'->'ST6'
+IR_next_name: returning [CS8]
+       semantic got stmt_list, imperative pass
+        semantic got stmt, imperative pass
+         semantic got imp_stmt, imperative pass
+          semantic got expr_=, imperative pass
+           semantic got expr_id, "fluff", imperative pass
+           semantic got expr_+, imperative pass
+            semantic got expr_id, "fluff", imperative pass
+            semantic got expr_const, "1", imperative pass
+IR_next_name: returning [reg9]
+IR_next_name: returning [reg10]
 semantic: done
-Symbol table:
+
+PRINTING SEMANTIC
+printing symbol tables (10):
+Symbol table 'ST1':
+symbol [import]: function
+ type = int
+ scope = ST2
+ code = CS1
+symbol [export]: function
+ type = int
+ scope = ST3
+ code = CS2
+symbol [print]: function
+ type = int
+ scope = ST4
+ code = CS3
+symbol [main]: function
+ type = int
+ scope = ST5
+ code = CS4
+symbol [horse]: class
+ scope = ST6
 End Symbol table
+Symbol table 'ST2'->'ST1':
+symbol [arg]: parameter
+ type = int
+ pos = 0
+End Symbol table
+Symbol table 'ST3'->'ST1':
+symbol [arg]: parameter
+ type = int
+ pos = 0
+End Symbol table
+Symbol table 'ST4'->'ST1':
+symbol [str]: parameter
+ type = string
+ pos = 0
+End Symbol table
+Symbol table 'ST5'->'ST1':
+symbol [argc]: parameter
+ type = int
+ pos = 0
+symbol [argv]: parameter
+ type = int
+ pos = 1
+End Symbol table
+Symbol table 'ST6'->'ST1':
+symbol [fluff]: variable
+ type = float
+symbol [boop]: function
+ type = int
+ scope = ST7
+ code = CS8
+End Symbol table
+Symbol table 'ST7'->'ST6':
+End Symbol table
+Symbol table 'ST8'->'ST5':
+End Symbol table
+Symbol table 'ST9'->'ST5':
+End Symbol table
+Symbol table 'ST10'->'ST9':
+End Symbol table
+printing code segments (8):
+code segment 'CS1'->'ST2'
+end code segment
+code segment 'CS2'->'ST3'
+end code segment
+code segment 'CS3'->'ST4'
+end code segment
+code segment 'CS4'->'ST5'
+MOV reg1 0
+MOV argc reg1
+IFNOT argc lbl1
+INSERT CS5
+LABEL lbl1
+MULTIPLY reg3 A argv
+MOV A reg3
+LABEL lbl2
+IFNOT A lbl3
+INSERT CS6
+GOTO lbl2
+LABEL lbl3
+MOV reg8 0
+RETURN reg8
+end code segment
+code segment 'CS5'->'ST8'
+MOV reg2 1
+RETURN reg2
+end code segment
+code segment 'CS6'->'ST9'
+MOV reg4 1
+DIVIDE reg5 A reg4
+MOV A reg5
+MOV reg6 1
+MOV A reg6
+IFNOT A lbl4
+INSERT CS7
+LABEL lbl4
+end code segment
+code segment 'CS7'->'ST10'
+MOV reg7 1
+RETURN reg7
+end code segment
+code segment 'CS8'->'ST7'
+MOV reg9 1
+ADD reg10 fluff reg9
+MOV fluff reg10
+end code segment
 
 GOOD BYE
-[Inferior 1 (process 4212) exited normally]
+[Inferior 1 (process 2180) exited normally]
 (gdb) (gdb) quit

@@ -86,17 +86,21 @@ void push_symbol(struct symbol *S);
 
 struct symbol_table{
 	//vector symbols;
+	const char *name;
 	vector2_ptr_symbol symbols;
 	struct symbol_table *parent;
 };
 typedef struct symbol_table* ptr_symbol_table;
 definition_vector_of(ptr_symbol_table);
-struct symbol_table *new_symbol_table();
-//makes a new symbol table, pushes it as current;
+void new_symbol_table();
+void push_symbol_table();
+void pop_symbol_table();
+/* //makes a new symbol table, pushes it as current;
 struct symbol_table *new_symbol_table_make_current();
+struct symbol_table *new_symbol_table_make_current_standalone();
 void push_symbol_table(struct symbol_table *ST);
 //return to old symbol table;
-void pop_symbol_table();
+void pop_symbol_table(); */
 void print_symbol_table(struct symbol_table *T);
 
 
@@ -110,6 +114,7 @@ struct type_name *semantic_get_type(const char *str);
 typedef const char* ptr_char;
 definition_vector_of(ptr_char);
 struct code_segment{
+	const char *name;
 	struct symbol_table *scope;
 	//vector commands; //vector<char*>
 	vector2_ptr_char commands;
@@ -117,15 +122,19 @@ struct code_segment{
 typedef struct code_segment* ptr_code_segment;
 definition_vector_of(ptr_code_segment);
 struct code_segment *currentCodeSegment;
-struct code_segment *new_code_segment();
-struct code_segment *new_code_segment_make_current();
-void push_code_segment(struct code_segment *CS);
+void new_code_segment();
+void push_code_segment();
 void pop_code_segment();
+/* struct code_segment *new_code_segment_make_current();
+struct code_segment *new_code_segment_make_current_standalone();
+void push_code_segment(struct code_segment *CS);
+void pop_code_segment(); */
 void emit_code(const char *fmt, ...);
 char *IR_next_name(const char *prefix);
 void push_expr(const char *expr);
 const char *pop_expr();
 void semantic_analyze(struct ast_node *node);
+void print_semantic();
 // scope1 
 // 
 // 

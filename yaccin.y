@@ -108,11 +108,11 @@ char *posToString(YYLTYPE pos);
 program :	decl_stmt_list	{finalNode = node((struct ast_token){"program",0,0},1,$1); }
 		;
 
-stmt	:	imp_stmt		{$$ = (int)node((struct ast_token){"stmt",0,0},1,$1);}
-		|	decl_stmt		{$$ = (int)node((struct ast_token){"stmt",1,0},1,$1);}
+stmt	:	imp_stmt		{$$ = (int)node((struct ast_token){"stmt",0,0},@1,@1,1,$1);}
+		|	decl_stmt		{$$ = (int)node((struct ast_token){"stmt",1,0},@1,@1,1,$1);}
 		;
 		
-stmt_list	: stmt_list_ne		{$$ = (int)node((struct ast_token){"stmt_list",0,0},1,$1); ast_unroll_lists($$);}
+stmt_list	: stmt_list_ne		{$$ = (int)node((struct ast_token){"stmt_list",0,0},@1,@1,1,$1); ast_unroll_lists($$);}
 			|					{$$ = (int)node((struct ast_token){"stmt_list",1,"<empty>"},0);}
 			;
 		
@@ -263,6 +263,8 @@ int main(int argc, char **argv){
 	printf("\nPRINTING DONE\n");
 	semantic_init();
 	semantic_analyze(ast_get_node(finalNode));
+	printf("\nPRINTING SEMANTIC\n");
+	print_semantic();
 	printf("\nGOOD BYE\n");
 	return 0;
 }

@@ -87,7 +87,10 @@ typedef int YYSTYPE;
 typedef struct YYLTYPE
 {
 
-  char yydummy;
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
 
 } YYLTYPE;
 # define YYLTYPE_IS_DECLARED 1
@@ -104,10 +107,11 @@ char *posToString(YYLTYPE pos);
 
 
 /* Line 2638 of glr.c  */
-#line 108 "yaccin.tab.h"
+#line 111 "yaccin.tab.h"
 
 
 extern YYSTYPE yylval;
 
+extern YYLTYPE yylloc;
 
 
