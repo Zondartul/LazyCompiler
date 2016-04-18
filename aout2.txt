@@ -38,6 +38,10 @@ program
  |  | \var_decl "C"
  |  |  \typename "char"
  |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl "A"
+ |  |  \typename "int"
+ |  +stmt
  |  |\imp_stmt
  |  | \if_block
  |  |  +if_then
@@ -51,6 +55,11 @@ program
  |  |  | |  +expr_id "print"
  |  |  | |  \expr_list
  |  |  | |   \expr_const ""usage: a.exe arg1 arg2""
+ |  |  | +stmt
+ |  |  | |\imp_stmt
+ |  |  | | \expr_=
+ |  |  | |  +expr_id "A"
+ |  |  | |  \expr_const "5"
  |  |  | \stmt
  |  |  |  \imp_stmt
  |  |  |   \expr_const "1"
@@ -86,7 +95,8 @@ program
  |  |   |   | \expr_call
  |  |   |   |  +expr_id "print"
  |  |   |   |  \expr_list
- |  |   |   |   \expr_id "A"
+ |  |   |   |   +expr_id "A"
+ |  |   |   |   \expr_id "argc"
  |  |   |   +stmt
  |  |   |   |\imp_stmt
  |  |   |   | \expr_=

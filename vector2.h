@@ -21,6 +21,8 @@ struct vector2_##T{	\
 	void	(*constructor)(struct vector2_##T *this);	\
 	/* destroys the vector by freeing the data buffer. */\
 	void	(*destructor)(struct vector2_##T *this);	\
+	/* makes the vector empty */\
+	void	(*clear)(struct vector2_##T *this);	\
 	/* private. do not use. */\
 	void	(*internal_set)(struct vector2_##T *this, T* element, int pos);	\
 	/* private. do not use. */\
@@ -53,6 +55,7 @@ struct vector2_##T vector2_##T##_here();	\
 	/* Actual implementations of the above methods. Do not worry about the rest of these. */\
 void vector2_##T##_constructor(struct vector2_##T *this);	\
 void vector2_##T##_destructor(struct vector2_##T *this);	\
+void vector2_##T##_clear(struct vector2_##T *this);	\
 void vector2_##T##_internal_set(struct vector2_##T *this, T* element, int pos);	\
 T* vector2_##T##_internal_get(struct vector2_##T *this, int pos);	\
 void vector2_##T##_internal_resize(struct vector2_##T *this, int newsize);	\
@@ -86,6 +89,7 @@ void vector2_##T##_constructor(struct vector2_##T *this){	\
 	this->data = 0;	\
 	this->constructor = &vector2_##T##_constructor;	\
 	this->destructor = &vector2_##T##_destructor;	\
+	this->clear = &vector2_##T##_clear;	\
 	this->internal_set = &vector2_##T##_internal_set;	\
 	this->internal_get = &vector2_##T##_internal_get;	\
 	this->internal_resize = &vector2_##T##_internal_resize;	\
@@ -101,6 +105,11 @@ void vector2_##T##_constructor(struct vector2_##T *this){	\
 	\
 void vector2_##T##_destructor(struct vector2_##T *this){	\
 	free(this->data);	\
+}	\
+	\
+void vector2_##T##_clear(struct vector2_##T *this){	\
+	this->size = 0;	\
+	vector2_##T##_internal_resize(this,1);	\
 }	\
 	\
 void vector2_##T##_internal_set(struct vector2_##T *this, T* element, int pos){	\

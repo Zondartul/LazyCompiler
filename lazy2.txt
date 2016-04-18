@@ -6,15 +6,17 @@ int print(string str) end
 
 int main(int argc, int argv)
 	char C;
+	int A;
 	if(argc = 0) then
 		print("usage: a.exe arg1 arg2");
+		A = 5;
 		return 1;
 	else
 		float A = import(argc);
 		A = A*argv;
 		export(A);
 		while(A)
-			print(A);
+			print(A, argc);
 			A = A/1;
 			if(A = 1) then return 1; end
 		end
