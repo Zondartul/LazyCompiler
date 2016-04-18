@@ -133,6 +133,11 @@ struct code_segment *currentCodeSegment;
 void new_code_segment();
 void push_code_segment();
 void pop_code_segment();
+void analyze_scope(struct ast_node *N, 
+					struct code_segment **CSin,
+					struct code_segment **CSout,
+					struct symbol_table **STin,
+					struct symbol_table **STout);
 /* struct code_segment *new_code_segment_make_current();
 struct code_segment *new_code_segment_make_current_standalone();
 void push_code_segment(struct code_segment *CS);

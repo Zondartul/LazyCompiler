@@ -38,13 +38,14 @@ void semantic_analyze(struct ast_node *node){
 		get_source_text(node->token.pos.start,node->token.pos.end));
 	if(!strcmp(node->token.type, "program")){
 		//printf("got program\n");
-		new_symbol_table();
-		push_symbol_table();
-		semantic_decl = 1;
-		semantic_analyze(ast_get_child(node, 0));
-		semantic_decl = 0;
-		semantic_analyze(ast_get_child(node, 0));
-		pop_symbol_table();
+		analyze_scope(ast_get_child(node,0),0,0,0,0);
+		// new_symbol_table();
+		// push_symbol_table();
+		// semantic_decl = 1;
+		// semantic_analyze(ast_get_child(node, 0));
+		// semantic_decl = 0;
+		// semantic_analyze(ast_get_child(node, 0));
+		// pop_symbol_table();
 		semantic_finalize();
 		printf("semantic: done\n");
 		goto semantic_exit;
@@ -113,24 +114,17 @@ void semantic_analyze(struct ast_node *node){
 		}else{
 			struct symbol *S = lookup_symbol(name);
 			if(S->type != SYMBOL_FUNCTION){error("semantic: '%s' is not a function\n",S->username);}
-			push_symbol_table();
-			currentSymbolTable = S->symfunction.scope;
-			push_code_segment();
-			new_code_segment();
 			YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
 			YYLTYPE pos2 = ast_get_child(node,1)->token.pos;
-			
 			emit_code("/* %s %s(%s) */",get_source_text(pos1.start,pos1.end), name, get_source_text(pos2.start,pos2.end));
-			emit_code("LABEL %s",name);
-			semantic_decl = 1;
-			semantic_analyze(ast_get_child(node,2));
-			semantic_decl = 0;
-			semantic_analyze(ast_get_child(node,2));
+			emit_code("LABEL %s",name);			
+			analyze_scope(ast_get_child(node,2),0,
+							&S->symfunction.code,
+							&S->symfunction.scope,
+							0);
+			emit_code_segment(S->symfunction.code);
 			emit_code("RETURN");
 			emit_code("/* end */");
-			S->symfunction.code = currentCodeSegment;
-			pop_code_segment();
-			pop_symbol_table();
 		}
 		goto semantic_exit;
 	}
@@ -207,15 +201,12 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "stmt")){
-		//printf("got stmt\n");
 		semantic_analyze(ast_get_child(node,0));
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "imp_stmt")){
-		if(semantic_decl){
-		goto semantic_exit;}
+		if(semantic_decl){goto semantic_exit;}
 		//imperative pass: 
-		//printf("got imp_stmt\n");
 		switch(node->token.production){
 			case(0)://if_block
 				semantic_analyze(ast_get_child(node,0));
@@ -242,13 +233,15 @@ void semantic_analyze(struct ast_node *node){
 				semantic_analyze(ast_get_child(node,0));
 				emit_code("RETURN %s",pop_expr());
 				break;
+			default:
+				error("semantic error: unknown switch case");
+				break;
 		}
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "if_block")){
-		//if(semantic_decl){return;}
+		//unreachable during semantic_decl
 		//imperative pass: 
-		//printf("got if_block\n");
 		const char *CSname;
 		switch(node->token.production){
 			case(0)://if_then END
@@ -259,138 +252,85 @@ void semantic_analyze(struct ast_node *node){
 				semantic_analyze(ast_get_child(node,0));
 				
 				emit_code("/* else */");
-				push_symbol_table();
-				new_symbol_table();
-				push_code_segment();
-				new_code_segment();
-				CSname = currentCodeSegment->name;
-				semantic_decl = 1;
-				semantic_analyze(ast_get_child(node,1));
-				semantic_decl = 0;
-				semantic_analyze(ast_get_child(node,1));
-				struct code_segment *CSinsert = currentCodeSegment;
-				pop_code_segment();
-				pop_symbol_table();				
-				if(semantic_flatten){
-					emit_code_segment(CSinsert);
-					m(CS_list,pop_back);
-				}else{
-					emit_code("INSERT %s", CSname);
-				}
-				emit_code("/* end */");
+				struct code_segment *CSinsert;
+				analyze_scope(ast_get_child(node,1),0,&CSinsert,0,0);
+				emit_code_segment(CSinsert);
+				emit_code("/* end if */");
+				break;
+			default:
+				error("semantic error: unknown switch case");
 				break;
 		}
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "if_then")){
-		if(semantic_decl){
-		goto semantic_exit;}
+		if(semantic_decl){goto semantic_exit;}
 		//imperative pass: 
 		//printf("got if_then\n");
 		const char *CSname;
 		YYLTYPE pos;
 		switch(node->token.production){
 			case(0): //IF ( expr ) THEN stmt_list
-				//push new symbol table
+				//(expr)
 				pos = ast_get_child(node,0)->token.pos;
 				emit_code("/* if(%s) */",get_source_text(pos.start,pos.end));
-				push_symbol_table();
-				new_symbol_table();
-				push_code_segment();
-				new_code_segment();
-				CSname = currentCodeSegment->name;
-				semantic_analyze(ast_get_child(node,0));
-				struct code_segment *CSinsert = currentCodeSegment;
-				pop_code_segment();
-				pop_symbol_table();				
-				if(semantic_flatten){
-					emit_code_segment(CSinsert);
-					m(CS_list,pop_back);
-				}else{
-					emit_code("INSERT %s", CSname);
-				}
+				struct code_segment *CSinsert;
+				analyze_scope(ast_get_child(node,0),0,&CSinsert,0,0);		
+				emit_code_segment(CSinsert);
+				
+				//if then
 				const char *nextLabel = IR_next_name("lbl");
 				emit_code("IFNOT %s %s", pop_expr(), nextLabel); 
 				emit_code("/* then */");
-				push_symbol_table();
-				new_symbol_table();
-				push_code_segment();
-				new_code_segment();
-				CSname = currentCodeSegment->name;
-				semantic_decl = 1;
-				semantic_analyze(ast_get_child(node,1));
-				semantic_decl = 0;
-				semantic_analyze(ast_get_child(node,1));
-				CSinsert = currentCodeSegment;
-				pop_code_segment();
-				pop_symbol_table();				
-				if(semantic_flatten){
-					emit_code_segment(CSinsert);
-					m(CS_list,pop_back);
-				}else{
-					emit_code("INSERT %s", CSname);
-				}
+				
+				//stmt_list
+				analyze_scope(ast_get_child(node,1),0,&CSinsert,0,0);
+				emit_code_segment(CSinsert);
+				
+				//end
 				emit_code("LABEL %s", nextLabel);
-				//pop symbol table
 				break;
-			case(1): //if_then ELSEIF ( expr ) THEN stmt_list
+			case(2): //if_then ELSEIF ( expr ) THEN stmt_list
+				//if_then
 				semantic_analyze(ast_get_child(node,0));
+				//else if
+				YYLTYPE pos = ast_get_child(node,1)->token.pos;
+				emit_code("/* else if(%s) */", get_source_text(pos.start,pos.end));
+				//( expr )
+				analyze_scope(ast_get_child(node,1),0,&CSinsert,0,0);
+				emit_code_segment(CSinsert);
+				//then
 				const char *label1 = IR_next_name("lbl");
-				const char *label2 = IR_next_name("lbl");
 				emit_code("IFNOT %s %s", pop_expr(), label1);
-				semantic_analyze(ast_get_child(node,1));
-				emit_code("GOTO %s", label2);
+				emit_code("/* then */");
+				//stmt_list
+				analyze_scope(ast_get_child(node,2),0,&CSinsert,0,0);
+				emit_code_segment(CSinsert);
 				emit_code("LABEL %s", label1);
-				push_symbol_table();
-				new_symbol_table();
-				push_code_segment();
-				new_code_segment();
-				CSname = currentCodeSegment->name;
-				semantic_analyze(ast_get_child(node,2));
-				CSinsert = currentCodeSegment;
-				pop_code_segment();
-				pop_symbol_table();				
-				if(semantic_flatten){
-					emit_code_segment(CSinsert);
-					m(CS_list,pop_back);
-				}else{
-					emit_code("INSERT %s", CSname);
-				}
-				emit_code("LABEL %s", label2);
+				break;
+			default:
+				error("semantic error: unknown switch case");
 				break;
 		};
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "while_loop")){
-		if(semantic_decl){
-		goto semantic_exit;}
-		//imperative pass: 
-		//printf("got while_loop\n");
-		semantic_analyze(ast_get_child(node,0));
+		//imperative pass
 		YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
 		emit_code("/* while(%s) */",get_source_text(pos1.start,pos1.end));
+		struct code_segment *CSinsert;
+		analyze_scope(ast_get_child(node,0),0,&CSinsert,0,0);
+		emit_code_segment(CSinsert);
+		emit_code("/* do */");
 		const char *label1 = IR_next_name("lbl");
 		const char *label2 = IR_next_name("lbl");
 		emit_code("LABEL %s",label1);
 		emit_code("IFNOT %s %s",pop_expr(), label2);
-		push_symbol_table();
-		new_symbol_table();
-		push_code_segment();
-		new_code_segment();
-		semantic_analyze(ast_get_child(node,1));
-		const char *CSname = currentCodeSegment->name;
-		struct code_segment *CSinsert = currentCodeSegment;
-		pop_code_segment();
-		pop_symbol_table();				
-		if(semantic_flatten){
-			emit_code_segment(CSinsert);
-			m(CS_list,pop_back);
-		}else{
-			emit_code("INSERT %s", CSname);
-		}
+		analyze_scope(ast_get_child(node,1),0,&CSinsert,0,0);
+		emit_code_segment(CSinsert);
 		emit_code("GOTO %s",label1);
 		emit_code("LABEL %s",label2);
-		emit_code("/* end */");
+		emit_code("/* end while*/");
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "class_def")){
@@ -424,8 +364,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_list")){
-		if(semantic_decl){
-		goto semantic_exit;}
+		if(semantic_decl){goto semantic_exit;}
 		//imperative pass: 
 		//printf("got expr_list\n");
 		for(i = 0; i < node->children.size; i++){
@@ -461,7 +400,7 @@ void semantic_analyze(struct ast_node *node){
 	}
 	if(!strcmp(node->token.type, "expr_const")){
 		//printf("got expr_const\n");
-		char *exprResult = IR_next_name("$reg");
+		//char *exprResult = IR_next_name("$reg");
 		//sanitize the value, maybe put it somewhere,
 		//get pointers, whatever
 		struct type_name *T = malloc(sizeof(struct type_name));
@@ -488,9 +427,8 @@ void semantic_analyze(struct ast_node *node){
 				T->name = "string";
 			break;
 			default:
-				pos = node->token.pos;
-				err("line %d: [%s]\n",pos.first_line,get_source_text(pos.start,pos.end));
-				error("semantic: broken constant\n");
+				error("semantic error: unknown switch case");
+				break;
 		};
 		//emit_code("MOV %s %s",exprResult, node->token.value);
 		//push_expr(exprResult);
@@ -538,6 +476,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_.")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_.\n");
 		semantic_analyze(ast_get_child(node,0));
 		//what if $0 isn't an ID? need to figure out
@@ -558,6 +497,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_^")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_^\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -570,6 +510,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_/")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_/\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -582,6 +523,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_*")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_*\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -594,6 +536,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_-")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_-\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -606,6 +549,7 @@ void semantic_analyze(struct ast_node *node){
 		goto semantic_exit;
 	}
 	if(!strcmp(node->token.type, "expr_+")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_+\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -617,7 +561,60 @@ void semantic_analyze(struct ast_node *node){
 		//emit code: add
 		goto semantic_exit;
 	}
+	if(!strcmp(node->token.type, "expr_==")){
+		if(semantic_decl){goto semantic_exit;}
+		//printf("got expr_+\n");
+		semantic_analyze(ast_get_child(node,0));
+		semantic_analyze(ast_get_child(node,1));
+		const char *result2 = pop_expr();
+		const char *result1 = pop_expr();
+		const char *exprResult = IR_next_name("$reg");
+		emit_code("EQUAL %s %s %s",exprResult, result1, result2);
+		push_expr(exprResult);
+		//emit code: add
+		goto semantic_exit;
+	}
+	if(!strcmp(node->token.type, "expr_!=")){
+		if(semantic_decl){goto semantic_exit;}
+		//printf("got expr_+\n");
+		semantic_analyze(ast_get_child(node,0));
+		semantic_analyze(ast_get_child(node,1));
+		const char *result2 = pop_expr();
+		const char *result1 = pop_expr();
+		const char *exprResult = IR_next_name("$reg");
+		emit_code("NOTEQUAL %s %s %s",exprResult, result1, result2);
+		push_expr(exprResult);
+		//emit code: add
+		goto semantic_exit;
+	}
+	if(!strcmp(node->token.type, "expr_>")){
+		if(semantic_decl){goto semantic_exit;}
+		//printf("got expr_+\n");
+		semantic_analyze(ast_get_child(node,0));
+		semantic_analyze(ast_get_child(node,1));
+		const char *result2 = pop_expr();
+		const char *result1 = pop_expr();
+		const char *exprResult = IR_next_name("$reg");
+		emit_code("GREATER %s %s %s",exprResult, result1, result2);
+		push_expr(exprResult);
+		//emit code: add
+		goto semantic_exit;
+	}
+	if(!strcmp(node->token.type, "expr_<")){
+		if(semantic_decl){goto semantic_exit;}
+		//printf("got expr_+\n");
+		semantic_analyze(ast_get_child(node,0));
+		semantic_analyze(ast_get_child(node,1));
+		const char *result2 = pop_expr();
+		const char *result1 = pop_expr();
+		const char *exprResult = IR_next_name("$reg");
+		emit_code("LESS %s %s %s",exprResult, result1, result2);
+		push_expr(exprResult);
+		//emit code: add
+		goto semantic_exit;
+	}
 	if(!strcmp(node->token.type, "expr_=")){
+		if(semantic_decl){goto semantic_exit;}
 		//printf("got expr_=\n");
 		semantic_analyze(ast_get_child(node,0));
 		semantic_analyze(ast_get_child(node,1));
@@ -645,7 +642,7 @@ void semantic_finalize(){
 		error("semantic error: missing function main()\n");
 	}
 	if(semantic_flatten){
-		currentCodeSegment = M->symfunction.code;
+		currentCodeSegment = m(CS_list,get,0);
 		int i;
 		for(i = 0; i < CS_list.size; i++){
 			struct code_segment *CS = m(CS_list,get,i);
@@ -779,6 +776,30 @@ void push_code_segment(){
 void pop_code_segment(){
 	currentCodeSegment = m(CS_stack,pop_back);
 }
+void analyze_scope(struct ast_node *N, 
+					struct code_segment **CSin,
+					struct code_segment **CSout,
+					struct symbol_table **STin,
+					struct symbol_table **STout){
+	push_symbol_table();
+	if(STin){currentSymbolTable = *STin;}
+	else{
+		new_symbol_table();
+	}
+	if(STout){*STout = currentSymbolTable;}
+	push_code_segment();
+	if(CSin){currentCodeSegment = *CSin;}
+	else{
+		new_code_segment();
+	}
+	if(CSout){*CSout = currentCodeSegment;}
+	semantic_decl = 1;
+	semantic_analyze(N);
+	semantic_decl = 0;
+	semantic_analyze(N);
+	pop_code_segment();
+	pop_symbol_table();
+}
 /* struct code_segment *new_code_segment_make_current(){
 	struct code_segment *CS = new_code_segment();
 	push_code_segment(CS);
@@ -896,6 +917,9 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 				scope = S->symclass.scope->name;
 				//print_symbol_table_helper(S->symclass.scope,indent+1);
 			break;
+			default:
+				error("semantic error: unknown switch case");
+				break;
 		};
 		printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\n",symbol,name,ir_name,type,scope,code,pos);
 	}
@@ -937,6 +961,9 @@ void print_symbol_table_helper(struct symbol_table *T, int indent){
 				padprint(indent); printf(" scope = %s\n", S->symclass.scope->name);
 				//print_symbol_table_helper(S->symclass.scope,indent+1);
 			break;
+			default:
+				error("semantic error: unknown switch case");
+				break;
 		};
 	}
 	padprint(indent); printf("End Symbol table\n");
@@ -1014,10 +1041,15 @@ void emit_code(const char *fmt, ...){
 }
 void emit_code_segment(struct code_segment *CS){
 	if(!CS){error("emit_code_segment: no CS\n");}
-	printf("emitting code segment %s\n",CS->name);
-	int i;
-	for(i = 0; i < CS->commands.size; i++){
-		emit_code(m(CS->commands,get,i));
+	if(semantic_flatten){
+		printf("emitting code segment %s\n",CS->name);
+		int i;
+		for(i = 0; i < CS->commands.size; i++){
+			emit_code(m(CS->commands,get,i));
+		}
+		m(CS_list,pop_back);
+	}else{
+		emit_code("INSERT %s", CS->name);
 	}
 }
 void push_expr(const char *expr){

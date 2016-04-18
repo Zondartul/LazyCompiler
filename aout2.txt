@@ -45,7 +45,7 @@ program
  |  |\imp_stmt
  |  | \if_block
  |  |  +if_then
- |  |  |+expr_=
+ |  |  |+expr_==
  |  |  ||+expr_id "argc"
  |  |  ||\expr_const "0"
  |  |  |\stmt_list
@@ -104,17 +104,36 @@ program
  |  |   |   |  \expr_/
  |  |   |   |   +expr_id "A"
  |  |   |   |   \expr_const "1"
+ |  |   |   +stmt
+ |  |   |   |\imp_stmt
+ |  |   |   | \if_block
+ |  |   |   |  \if_then
+ |  |   |   |   +expr_==
+ |  |   |   |   |+expr_id "A"
+ |  |   |   |   |\expr_const "1"
+ |  |   |   |   \stmt_list
+ |  |   |   |    \stmt
+ |  |   |   |     \imp_stmt
+ |  |   |   |      \expr_const "1"
  |  |   |   \stmt
  |  |   |    \imp_stmt
  |  |   |     \if_block
  |  |   |      \if_then
- |  |   |       +expr_=
+ |  |   |       +if_then
+ |  |   |       |+expr_<
+ |  |   |       ||+expr_id "A"
+ |  |   |       ||\expr_const "3"
+ |  |   |       |\stmt_list
+ |  |   |       | \stmt
+ |  |   |       |  \imp_stmt
+ |  |   |       |   \expr_const "2"
+ |  |   |       +expr_>
  |  |   |       |+expr_id "A"
- |  |   |       |\expr_const "1"
+ |  |   |       |\expr_const "2"
  |  |   |       \stmt_list
  |  |   |        \stmt
  |  |   |         \imp_stmt
- |  |   |          \expr_const "1"
+ |  |   |          \expr_const "3"
  |  |   \stmt
  |  |    \imp_stmt
  |  |     \expr_const "0"

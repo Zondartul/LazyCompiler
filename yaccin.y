@@ -181,7 +181,7 @@ if_block	:	if_then END										{$$ = (int)node((struct ast_token){"if_block",0,
 			;
 
 if_then		:	IF '(' expr ')' THEN stmt_list				{$$ = (int)node((struct ast_token){"if_then",0,0,@$},2,$3,$6);}
-			|	if_then ELSEIF '(' expr ')' THEN stmt_list	{$$ = (int)node((struct ast_token){"if_then",2,0,@$},2,$1,$3);}
+			|	if_then ELSEIF '(' expr ')' THEN stmt_list	{$$ = (int)node((struct ast_token){"if_then",2,0,@$},3,$1,$4,$7);}
 			;
 			
 		/* 	if_block	:	if_start ELSE stmt_list END	{$$ = (int)node((struct ast_token){"if_block",0,0},2,$1,$3);}
@@ -218,6 +218,10 @@ expr	:	ID						{$$ = (int)node((struct ast_token){"expr_id",0,(char*)$1,@$},0);}
 		|	expr '*' expr			{$$ = (int)node((struct ast_token){"expr_*",0,0,@$},2,$1,$3);}
 		|	expr '-' expr			{$$ = (int)node((struct ast_token){"expr_-",0,0,@$},2,$1,$3);}
 		|	expr '+' expr			{$$ = (int)node((struct ast_token){"expr_+",0,0,@$},2,$1,$3);}
+		|	expr '=' '=' expr			{$$ = (int)node((struct ast_token){"expr_==",0,0,@$},2,$1,$4);}
+		|	expr '!' '=' expr			{$$ = (int)node((struct ast_token){"expr_!=",0,0,@$},2,$1,$4);}
+		|	expr '>' expr			{$$ = (int)node((struct ast_token){"expr_>",0,0,@$},2,$1,$3);}
+		|	expr '<' expr			{$$ = (int)node((struct ast_token){"expr_<",0,0,@$},2,$1,$3);}
 		|	expr '=' expr			{$$ = (int)node((struct ast_token){"expr_=",0,0,@$},2,$1,$3);}
 		;
 /*			

@@ -7,7 +7,7 @@ int print(string str) end
 int main(int argc, int argv)
 	char C;
 	int A;
-	if(argc = 0) then
+	if(argc == 0) then
 		print("usage: a.exe arg1 arg2");
 		A = 5;
 		return 1;
@@ -18,7 +18,12 @@ int main(int argc, int argv)
 		while(A)
 			print(A, argc);
 			A = A/1;
-			if(A = 1) then return 1; end
+			if(A == 1) then return 1; end
+			if(A < 3) then 
+				return 2; 
+			elseif(A > 2) then
+				return 3;
+			end
 		end
 		return 0;
 	end
