@@ -66,13 +66,15 @@ int main(int argc, char **argv){
 	lexnumtabs = 0;
 	fprintf(stderr,"\t\tdone\n");
 	
-	const char *myTable = "beep\tT\tval\tpos\n"
-						  "oh\thi\twhat's\tup?\n"
-						  "this\tline\tshort\n"
-						  "this\tis\tthe\tlast\tline";
+	//this was a table test. it passes after fixes of 18.03.2022
+	const char *myTable = "beep\tT\tval\tpos\n"			//4
+						  "oh\thi\twhat's\tup?\n"		//4
+						  "this\tline\tshort\n"			//3
+						  "and\t\tone\tmissing\n"		//3
+						  "this\tis\tthe\tlast\tline";	//5
 	const char *formtable = formatAsTable(myTable);
-	printf("table:----------------\n%s\n-------------------\n",formtable);
-		
+	//printf("table:----------------\n%s\n-------------------\n",formtable);
+	printf("table:\n%s\n", formtable);
 	
 //	fprintf(stderr,"preprocessing...");
 //	freopen(/*"aout_preproc.txt"*/path_out_preproc,"w",stdout);

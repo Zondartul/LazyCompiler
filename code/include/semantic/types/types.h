@@ -4,5 +4,6 @@
 
 typedef const char* ptr_char;
 definition_vector_of(ptr_char);
+definition_vector_of(char);
 
 #endif

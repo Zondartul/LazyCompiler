@@ -281,6 +281,21 @@ int isnumber(const char *str){
 	return 1;
 }
 
+
+void explode_helper_store(vector2_ptr_char* V, char** ppbuff, char* buff) {
+	const char* cbuff = stralloc(buff);
+	m((*V), push_back, cbuff);
+	*ppbuff = buff;
+	**ppbuff = 0;
+}
+
+
+void explode_helper_store_nonempty(vector2_ptr_char* V, char** ppbuff, char* buff) {
+	if (*ppbuff != buff) {
+		explode_helper_store(V, ppbuff, buff);
+	}
+}
+
 vector2_ptr_char explode(const char *str, char delim){
 	vector2_ptr_char V = vector2_ptr_char_here();
 	char buff[2000];
@@ -291,13 +306,16 @@ vector2_ptr_char explode(const char *str, char delim){
 			*pbuff++ = C;
 			*pbuff = 0;
 		}else{
-			const char *cbuff = stralloc(buff);
-			m(V,push_back,cbuff);
-			pbuff = buff;
-			*pbuff = 0;
+			//const char *cbuff = stralloc(buff);
+			//m(V,push_back,cbuff);
+			//pbuff = buff;
+			//*pbuff = 0;
+			explode_helper_store(&V, &pbuff, buff);
 		}
 		C = *str++;
 	}
+	explode_helper_store_nonempty(&V, &pbuff, buff);
+
 	return V;
 }
 
@@ -311,15 +329,17 @@ vector2_ptr_char explodeSkipEmpty(const char *str, char delim){
 			*pbuff++ = C;
 			*pbuff = 0;
 		}else{
-			if(strlen(buff)){
-				const char *cbuff = stralloc(buff);
-				m(V,push_back,cbuff);
-			}
-			pbuff = buff;
-			*pbuff = 0;
+			//if(strlen(buff)){
+			//	const char *cbuff = stralloc(buff);
+			//	m(V,push_back,cbuff);
+			//}
+			//pbuff = buff;
+			//*pbuff = 0;
+			explode_helper_store_nonempty(&V, &pbuff, buff);
 		}
 		C = *str++;
 	}
+	explode_helper_store_nonempty(&V, &pbuff, buff);
 	return V;
 }
 
@@ -331,6 +351,18 @@ vector2_ptr_char explodeSkipEmpty(const char *str, char delim){
 const char *formatAsTable(const char *str){
 	//vector to store each line from str
 	vector2_ptr_char V = explodeSkipEmpty(str,'\n');
+
+	//debug1 18.03.2022
+	//printf("--- debug 1 ---\n");
+	//printf("got %d lines:\n", V.size);
+	//for (int I = 0; I < V.size; I++) {
+	//	const char* str = m(V, get, I);
+	//	printf("  line %d: [%s]\n", I, str);
+	//}
+	//printf("--- end ---\n");
+	//end debug1
+
+
 	//vector to store each cell from str
 	vector2_ptr_char V2 = vector2_ptr_char_here();
 	
@@ -342,6 +374,16 @@ const char *formatAsTable(const char *str){
 		const char *line = m(V,get,I);
 		//split the line into values
 		vector2_ptr_char V3 = explode(line,'\t');
+		//debug2 18.03.2022
+		//printf("--- debug 2 ---\n");
+		//printf("line [%s] has %d words:\n", line, V3.size);
+		//for (int J = 0; J < V3.size; J++) {
+		//	const char* str = m(V3, get, J);
+		//	printf("word %d: [%s]\n", J, str);
+		//}
+		//printf("--- end ---\n");
+		//end
+
 		if(I == 0){
 			//for the first line, also initialize
 			//the columns of the table.
@@ -369,42 +411,78 @@ const char *formatAsTable(const char *str){
 			m(V2,push_back,cell);
 		}
 	}
+	//debug3 18.03.2022
+	//printf("--- debug 3 ---\n");
+	//printf("num cells = %d:\n", V2.size);
+	//for (int I = 0; I < V2.size; I++) {
+	//	const char* str = m(V2, get, I);
+	//	printf("cell %d: [%s]\n", I, str);
+	//}
+	//printf("--- end ---\n");
+	//end debug3
+
 	//2. calculate final size
-	int sepWidth = 1;
-	int totalWidth = sepWidth;
-	for(int I = 0; I < Vcolwidth.size; I++){
-		int w = m(Vcolwidth,get,I);
-		totalWidth += w + sepWidth;
-	}
+	/*
 	int sepHeight = 0;
 	int lineHeight = 1;
-	int numLines = V.size;
 	int totalHeight = sepHeight + (sepHeight+lineHeight)*numLines;
 	int numBytes = (totalWidth+1)*totalHeight; //+1 for newlines
 	
 	char *buff = (char*)malloc(numBytes);
 	char *pbuff = buff;
+	*/
+
+	int sepWidth = 1;
+	int totalWidth = 0;
+	totalWidth += sepWidth;
+	for (int I = 0; I < Vcolwidth.size; I++) {
+		int w = m(Vcolwidth, get, I);
+		totalWidth += w + sepWidth;
+	}
+
+	int numLines = V.size;
+	vector2_char Vout = vector2_char_here();
+#define v_write(x) m(Vout, push_back, x)
 	int cellnum = 0;
 	//3. 
 	//1. make a horizontal line
-	for(int I = 0; I < totalWidth; I++){*pbuff++ = '-';}
-	*pbuff++ = '\n';
+	for (int I = 0; I < totalWidth; I++) { v_write('-'); }//{*pbuff++ = '-';}
+	//*pbuff++ = '\n';
+	v_write('\n');
 	//2. make all the cell lines
+	//printf("num columns (Vcolwidth.size) = %d\n", Vcolwidth.size); //18.03.2022
 	for(int I = 0; I < numLines; I++){
-		*pbuff++ = '|';
-		for(int J = 0; J < Vcolwidth.size; I++){
+		//printf("making line %d\n", I);
+		//printf("cellnum is %d\n", cellnum);
+		v_write('|');//*pbuff++ = '|';
+		for(int J = 0; J < Vcolwidth.size; J++){
+			//printf("str: V2[%d]\n", cellnum);
 			const char *str = m(V2,get,cellnum++);
+			int len = strlen(str);
+			//printf("width: Vcw[%d]\n", J);
 			int width = m(Vcolwidth,get,J);
 			for(int K = 0; K < width; K++){
-				*pbuff++ = str[K];
+				//*pbuff++ = str[K];
+				if (K < len) {
+					v_write(str[K]);
+				}
+				else {
+					v_write(' ');
+				}
 			}
-			*pbuff++ = '|';
+			//*pbuff++ = '|';
+			v_write('|');
 		}
-		*pbuff++ = '\n';
+		//*pbuff++ = '\n';
+		v_write('\n');
 		//3. make after-cell horizontal line
-		for(int I = 0; I < totalWidth; I++){*pbuff++ = '-';}
-		*pbuff++ = '\n';
+		for (int I = 0; I < totalWidth; I++) { v_write('-'); }//{*pbuff++ = '-';}
+		//*pbuff++ = '\n';
+		v_write('\n');
 	}
+	v_write(0);
+	printf("lines done\n");
+	char* buff = Vout.data;
 	return buff;
 }
 
