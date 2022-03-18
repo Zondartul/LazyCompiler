@@ -14,7 +14,7 @@ char *stralloc(const char *str);
 char *substring(const char *text, int from, int to);
 typedef const char* cstr;
 const char* concat2(int num, ...);
-const char* itoa(int N);
+const char* my_itoa(int N);
 void countindent(const char *str);
 void printindent();
 int isnumber(const char *str);

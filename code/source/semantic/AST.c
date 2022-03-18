@@ -14,7 +14,7 @@ void ast_init(){
 //create a new node, given a token, and 'n' child nodes.
 //basically never use this, it sucks
 /*
-int node(struct ast_token token, int n, ...){
+int make_node(struct ast_token token, int n, ...){
 	va_list ap;
 	printf("node \"%s\": [%s] (%d/%d)\n",token.type,token.value,token.production,n);
 	struct ast_node *N = malloc(sizeof(ast_node));

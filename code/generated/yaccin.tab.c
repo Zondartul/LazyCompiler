@@ -234,9 +234,9 @@ char *get_source_text2(YYLTYPE pos);
 		//int node_expr = *(int*)vector_get_reference(&N1->children,1);
 		ast_node *node_expr = m(N1->children,pop_back);
 		//vector_pop_back(&N1->children);
-		//int node_ID = node((struct ast_token){"expr_id",0,N1->token.value,nullPos()},0);
+		//int node_ID = mak_node((struct ast_token){"expr_id",0,N1->token.value,nullPos()},0);
 		ast_node *node_ID = ast_node_new(ast_token_here("expr_id",0,N1->token.value,nullPos()),v2pan_here());
-		//int N3 = node((struct ast_token){"expr_=",0,0,nullPos()},2,node_ID,node_expr);
+		//int N3 = make_node((struct ast_token){"expr_=",0,0,nullPos()},2,node_ID,node_expr);
 		ast_node *N3 = ast_node_new(ast_token_here("expr_=",0,0,nullPos()),
 									vector2_ptr_ast_node_here_from_list(2, node_ID, node_expr));
 		//vector_set(&N1->children,1,&N3);

@@ -67,9 +67,9 @@ char *get_source_text2(YYLTYPE pos);
 		//int node_expr = *(int*)vector_get_reference(&N1->children,1);
 		ast_node *node_expr = m(N1->children,pop_back);
 		//vector_pop_back(&N1->children);
-		//int node_ID = node((struct ast_token){"expr_id",0,N1->token.value,nullPos()},0);
+		//int node_ID = make_node((struct ast_token){"expr_id",0,N1->token.value,nullPos()},0);
 		ast_node *node_ID = ast_node_new(ast_token_here("expr_id",0,N1->token.value,nullPos()),v2pan_here());
-		//int N3 = node((struct ast_token){"expr_=",0,0,nullPos()},2,node_ID,node_expr);
+		//int N3 = make_node((struct ast_token){"expr_=",0,0,nullPos()},2,node_ID,node_expr);
 		ast_node *N3 = ast_node_new(ast_token_here("expr_=",0,0,nullPos()),
 									vector2_ptr_ast_node_here_from_list(2, node_ID, node_expr));
 		//vector_set(&N1->children,1,&N3);
@@ -213,7 +213,7 @@ char *get_source_text2(YYLTYPE pos);
 //%precedence POSTINC POSTDEC
 %%
 
-program :	decl_stmt_list	//{finalNode = node((struct ast_token){"program",0,0,@$},1,$1); }
+program :	decl_stmt_list	//{finalNode = make_node((struct ast_token){"program",0,0,@$},1,$1); }
 							{	
 								YYLTYPE pos = @$;
 								ast_node *child1 = $1;
@@ -226,7 +226,7 @@ program :	decl_stmt_list	//{finalNode = node((struct ast_token){"program",0,0,@$
 							}		
 		;
 
-stmt	:	imp_stmt		//{$$ = (int)node((struct ast_token){"stmt",0,0,@$},1,$1);}
+stmt	:	imp_stmt		//{$$ = (int)make_node((struct ast_token){"stmt",0,0,@$},1,$1);}
 							{
 								ast_node **res = &($$);
 								*res = ast_node_new(
@@ -236,7 +236,7 @@ stmt	:	imp_stmt		//{$$ = (int)node((struct ast_token){"stmt",0,0,@$},1,$1);}
 								);
 								printParsed(*res);
 							}
-		|	decl_stmt		//{$$ = (int)node((struct ast_token){"stmt",1,0,@$},1,$1);}
+		|	decl_stmt		//{$$ = (int)make_node((struct ast_token){"stmt",1,0,@$},1,$1);}
 							{
 								$$ = ast_node_new(
 									ast_token_here("stmt",1,NULL,@$),
@@ -247,7 +247,7 @@ stmt	:	imp_stmt		//{$$ = (int)node((struct ast_token){"stmt",0,0,@$},1,$1);}
 							}
 		;
 		
-stmt_list	: stmt_list_ne		//{$$ = (int)node((struct ast_token){"stmt_list",0,0,@$},1,$1); ast_unroll_lists($$);}
+stmt_list	: stmt_list_ne		//{$$ = (int)make_node((struct ast_token){"stmt_list",0,0,@$},1,$1); ast_unroll_lists($$);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("stmt_list",0,NULL,@$),
@@ -257,7 +257,7 @@ stmt_list	: stmt_list_ne		//{$$ = (int)node((struct ast_token){"stmt_list",0,0,@
 									printParsed($$);
 									ast_unroll_lists($$);
 								}
-			|					//{@$.null = 1;$$ = (int)node((struct ast_token){"stmt_list",1,"<empty>",@$},0);}
+			|					//{@$.null = 1;$$ = (int)make_node((struct ast_token){"stmt_list",1,"<empty>",@$},0);}
 								{
 									YYLTYPE *pos = &(@$);
 									pos->null = 1;
@@ -271,7 +271,7 @@ stmt_list	: stmt_list_ne		//{$$ = (int)node((struct ast_token){"stmt_list",0,0,@
 								} %empty
 			;
 		
-stmt_list_ne	: stmt_list_ne stmt	//{$$ = (int)node((struct ast_token){"stmt_list_ne",0,0,@$},2,$1,$2);}
+stmt_list_ne	: stmt_list_ne stmt	//{$$ = (int)make_node((struct ast_token){"stmt_list_ne",0,0,@$},2,$1,$2);}
 									{
 										$$ = ast_node_new(
 											ast_token_here("stmt_list_ne",0,NULL,@$),
@@ -280,7 +280,7 @@ stmt_list_ne	: stmt_list_ne stmt	//{$$ = (int)node((struct ast_token){"stmt_list
 										);
 										printParsed($$);
 									}
-				| stmt				//{$$ = (int)node((struct ast_token){"stmt_list_ne",1,0,@$},1,$1);}
+				| stmt				//{$$ = (int)make_node((struct ast_token){"stmt_list_ne",1,0,@$},1,$1);}
 									{
 										$$ = ast_node_new(
 											ast_token_here("stmt_list_ne",1,NULL,@$),
@@ -291,7 +291,7 @@ stmt_list_ne	: stmt_list_ne stmt	//{$$ = (int)node((struct ast_token){"stmt_list
 									}
 				;
 		
-decl_stmt	:	class_def		//{$$ = (int)node((struct ast_token){"decl_stmt",0,0,@$},1,$1);}
+decl_stmt	:	class_def		//{$$ = (int)make_node((struct ast_token){"decl_stmt",0,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt",0,NULL,@$),
@@ -300,7 +300,7 @@ decl_stmt	:	class_def		//{$$ = (int)node((struct ast_token){"decl_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	func_def		//{$$ = (int)node((struct ast_token){"decl_stmt",1,0,@$},1,$1);}
+			|	func_def		//{$$ = (int)make_node((struct ast_token){"decl_stmt",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt",1,NULL,@$),
@@ -309,7 +309,7 @@ decl_stmt	:	class_def		//{$$ = (int)node((struct ast_token){"decl_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	var_decl ';'	//{$$ = (int)node((struct ast_token){"decl_stmt",2,0,@$},1,$1);}
+			|	var_decl ';'	//{$$ = (int)make_node((struct ast_token){"decl_stmt",2,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt",2,NULL,@$),
@@ -320,7 +320,7 @@ decl_stmt	:	class_def		//{$$ = (int)node((struct ast_token){"decl_stmt",0,0,@$},
 								}
 			;
 			
-decl_stmt_list	:	decl_stmt_list_ne	//{$$ = (int)node((struct ast_token){"decl_stmt_list",0,0,@$},1,$1); ast_unroll_lists($$);}
+decl_stmt_list	:	decl_stmt_list_ne	//{$$ = (int)make_node((struct ast_token){"decl_stmt_list",0,0,@$},1,$1); ast_unroll_lists($$);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt_list",0,NULL,@$),
@@ -330,7 +330,7 @@ decl_stmt_list	:	decl_stmt_list_ne	//{$$ = (int)node((struct ast_token){"decl_st
 									printParsed($$);
 									ast_unroll_lists($$);
 								}
-				|						//{@$.null = 1;$$ = (int)node((struct ast_token){"decl_stmt_list",1,"<empty>",@$},0);}
+				|						//{@$.null = 1;$$ = (int)make_node((struct ast_token){"decl_stmt_list",1,"<empty>",@$},0);}
 								{
 									YYLTYPE *pos = &(@$);
 									pos->null = 1;
@@ -344,7 +344,7 @@ decl_stmt_list	:	decl_stmt_list_ne	//{$$ = (int)node((struct ast_token){"decl_st
 								} %empty
 				;
 
-decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt   //{$$ = (int)node((struct ast_token){"decl_stmt_list_ne",0,0,@$},2,$1,$2);}
+decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt   //{$$ = (int)make_node((struct ast_token){"decl_stmt_list_ne",0,0,@$},2,$1,$2);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt_list_ne",0,NULL,@$),
@@ -353,7 +353,7 @@ decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt   //{$$ = (int)node((struct ast_
 									);
 									printParsed($$);
 								}
-					| decl_stmt						//{$$ = (int)node((struct ast_token){"decl_stmt_list_ne",1,0,@$},1,$1);}
+					| decl_stmt						//{$$ = (int)make_node((struct ast_token){"decl_stmt_list_ne",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("decl_stmt_list_ne",1,NULL,@$),
@@ -364,7 +364,7 @@ decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt   //{$$ = (int)node((struct ast_
 								}
 					;
 				
-imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},1,$1);}
+imp_stmt	:	if_block					//{$$ = (int)make_node((struct ast_token){"imp_stmt",0,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",0,NULL,@$),
@@ -373,7 +373,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	while_loop					//{$$ = (int)node((struct ast_token){"imp_stmt",1,0,@$},1,$1);}
+			|	while_loop					//{$$ = (int)make_node((struct ast_token){"imp_stmt",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",1,NULL,@$),
@@ -382,7 +382,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	expr ';'					//{$$ = (int)node((struct ast_token){"imp_stmt",2,0,@$},1,$1);}
+			|	expr ';'					//{$$ = (int)make_node((struct ast_token){"imp_stmt",2,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",2,NULL,@$),
@@ -391,7 +391,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	RETURN ';'					//{$$ = (int)node((struct ast_token){"imp_stmt",3,0,@$},0);}
+			|	RETURN ';'					//{$$ = (int)make_node((struct ast_token){"imp_stmt",3,0,@$},0);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",3,NULL,@$),
@@ -400,7 +400,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	RETURN expr ';'				//{$$ = (int)node((struct ast_token){"imp_stmt",4,0,@$},1,$2);}
+			|	RETURN expr ';'				//{$$ = (int)make_node((struct ast_token){"imp_stmt",4,0,@$},1,$2);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",4,NULL,@$),
@@ -409,7 +409,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 									);
 									printParsed($$);
 								}
-			|	for_loop					//{$$ = (int)node((struct ast_token){"imp_stmt",5,0,@$},1,$1);}
+			|	for_loop					//{$$ = (int)make_node((struct ast_token){"imp_stmt",5,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("imp_stmt",5,NULL,@$),
@@ -420,7 +420,7 @@ imp_stmt	:	if_block					//{$$ = (int)node((struct ast_token){"imp_stmt",0,0,@$},
 								}
 			;
 			
-class_def	:	CLASS ID decl_stmt_list END	//{printf("FUNC_DEF ID = [%s]\n",(char*)$2);$$ = (int)node((struct ast_token){"class_def",0,(char*)$2,@$},1,$3);}
+class_def	:	CLASS ID decl_stmt_list END	//{printf("FUNC_DEF ID = [%s]\n",(char*)$2);$$ = (int)make_node((struct ast_token){"class_def",0,(char*)$2,@$},1,$3);}
 								{
 									const char *id_str = $2->token.value;
 									printf("FUNC_DEF ID = [%s]\n",id_str);//(char*)$2);
@@ -432,7 +432,7 @@ class_def	:	CLASS ID decl_stmt_list END	//{printf("FUNC_DEF ID = [%s]\n",(char*)
 									printParsed($$);
 								}
 
-STAR		:   '*'					//{$$ = (int)node((struct ast_token){"stars",0,"*",@$},0);}
+STAR		:   '*'					//{$$ = (int)make_node((struct ast_token){"stars",0,"*",@$},0);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("stars",0,"*",@$),
@@ -443,7 +443,7 @@ STAR		:   '*'					//{$$ = (int)node((struct ast_token){"stars",0,"*",@$},0);}
 								}
 			;
 
-ptr_stars	:	ptr_stars_ne		//{$$ = (int)node((struct ast_token){"ptr_stars",0,0,@$},1,$1); ast_unroll_lists($$);}
+ptr_stars	:	ptr_stars_ne		//{$$ = (int)make_node((struct ast_token){"ptr_stars",0,0,@$},1,$1); ast_unroll_lists($$);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("ptr_stars",0,NULL,@$),
@@ -453,7 +453,7 @@ ptr_stars	:	ptr_stars_ne		//{$$ = (int)node((struct ast_token){"ptr_stars",0,0,@
 									printParsed($$);
 									ast_unroll_lists($$);
 								}
-			|						//{@$.null = 1;$$ = (int)node((struct ast_token){"ptr_stars",1,"<empty>",@$},0);}
+			|						//{@$.null = 1;$$ = (int)make_node((struct ast_token){"ptr_stars",1,"<empty>",@$},0);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("ptr_stars",1,"<empty>",nullPos()),//@$),
@@ -464,7 +464,7 @@ ptr_stars	:	ptr_stars_ne		//{$$ = (int)node((struct ast_token){"ptr_stars",0,0,@
 								}	%empty
 			;
 
-ptr_stars_ne:	ptr_stars_ne STAR	//{$$ = (int)node((struct ast_token){"ptr_stars_ne",0,0,@$},2,$1,$2);}
+ptr_stars_ne:	ptr_stars_ne STAR	//{$$ = (int)make_node((struct ast_token){"ptr_stars_ne",0,0,@$},2,$1,$2);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("ptr_stars_ne",0,NULL,@$),
@@ -473,7 +473,7 @@ ptr_stars_ne:	ptr_stars_ne STAR	//{$$ = (int)node((struct ast_token){"ptr_stars_
 									);
 									printParsed($$);
 								}
-			|	STAR				//{$$ = (int)node((struct ast_token){"ptr_stars_ne",1,0,@$},1,$1);}
+			|	STAR				//{$$ = (int)make_node((struct ast_token){"ptr_stars_ne",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("ptr_stars_ne",1,NULL,@$),
@@ -484,7 +484,7 @@ ptr_stars_ne:	ptr_stars_ne STAR	//{$$ = (int)node((struct ast_token){"ptr_stars_
 								}
 			;
 
-typename	:	TYPE	 ptr_stars	//{$$ = (int)node((struct ast_token){"typename",0,(char*)$1,@$},1,$2);}
+typename	:	TYPE	 ptr_stars	//{$$ = (int)make_node((struct ast_token){"typename",0,(char*)$1,@$},1,$2);}
 								{
 									const char *type_str = $1->token.value;
 									$$ = ast_node_new(
@@ -494,7 +494,7 @@ typename	:	TYPE	 ptr_stars	//{$$ = (int)node((struct ast_token){"typename",0,(ch
 									);
 									printParsed($$);
 								}
-			|	CLASS ID ptr_stars	//{$$ = (int)node((struct ast_token){"typename",1,(char*)$2,@$},1,$3);}
+			|	CLASS ID ptr_stars	//{$$ = (int)make_node((struct ast_token){"typename",1,(char*)$2,@$},1,$3);}
 								{
 									const char *type_str = $2->token.value;
 									$$ = ast_node_new(
@@ -506,7 +506,7 @@ typename	:	TYPE	 ptr_stars	//{$$ = (int)node((struct ast_token){"typename",0,(ch
 								}
 			;
 
-func_def	:	typename ID '('	var_decl_list ')' stmt_list END	//{printf("FUNC_DEF ID = [%s]\n",(char*)$2);$$ = (int)node((struct ast_token){"func_def",0,(char*)$2,@$},3,$1,$4,$6);}
+func_def	:	typename ID '('	var_decl_list ')' stmt_list END	//{printf("FUNC_DEF ID = [%s]\n",(char*)$2);$$ = (int)make_node((struct ast_token){"func_def",0,(char*)$2,@$},3,$1,$4,$6);}
 								{
 									const char *id_str = $2->token.value;
 									printf("FUNC_DEF ID = [%s]\n", id_str);
@@ -518,7 +518,7 @@ func_def	:	typename ID '('	var_decl_list ')' stmt_list END	//{printf("FUNC_DEF I
 									printParsed($$);
 								}
 
-var_decl	:	typename ID						//{$$ = (int)node((struct ast_token){"var_decl",0,(char*)$2,@$},1,$1);}
+var_decl	:	typename ID						//{$$ = (int)make_node((struct ast_token){"var_decl",0,(char*)$2,@$},1,$1);}
 								{
 									const char *id_str = $2->token.value;
 									$$ = ast_node_new(
@@ -528,7 +528,7 @@ var_decl	:	typename ID						//{$$ = (int)node((struct ast_token){"var_decl",0,(c
 									);
 									printParsed($$);
 								}
-			|	typename ID '[' expr ']'		//{$$ = (int)node((struct ast_token){"var_decl",1,(char*)$2,@$},2,$1,$4);}
+			|	typename ID '[' expr ']'		//{$$ = (int)make_node((struct ast_token){"var_decl",1,(char*)$2,@$},2,$1,$4);}
 								{
 									const char *id_str = $2->token.value;
 									$$ = ast_node_new(
@@ -538,7 +538,7 @@ var_decl	:	typename ID						//{$$ = (int)node((struct ast_token){"var_decl",0,(c
 									);
 									printParsed($$);
 								}
-			|	typename ID '=' expr			//{$$ = (int)node((struct ast_token){"var_decl_assign",0,(char*)$2,@$},2,$1,$4);}//fix_decl_assign($$);}
+			|	typename ID '=' expr			//{$$ = (int)make_node((struct ast_token){"var_decl_assign",0,(char*)$2,@$},2,$1,$4);}//fix_decl_assign($$);}
 								{
 									const char *id_str = $2->token.value;
 									$$ = ast_node_new(
@@ -550,7 +550,7 @@ var_decl	:	typename ID						//{$$ = (int)node((struct ast_token){"var_decl",0,(c
 								}
 			;
 
-var_decl_list	:	var_decl_list_ne			//{$$ = (int)node((struct ast_token){"var_decl_list",0,0,@$},1,$1); ast_unroll_lists($$);}
+var_decl_list	:	var_decl_list_ne			//{$$ = (int)make_node((struct ast_token){"var_decl_list",0,0,@$},1,$1); ast_unroll_lists($$);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("var_decl_list",0,NULL,@$),
@@ -560,7 +560,7 @@ var_decl_list	:	var_decl_list_ne			//{$$ = (int)node((struct ast_token){"var_dec
 									printParsed($$);
 									ast_unroll_lists($$);
 								}
-				|								//{$$ = (int)node((struct ast_token){"var_decl_list",1,"<empty>",@$},0);}
+				|								//{$$ = (int)make_node((struct ast_token){"var_decl_list",1,"<empty>",@$},0);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("var_decl_list",1,"<empty>",nullPos()),//@$),
@@ -571,7 +571,7 @@ var_decl_list	:	var_decl_list_ne			//{$$ = (int)node((struct ast_token){"var_dec
 								} %empty //inform Bison/YACC that this rule was intentionally left empty
 				;
 				
-var_decl_list_ne	:	var_decl_list_ne ',' var_decl	//{$$ = (int)node((struct ast_token){"var_decl_list_ne",0,0,@$},2,$1,$3);}
+var_decl_list_ne	:	var_decl_list_ne ',' var_decl	//{$$ = (int)make_node((struct ast_token){"var_decl_list_ne",0,0,@$},2,$1,$3);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("var_decl_list_ne",0,NULL,@$),
@@ -580,7 +580,7 @@ var_decl_list_ne	:	var_decl_list_ne ',' var_decl	//{$$ = (int)node((struct ast_t
 									);
 									printParsed($$);
 								}
-					|	var_decl						//{$$ = (int)node((struct ast_token){"var_decl_list_ne",1,0,@$},1,$1);}
+					|	var_decl						//{$$ = (int)make_node((struct ast_token){"var_decl_list_ne",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("var_decl_list_ne",1,NULL,@$),
@@ -591,7 +591,7 @@ var_decl_list_ne	:	var_decl_list_ne ',' var_decl	//{$$ = (int)node((struct ast_t
 								}
 					;
 				
-if_block	:	if_then END										//{$$ = (int)node((struct ast_token){"if_block",0,0,@$},1,$1);}
+if_block	:	if_then END										//{$$ = (int)make_node((struct ast_token){"if_block",0,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("if_block",0,NULL,@$),
@@ -600,7 +600,7 @@ if_block	:	if_then END										//{$$ = (int)node((struct ast_token){"if_block",
 									);
 									printParsed($$);
 								}
-			|	if_then ELSE stmt_list END						//{$$ = (int)node((struct ast_token){"if_block",1,0,@$},2,$1,$3);}
+			|	if_then ELSE stmt_list END						//{$$ = (int)make_node((struct ast_token){"if_block",1,0,@$},2,$1,$3);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("if_block",1,NULL,@$),
@@ -611,7 +611,7 @@ if_block	:	if_then END										//{$$ = (int)node((struct ast_token){"if_block",
 								}
 			;
 
-if_then		:	IF '(' expr ')' stmt_list			//{$$ = (int)node((struct ast_token){"if_then",0,0,@$},2,$3,$5);}
+if_then		:	IF '(' expr ')' stmt_list			//{$$ = (int)make_node((struct ast_token){"if_then",0,0,@$},2,$3,$5);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("if_then",0,NULL,@$),
@@ -620,7 +620,7 @@ if_then		:	IF '(' expr ')' stmt_list			//{$$ = (int)node((struct ast_token){"if_
 									);
 									printParsed($$);
 								}
-			|	if_then ELSEIF '(' expr ')' stmt_list	//{$$ = (int)node((struct ast_token){"if_then",2,0,@$},3,$1,$4,$6);}
+			|	if_then ELSEIF '(' expr ')' stmt_list	//{$$ = (int)make_node((struct ast_token){"if_then",2,0,@$},3,$1,$4,$6);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("if_then",2,NULL,@$),
@@ -631,15 +631,15 @@ if_then		:	IF '(' expr ')' stmt_list			//{$$ = (int)node((struct ast_token){"if_
 								}
 			;
 			
-		/* 	if_block	:	if_start ELSE stmt_list END	{$$ = (int)node((struct ast_token){"if_block",0,0},2,$1,$3);}
-		//	|	if_start ELSE if_block		{$$ = (int)node((struct ast_token){"if_block",1,0},2,$1,$2);}
-			|	if_start END				{$$ = (int)node((struct ast_token){"if_block",2,0},1,$1);}
+		/* 	if_block	:	if_start ELSE stmt_list END	{$$ = (int)make_node((struct ast_token){"if_block",0,0},2,$1,$3);}
+		//	|	if_start ELSE if_block		{$$ = (int)make_node((struct ast_token){"if_block",1,0},2,$1,$2);}
+			|	if_start END				{$$ = (int)make_node((struct ast_token){"if_block",2,0},1,$1);}
 			;
 			
-if_start	:	IF '(' expr ')' THEN stmt_list 	{$$ = (int)node((struct ast_token){"if_start",0,0},2,$3,$6);}
+if_start	:	IF '(' expr ')' THEN stmt_list 	{$$ = (int)make_node((struct ast_token){"if_start",0,0},2,$3,$6);}
 			;
 			 */
-while_loop	:	WHILE '(' expr ')' stmt_list END	//{$$ = (int)node((struct ast_token){"while_loop",0,0,@$},2,$3,$5);}
+while_loop	:	WHILE '(' expr ')' stmt_list END	//{$$ = (int)make_node((struct ast_token){"while_loop",0,0,@$},2,$3,$5);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("while_loop",0,NULL,@$),
@@ -650,7 +650,7 @@ while_loop	:	WHILE '(' expr ')' stmt_list END	//{$$ = (int)node((struct ast_toke
 								}
 			;
 
-for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END	//{$$ = (int)node((struct ast_token){"for_loop",0,0,@$},4,$3,$4,$6,$8);}
+for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END	//{$$ = (int)make_node((struct ast_token){"for_loop",0,0,@$},4,$3,$4,$6,$8);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("for_loop",0,NULL,@$),
@@ -661,7 +661,7 @@ for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END	//{$$ = (int)node((struc
 								}
 			;
 			
-expr_list	:	expr_list_ne	//{$$ = (int)node((struct ast_token){"expr_list",0,0,@$},1,$1);ast_unroll_lists($$);}
+expr_list	:	expr_list_ne	//{$$ = (int)make_node((struct ast_token){"expr_list",0,0,@$},1,$1);ast_unroll_lists($$);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("expr_list",0,NULL,@$),
@@ -671,7 +671,7 @@ expr_list	:	expr_list_ne	//{$$ = (int)node((struct ast_token){"expr_list",0,0,@$
 									printParsed($$);
 									ast_unroll_lists($$);
 								}
-			|					//{@$.null = 1;$$ = (int)node((struct ast_token){"expr_list",1,"<empty>",@$},0);}
+			|					//{@$.null = 1;$$ = (int)make_node((struct ast_token){"expr_list",1,"<empty>",@$},0);}
 								{
 									YYLTYPE *pos = &(@$);
 									pos->null = 1;
@@ -685,7 +685,7 @@ expr_list	:	expr_list_ne	//{$$ = (int)node((struct ast_token){"expr_list",0,0,@$
 								} %empty
 			;
 			
-expr_list_ne	: expr_list_ne ',' expr	//{$$ = (int)node((struct ast_token){"expr_list_ne",0,0,@$},2,$1,$3);}
+expr_list_ne	: expr_list_ne ',' expr	//{$$ = (int)make_node((struct ast_token){"expr_list_ne",0,0,@$},2,$1,$3);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("expr_list_ne",0,NULL,@$),
@@ -694,7 +694,7 @@ expr_list_ne	: expr_list_ne ',' expr	//{$$ = (int)node((struct ast_token){"expr_
 									);
 									printParsed($$);
 								}
-				| expr					//{$$ = (int)node((struct ast_token){"expr_list_ne",1,0,@$},1,$1);}
+				| expr					//{$$ = (int)make_node((struct ast_token){"expr_list_ne",1,0,@$},1,$1);}
 								{
 									$$ = ast_node_new(
 										ast_token_here("expr_list_ne",1,NULL,@$),
@@ -705,38 +705,38 @@ expr_list_ne	: expr_list_ne ',' expr	//{$$ = (int)node((struct ast_token){"expr_
 								}
 				;
 
-expr	:	ID							{$$ = ast_node_new(ast_token_here("expr_id",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_id",0,(char*)$1,@$},0);}
-		|	INTEGER						{$$ = ast_node_new(ast_token_here("expr_const",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//$$ = (int)node((struct ast_token){"expr_const",0,(char*)$1,@$},0);}
-		|	INTEGERX					{$$ = ast_node_new(ast_token_here("expr_const",	1,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_const",1,(char*)$1,@$},0);}
-		|	INTEGERB					{$$ = ast_node_new(ast_token_here("expr_const",	2,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_const",2,(char*)$1,@$},0);}
-		|	FLOATING					{$$ = ast_node_new(ast_token_here("expr_const",	3,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_const",3,(char*)$1,@$},0);}
-		|	CHARACTER					{$$ = ast_node_new(ast_token_here("expr_const",	4,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_const",4,(char*)$1,@$},0);}
-		|	STRING						{$$ = ast_node_new(ast_token_here("expr_const",	5,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_const",5,(char*)$1,@$},0);}
-		|	expr '[' expr ']'			{$$ = ast_node_new(ast_token_here("expr_index",	0,NULL,@$),	vector2_ptr_ast_node_here_from_list(2, $1,$3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_index",0,0,@$},2,$1,$3);}
-		|	'(' expr ')'				{$$ = ast_node_new(ast_token_here("expr_subexpr",0,NULL,@$),vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_subexpr",0,0,@$},1,$2);}
-		|	expr '(' expr_list ')'		{$$ = ast_node_new(ast_token_here("expr_call",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_call",0,0,@$},2,$1,$3);}
-		|	expr '.' expr				{$$ = ast_node_new(ast_token_here("expr_.",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_.",0,0,@$},2,$1,$3);}
-		|	expr '^' expr				{$$ = ast_node_new(ast_token_here("expr_^",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_^",0,0,@$},2,$1,$3);}
-		|	expr '/' expr				{$$ = ast_node_new(ast_token_here("expr_/",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_/",0,0,@$},2,$1,$3);}
-		|	expr '*' expr				{$$ = ast_node_new(ast_token_here("expr_*",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_*",0,0,@$},2,$1,$3);}
-		|	expr '%' expr				{$$ = ast_node_new(ast_token_here("expr_%",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_%",0,0,@$},2,$1,$3);}
-		|	expr '-' expr				{$$ = ast_node_new(ast_token_here("expr_-",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_-",0,0,@$},2,$1,$3);}
-		|	expr '+' expr				{$$ = ast_node_new(ast_token_here("expr_+",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_+",0,0,@$},2,$1,$3);}
-		|	'!' expr					{$$ = ast_node_new(ast_token_here("expr_not",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_not",0,0,@$},1,$2);}
-		|	expr '&' expr				{$$ = ast_node_new(ast_token_here("expr_and",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_and",0,0,@$},2,$1,$3);}
-		|	expr '|' expr				{$$ = ast_node_new(ast_token_here("expr_or",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_or",0,0,@$},2,$1,$3);}
-		|	expr EQUAL expr				{$$ = ast_node_new(ast_token_here("expr_==",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_==",0,0,@$},2,$1,$3);}
-		|	expr NOTEQUAL expr		  	{$$ = ast_node_new(ast_token_here("expr_!=",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_!=",0,0,@$},2,$1,$3);}
-		|	expr '>' expr			 	{$$ = ast_node_new(ast_token_here("expr_>",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_>",0,0,@$},2,$1,$3);}
-		|	expr '<' expr			 	{$$ = ast_node_new(ast_token_here("expr_<",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_<",0,0,@$},2,$1,$3);}
-		|	expr '=' expr				{$$ = ast_node_new(ast_token_here("expr_=",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_=",0,0,@$},2,$1,$3);}
-		|	expr INC					{$$ = ast_node_new(ast_token_here("expr_++",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_++",0,0,@$},1,$1);}
-		|	INC	expr    %prec PREINC	{$$ = ast_node_new(ast_token_here("expr_++",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_++",1,0,@$},1,$2);}
-		|	expr DEC					{$$ = ast_node_new(ast_token_here("expr_--",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_--",0,0,@$},1,$1);}
-		|	DEC	expr    %prec PREDEC	{$$ = ast_node_new(ast_token_here("expr_--",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_--",1,0,@$},1,$2);}
-		|	'-' expr 	%prec PRENEG	{$$ = ast_node_new(ast_token_here("expr_neg",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_neg",0,0,@$},1,$2);}
-		|	'*' expr	%prec PREDEREF	{$$ = ast_node_new(ast_token_here("expr_deref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_deref",0,0,@$},1,$2);}
-		|	'&' expr	%prec PREREF	{$$ = ast_node_new(ast_token_here("expr_ref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)node((struct ast_token){"expr_ref",0,0,@$},1,$2);}
+expr	:	ID							{$$ = ast_node_new(ast_token_here("expr_id",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_id",0,(char*)$1,@$},0);}
+		|	INTEGER						{$$ = ast_node_new(ast_token_here("expr_const",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//$$ = (int)make_node((struct ast_token){"expr_const",0,(char*)$1,@$},0);}
+		|	INTEGERX					{$$ = ast_node_new(ast_token_here("expr_const",	1,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_const",1,(char*)$1,@$},0);}
+		|	INTEGERB					{$$ = ast_node_new(ast_token_here("expr_const",	2,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_const",2,(char*)$1,@$},0);}
+		|	FLOATING					{$$ = ast_node_new(ast_token_here("expr_const",	3,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_const",3,(char*)$1,@$},0);}
+		|	CHARACTER					{$$ = ast_node_new(ast_token_here("expr_const",	4,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_const",4,(char*)$1,@$},0);}
+		|	STRING						{$$ = ast_node_new(ast_token_here("expr_const",	5,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_const",5,(char*)$1,@$},0);}
+		|	expr '[' expr ']'			{$$ = ast_node_new(ast_token_here("expr_index",	0,NULL,@$),	vector2_ptr_ast_node_here_from_list(2, $1,$3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_index",0,0,@$},2,$1,$3);}
+		|	'(' expr ')'				{$$ = ast_node_new(ast_token_here("expr_subexpr",0,NULL,@$),vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_subexpr",0,0,@$},1,$2);}
+		|	expr '(' expr_list ')'		{$$ = ast_node_new(ast_token_here("expr_call",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_call",0,0,@$},2,$1,$3);}
+		|	expr '.' expr				{$$ = ast_node_new(ast_token_here("expr_.",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_.",0,0,@$},2,$1,$3);}
+		|	expr '^' expr				{$$ = ast_node_new(ast_token_here("expr_^",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_^",0,0,@$},2,$1,$3);}
+		|	expr '/' expr				{$$ = ast_node_new(ast_token_here("expr_/",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_/",0,0,@$},2,$1,$3);}
+		|	expr '*' expr				{$$ = ast_node_new(ast_token_here("expr_*",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_*",0,0,@$},2,$1,$3);}
+		|	expr '%' expr				{$$ = ast_node_new(ast_token_here("expr_%",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_%",0,0,@$},2,$1,$3);}
+		|	expr '-' expr				{$$ = ast_node_new(ast_token_here("expr_-",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_-",0,0,@$},2,$1,$3);}
+		|	expr '+' expr				{$$ = ast_node_new(ast_token_here("expr_+",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_+",0,0,@$},2,$1,$3);}
+		|	'!' expr					{$$ = ast_node_new(ast_token_here("expr_not",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_not",0,0,@$},1,$2);}
+		|	expr '&' expr				{$$ = ast_node_new(ast_token_here("expr_and",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_and",0,0,@$},2,$1,$3);}
+		|	expr '|' expr				{$$ = ast_node_new(ast_token_here("expr_or",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_or",0,0,@$},2,$1,$3);}
+		|	expr EQUAL expr				{$$ = ast_node_new(ast_token_here("expr_==",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_==",0,0,@$},2,$1,$3);}
+		|	expr NOTEQUAL expr		  	{$$ = ast_node_new(ast_token_here("expr_!=",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_!=",0,0,@$},2,$1,$3);}
+		|	expr '>' expr			 	{$$ = ast_node_new(ast_token_here("expr_>",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_>",0,0,@$},2,$1,$3);}
+		|	expr '<' expr			 	{$$ = ast_node_new(ast_token_here("expr_<",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_<",0,0,@$},2,$1,$3);}
+		|	expr '=' expr				{$$ = ast_node_new(ast_token_here("expr_=",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_=",0,0,@$},2,$1,$3);}
+		|	expr INC					{$$ = ast_node_new(ast_token_here("expr_++",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_++",0,0,@$},1,$1);}
+		|	INC	expr    %prec PREINC	{$$ = ast_node_new(ast_token_here("expr_++",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_++",1,0,@$},1,$2);}
+		|	expr DEC					{$$ = ast_node_new(ast_token_here("expr_--",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_--",0,0,@$},1,$1);}
+		|	DEC	expr    %prec PREDEC	{$$ = ast_node_new(ast_token_here("expr_--",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_--",1,0,@$},1,$2);}
+		|	'-' expr 	%prec PRENEG	{$$ = ast_node_new(ast_token_here("expr_neg",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_neg",0,0,@$},1,$2);}
+		|	'*' expr	%prec PREDEREF	{$$ = ast_node_new(ast_token_here("expr_deref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_deref",0,0,@$},1,$2);}
+		|	'&' expr	%prec PREREF	{$$ = ast_node_new(ast_token_here("expr_ref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}//{$$ = (int)make_node((struct ast_token){"expr_ref",0,0,@$},1,$2);}
 		;
 
 %%

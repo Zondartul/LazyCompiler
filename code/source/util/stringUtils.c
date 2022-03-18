@@ -250,7 +250,7 @@ const char* concat2(int num, ...){
 	return stralloc(buff);
 }
 
-const char* itoa(int N){
+const char* my_itoa(int N){
 	char buff[80];
 	sprintf(buff,"%d",N);
 	return stralloc(buff);

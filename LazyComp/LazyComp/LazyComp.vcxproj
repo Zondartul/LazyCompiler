@@ -151,22 +151,31 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\code\;$(SolutionDir)\..\code\generated;$(SolutionDir)\..\code\include;$(SolutionDir)\..\code\include\codegen;$(SolutionDir)\..\code\include\codegen\types;$(SolutionDir)\..\code\include\main;$(SolutionDir)\..\code\include\preproc;$(SolutionDir)\..\code\include\semantic;$(SolutionDir)\..\code\include\semantic\types;$(SolutionDir)\..\code\include\semantic\types\semtypes;$(SolutionDir)\..\code\include\util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <AdditionalOptions>/sdl /w34995  /w34996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -179,8 +188,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\code\;$(SolutionDir)\..\code\generated;$(SolutionDir)\..\code\include;$(SolutionDir)\..\code\include\codegen;$(SolutionDir)\..\code\include\codegen\types;$(SolutionDir)\..\code\include\main;$(SolutionDir)\..\code\include\preproc;$(SolutionDir)\..\code\include\semantic;$(SolutionDir)\..\code\include\semantic\types;$(SolutionDir)\..\code\include\semantic\types\semtypes;$(SolutionDir)\..\code\include\util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <AdditionalOptions>/sdl /w34995  /w34996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -193,8 +205,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\code\;$(SolutionDir)\..\code\generated;$(SolutionDir)\..\code\include;$(SolutionDir)\..\code\include\codegen;$(SolutionDir)\..\code\include\codegen\types;$(SolutionDir)\..\code\include\main;$(SolutionDir)\..\code\include\preproc;$(SolutionDir)\..\code\include\semantic;$(SolutionDir)\..\code\include\semantic\types;$(SolutionDir)\..\code\include\semantic\types\semtypes;$(SolutionDir)\..\code\include\util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <AdditionalOptions>/sdl /w34995  /w34996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -207,8 +222,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\code\;$(SolutionDir)\..\code\generated;$(SolutionDir)\..\code\include;$(SolutionDir)\..\code\include\codegen;$(SolutionDir)\..\code\include\codegen\types;$(SolutionDir)\..\code\include\main;$(SolutionDir)\..\code\include\preproc;$(SolutionDir)\..\code\include\semantic;$(SolutionDir)\..\code\include\semantic\types;$(SolutionDir)\..\code\include\semantic\types\semtypes;$(SolutionDir)\..\code\include\util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <AdditionalOptions>/sdl /w34995  /w34996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

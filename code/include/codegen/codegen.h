@@ -15,7 +15,7 @@
 #define DEBUGMEM 68866
 #define if_first(x) {static int count = 0; if(!first++){x;}}
 #define if_not_first(x) {static int first = 0; if(first++){x;}}
-#define funcstamp() concat2(5,"// @ ",__func__,":",itoa(__LINE__),(codegen_decl? " D":" I")) 
+#define funcstamp() concat2(5,"// @ ",__func__,":",my_itoa(__LINE__),(codegen_decl? " D":" I")) 
 #define asm_println(...) asm_println2(funcstamp(), __VA_ARGS__ )
 #define asm_printblk(...) asm_printblk2(funcstamp(), __VA_ARGS__ )
 
@@ -56,7 +56,7 @@ typedef const char* cstr;
 const char* concat2(int num, ...);
 void asm_println2(const char *postfix, const char *fmt, ...);
 void asm_printblk2(const char *prefix, const char *fmt, ...);
-const char* itoa(int N);
+const char* my_itoa(int N);
 
 void printindent();
 void printTraceCode();

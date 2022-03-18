@@ -722,7 +722,7 @@ void semantic_analyze_expr_id(ast_node *node){
 	if((S->type != SYMBOL_VARIABLE)&&(S->type != SYMBOL_PARAM)&&(S->type != SYMBOL_MEMBER)&&(S->type != SYMBOL_FUNCTION)){
 		error("semantic: '%s' is not a variable, parameter or function name\n",name);
 	}
-	struct type_name *T;
+	struct type_name* T = 0;
 	if(S->type == SYMBOL_VARIABLE){
 		T = S->symvariable.type;
 	}else if(S->type == SYMBOL_PARAM){
