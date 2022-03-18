@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\generated">
+      <UniqueIdentifier>{ea5ece17-e173-4e96-b918-0136dc8f3f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source">
+      <UniqueIdentifier>{78519019-382f-4e39-afc5-c2d5a13d1595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\codegen">
+      <UniqueIdentifier>{b1b881e9-c45f-471a-815e-916d29e2f060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\main">
+      <UniqueIdentifier>{76478b12-4452-4e71-a52b-644a95b77d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\preproc">
+      <UniqueIdentifier>{7a4dfabe-7d63-4a87-86c6-a72ad2232df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\semantic">
+      <UniqueIdentifier>{05b6c630-7ba8-4ab3-914c-393225129a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\util">
+      <UniqueIdentifier>{635659e0-5841-4518-ae8c-9229e6b631ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\codegen\types">
+      <UniqueIdentifier>{77a4b2d7-7f63-4981-ac49-6e78a28fce98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\semantic\types">
+      <UniqueIdentifier>{385b64c5-3539-4679-b75a-c67238f947ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\semantic\types\semtypes">
+      <UniqueIdentifier>{d2bd4242-7d96-4894-af7d-62b6d1b93fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated">
+      <UniqueIdentifier>{2a7afe24-742f-4d46-a3db-6482197bc62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{6fa606fa-f702-4023-9503-8f093eca433d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{b0b3a3f4-13c3-4a37-bc08-01d11c191378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\codegen">
+      <UniqueIdentifier>{9254ada7-7b85-4b4a-b484-ec4ca2fdc048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\main">
+      <UniqueIdentifier>{7b65bfe9-2909-4e3b-aedd-ff0a45284432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\preproc">
+      <UniqueIdentifier>{335fcd46-3e6d-4095-aa1d-bc9b915482f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\semantic">
+      <UniqueIdentifier>{30db3eef-0500-4e05-a61a-0c12528d991a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\util">
+      <UniqueIdentifier>{64ad33e4-bbd3-445e-bc53-b38a7976b9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\codegen\types">
+      <UniqueIdentifier>{0b01577a-70ed-40e6-9548-0e982e528bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\semantic\types">
+      <UniqueIdentifier>{79fafb5d-8e83-4ba1-9146-1c1e8635b55e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\semantic\types\semtypes">
+      <UniqueIdentifier>{2a0649ec-f3ed-4a09-8192-9213a58caf3a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\code\generated\lex.yy.c">
+      <Filter>Source Files\generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\generated\yaccin.tab.c">
+      <Filter>Source Files\generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\types\debugInfoFunc.c">
+      <Filter>Source Files\source\codegen\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\types\debugInfoVar.c">
+      <Filter>Source Files\source\codegen\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\types\frame.c">
+      <Filter>Source Files\source\codegen\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\types\IR_symbol.c">
+      <Filter>Source Files\source\codegen\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\types\reg.c">
+      <Filter>Source Files\source\codegen\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\codegen.c">
+      <Filter>Source Files\source\codegen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\codegen\codegen_gen_command.c">
+      <Filter>Source Files\source\codegen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\main\main.c">
+      <Filter>Source Files\source\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\allocator_override.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\globals.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\stringUtils.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\stuffvectors.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\vector.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\util\vector3int.c">
+      <Filter>Source Files\source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symtypes\symbol_class.c">
+      <Filter>Source Files\source\semantic\types\semtypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symtypes\symbol_const.c">
+      <Filter>Source Files\source\semantic\types\semtypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symtypes\symbol_function.c">
+      <Filter>Source Files\source\semantic\types\semtypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symtypes\symbol_variable.c">
+      <Filter>Source Files\source\semantic\types\semtypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\ast_node.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\ast_token.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\code_segment.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\file.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\semantic_context_kind.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symbol.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\symbol_table.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\type_name.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\types.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\varvalue.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\types\yylloc.c">
+      <Filter>Source Files\source\semantic\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\AST.c">
+      <Filter>Source Files\source\semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\semantic.c">
+      <Filter>Source Files\source\semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\semantic_analyze.c">
+      <Filter>Source Files\source\semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\source\preproc\preprocess.c">
+      <Filter>Source Files\source\preproc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\code\generated\yaccin.tab.h">
+      <Filter>Header Files\generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\types\debugInfoFunc.h">
+      <Filter>Header Files\include\codegen\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\types\debugInfoVar.h">
+      <Filter>Header Files\include\codegen\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\types\frame.h">
+      <Filter>Header Files\include\codegen\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\types\IR_symbol.h">
+      <Filter>Header Files\include\codegen\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\types\reg.h">
+      <Filter>Header Files\include\codegen\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\codegen.h">
+      <Filter>Header Files\include\codegen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\codegen\codegen_gen_command.h">
+      <Filter>Header Files\include\codegen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\main\main.h">
+      <Filter>Header Files\include\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\allocator_override.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\cobject.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\globals.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\stringUtils.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\stuffvectors.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\vector.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\vector2.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\util\vector3int.h">
+      <Filter>Header Files\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symtypes\symbol_class.h">
+      <Filter>Header Files\include\semantic\types\semtypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symtypes\symbol_const.h">
+      <Filter>Header Files\include\semantic\types\semtypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symtypes\symbol_function.h">
+      <Filter>Header Files\include\semantic\types\semtypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symtypes\symbol_variable.h">
+      <Filter>Header Files\include\semantic\types\semtypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\ast_node.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\ast_token.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\code_segment.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\file.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\semantic_context_kind.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symbol.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\symbol_table.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\type_name.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\types.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\varvalue.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\types\yylloc.h">
+      <Filter>Header Files\include\semantic\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\AST.h">
+      <Filter>Header Files\include\semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\semantic.h">
+      <Filter>Header Files\include\semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\semantic_analyze.h">
+      <Filter>Header Files\include\semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\preproc\preprocess.h">
+      <Filter>Header Files\include\preproc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\code\input\lexin.l">
+      <Filter>Header Files\input</Filter>
+    </None>
+    <None Include="..\..\code\input\yaccin.y">
+      <Filter>Header Files\input</Filter>
+    </None>
+  </ItemGroup>
+</Project>
