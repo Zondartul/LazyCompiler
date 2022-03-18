@@ -1,2 +1,2 @@
-run lazy2.txt
+run lazy3.txt
 backtrace full

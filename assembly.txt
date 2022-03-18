@@ -1,0 +1,1908 @@
+code_segment_start:
+#define DEBUG
+mov ebp, 20000
+mov esp, 19999
+mov #68886, debug_info
+section_code_body:
+//[ SYMBOL adr_buttons VAR]
+//[ SYMBOL adr_leds VAR]
+//[ SYMBOL adr_screen VAR]
+//[ SYMBOL adr_keyboard VAR]
+//[ SYMBOL adr_console VAR]
+//[ SYMBOL printX VAR]
+//[ SYMBOL printY VAR]
+//[ MOV adr_buttons 65536]
+//store 65536 into adr_buttons
+//(curframe:0, framedepth:0)
+mov #adr_buttons_1, 65536
+//[ MOV adr_leds 65546]
+//store 65546 into adr_leds
+//(curframe:0, framedepth:0)
+mov #adr_leds_1, 65546
+//[ MOV adr_screen 65556]
+//store 65556 into adr_screen
+//(curframe:0, framedepth:0)
+mov #adr_screen_1, 65556
+//[ MOV adr_keyboard 65566]
+//store 65566 into adr_keyboard
+//(curframe:0, framedepth:0)
+mov #adr_keyboard_1, 65566
+//[ MOV adr_console 65866]
+//store 65866 into adr_console
+//(curframe:0, framedepth:0)
+mov #adr_console_1, 65866
+//[ MOV printX 0]
+//store 0 into printX
+//(curframe:0, framedepth:0)
+mov #printX_1, 0
+//[ MOV printY 0]
+//store 0 into printY
+//(curframe:0, framedepth:0)
+mov #printY_1, 0
+//[ SYMBOL str_1 STRING no\\nu]
+//[ SYMBOL str_2 STRING A.avg() = ]
+//[ SYMBOL str_3 STRING ]
+//[ SYMBOL str_4 STRING B.avg() = ]
+//[ SYMBOL str_5 STRING ]
+//[ SYMBOL str_6 STRING A.X = ]
+//[ SYMBOL str_7 STRING , A.Y = ]
+//[ SYMBOL str_8 STRING ]
+//[ SYMBOL str_9 STRING switched]
+//[ SYMBOL str_10 STRING A.X = ]
+//[ SYMBOL str_11 STRING , A.Y = ]
+//[ SYMBOL str_12 STRING ]
+//[ CALL temp_81 _main]
+call _main
+add esp, 0
+//store eax into temp_81
+//(curframe:0, framedepth:0)
+mov #temp_81_1, eax
+//[ /* float delay(float n) */]
+//[ FUNCTION _delay BEGIN]
+
+_delay:
+//[   FRAME ENTER]
+  lbl_1:
+  enter 1
+//[   SYMBOL n ARG]
+//[   /* while(n--) */]
+//[   SYMBOL lbl_while_do LABEL]
+//[   SYMBOL lbl_while_exit LABEL]
+//[   LABEL lbl_while_do]
+  lbl_while_do:
+//[   MOV temp n]
+//store EBP:#2 into temp
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, EBP:#2
+//[   SUB n n 1]
+  //load n into R1 (cf:1, fd:1)
+  rstack R1, EBP:2
+  sub R1, 1
+//store R1 into n
+  //(curframe:1, framedepth:1)
+  sstack EBP:2, R1
+//[   JE 0 temp lbl_while_exit]
+  cmp 0, EBP:#-1
+  je lbl_while_exit
+//[   /* do */]
+//[   JMP lbl_while_do]
+  jmp lbl_while_do
+//[   LABEL lbl_while_exit]
+  lbl_while_exit:
+//[   /* end while*/]
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_2:
+//[ RET]
+leave
+ret
+//[ FUNCTION _delay END]
+lbl:
+
+//[ /* end */]
+//[ /* float scr(float a, float b) */]
+//[ FUNCTION _scr BEGIN]
+
+_scr:
+//[   FRAME ENTER]
+  lbl_4:
+  enter 2
+//[   SYMBOL a ARG]
+//[   SYMBOL b ARG]
+//[   /* adr_screen[a] = b; */]
+//[   ADD temp_1 a adr_screen]
+  //load a into R2 (cf:1, fd:1)
+  rstack R2, EBP:2
+  add R2, #adr_screen_1
+//store R2 into temp_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, R2
+//[   MOV *temp_1 b]
+//store EBP:#3 into *temp_1
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-1
+  mov R7, #R7
+  mov #R7, EBP:#3
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_5:
+//[ RET]
+leave
+ret
+//[ FUNCTION _scr END]
+lbl_3:
+
+//[ /* end */]
+//[ /* float strtest(float *str) */]
+//[ FUNCTION _strtest BEGIN]
+
+_strtest:
+//[   FRAME ENTER]
+  lbl_7:
+  enter 5
+//[   SYMBOL str ARG]
+//[   /* scr(3,str); */]
+//[   CALL temp_2 _scr 3 str]
+  push EBP:#2
+  push 3
+  call _scr
+  add esp, 2
+//store eax into temp_2
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, eax
+//[   /* scr(4,*str); */]
+//[   MOV temp_3 *str]
+  rstack R3, EBP:2
+//store #R3 into temp_3
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, #R3
+//[   CALL temp_4 _scr 4 temp_3]
+  push EBP:#-2
+  push 4
+  call _scr
+  add esp, 2
+//store eax into temp_4
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, eax
+//[   /* scr(5,str[0]); */]
+//[   ADD temp_5 0 str]
+  //load 0 into R4
+  mov R4, 0
+  add R4, EBP:#2
+//store R4 into temp_5
+  //(curframe:1, framedepth:1)
+  sstack EBP:-4, R4
+//[   CALL temp_6 _scr 5 *temp_5]
+  rstack R5, EBP:-4
+  push #R5
+  push 5
+  call _scr
+  add esp, 2
+//store eax into temp_6
+  //(curframe:1, framedepth:1)
+  sstack EBP:-5, eax
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_8:
+//[ RET]
+leave
+ret
+//[ FUNCTION _strtest END]
+lbl_6:
+
+//[ /* end */]
+//[ /* float strlen(float *S) */]
+//[ FUNCTION _strlen BEGIN]
+
+_strlen:
+//[   FRAME ENTER]
+  lbl_10:
+  enter 3
+//[   SYMBOL S ARG]
+//[   SYMBOL len VAR]
+//[   MOV len 0]
+//store 0 into len
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, 0
+//[   /* while(S[len++]) */]
+//[   SYMBOL lbl_while_do_1 LABEL]
+//[   SYMBOL lbl_while_exit_1 LABEL]
+//[   LABEL lbl_while_do_1]
+  lbl_while_do_1:
+//[   MOV temp_7 len]
+//store EBP:#-1 into temp_7
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, EBP:#-1
+//[   ADD len len 1]
+  //load len into R6 (cf:1, fd:1)
+  rstack R6, EBP:-1
+  add R6, 1
+//store R6 into len
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, R6
+//[   ADD temp_8 temp_7 S]
+//discarding n from R1
+  //load temp_7 into R1 (cf:1, fd:1)
+  rstack R1, EBP:-2
+  add R1, EBP:#2
+//store R1 into temp_8
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, R1
+//[   JE 0 *temp_8 lbl_while_exit_1]
+//discarding a from R2
+  rstack R2, EBP:-3
+  cmp 0, #R2
+  je lbl_while_exit_1
+//[   /* do */]
+//[   JMP lbl_while_do_1]
+  jmp lbl_while_do_1
+//[   LABEL lbl_while_exit_1]
+  lbl_while_exit_1:
+//[   /* end while*/]
+//[   /* return --len; */]
+//[   SUB len len 1]
+//discarding str from R3
+  //load len into R3 (cf:1, fd:1)
+  rstack R3, EBP:-1
+  sub R3, 1
+//store R3 into len
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, R3
+//[   RET len]
+  mov eax, EBP:#-1
+  leave
+  ret
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_11:
+//[ RET]
+leave
+ret
+//[ FUNCTION _strlen END]
+lbl_9:
+
+//[ /* end */]
+//[ /* float strrev(float *S) */]
+//[ FUNCTION _strrev BEGIN]
+
+_strrev:
+//[   FRAME ENTER]
+  lbl_13:
+  enter 17
+//[   SYMBOL S_1 ARG]
+//[   SYMBOL len_1 VAR]
+//[   SYMBOL I VAR]
+//[   CALL temp_9 _strlen S_1]
+  push EBP:#2
+  call _strlen
+  add esp, 1
+//store eax into temp_9
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, eax
+//[   MOV len_1 temp_9]
+//store EBP:#-3 into len_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, EBP:#-3
+//[   /* for(I = 0; I < len/2; I++) */]
+//[      /* I = 0; */]
+//[      /* I = 0; */]
+//[      MOV I 0]
+//store 0 into I
+     //(curframe:1, framedepth:1)
+     sstack EBP:-2, 0
+//[      SYMBOL lbl_for LABEL]
+//[      SYMBOL lbl_for_exit LABEL]
+//[      LABEL lbl_for]
+     lbl_for:
+//[      /* I < len/2 */]
+//[      DIV temp_10 len_1 2]
+//discarding 0 from R4
+     //load len_1 into R4 (cf:1, fd:1)
+     rstack R4, EBP:-1
+     div R4, 2
+     fint R4
+//store R4 into temp_10
+     //(curframe:1, framedepth:1)
+     sstack EBP:-4, R4
+//[      LESS temp_11 I temp_10]
+//discarding temp_5 from R5
+     //load I into R5 (cf:1, fd:1)
+     rstack R5, EBP:-2
+     sub R5, EBP:#-4
+     fsgn R5, R5
+     min R5, 0
+//store R5 into temp_11
+     //(curframe:1, framedepth:1)
+     sstack EBP:-5, R5
+//[      JE 0 temp_11 lbl_for_exit]
+     cmp 0, EBP:#-5
+     je lbl_for_exit
+//[      /* loop body */]
+//[      ADD temp_12 I S_1]
+//discarding len from R6
+     //load I into R6 (cf:1, fd:1)
+     rstack R6, EBP:-2
+     add R6, EBP:#2
+//store R6 into temp_12
+     //(curframe:1, framedepth:1)
+     sstack EBP:-6, R6
+//[      MOV C *temp_12]
+//discarding temp_7 from R1
+     rstack R1, EBP:-6
+//store #R1 into C
+     //(curframe:1, framedepth:1)
+     sstack EBP:-7, #R1
+//[      /* S[I] = S[len-1-I]; */]
+//[      ADD temp_13 I S_1]
+//discarding temp_8 from R2
+     //load I into R2 (cf:1, fd:1)
+     rstack R2, EBP:-2
+     add R2, EBP:#2
+//store R2 into temp_13
+     //(curframe:1, framedepth:1)
+     sstack EBP:-8, R2
+//[      SUB temp_14 len_1 1]
+//discarding len from R3
+     //load len_1 into R3 (cf:1, fd:1)
+     rstack R3, EBP:-1
+     sub R3, 1
+//store R3 into temp_14
+     //(curframe:1, framedepth:1)
+     sstack EBP:-9, R3
+//[      SUB temp_15 temp_14 I]
+//discarding len_1 from R4
+     //load temp_14 into R4 (cf:1, fd:1)
+     rstack R4, EBP:-9
+     sub R4, EBP:#-2
+//store R4 into temp_15
+     //(curframe:1, framedepth:1)
+     sstack EBP:-10, R4
+//[      ADD temp_16 temp_15 S_1]
+//discarding I from R5
+     //load temp_15 into R5 (cf:1, fd:1)
+     rstack R5, EBP:-10
+     add R5, EBP:#2
+//store R5 into temp_16
+     //(curframe:1, framedepth:1)
+     sstack EBP:-11, R5
+//[      MOV *temp_13 *temp_16]
+//discarding I from R6
+     rstack R6, EBP:-11
+//store #R6 into *temp_13
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-8
+     mov R7, #R7
+     mov #R7, #R6
+//[      /* S[len-1-I] = C; */]
+//[      SUB temp_17 len_1 1]
+//discarding temp_12 from R1
+     //load len_1 into R1 (cf:1, fd:1)
+     rstack R1, EBP:-1
+     sub R1, 1
+//store R1 into temp_17
+     //(curframe:1, framedepth:1)
+     sstack EBP:-13, R1
+//[      SUB temp_18 temp_17 I]
+//discarding I from R2
+     //load temp_17 into R2 (cf:1, fd:1)
+     rstack R2, EBP:-13
+     sub R2, EBP:#-2
+//store R2 into temp_18
+     //(curframe:1, framedepth:1)
+     sstack EBP:-14, R2
+//[      ADD temp_19 temp_18 S_1]
+//discarding len_1 from R3
+     //load temp_18 into R3 (cf:1, fd:1)
+     rstack R3, EBP:-14
+     add R3, EBP:#2
+//store R3 into temp_19
+     //(curframe:1, framedepth:1)
+     sstack EBP:-15, R3
+//[      MOV *temp_19 C]
+//store EBP:#-7 into *temp_19
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-15
+     mov R7, #R7
+     mov #R7, EBP:#-7
+//[      /* I++ */]
+//[      MOV temp_20 I]
+//store EBP:#-2 into temp_20
+     //(curframe:1, framedepth:1)
+     sstack EBP:-17, EBP:#-2
+//[      ADD I I 1]
+//discarding temp_14 from R4
+     //load I into R4 (cf:1, fd:1)
+     rstack R4, EBP:-2
+     add R4, 1
+//store R4 into I
+     //(curframe:1, framedepth:1)
+     sstack EBP:-2, R4
+//[      JMP lbl_for]
+     jmp lbl_for
+//[      LABEL lbl_for_exit]
+     lbl_for_exit:
+//[      /* end for */]
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_14:
+//[ RET]
+leave
+ret
+//[ FUNCTION _strrev END]
+lbl_12:
+
+//[ /* end */]
+//[ /* float itoa(float *buff, float N) */]
+//[ FUNCTION _itoa BEGIN]
+
+_itoa:
+//[   FRAME ENTER]
+  lbl_16:
+  enter 14
+//[   SYMBOL buff ARG]
+//[   SYMBOL N ARG]
+//[   SYMBOL I_1 VAR]
+//[   MOV I_1 0]
+//store 0 into I_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, 0
+//[   /* while(N) */]
+//[   SYMBOL lbl_while_do_2 LABEL]
+//[   SYMBOL lbl_while_exit_2 LABEL]
+//[   LABEL lbl_while_do_2]
+  lbl_while_do_2:
+//[   JE 0 N lbl_while_exit_2]
+  cmp 0, EBP:#3
+  je lbl_while_exit_2
+//[   /* do */]
+//[      /* buff[I++] = '0'+N%10; */]
+//[      MOV temp_21 I_1]
+//store EBP:#-1 into temp_21
+     //(curframe:1, framedepth:1)
+     sstack EBP:-2, EBP:#-1
+//[      ADD I_1 I_1 1]
+//discarding temp_15 from R5
+     //load I_1 into R5 (cf:1, fd:1)
+     rstack R5, EBP:-1
+     add R5, 1
+//store R5 into I_1
+     //(curframe:1, framedepth:1)
+     sstack EBP:-1, R5
+//[      ADD temp_22 temp_21 buff]
+//discarding temp_16 from R6
+     //load temp_21 into R6 (cf:1, fd:1)
+     rstack R6, EBP:-2
+     add R6, EBP:#2
+//store R6 into temp_22
+     //(curframe:1, framedepth:1)
+     sstack EBP:-3, R6
+//[      MOD temp_23 N 10]
+//discarding len_1 from R1
+     //load N into R1 (cf:1, fd:1)
+     rstack R1, EBP:3
+     mod R1, 10
+     fint R1
+//store R1 into temp_23
+     //(curframe:1, framedepth:1)
+     sstack EBP:-4, R1
+//[      ADD temp_24 48 temp_23]
+//discarding temp_17 from R2
+     //load 48 into R2
+     mov R2, 48
+     add R2, EBP:#-4
+//store R2 into temp_24
+     //(curframe:1, framedepth:1)
+     sstack EBP:-5, R2
+//[      MOV *temp_22 temp_24]
+//store EBP:#-5 into *temp_22
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-3
+     mov R7, #R7
+     mov #R7, EBP:#-5
+//[      /* N = N/10; */]
+//[      DIV temp_25 N 10]
+//discarding temp_18 from R3
+     //load N into R3 (cf:1, fd:1)
+     rstack R3, EBP:3
+     div R3, 10
+     fint R3
+//store R3 into temp_25
+     //(curframe:1, framedepth:1)
+     sstack EBP:-7, R3
+//[      MOV N temp_25]
+//store EBP:#-7 into N
+     //(curframe:1, framedepth:1)
+     sstack EBP:3, EBP:#-7
+//[   JMP lbl_while_do_2]
+  jmp lbl_while_do_2
+//[   LABEL lbl_while_exit_2]
+  lbl_while_exit_2:
+//[   /* end while*/]
+//[   /* if(I==0) */]
+//[   EQUAL temp_26 I_1 0]
+//discarding I from R4
+  //load I_1 into R4 (cf:1, fd:1)
+  rstack R4, EBP:-1
+  sub R4, 0
+  fabs R4, R4
+  fsgn R4, R4
+  lneg R4
+//store R4 into temp_26
+  //(curframe:1, framedepth:1)
+  sstack EBP:-8, R4
+//[   SYMBOL lbl_if_then LABEL]
+//[   JE 0 temp_26 lbl_if_then]
+  cmp 0, EBP:#-8
+  je lbl_if_then
+//[   /* then */]
+//[      /* buff[I++] = '0'; */]
+//[      MOV temp_27 I_1]
+//store EBP:#-1 into temp_27
+     //(curframe:1, framedepth:1)
+     sstack EBP:-9, EBP:#-1
+//[      ADD I_1 I_1 1]
+//discarding I_1 from R5
+     //load I_1 into R5 (cf:1, fd:1)
+     rstack R5, EBP:-1
+     add R5, 1
+//store R5 into I_1
+     //(curframe:1, framedepth:1)
+     sstack EBP:-1, R5
+//[      ADD temp_28 temp_27 buff]
+//discarding temp_21 from R6
+     //load temp_27 into R6 (cf:1, fd:1)
+     rstack R6, EBP:-9
+     add R6, EBP:#2
+//store R6 into temp_28
+     //(curframe:1, framedepth:1)
+     sstack EBP:-10, R6
+//[      MOV *temp_28 48]
+//store 48 into *temp_28
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-10
+     mov R7, #R7
+     mov #R7, 48
+//[   SYMBOL lbl_if_exit LABEL]
+//[   JMP lbl_if_exit]
+  jmp lbl_if_exit
+//[   LABEL lbl_if_then]
+  lbl_if_then:
+//[   LABEL lbl_if_exit]
+  lbl_if_exit:
+//[   /* end */]
+//[   /* buff[I] = 0; */]
+//[   ADD temp_29 I_1 buff]
+//discarding N from R1
+  //load I_1 into R1 (cf:1, fd:1)
+  rstack R1, EBP:-1
+  add R1, EBP:#2
+//store R1 into temp_29
+  //(curframe:1, framedepth:1)
+  sstack EBP:-12, R1
+//[   MOV *temp_29 0]
+//store 0 into *temp_29
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-12
+  mov R7, #R7
+  mov #R7, 0
+//[   /* strrev(buff); */]
+//[   CALL temp_30 _strrev buff]
+  push EBP:#2
+  call _strrev
+  add esp, 1
+//store eax into temp_30
+  //(curframe:1, framedepth:1)
+  sstack EBP:-14, eax
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_17:
+//[ RET]
+leave
+ret
+//[ FUNCTION _itoa END]
+lbl_15:
+
+//[ /* end */]
+//[ /* float print(float *S) */]
+//[ FUNCTION _print BEGIN]
+
+_print:
+//[   FRAME ENTER]
+  lbl_19:
+  enter 7
+//[   SYMBOL S_2 ARG]
+//[   SYMBOL len_2 VAR]
+//[   /* printXY(S,printX,printY); */]
+//[   CALL temp_31 _printXY S_2 printX printY]
+  push #printY_1
+  push #printX_1
+  push EBP:#2
+  call _printXY
+  add esp, 3
+//store eax into temp_31
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, eax
+//[   CALL temp_32 _strlen S_2]
+  push EBP:#2
+  call _strlen
+  add esp, 1
+//store eax into temp_32
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, eax
+//[   MOV len_2 temp_32]
+//store EBP:#-3 into len_2
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, EBP:#-3
+//[   /* while(len > 29) */]
+//[   SYMBOL lbl_while_do_3 LABEL]
+//[   SYMBOL lbl_while_exit_3 LABEL]
+//[   LABEL lbl_while_do_3]
+  lbl_while_do_3:
+//[   GREATER temp_33 len_2 29]
+//discarding 48 from R2
+  //load len_2 into R2 (cf:1, fd:1)
+  rstack R2, EBP:-1
+  sub R2, 29
+  fsgn R2, R2
+  max R2, 0
+//store R2 into temp_33
+  //(curframe:1, framedepth:1)
+  sstack EBP:-4, R2
+//[   JE 0 temp_33 lbl_while_exit_3]
+  cmp 0, EBP:#-4
+  je lbl_while_exit_3
+//[   /* do */]
+//[      /* len = len - 30; */]
+//[      SUB temp_34 len_2 30]
+//discarding N from R3
+     //load len_2 into R3 (cf:1, fd:1)
+     rstack R3, EBP:-1
+     sub R3, 30
+//store R3 into temp_34
+     //(curframe:1, framedepth:1)
+     sstack EBP:-5, R3
+//[      MOV len_2 temp_34]
+//store EBP:#-5 into len_2
+     //(curframe:1, framedepth:1)
+     sstack EBP:-1, EBP:#-5
+//[      /* printX = 0; */]
+//[      MOV printX 0]
+//store 0 into printX
+     //(curframe:1, framedepth:0)
+     mov #printX_1, 0
+//[      /* printY++; */]
+//[      MOV temp_35 printY]
+//store #printY_1 into temp_35
+     //(curframe:1, framedepth:1)
+     sstack EBP:-6, #printY_1
+//[      ADD printY printY 1]
+//discarding I_1 from R4
+     //load printY into R4 (cf:1, fd:0)
+     mov R4, #printY_1
+     add R4, 1
+//store R4 into printY
+     //(curframe:1, framedepth:0)
+     mov #printY_1, R4
+//[   JMP lbl_while_do_3]
+  jmp lbl_while_do_3
+//[   LABEL lbl_while_exit_3]
+  lbl_while_exit_3:
+//[   /* end while*/]
+//[   /* printX = printX + len; */]
+//[   ADD temp_36 printX len_2]
+//discarding I_1 from R5
+  //load printX into R5 (cf:1, fd:0)
+  mov R5, #printX_1
+  add R5, EBP:#-1
+//store R5 into temp_36
+  //(curframe:1, framedepth:1)
+  sstack EBP:-7, R5
+//[   MOV printX temp_36]
+//store EBP:#-7 into printX
+  //(curframe:1, framedepth:0)
+  mov #printX_1, EBP:#-7
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_20:
+//[ RET]
+leave
+ret
+//[ FUNCTION _print END]
+lbl_18:
+
+//[ /* end */]
+//[ /* float println(float *S) */]
+//[ FUNCTION _println BEGIN]
+
+_println:
+//[   FRAME ENTER]
+  lbl_22:
+  enter 3
+//[   SYMBOL S_3 ARG]
+//[   /* print(S); */]
+//[   CALL temp_37 _print S_3]
+  push EBP:#2
+  call _print
+  add esp, 1
+//store eax into temp_37
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, eax
+//[   /* if(printX != 0) */]
+//[   NOTEQUAL temp_38 printX 0]
+//discarding temp_27 from R6
+  //load printX into R6 (cf:1, fd:0)
+  mov R6, #printX_1
+  sub R6, 0
+  fabs R6, R6
+  fsgn R6, R6
+//store R6 into temp_38
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, R6
+//[   SYMBOL lbl_if_then_1 LABEL]
+//[   JE 0 temp_38 lbl_if_then_1]
+  cmp 0, EBP:#-2
+  je lbl_if_then_1
+//[   /* then */]
+//[      /* printY++; */]
+//[      MOV temp_39 printY]
+//store #printY_1 into temp_39
+     //(curframe:1, framedepth:1)
+     sstack EBP:-3, #printY_1
+//[      ADD printY printY 1]
+//discarding I_1 from R1
+     //load printY into R1 (cf:1, fd:0)
+     mov R1, #printY_1
+     add R1, 1
+//store R1 into printY
+     //(curframe:1, framedepth:0)
+     mov #printY_1, R1
+//[      /* printX = 0; */]
+//[      MOV printX 0]
+//store 0 into printX
+     //(curframe:1, framedepth:0)
+     mov #printX_1, 0
+//[   SYMBOL lbl_if_exit_1 LABEL]
+//[   JMP lbl_if_exit_1]
+  jmp lbl_if_exit_1
+//[   LABEL lbl_if_then_1]
+  lbl_if_then_1:
+//[   LABEL lbl_if_exit_1]
+  lbl_if_exit_1:
+//[   /* end */]
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_23:
+//[ RET]
+leave
+ret
+//[ FUNCTION _println END]
+lbl_21:
+
+//[ /* end */]
+//[ /* float printnum(float N) */]
+//[ FUNCTION _printnum BEGIN]
+
+_printnum:
+//[   FRAME ENTER]
+  lbl_25:
+  enter 22
+//[   SYMBOL N_1 ARG]
+//[   SYMBOL arr VAR ARRAY 20]
+//[   /* itoa(arr,N); */]
+//[   CALL temp_40 _itoa arr N_1]
+  push EBP:#2
+  push EBP:-20
+  call _itoa
+  add esp, 2
+//store eax into temp_40
+  //(curframe:1, framedepth:1)
+  sstack EBP:-21, eax
+//[   /* print(arr); */]
+//[   CALL temp_41 _print arr]
+  push EBP:-20
+  call _print
+  add esp, 1
+//store eax into temp_41
+  //(curframe:1, framedepth:1)
+  sstack EBP:-22, eax
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_26:
+//[ RET]
+leave
+ret
+//[ FUNCTION _printnum END]
+lbl_24:
+
+//[ /* end */]
+//[ /* float printXY(float *S, float X, float Y) */]
+//[ FUNCTION _printXY BEGIN]
+
+_printXY:
+//[   FRAME ENTER]
+  lbl_28:
+  enter 17
+//[   SYMBOL S_4 ARG]
+//[   SYMBOL X ARG]
+//[   SYMBOL Y ARG]
+//[   SYMBOL I_2 VAR]
+//[   SYMBOL C_1 VAR]
+//[   MOV I_2 0]
+//store 0 into I_2
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, 0
+//[   MOV temp_42 S_4]
+//store EBP:#2 into temp_42
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, EBP:#2
+//[   ADD S_4 S_4 1]
+//discarding len_2 from R2
+  //load S_4 into R2 (cf:1, fd:1)
+  rstack R2, EBP:2
+  add R2, 1
+//store R2 into S_4
+  //(curframe:1, framedepth:1)
+  sstack EBP:2, R2
+//[   MOV temp_43 *temp_42]
+//discarding len_2 from R3
+  rstack R3, EBP:-3
+//store #R3 into temp_43
+  //(curframe:1, framedepth:1)
+  sstack EBP:-4, #R3
+//[   MOV C_1 temp_43]
+//store EBP:#-4 into C_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, EBP:#-4
+//[   /* while(C) */]
+//[   SYMBOL lbl_while_do_4 LABEL]
+//[   SYMBOL lbl_while_exit_4 LABEL]
+//[   LABEL lbl_while_do_4]
+  lbl_while_do_4:
+//[   JE 0 C_1 lbl_while_exit_4]
+  cmp 0, EBP:#-2
+  je lbl_while_exit_4
+//[   /* do */]
+//[      SYMBOL Adr VAR]
+//[      MUL temp_44 30 Y]
+//discarding printY from R4
+     //load 30 into R4
+     mov R4, 30
+     mul R4, EBP:#4
+//store R4 into temp_44
+     //(curframe:1, framedepth:1)
+     sstack EBP:-6, R4
+//[      ADD temp_45 temp_44 X]
+//discarding printX from R5
+     //load temp_44 into R5 (cf:1, fd:1)
+     rstack R5, EBP:-6
+     add R5, EBP:#3
+//store R5 into temp_45
+     //(curframe:1, framedepth:1)
+     sstack EBP:-7, R5
+//[      MOV Adr temp_45]
+//store EBP:#-7 into Adr
+     //(curframe:1, framedepth:1)
+     sstack EBP:-5, EBP:#-7
+//[      /* adr_console[2*Adr] = C; */]
+//[      MUL temp_46 2 Adr]
+//discarding printX from R6
+     //load 2 into R6
+     mov R6, 2
+     mul R6, EBP:#-5
+//store R6 into temp_46
+     //(curframe:1, framedepth:1)
+     sstack EBP:-8, R6
+//[      ADD temp_47 temp_46 adr_console]
+//discarding printY from R1
+     //load temp_46 into R1 (cf:1, fd:1)
+     rstack R1, EBP:-8
+     add R1, #adr_console_1
+//store R1 into temp_47
+     //(curframe:1, framedepth:1)
+     sstack EBP:-9, R1
+//[      MOV *temp_47 C_1]
+//store EBP:#-2 into *temp_47
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-9
+     mov R7, #R7
+     mov #R7, EBP:#-2
+//[      /* adr_console[2*Adr+1] = 999; */]
+//[      MUL temp_48 2 Adr]
+//discarding S_4 from R2
+     //load 2 into R2
+     mov R2, 2
+     mul R2, EBP:#-5
+//store R2 into temp_48
+     //(curframe:1, framedepth:1)
+     sstack EBP:-11, R2
+//[      ADD temp_49 temp_48 1]
+//discarding temp_42 from R3
+     //load temp_48 into R3 (cf:1, fd:1)
+     rstack R3, EBP:-11
+     add R3, 1
+//store R3 into temp_49
+     //(curframe:1, framedepth:1)
+     sstack EBP:-12, R3
+//[      ADD temp_50 temp_49 adr_console]
+//discarding 30 from R4
+     //load temp_49 into R4 (cf:1, fd:1)
+     rstack R4, EBP:-12
+     add R4, #adr_console_1
+//store R4 into temp_50
+     //(curframe:1, framedepth:1)
+     sstack EBP:-13, R4
+//[      MOV *temp_50 999]
+//store 999 into *temp_50
+     //(curframe:1, framedepth:1)
+     mov R7, EBP:-13
+     mov R7, #R7
+     mov #R7, 999
+//[      /* X++; */]
+//[      MOV temp_51 X]
+//store EBP:#3 into temp_51
+     //(curframe:1, framedepth:1)
+     sstack EBP:-15, EBP:#3
+//[      ADD X X 1]
+//discarding temp_44 from R5
+     //load X into R5 (cf:1, fd:1)
+     rstack R5, EBP:3
+     add R5, 1
+//store R5 into X
+     //(curframe:1, framedepth:1)
+     sstack EBP:3, R5
+//[      /* C = *S++; */]
+//[      MOV temp_52 S_4]
+//store EBP:#2 into temp_52
+     //(curframe:1, framedepth:1)
+     sstack EBP:-16, EBP:#2
+//[      ADD S_4 S_4 1]
+//discarding 2 from R6
+     //load S_4 into R6 (cf:1, fd:1)
+     rstack R6, EBP:2
+     add R6, 1
+//store R6 into S_4
+     //(curframe:1, framedepth:1)
+     sstack EBP:2, R6
+//[      MOV temp_53 *temp_52]
+//discarding temp_46 from R1
+     rstack R1, EBP:-16
+//store #R1 into temp_53
+     //(curframe:1, framedepth:1)
+     sstack EBP:-17, #R1
+//[      MOV C_1 temp_53]
+//store EBP:#-17 into C_1
+     //(curframe:1, framedepth:1)
+     sstack EBP:-2, EBP:#-17
+//[   JMP lbl_while_do_4]
+  jmp lbl_while_do_4
+//[   LABEL lbl_while_exit_4]
+  lbl_while_exit_4:
+//[   /* end while*/]
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_29:
+//[ RET]
+leave
+ret
+//[ FUNCTION _printXY END]
+lbl_27:
+
+//[ /* end */]
+//[ /* float unreachable(float) */]
+//[ FUNCTION _unreachable BEGIN]
+
+_unreachable:
+//[   FRAME ENTER]
+  lbl_31:
+  enter 0
+//[   /* while(1) */]
+//[   SYMBOL lbl_while_do_5 LABEL]
+//[   SYMBOL lbl_while_exit_5 LABEL]
+//[   LABEL lbl_while_do_5]
+  lbl_while_do_5:
+//[   JE 0 1 lbl_while_exit_5]
+  cmp 0, 1
+  je lbl_while_exit_5
+//[   /* do */]
+//[   JMP lbl_while_do_5]
+  jmp lbl_while_do_5
+//[   LABEL lbl_while_exit_5]
+  lbl_while_exit_5:
+//[   /* end while*/]
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_32:
+//[ RET]
+leave
+ret
+//[ FUNCTION _unreachable END]
+lbl_30:
+
+//[ /* end */]
+//[ STRUCT vec2 BEGIN]
+vec2:
+//[ USING vec2]
+//[ SYMBOL this ARG]
+//[ SYMBOL X_1 VAR]
+//[ SYMBOL Y_1 VAR]
+//[ /* default class constructor */]
+//[ FUNCTION constructor BEGIN]
+
+constructor:
+//[   FRAME ENTER]
+  lbl_35:
+  enter 0
+//[   USING vec2]
+//[   RET]
+  leave
+  ret
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_36:
+//[ FUNCTION constructor END]
+lbl_34:
+
+//[ /* end */]
+//[ /* default class constructor */]
+//[ FUNCTION destructor BEGIN]
+
+destructor:
+//[   FRAME ENTER]
+  lbl_38:
+  enter 0
+//[   USING vec2]
+//[   RET]
+  leave
+  ret
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_39:
+//[ FUNCTION destructor END]
+lbl_37:
+
+//[ /* end */]
+//[ STRUCT vec2 END]
+lbl_33:
+//[ /* float avg(float) */]
+//[ FUNCTION _avg BEGIN]
+
+_avg:
+//[   FRAME ENTER]
+  lbl_41:
+  enter 2
+//[   USING vec2]
+//[   SYMBOL this_1 ARG]
+//[   /* return (X+Y)/2; */]
+//[   ADD temp_54 X_1 Y_1]
+//discarding 2 from R2
+  //load X_1 into R2 (cf:1, fd:1)
+  rstack R2, EBP:-1
+  add R2, EBP:#-2
+//store R2 into temp_54
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, R2
+//[   DIV temp_55 temp_54 2]
+//discarding temp_48 from R3
+  //load temp_54 into R3 (cf:1, fd:1)
+  rstack R3, EBP:-1
+  div R3, 2
+  fint R3
+//store R3 into temp_55
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, R3
+//[   RET temp_55]
+  mov eax, EBP:#-2
+  leave
+  ret
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_42:
+//[ RET]
+leave
+ret
+//[ FUNCTION _avg END]
+lbl_40:
+
+//[ /* end */]
+//[ /* float switch(float) */]
+//[ FUNCTION _switch BEGIN]
+
+_switch:
+//[   FRAME ENTER]
+  lbl_44:
+  enter 1
+//[   USING vec2]
+//[   SYMBOL this_2 ARG]
+//[   SYMBOL Z VAR]
+//[   MOV Z X_1]
+//store EBP:#-1 into Z
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, EBP:#-1
+//[   /* X = Y; */]
+//[   MOV X_1 Y_1]
+//store EBP:#-2 into X_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-1, EBP:#-2
+//[   /* Y = Z; */]
+//[   MOV Y_1 Z]
+//store EBP:#-1 into Y_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-2, EBP:#-1
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_45:
+//[ RET]
+leave
+ret
+//[ FUNCTION _switch END]
+lbl_43:
+
+//[ /* end */]
+//[ /* float main(float) */]
+//[ FUNCTION _main BEGIN]
+
+_main:
+//[   FRAME ENTER]
+  lbl_47:
+  enter 39
+//[   SYMBOL A VAR]
+//[   SYMBOL B VAR]
+//[   /* initialize A */]
+//[   CALL temp_56 constructor A]
+  push EBP:#-1
+  call constructor
+  add esp, 1
+//store eax into temp_56
+  //(curframe:1, framedepth:1)
+  sstack EBP:-3, eax
+//[   /* initialize B */]
+//[   CALL temp_57 constructor B]
+  push EBP:#-2
+  call constructor
+  add esp, 1
+//store eax into temp_57
+  //(curframe:1, framedepth:1)
+  sstack EBP:-4, eax
+//[   /* println("Hello Wo */]
+//[   CALL temp_58 _println str_1]
+  push str_1_1
+  call _println
+  add esp, 1
+//store eax into temp_58
+  //(curframe:1, framedepth:1)
+  sstack EBP:-5, eax
+//[   /* B.X = 1; */]
+//[   ADD X_1_1 B &X_1]
+//discarding temp_49 from R4
+  //load B into R4 (cf:1, fd:1)
+  rstack R4, EBP:-2
+  add R4, EBP:-1
+//store R4 into X_1_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-6, R4
+//[   MOV *X_1_1 1]
+//store 1 into *X_1_1
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-6
+  mov R7, #R7
+  mov #R7, 1
+//[   /* B.Y = 3; */]
+//[   ADD Y_1_1 B &Y_1]
+//discarding X from R5
+  //load B into R5 (cf:1, fd:1)
+  rstack R5, EBP:-2
+  add R5, EBP:-2
+//store R5 into Y_1_1
+  //(curframe:1, framedepth:1)
+  sstack EBP:-8, R5
+//[   MOV *Y_1_1 3]
+//store 3 into *Y_1_1
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-8
+  mov R7, #R7
+  mov #R7, 3
+//[   /* A.X = 5; */]
+//[   ADD X_1_2 A &X_1]
+//discarding S_4 from R6
+  //load A into R6 (cf:1, fd:1)
+  rstack R6, EBP:-1
+  add R6, EBP:-1
+//store R6 into X_1_2
+  //(curframe:1, framedepth:1)
+  sstack EBP:-10, R6
+//[   MOV *X_1_2 5]
+//store 5 into *X_1_2
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-10
+  mov R7, #R7
+  mov #R7, 5
+//[   /* A.Y = 7; */]
+//[   ADD Y_1_2 A &Y_1]
+//discarding temp_52 from R1
+  //load A into R1 (cf:1, fd:1)
+  rstack R1, EBP:-1
+  add R1, EBP:-2
+//store R1 into Y_1_2
+  //(curframe:1, framedepth:1)
+  sstack EBP:-12, R1
+//[   MOV *Y_1_2 7]
+//store 7 into *Y_1_2
+  //(curframe:1, framedepth:1)
+  mov R7, EBP:-12
+  mov R7, #R7
+  mov #R7, 7
+//[   /* print("A.avg() = "); */]
+//[   CALL temp_59 _print str_2]
+  push str_2_1
+  call _print
+  add esp, 1
+//store eax into temp_59
+  //(curframe:1, framedepth:1)
+  sstack EBP:-14, eax
+//[   /* printnum(A.avg()); */]
+//[   CALL temp_60 _avg]
+  call _avg
+  add esp, 0
+//store eax into temp_60
+  //(curframe:1, framedepth:1)
+  sstack EBP:-15, eax
+//[   CALL temp_61 _printnum temp_60]
+  push EBP:#-15
+  call _printnum
+  add esp, 1
+//store eax into temp_61
+  //(curframe:1, framedepth:1)
+  sstack EBP:-16, eax
+//[   /* println(""); */]
+//[   CALL temp_62 _println str_3]
+  push str_3_1
+  call _println
+  add esp, 1
+//store eax into temp_62
+  //(curframe:1, framedepth:1)
+  sstack EBP:-17, eax
+//[   /* print("B.avg() = "); */]
+//[   CALL temp_63 _print str_4]
+  push str_4_1
+  call _print
+  add esp, 1
+//store eax into temp_63
+  //(curframe:1, framedepth:1)
+  sstack EBP:-18, eax
+//[   /* printnum(B.avg()); */]
+//[   CALL temp_64 _avg]
+  call _avg
+  add esp, 0
+//store eax into temp_64
+  //(curframe:1, framedepth:1)
+  sstack EBP:-19, eax
+//[   CALL temp_65 _printnum temp_64]
+  push EBP:#-19
+  call _printnum
+  add esp, 1
+//store eax into temp_65
+  //(curframe:1, framedepth:1)
+  sstack EBP:-20, eax
+//[   /* println(""); */]
+//[   CALL temp_66 _println str_5]
+  push str_5_1
+  call _println
+  add esp, 1
+//store eax into temp_66
+  //(curframe:1, framedepth:1)
+  sstack EBP:-21, eax
+//[   /* print("A.X = "); */]
+//[   CALL temp_67 _print str_6]
+  push str_6_1
+  call _print
+  add esp, 1
+//store eax into temp_67
+  //(curframe:1, framedepth:1)
+  sstack EBP:-22, eax
+//[   /* printnum(A.X); */]
+//[   ADD X_1_3 A &X_1]
+//discarding X_1 from R2
+  //load A into R2 (cf:1, fd:1)
+  rstack R2, EBP:-1
+  add R2, EBP:-1
+//store R2 into X_1_3
+  //(curframe:1, framedepth:1)
+  sstack EBP:-23, R2
+//[   CALL temp_68 _printnum *X_1_3]
+//discarding temp_54 from R3
+  rstack R3, EBP:-23
+  push #R3
+  call _printnum
+  add esp, 1
+//store eax into temp_68
+  //(curframe:1, framedepth:1)
+  sstack EBP:-24, eax
+//[   /* print(", A.Y = "); */]
+//[   CALL temp_69 _print str_7]
+  push str_7_1
+  call _print
+  add esp, 1
+//store eax into temp_69
+  //(curframe:1, framedepth:1)
+  sstack EBP:-25, eax
+//[   /* printnum(A.Y); */]
+//[   ADD Y_1_3 A &Y_1]
+//discarding B from R4
+  //load A into R4 (cf:1, fd:1)
+  rstack R4, EBP:-1
+  add R4, EBP:-2
+//store R4 into Y_1_3
+  //(curframe:1, framedepth:1)
+  sstack EBP:-26, R4
+//[   CALL temp_70 _printnum *Y_1_3]
+//discarding B from R5
+  rstack R5, EBP:-26
+  push #R5
+  call _printnum
+  add esp, 1
+//store eax into temp_70
+  //(curframe:1, framedepth:1)
+  sstack EBP:-27, eax
+//[   /* println(""); */]
+//[   CALL temp_71 _println str_8]
+  push str_8_1
+  call _println
+  add esp, 1
+//store eax into temp_71
+  //(curframe:1, framedepth:1)
+  sstack EBP:-28, eax
+//[   /* A.switch(); */]
+//[   CALL temp_72 _switch]
+  call _switch
+  add esp, 0
+//store eax into temp_72
+  //(curframe:1, framedepth:1)
+  sstack EBP:-29, eax
+//[   /* println("switched"); */]
+//[   CALL temp_73 _println str_9]
+  push str_9_1
+  call _println
+  add esp, 1
+//store eax into temp_73
+  //(curframe:1, framedepth:1)
+  sstack EBP:-30, eax
+//[   /* print("A.X = "); */]
+//[   CALL temp_74 _print str_10]
+  push str_10_1
+  call _print
+  add esp, 1
+//store eax into temp_74
+  //(curframe:1, framedepth:1)
+  sstack EBP:-31, eax
+//[   /* printnum(A.X); */]
+//[   ADD X_1_4 A &X_1]
+//discarding A from R6
+  //load A into R6 (cf:1, fd:1)
+  rstack R6, EBP:-1
+  add R6, EBP:-1
+//store R6 into X_1_4
+  //(curframe:1, framedepth:1)
+  sstack EBP:-32, R6
+//[   CALL temp_75 _printnum *X_1_4]
+//discarding A from R1
+  rstack R1, EBP:-32
+  push #R1
+  call _printnum
+  add esp, 1
+//store eax into temp_75
+  //(curframe:1, framedepth:1)
+  sstack EBP:-33, eax
+//[   /* print(", A.Y = "); */]
+//[   CALL temp_76 _print str_11]
+  push str_11_1
+  call _print
+  add esp, 1
+//store eax into temp_76
+  //(curframe:1, framedepth:1)
+  sstack EBP:-34, eax
+//[   /* printnum(A.Y); */]
+//[   ADD Y_1_4 A &Y_1]
+//discarding A from R2
+  //load A into R2 (cf:1, fd:1)
+  rstack R2, EBP:-1
+  add R2, EBP:-2
+//store R2 into Y_1_4
+  //(curframe:1, framedepth:1)
+  sstack EBP:-35, R2
+//[   CALL temp_77 _printnum *Y_1_4]
+//discarding X_1_3 from R3
+  rstack R3, EBP:-35
+  push #R3
+  call _printnum
+  add esp, 1
+//store eax into temp_77
+  //(curframe:1, framedepth:1)
+  sstack EBP:-36, eax
+//[   /* println(""); */]
+//[   CALL temp_78 _println str_12]
+  push str_12_1
+  call _println
+  add esp, 1
+//store eax into temp_78
+  //(curframe:1, framedepth:1)
+  sstack EBP:-37, eax
+//[   /* while(1) */]
+//[   SYMBOL lbl_while_do_6 LABEL]
+//[   SYMBOL lbl_while_exit_6 LABEL]
+//[   LABEL lbl_while_do_6]
+  lbl_while_do_6:
+//[   JE 0 1 lbl_while_exit_6]
+  cmp 0, 1
+  je lbl_while_exit_6
+//[   /* do */]
+//[   JMP lbl_while_do_6]
+  jmp lbl_while_do_6
+//[   LABEL lbl_while_exit_6]
+  lbl_while_exit_6:
+//[   /* end while*/]
+//[   /* destroy A */]
+//[   CALL temp_79 destructor A]
+  push EBP:#-1
+  call destructor
+  add esp, 1
+//store eax into temp_79
+  //(curframe:1, framedepth:1)
+  sstack EBP:-38, eax
+//[   /* destroy B */]
+//[   CALL temp_80 destructor B]
+  push EBP:#-2
+  call destructor
+  add esp, 1
+//store eax into temp_80
+  //(curframe:1, framedepth:1)
+  sstack EBP:-39, eax
+//[   FRAME LEAVE]
+  leave
+  ret
+  lbl_48:
+//[ RET]
+leave
+ret
+//[ FUNCTION _main END]
+lbl_46:
+
+//[ /* end */]
+code_segment_epilog:
+trace:
+cmp #68884,0
+je trace_exit
+pusha
+mov eax, 68866
+mov eax:#0, ESP:#0
+mov eax:#1, ESP:#1
+mov eax:#2, ESP:#2
+mov eax:#3, ESP:#3
+mov eax:#4, ESP:#4
+mov eax:#5, ESP:#5
+mov eax:#6, ESP:#6
+mov eax:#7, ESP:#7
+mov eax:#8, ESP:#8
+mov eax:#9, ESP:#9
+mov eax:#10, ESP:#10
+mov eax:#11, ESP:#11
+mov eax:#12, ESP:#12
+mov eax:#13, ESP:#13
+mov eax:#14, ESP:#14
+mov eax:#15, ESP:#15
+mov eax:#16, ESP:#16
+mov eax:#17, ESP:#17
+mov eax:#19, ESP
+mov eax:#20, debug_info
+popa
+int 1
+ret
+trace_exit:
+ret
+code_segment_end:
+data_segment_dynamic_start:
+adr_buttons_1: db 0 //adr_buttons
+adr_leds_1: db 0 //adr_leds
+adr_screen_1: db 0 //adr_screen
+adr_keyboard_1: db 0 //adr_keyboard
+adr_console_1: db 0 //adr_console
+printX_1: db 0 //printX
+printY_1: db 0 //printY
+str_1_1: db "no\\nu",0
+str_2_1: db "A.avg() = ",0
+str_3_1: db "",0
+str_4_1: db "B.avg() = ",0
+str_5_1: db "",0
+str_6_1: db "A.X = ",0
+str_7_1: db ", A.Y = ",0
+str_8_1: db "",0
+str_9_1: db "switched",0
+str_10_1: db "A.X = ",0
+str_11_1: db ", A.Y = ",0
+str_12_1: db "",0
+temp_81_1: db 0 //temp_81
+data_segment_dynamic_end:
+data_segment_static_start:
+string_store:
+debug_info:
+debug_info_funcs:
+DB 16
+ //number of functions
+//[len][entrance,exit,[len][IR_name],[len][username]]
+DB 11, _delay, lbl, 6, "_delay",0, 0, "",0;
+DB 9, _scr, lbl_3, 4, "_scr",0, 0, "",0;
+DB 13, _strtest, lbl_6, 8, "_strtest",0, 0, "",0;
+DB 12, _strlen, lbl_9, 7, "_strlen",0, 0, "",0;
+DB 12, _strrev, lbl_12, 7, "_strrev",0, 0, "",0;
+DB 10, _itoa, lbl_15, 5, "_itoa",0, 0, "",0;
+DB 11, _print, lbl_18, 6, "_print",0, 0, "",0;
+DB 13, _println, lbl_21, 8, "_println",0, 0, "",0;
+DB 14, _printnum, lbl_24, 9, "_printnum",0, 0, "",0;
+DB 13, _printXY, lbl_27, 8, "_printXY",0, 0, "",0;
+DB 17, _unreachable, lbl_30, 12, "_unreachable",0, 0, "",0;
+DB 9, _avg, lbl_40, 4, "_avg",0, 0, "",0;
+DB 12, _switch, lbl_43, 7, "_switch",0, 0, "",0;
+DB 10, _main, lbl_46, 5, "_main",0, 0, "",0;
+DB 16, constructor, lbl_34, 11, "constructor",0, 0, "",0;
+DB 15, destructor, lbl_37, 10, "destructor",0, 0, "",0;
+debug_info_vars:
+DB 38
+ //number of variables
+//[len][visible_from,visible_to,pos,framedepth,[len][IR_name],[len][username]]
+
+//VAR adr_buttons
+DB 17 //recordlen
+DB code_segment_start //adr_buttons->lbl_from
+DB code_segment_end //adr_buttons->lbl_to
+DB adr_buttons_1 //adr_buttons->lbl_at
+DB 0 //adr_buttons->framedepth
+DB 11, "adr_buttons",0 //adr_buttons->IR_name
+DB 0, "",0//adr_buttons->username
+
+//VAR adr_leds
+DB 14 //recordlen
+DB code_segment_start //adr_leds->lbl_from
+DB code_segment_end //adr_leds->lbl_to
+DB adr_leds_1 //adr_leds->lbl_at
+DB 0 //adr_leds->framedepth
+DB 8, "adr_leds",0 //adr_leds->IR_name
+DB 0, "",0//adr_leds->username
+
+//VAR adr_screen
+DB 16 //recordlen
+DB code_segment_start //adr_screen->lbl_from
+DB code_segment_end //adr_screen->lbl_to
+DB adr_screen_1 //adr_screen->lbl_at
+DB 0 //adr_screen->framedepth
+DB 10, "adr_screen",0 //adr_screen->IR_name
+DB 0, "",0//adr_screen->username
+
+//VAR adr_keyboard
+DB 18 //recordlen
+DB code_segment_start //adr_keyboard->lbl_from
+DB code_segment_end //adr_keyboard->lbl_to
+DB adr_keyboard_1 //adr_keyboard->lbl_at
+DB 0 //adr_keyboard->framedepth
+DB 12, "adr_keyboard",0 //adr_keyboard->IR_name
+DB 0, "",0//adr_keyboard->username
+
+//VAR adr_console
+DB 17 //recordlen
+DB code_segment_start //adr_console->lbl_from
+DB code_segment_end //adr_console->lbl_to
+DB adr_console_1 //adr_console->lbl_at
+DB 0 //adr_console->framedepth
+DB 11, "adr_console",0 //adr_console->IR_name
+DB 0, "",0//adr_console->username
+
+//VAR printX
+DB 12 //recordlen
+DB code_segment_start //printX->lbl_from
+DB code_segment_end //printX->lbl_to
+DB printX_1 //printX->lbl_at
+DB 0 //printX->framedepth
+DB 6, "printX",0 //printX->IR_name
+DB 0, "",0//printX->username
+
+//VAR printY
+DB 12 //recordlen
+DB code_segment_start //printY->lbl_from
+DB code_segment_end //printY->lbl_to
+DB printY_1 //printY->lbl_at
+DB 0 //printY->framedepth
+DB 6, "printY",0 //printY->IR_name
+DB 0, "",0//printY->username
+
+//ARG n
+DB 7 //recordlen
+DB lbl_1 //n->lbl_from
+DB lbl_2 //n->lbl_to
+DB 2 //n->pos
+DB 1 //n->framedepth
+DB 1, "n",0 //n->IR_name
+DB 0, "",0//n->username
+
+//ARG a
+DB 7 //recordlen
+DB lbl_4 //a->lbl_from
+DB lbl_5 //a->lbl_to
+DB 2 //a->pos
+DB 1 //a->framedepth
+DB 1, "a",0 //a->IR_name
+DB 0, "",0//a->username
+
+//ARG b
+DB 7 //recordlen
+DB lbl_4 //b->lbl_from
+DB lbl_5 //b->lbl_to
+DB 3 //b->pos
+DB 1 //b->framedepth
+DB 1, "b",0 //b->IR_name
+DB 0, "",0//b->username
+
+//ARG str
+DB 9 //recordlen
+DB lbl_7 //str->lbl_from
+DB lbl_8 //str->lbl_to
+DB 2 //str->pos
+DB 1 //str->framedepth
+DB 3, "str",0 //str->IR_name
+DB 0, "",0//str->username
+
+//ARG S
+DB 7 //recordlen
+DB lbl_10 //S->lbl_from
+DB lbl_11 //S->lbl_to
+DB 2 //S->pos
+DB 1 //S->framedepth
+DB 1, "S",0 //S->IR_name
+DB 0, "",0//S->username
+
+//VAR len
+DB 9 //recordlen
+DB lbl_10 //len->lbl_from
+DB lbl_11 //len->lbl_to
+DB -1 //len->pos
+DB 1 //len->framedepth
+DB 3, "len",0 //len->IR_name
+DB 0, "",0//len->username
+
+//ARG S_1
+DB 9 //recordlen
+DB lbl_13 //S_1->lbl_from
+DB lbl_14 //S_1->lbl_to
+DB 2 //S_1->pos
+DB 1 //S_1->framedepth
+DB 3, "S_1",0 //S_1->IR_name
+DB 0, "",0//S_1->username
+
+//VAR len_1
+DB 11 //recordlen
+DB lbl_13 //len_1->lbl_from
+DB lbl_14 //len_1->lbl_to
+DB -1 //len_1->pos
+DB 1 //len_1->framedepth
+DB 5, "len_1",0 //len_1->IR_name
+DB 0, "",0//len_1->username
+
+//VAR I
+DB 7 //recordlen
+DB lbl_13 //I->lbl_from
+DB lbl_14 //I->lbl_to
+DB -2 //I->pos
+DB 1 //I->framedepth
+DB 1, "I",0 //I->IR_name
+DB 0, "",0//I->username
+
+//ARG buff
+DB 10 //recordlen
+DB lbl_16 //buff->lbl_from
+DB lbl_17 //buff->lbl_to
+DB 2 //buff->pos
+DB 1 //buff->framedepth
+DB 4, "buff",0 //buff->IR_name
+DB 0, "",0//buff->username
+
+//ARG N
+DB 7 //recordlen
+DB lbl_16 //N->lbl_from
+DB lbl_17 //N->lbl_to
+DB 3 //N->pos
+DB 1 //N->framedepth
+DB 1, "N",0 //N->IR_name
+DB 0, "",0//N->username
+
+//VAR I_1
+DB 9 //recordlen
+DB lbl_16 //I_1->lbl_from
+DB lbl_17 //I_1->lbl_to
+DB -1 //I_1->pos
+DB 1 //I_1->framedepth
+DB 3, "I_1",0 //I_1->IR_name
+DB 0, "",0//I_1->username
+
+//ARG S_2
+DB 9 //recordlen
+DB lbl_19 //S_2->lbl_from
+DB lbl_20 //S_2->lbl_to
+DB 2 //S_2->pos
+DB 1 //S_2->framedepth
+DB 3, "S_2",0 //S_2->IR_name
+DB 0, "",0//S_2->username
+
+//VAR len_2
+DB 11 //recordlen
+DB lbl_19 //len_2->lbl_from
+DB lbl_20 //len_2->lbl_to
+DB -1 //len_2->pos
+DB 1 //len_2->framedepth
+DB 5, "len_2",0 //len_2->IR_name
+DB 0, "",0//len_2->username
+
+//ARG S_3
+DB 9 //recordlen
+DB lbl_22 //S_3->lbl_from
+DB lbl_23 //S_3->lbl_to
+DB 2 //S_3->pos
+DB 1 //S_3->framedepth
+DB 3, "S_3",0 //S_3->IR_name
+DB 0, "",0//S_3->username
+
+//ARG N_1
+DB 9 //recordlen
+DB lbl_25 //N_1->lbl_from
+DB lbl_26 //N_1->lbl_to
+DB 2 //N_1->pos
+DB 1 //N_1->framedepth
+DB 3, "N_1",0 //N_1->IR_name
+DB 0, "",0//N_1->username
+
+//VAR arr
+DB 9 //recordlen
+DB lbl_25 //arr->lbl_from
+DB lbl_26 //arr->lbl_to
+DB -20 //arr->pos
+DB 1 //arr->framedepth
+DB 3, "arr",0 //arr->IR_name
+DB 0, "",0//arr->username
+
+//ARG S_4
+DB 9 //recordlen
+DB lbl_28 //S_4->lbl_from
+DB lbl_29 //S_4->lbl_to
+DB 2 //S_4->pos
+DB 1 //S_4->framedepth
+DB 3, "S_4",0 //S_4->IR_name
+DB 0, "",0//S_4->username
+
+//ARG X
+DB 7 //recordlen
+DB lbl_28 //X->lbl_from
+DB lbl_29 //X->lbl_to
+DB 3 //X->pos
+DB 1 //X->framedepth
+DB 1, "X",0 //X->IR_name
+DB 0, "",0//X->username
+
+//ARG Y
+DB 7 //recordlen
+DB lbl_28 //Y->lbl_from
+DB lbl_29 //Y->lbl_to
+DB 4 //Y->pos
+DB 1 //Y->framedepth
+DB 1, "Y",0 //Y->IR_name
+DB 0, "",0//Y->username
+
+//VAR I_2
+DB 9 //recordlen
+DB lbl_28 //I_2->lbl_from
+DB lbl_29 //I_2->lbl_to
+DB -1 //I_2->pos
+DB 1 //I_2->framedepth
+DB 3, "I_2",0 //I_2->IR_name
+DB 0, "",0//I_2->username
+
+//VAR C_1
+DB 9 //recordlen
+DB lbl_28 //C_1->lbl_from
+DB lbl_29 //C_1->lbl_to
+DB -2 //C_1->pos
+DB 1 //C_1->framedepth
+DB 3, "C_1",0 //C_1->IR_name
+DB 0, "",0//C_1->username
+
+//VAR Adr
+DB 9 //recordlen
+DB lbl_28 //Adr->lbl_from
+DB lbl_29 //Adr->lbl_to
+DB -5 //Adr->pos
+DB 1 //Adr->framedepth
+DB 3, "Adr",0 //Adr->IR_name
+DB 0, "",0//Adr->username
+
+//ARG this
+DB 10 //recordlen
+DB vec2 //this->lbl_from
+DB (null) //this->lbl_to
+DB 2 //this->pos
+DB 1 //this->framedepth
+DB 4, "this",0 //this->IR_name
+DB 0, "",0//this->username
+
+//VAR X_1
+DB 9 //recordlen
+DB vec2 //X_1->lbl_from
+DB (null) //X_1->lbl_to
+DB -1 //X_1->pos
+DB 1 //X_1->framedepth
+DB 3, "X_1",0 //X_1->IR_name
+DB 0, "",0//X_1->username
+
+//VAR Y_1
+DB 9 //recordlen
+DB vec2 //Y_1->lbl_from
+DB (null) //Y_1->lbl_to
+DB -2 //Y_1->pos
+DB 1 //Y_1->framedepth
+DB 3, "Y_1",0 //Y_1->IR_name
+DB 0, "",0//Y_1->username
+
+//ARG this_1
+DB 12 //recordlen
+DB lbl_41 //this_1->lbl_from
+DB lbl_42 //this_1->lbl_to
+DB 2 //this_1->pos
+DB 1 //this_1->framedepth
+DB 6, "this_1",0 //this_1->IR_name
+DB 0, "",0//this_1->username
+
+//ARG this_2
+DB 12 //recordlen
+DB lbl_44 //this_2->lbl_from
+DB lbl_45 //this_2->lbl_to
+DB 2 //this_2->pos
+DB 1 //this_2->framedepth
+DB 6, "this_2",0 //this_2->IR_name
+DB 0, "",0//this_2->username
+
+//VAR Z
+DB 7 //recordlen
+DB lbl_44 //Z->lbl_from
+DB lbl_45 //Z->lbl_to
+DB -1 //Z->pos
+DB 1 //Z->framedepth
+DB 1, "Z",0 //Z->IR_name
+DB 0, "",0//Z->username
+
+//VAR A
+DB 7 //recordlen
+DB lbl_47 //A->lbl_from
+DB lbl_48 //A->lbl_to
+DB -1 //A->pos
+DB 1 //A->framedepth
+DB 1, "A",0 //A->IR_name
+DB 0, "",0//A->username
+
+//VAR B
+DB 7 //recordlen
+DB lbl_47 //B->lbl_from
+DB lbl_48 //B->lbl_to
+DB -2 //B->pos
+DB 1 //B->framedepth
+DB 1, "B",0 //B->IR_name
+DB 0, "",0//B->username
+data_segment_static_end:

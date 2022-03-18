@@ -1,0 +1,1986 @@
+initializing register table
+reg table initialize
+CS 007250C0:
+new frame, depth:0, vs.size:0, as.size:0
+
+CS DECLARATIVE PASS ===============================
+
+codegen_decl [ SYMBOL adr_buttons VAR]
+got symbol: adr_buttons / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL adr_leds VAR]
+got symbol: adr_leds / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL adr_screen VAR]
+got symbol: adr_screen / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL adr_keyboard VAR]
+got symbol: adr_keyboard / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL adr_console VAR]
+got symbol: adr_console / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL printX VAR]
+got symbol: printX / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL printY VAR]
+got symbol: printY / VAR / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ MOV adr_buttons 65536]
+codegen_decl [ MOV adr_leds 65546]
+codegen_decl [ MOV adr_screen 65556]
+codegen_decl [ MOV adr_keyboard 65566]
+codegen_decl [ MOV adr_console 65866]
+codegen_decl [ MOV printX 0]
+codegen_decl [ MOV printY 0]
+codegen_decl [ SYMBOL str_1 STRING no\\nu]
+got symbol: str_1 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_2 STRING A.avg() = ]
+got symbol: str_2 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_3 STRING ]
+got symbol: str_3 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_4 STRING B.avg() = ]
+got symbol: str_4 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_5 STRING ]
+got symbol: str_5 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_6 STRING A.X = ]
+got symbol: str_6 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_7 STRING , A.Y = ]
+got symbol: str_7 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_8 STRING ]
+got symbol: str_8 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_9 STRING switched]
+got symbol: str_9 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_10 STRING A.X = ]
+got symbol: str_10 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_11 STRING , A.Y = ]
+got symbol: str_11 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ SYMBOL str_12 STRING ]
+got symbol: str_12 / STRING / ptr=0 / pos=0 / frame=0 / from=code_segment_start
+codegen_decl [ CALL temp_81 _main]
+stored temp_81 as new value
+codegen_decl [ /* float delay(float n) */]
+codegen_decl [ FUNCTION _delay BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00750368
+|frame.depth: 1
+|frame.cmd_index: 29
+|frame.lbl_from: lbl_1
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL n ARG]
+got symbol: n / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_1
+codegen_decl [   /* while(n--) */]
+codegen_decl [   SYMBOL lbl_while_do LABEL]
+got symbol: lbl_while_do / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_1
+codegen_decl [   SYMBOL lbl_while_exit LABEL]
+got symbol: lbl_while_exit / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_1
+codegen_decl [   LABEL lbl_while_do]
+codegen_decl [   MOV temp n]
+stored temp as new value
+codegen_decl [   SUB n n 1]
+codegen_decl [   JE 0 temp lbl_while_exit]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do]
+codegen_decl [   LABEL lbl_while_exit]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 21
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _delay END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float scr(float a, float b) */]
+codegen_decl [ FUNCTION _scr BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00750888
+|frame.depth: 1
+|frame.cmd_index: 48
+|frame.lbl_from: lbl_4
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL a ARG]
+got symbol: a / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_4
+codegen_decl [   SYMBOL b ARG]
+got symbol: b / ARG / ptr=0 / pos=3 / frame=1 / from=lbl_4
+codegen_decl [   /* adr_screen[a] = b; */]
+codegen_decl [   ADD temp_1 a adr_screen]
+stored temp_1 as new value
+codegen_decl [   MOV *temp_1 b]
+stored *temp_1 as new value
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 22
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _scr END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strtest(float *str) */]
+codegen_decl [ FUNCTION _strtest BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00750D88
+|frame.depth: 1
+|frame.cmd_index: 60
+|frame.lbl_from: lbl_7
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL str ARG]
+got symbol: str / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_7
+codegen_decl [   /* scr(3,str); */]
+codegen_decl [   CALL temp_2 _scr 3 str]
+stored temp_2 as new value
+codegen_decl [   /* scr(4,*str); */]
+codegen_decl [   MOV temp_3 *str]
+stored temp_3 as new value
+codegen_decl [   CALL temp_4 _scr 4 temp_3]
+stored temp_4 as new value
+codegen_decl [   /* scr(5,str[0]); */]
+codegen_decl [   ADD temp_5 0 str]
+stored temp_5 as new value
+codegen_decl [   CALL temp_6 _scr 5 *temp_5]
+stored temp_6 as new value
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 23
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strtest END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strlen(float *S) */]
+codegen_decl [ FUNCTION _strlen BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00751390
+|frame.depth: 1
+|frame.cmd_index: 76
+|frame.lbl_from: lbl_10
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL S ARG]
+got symbol: S / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_10
+codegen_decl [   SYMBOL len VAR]
+got symbol: len / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_10
+codegen_decl [   MOV len 0]
+codegen_decl [   /* while(S[len++]) */]
+codegen_decl [   SYMBOL lbl_while_do_1 LABEL]
+got symbol: lbl_while_do_1 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_10
+codegen_decl [   SYMBOL lbl_while_exit_1 LABEL]
+got symbol: lbl_while_exit_1 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_10
+codegen_decl [   LABEL lbl_while_do_1]
+codegen_decl [   MOV temp_7 len]
+stored temp_7 as new value
+codegen_decl [   ADD len len 1]
+codegen_decl [   ADD temp_8 temp_7 S]
+stored temp_8 as new value
+codegen_decl [   JE 0 *temp_8 lbl_while_exit_1]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_1]
+codegen_decl [   LABEL lbl_while_exit_1]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* return --len; */]
+codegen_decl [   SUB len len 1]
+codegen_decl [   RET len]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 24
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strlen END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strrev(float *S) */]
+codegen_decl [ FUNCTION _strrev BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 007519F8
+|frame.depth: 1
+|frame.cmd_index: 101
+|frame.lbl_from: lbl_13
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL S_1 ARG]
+got symbol: S_1 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_13
+codegen_decl [   SYMBOL len_1 VAR]
+got symbol: len_1 / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_13
+codegen_decl [   SYMBOL I VAR]
+got symbol: I / VAR / ptr=0 / pos=-2 / frame=1 / from=lbl_13
+codegen_decl [   CALL temp_9 _strlen S_1]
+stored temp_9 as new value
+codegen_decl [   MOV len_1 temp_9]
+codegen_decl [   /* for(I = 0; I < len/2; I++) */]
+codegen_decl [      /* I = 0; */]
+codegen_decl [      /* I = 0; */]
+codegen_decl [      MOV I 0]
+codegen_decl [      SYMBOL lbl_for LABEL]
+got symbol: lbl_for / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_13
+codegen_decl [      SYMBOL lbl_for_exit LABEL]
+got symbol: lbl_for_exit / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_13
+codegen_decl [      LABEL lbl_for]
+codegen_decl [      /* I < len/2 */]
+codegen_decl [      DIV temp_10 len_1 2]
+stored temp_10 as new value
+codegen_decl [      LESS temp_11 I temp_10]
+stored temp_11 as new value
+codegen_decl [      JE 0 temp_11 lbl_for_exit]
+codegen_decl [      /* loop body */]
+codegen_decl [      ADD temp_12 I S_1]
+stored temp_12 as new value
+codegen_decl [      MOV C *temp_12]
+stored C as new value
+codegen_decl [      /* S[I] = S[len-1-I]; */]
+codegen_decl [      ADD temp_13 I S_1]
+stored temp_13 as new value
+codegen_decl [      SUB temp_14 len_1 1]
+stored temp_14 as new value
+codegen_decl [      SUB temp_15 temp_14 I]
+stored temp_15 as new value
+codegen_decl [      ADD temp_16 temp_15 S_1]
+stored temp_16 as new value
+codegen_decl [      MOV *temp_13 *temp_16]
+stored *temp_13 as new value
+codegen_decl [      /* S[len-1-I] = C; */]
+codegen_decl [      SUB temp_17 len_1 1]
+stored temp_17 as new value
+codegen_decl [      SUB temp_18 temp_17 I]
+stored temp_18 as new value
+codegen_decl [      ADD temp_19 temp_18 S_1]
+stored temp_19 as new value
+codegen_decl [      MOV *temp_19 C]
+stored *temp_19 as new value
+codegen_decl [      /* I++ */]
+codegen_decl [      MOV temp_20 I]
+stored temp_20 as new value
+codegen_decl [      ADD I I 1]
+codegen_decl [      JMP lbl_for]
+codegen_decl [      LABEL lbl_for_exit]
+codegen_decl [      /* end for */]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 25
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strrev END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float itoa(float *buff, float N) */]
+codegen_decl [ FUNCTION _itoa BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 0074FE18
+|frame.depth: 1
+|frame.cmd_index: 144
+|frame.lbl_from: lbl_16
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL buff ARG]
+got symbol: buff / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_16
+codegen_decl [   SYMBOL N ARG]
+got symbol: N / ARG / ptr=0 / pos=3 / frame=1 / from=lbl_16
+codegen_decl [   SYMBOL I_1 VAR]
+got symbol: I_1 / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_16
+codegen_decl [   MOV I_1 0]
+codegen_decl [   /* while(N) */]
+codegen_decl [   SYMBOL lbl_while_do_2 LABEL]
+got symbol: lbl_while_do_2 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_16
+codegen_decl [   SYMBOL lbl_while_exit_2 LABEL]
+got symbol: lbl_while_exit_2 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_16
+codegen_decl [   LABEL lbl_while_do_2]
+codegen_decl [   JE 0 N lbl_while_exit_2]
+codegen_decl [   /* do */]
+codegen_decl [      /* buff[I++] = '0'+N%10; */]
+codegen_decl [      MOV temp_21 I_1]
+stored temp_21 as new value
+codegen_decl [      ADD I_1 I_1 1]
+codegen_decl [      ADD temp_22 temp_21 buff]
+stored temp_22 as new value
+codegen_decl [      MOD temp_23 N 10]
+stored temp_23 as new value
+codegen_decl [      ADD temp_24 48 temp_23]
+stored temp_24 as new value
+codegen_decl [      MOV *temp_22 temp_24]
+stored *temp_22 as new value
+codegen_decl [      /* N = N/10; */]
+codegen_decl [      DIV temp_25 N 10]
+stored temp_25 as new value
+codegen_decl [      MOV N temp_25]
+codegen_decl [   JMP lbl_while_do_2]
+codegen_decl [   LABEL lbl_while_exit_2]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* if(I==0) */]
+codegen_decl [   EQUAL temp_26 I_1 0]
+stored temp_26 as new value
+codegen_decl [   SYMBOL lbl_if_then LABEL]
+got symbol: lbl_if_then / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_16
+codegen_decl [   JE 0 temp_26 lbl_if_then]
+codegen_decl [   /* then */]
+codegen_decl [      /* buff[I++] = '0'; */]
+codegen_decl [      MOV temp_27 I_1]
+stored temp_27 as new value
+codegen_decl [      ADD I_1 I_1 1]
+codegen_decl [      ADD temp_28 temp_27 buff]
+stored temp_28 as new value
+codegen_decl [      MOV *temp_28 48]
+stored *temp_28 as new value
+codegen_decl [   SYMBOL lbl_if_exit LABEL]
+got symbol: lbl_if_exit / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_16
+codegen_decl [   JMP lbl_if_exit]
+codegen_decl [   LABEL lbl_if_then]
+codegen_decl [   LABEL lbl_if_exit]
+codegen_decl [   /* end */]
+codegen_decl [   /* buff[I] = 0; */]
+codegen_decl [   ADD temp_29 I_1 buff]
+stored temp_29 as new value
+codegen_decl [   MOV *temp_29 0]
+stored *temp_29 as new value
+codegen_decl [   /* strrev(buff); */]
+codegen_decl [   CALL temp_30 _strrev buff]
+stored temp_30 as new value
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 26
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _itoa END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float print(float *S) */]
+codegen_decl [ FUNCTION _print BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 007538B0
+|frame.depth: 1
+|frame.cmd_index: 194
+|frame.lbl_from: lbl_19
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL S_2 ARG]
+got symbol: S_2 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_19
+codegen_decl [   SYMBOL len_2 VAR]
+got symbol: len_2 / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_19
+codegen_decl [   /* printXY(S,printX,printY); */]
+codegen_decl [   CALL temp_31 _printXY S_2 printX printY]
+stored temp_31 as new value
+codegen_decl [   CALL temp_32 _strlen S_2]
+stored temp_32 as new value
+codegen_decl [   MOV len_2 temp_32]
+codegen_decl [   /* while(len > 29) */]
+codegen_decl [   SYMBOL lbl_while_do_3 LABEL]
+got symbol: lbl_while_do_3 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_19
+codegen_decl [   SYMBOL lbl_while_exit_3 LABEL]
+got symbol: lbl_while_exit_3 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_19
+codegen_decl [   LABEL lbl_while_do_3]
+codegen_decl [   GREATER temp_33 len_2 29]
+stored temp_33 as new value
+codegen_decl [   JE 0 temp_33 lbl_while_exit_3]
+codegen_decl [   /* do */]
+codegen_decl [      /* len = len - 30; */]
+codegen_decl [      SUB temp_34 len_2 30]
+stored temp_34 as new value
+codegen_decl [      MOV len_2 temp_34]
+codegen_decl [      /* printX = 0; */]
+codegen_decl [      MOV printX 0]
+codegen_decl [      /* printY++; */]
+codegen_decl [      MOV temp_35 printY]
+stored temp_35 as new value
+codegen_decl [      ADD printY printY 1]
+codegen_decl [   JMP lbl_while_do_3]
+codegen_decl [   LABEL lbl_while_exit_3]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* printX = printX + len; */]
+codegen_decl [   ADD temp_36 printX len_2]
+stored temp_36 as new value
+codegen_decl [   MOV printX temp_36]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 27
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _print END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float println(float *S) */]
+codegen_decl [ FUNCTION _println BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00754188
+|frame.depth: 1
+|frame.cmd_index: 228
+|frame.lbl_from: lbl_22
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL S_3 ARG]
+got symbol: S_3 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_22
+codegen_decl [   /* print(S); */]
+codegen_decl [   CALL temp_37 _print S_3]
+stored temp_37 as new value
+codegen_decl [   /* if(printX != 0) */]
+codegen_decl [   NOTEQUAL temp_38 printX 0]
+stored temp_38 as new value
+codegen_decl [   SYMBOL lbl_if_then_1 LABEL]
+got symbol: lbl_if_then_1 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_22
+codegen_decl [   JE 0 temp_38 lbl_if_then_1]
+codegen_decl [   /* then */]
+codegen_decl [      /* printY++; */]
+codegen_decl [      MOV temp_39 printY]
+stored temp_39 as new value
+codegen_decl [      ADD printY printY 1]
+codegen_decl [      /* printX = 0; */]
+codegen_decl [      MOV printX 0]
+codegen_decl [   SYMBOL lbl_if_exit_1 LABEL]
+got symbol: lbl_if_exit_1 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_22
+codegen_decl [   JMP lbl_if_exit_1]
+codegen_decl [   LABEL lbl_if_then_1]
+codegen_decl [   LABEL lbl_if_exit_1]
+codegen_decl [   /* end */]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 28
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _println END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float printnum(float N) */]
+codegen_decl [ FUNCTION _printnum BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 007547D0
+|frame.depth: 1
+|frame.cmd_index: 253
+|frame.lbl_from: lbl_25
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL N_1 ARG]
+got symbol: N_1 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_25
+codegen_decl [   SYMBOL arr VAR ARRAY 20]
+got symbol: arr / VAR / ptr=1 / pos=-20 / frame=1 / from=lbl_25
+codegen_decl [   /* itoa(arr,N); */]
+codegen_decl [   CALL temp_40 _itoa arr N_1]
+stored temp_40 as new value
+codegen_decl [   /* print(arr); */]
+codegen_decl [   CALL temp_41 _print arr]
+stored temp_41 as new value
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 29
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _printnum END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float printXY(float *S, float X, float Y) */]
+codegen_decl [ FUNCTION _printXY BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00754CD0
+|frame.depth: 1
+|frame.cmd_index: 266
+|frame.lbl_from: lbl_28
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL S_4 ARG]
+got symbol: S_4 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_28
+codegen_decl [   SYMBOL X ARG]
+got symbol: X / ARG / ptr=0 / pos=3 / frame=1 / from=lbl_28
+codegen_decl [   SYMBOL Y ARG]
+got symbol: Y / ARG / ptr=0 / pos=4 / frame=1 / from=lbl_28
+codegen_decl [   SYMBOL I_2 VAR]
+got symbol: I_2 / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_28
+codegen_decl [   SYMBOL C_1 VAR]
+got symbol: C_1 / VAR / ptr=0 / pos=-2 / frame=1 / from=lbl_28
+codegen_decl [   MOV I_2 0]
+codegen_decl [   MOV temp_42 S_4]
+stored temp_42 as new value
+codegen_decl [   ADD S_4 S_4 1]
+codegen_decl [   MOV temp_43 *temp_42]
+stored temp_43 as new value
+codegen_decl [   MOV C_1 temp_43]
+codegen_decl [   /* while(C) */]
+codegen_decl [   SYMBOL lbl_while_do_4 LABEL]
+got symbol: lbl_while_do_4 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_28
+codegen_decl [   SYMBOL lbl_while_exit_4 LABEL]
+got symbol: lbl_while_exit_4 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_28
+codegen_decl [   LABEL lbl_while_do_4]
+codegen_decl [   JE 0 C_1 lbl_while_exit_4]
+codegen_decl [   /* do */]
+codegen_decl [      SYMBOL Adr VAR]
+got symbol: Adr / VAR / ptr=0 / pos=-5 / frame=1 / from=lbl_28
+codegen_decl [      MUL temp_44 30 Y]
+stored temp_44 as new value
+codegen_decl [      ADD temp_45 temp_44 X]
+stored temp_45 as new value
+codegen_decl [      MOV Adr temp_45]
+codegen_decl [      /* adr_console[2*Adr] = C; */]
+codegen_decl [      MUL temp_46 2 Adr]
+stored temp_46 as new value
+codegen_decl [      ADD temp_47 temp_46 adr_console]
+stored temp_47 as new value
+codegen_decl [      MOV *temp_47 C_1]
+stored *temp_47 as new value
+codegen_decl [      /* adr_console[2*Adr+1] = 999; */]
+codegen_decl [      MUL temp_48 2 Adr]
+stored temp_48 as new value
+codegen_decl [      ADD temp_49 temp_48 1]
+stored temp_49 as new value
+codegen_decl [      ADD temp_50 temp_49 adr_console]
+stored temp_50 as new value
+codegen_decl [      MOV *temp_50 999]
+stored *temp_50 as new value
+codegen_decl [      /* X++; */]
+codegen_decl [      MOV temp_51 X]
+stored temp_51 as new value
+codegen_decl [      ADD X X 1]
+codegen_decl [      /* C = *S++; */]
+codegen_decl [      MOV temp_52 S_4]
+stored temp_52 as new value
+codegen_decl [      ADD S_4 S_4 1]
+codegen_decl [      MOV temp_53 *temp_52]
+stored temp_53 as new value
+codegen_decl [      MOV C_1 temp_53]
+codegen_decl [   JMP lbl_while_do_4]
+codegen_decl [   LABEL lbl_while_exit_4]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 30
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _printXY END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float unreachable(float) */]
+codegen_decl [ FUNCTION _unreachable BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00755D30
+|frame.depth: 1
+|frame.cmd_index: 313
+|frame.lbl_from: lbl_31
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   /* while(1) */]
+codegen_decl [   SYMBOL lbl_while_do_5 LABEL]
+got symbol: lbl_while_do_5 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_31
+codegen_decl [   SYMBOL lbl_while_exit_5 LABEL]
+got symbol: lbl_while_exit_5 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_31
+codegen_decl [   LABEL lbl_while_do_5]
+codegen_decl [   JE 0 1 lbl_while_exit_5]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_5]
+codegen_decl [   LABEL lbl_while_exit_5]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 31
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _unreachable END]
+codegen_decl [ /* end */]
+codegen_decl [ STRUCT vec2 BEGIN]
+new frame, depth:1, vs.size:0, as.size:0
+new struct frame:
++------------------
+|frame 007560E8
+|frame.depth: 1
+|frame.cmd_index: 327
+|frame.lbl_from: vec2
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [ USING vec2]
+codegen_decl [ SYMBOL this ARG]
+got symbol: this / ARG / ptr=0 / pos=2 / frame=1 / from=vec2
+codegen_decl [ SYMBOL X_1 VAR]
+got symbol: X_1 / VAR / ptr=0 / pos=-1 / frame=1 / from=vec2
+codegen_decl [ SYMBOL Y_1 VAR]
+got symbol: Y_1 / VAR / ptr=0 / pos=-2 / frame=1 / from=vec2
+codegen_decl [ /* default class constructor */]
+codegen_decl [ FUNCTION constructor BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:2, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00756560
+|frame.depth: 2
+|frame.cmd_index: 334
+|frame.lbl_from: lbl_35
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 007560E8
++------------------
+codegen_decl [   USING vec2]
+codegen_decl [   RET]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 007560E8
+|frame.depth: 1
+|frame.cmd_index: 327
+|frame.lbl_from: vec2
+|frame.lbl_to: (null)
+|frame.symbols.size: 4
+|frame.parent: 0074DC50
++------------------
+codegen_decl [ FUNCTION constructor END]
+codegen_decl [ /* end */]
+codegen_decl [ /* default class constructor */]
+codegen_decl [ FUNCTION destructor BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:2, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00756780
+|frame.depth: 2
+|frame.cmd_index: 342
+|frame.lbl_from: lbl_38
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 007560E8
++------------------
+codegen_decl [   USING vec2]
+codegen_decl [   RET]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 007560E8
+|frame.depth: 1
+|frame.cmd_index: 327
+|frame.lbl_from: vec2
+|frame.lbl_to: (null)
+|frame.symbols.size: 5
+|frame.parent: 0074DC50
++------------------
+codegen_decl [ FUNCTION destructor END]
+codegen_decl [ /* end */]
+codegen_decl [ STRUCT vec2 END]
+codegen_decl [ /* float avg(float) */]
+codegen_decl [ FUNCTION _avg BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00752918
+|frame.depth: 1
+|frame.cmd_index: 351
+|frame.lbl_from: lbl_41
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   USING vec2]
+codegen_decl [   SYMBOL this_1 ARG]
+got symbol: this_1 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_41
+codegen_decl [   /* return (X+Y)/2; */]
+codegen_decl [   ADD temp_54 X_1 Y_1]
+stored temp_54 as new value
+codegen_decl [   DIV temp_55 temp_54 2]
+stored temp_55 as new value
+codegen_decl [   RET temp_55]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 33
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _avg END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float switch(float) */]
+codegen_decl [ FUNCTION _switch BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 00756EB0
+|frame.depth: 1
+|frame.cmd_index: 364
+|frame.lbl_from: lbl_44
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   USING vec2]
+codegen_decl [   SYMBOL this_2 ARG]
+got symbol: this_2 / ARG / ptr=0 / pos=2 / frame=1 / from=lbl_44
+codegen_decl [   SYMBOL Z VAR]
+got symbol: Z / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_44
+codegen_decl [   MOV Z X_1]
+codegen_decl [   /* X = Y; */]
+codegen_decl [   MOV X_1 Y_1]
+codegen_decl [   /* Y = Z; */]
+codegen_decl [   MOV Y_1 Z]
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 34
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _switch END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float main(float) */]
+codegen_decl [ FUNCTION _main BEGIN]
+codegen_decl [   FRAME ENTER]
+new frame, depth:1, vs.size:0, as.size:0
+new current frame:
++------------------
+|frame 007572B0
+|frame.depth: 1
+|frame.cmd_index: 379
+|frame.lbl_from: lbl_47
+|frame.lbl_to: (null)
+|frame.symbols.size: 0
+|frame.parent: 0074DC50
++------------------
+codegen_decl [   SYMBOL A VAR]
+got symbol: A / VAR / ptr=0 / pos=-1 / frame=1 / from=lbl_47
+codegen_decl [   SYMBOL B VAR]
+got symbol: B / VAR / ptr=0 / pos=-2 / frame=1 / from=lbl_47
+codegen_decl [   /* initialize A */]
+codegen_decl [   CALL temp_56 constructor A]
+stored temp_56 as new value
+codegen_decl [   /* initialize B */]
+codegen_decl [   CALL temp_57 constructor B]
+stored temp_57 as new value
+codegen_decl [   /* println("Hello Wo */]
+codegen_decl [   CALL temp_58 _println str_1]
+stored temp_58 as new value
+codegen_decl [   /* B.X = 1; */]
+codegen_decl [   ADD X_1_1 B &X_1]
+stored X_1_1 as new value
+codegen_decl [   MOV *X_1_1 1]
+stored *X_1_1 as new value
+codegen_decl [   /* B.Y = 3; */]
+codegen_decl [   ADD Y_1_1 B &Y_1]
+stored Y_1_1 as new value
+codegen_decl [   MOV *Y_1_1 3]
+stored *Y_1_1 as new value
+codegen_decl [   /* A.X = 5; */]
+codegen_decl [   ADD X_1_2 A &X_1]
+stored X_1_2 as new value
+codegen_decl [   MOV *X_1_2 5]
+stored *X_1_2 as new value
+codegen_decl [   /* A.Y = 7; */]
+codegen_decl [   ADD Y_1_2 A &Y_1]
+stored Y_1_2 as new value
+codegen_decl [   MOV *Y_1_2 7]
+stored *Y_1_2 as new value
+codegen_decl [   /* print("A.avg() = "); */]
+codegen_decl [   CALL temp_59 _print str_2]
+stored temp_59 as new value
+codegen_decl [   /* printnum(A.avg()); */]
+codegen_decl [   CALL temp_60 _avg]
+stored temp_60 as new value
+codegen_decl [   CALL temp_61 _printnum temp_60]
+stored temp_61 as new value
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_62 _println str_3]
+stored temp_62 as new value
+codegen_decl [   /* print("B.avg() = "); */]
+codegen_decl [   CALL temp_63 _print str_4]
+stored temp_63 as new value
+codegen_decl [   /* printnum(B.avg()); */]
+codegen_decl [   CALL temp_64 _avg]
+stored temp_64 as new value
+codegen_decl [   CALL temp_65 _printnum temp_64]
+stored temp_65 as new value
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_66 _println str_5]
+stored temp_66 as new value
+codegen_decl [   /* print("A.X = "); */]
+codegen_decl [   CALL temp_67 _print str_6]
+stored temp_67 as new value
+codegen_decl [   /* printnum(A.X); */]
+codegen_decl [   ADD X_1_3 A &X_1]
+stored X_1_3 as new value
+codegen_decl [   CALL temp_68 _printnum *X_1_3]
+stored temp_68 as new value
+codegen_decl [   /* print(", A.Y = "); */]
+codegen_decl [   CALL temp_69 _print str_7]
+stored temp_69 as new value
+codegen_decl [   /* printnum(A.Y); */]
+codegen_decl [   ADD Y_1_3 A &Y_1]
+stored Y_1_3 as new value
+codegen_decl [   CALL temp_70 _printnum *Y_1_3]
+stored temp_70 as new value
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_71 _println str_8]
+stored temp_71 as new value
+codegen_decl [   /* A.switch(); */]
+codegen_decl [   CALL temp_72 _switch]
+stored temp_72 as new value
+codegen_decl [   /* println("switched"); */]
+codegen_decl [   CALL temp_73 _println str_9]
+stored temp_73 as new value
+codegen_decl [   /* print("A.X = "); */]
+codegen_decl [   CALL temp_74 _print str_10]
+stored temp_74 as new value
+codegen_decl [   /* printnum(A.X); */]
+codegen_decl [   ADD X_1_4 A &X_1]
+stored X_1_4 as new value
+codegen_decl [   CALL temp_75 _printnum *X_1_4]
+stored temp_75 as new value
+codegen_decl [   /* print(", A.Y = "); */]
+codegen_decl [   CALL temp_76 _print str_11]
+stored temp_76 as new value
+codegen_decl [   /* printnum(A.Y); */]
+codegen_decl [   ADD Y_1_4 A &Y_1]
+stored Y_1_4 as new value
+codegen_decl [   CALL temp_77 _printnum *Y_1_4]
+stored temp_77 as new value
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_78 _println str_12]
+stored temp_78 as new value
+codegen_decl [   /* while(1) */]
+codegen_decl [   SYMBOL lbl_while_do_6 LABEL]
+got symbol: lbl_while_do_6 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_47
+codegen_decl [   SYMBOL lbl_while_exit_6 LABEL]
+got symbol: lbl_while_exit_6 / LABEL / ptr=0 / pos=0 / frame=1 / from=lbl_47
+codegen_decl [   LABEL lbl_while_do_6]
+codegen_decl [   JE 0 1 lbl_while_exit_6]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_6]
+codegen_decl [   LABEL lbl_while_exit_6]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* destroy A */]
+codegen_decl [   CALL temp_79 destructor A]
+stored temp_79 as new value
+codegen_decl [   /* destroy B */]
+codegen_decl [   CALL temp_80 destructor B]
+stored temp_80 as new value
+codegen_decl [   FRAME LEAVE]
+leaving for old frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _main END]
+codegen_decl [ /* end */]
+
+CS IMPERATIVE PASS ===============================
+
+codegen_decl [ SYMBOL adr_buttons VAR]
+codegen_decl [ SYMBOL adr_leds VAR]
+codegen_decl [ SYMBOL adr_screen VAR]
+codegen_decl [ SYMBOL adr_keyboard VAR]
+codegen_decl [ SYMBOL adr_console VAR]
+codegen_decl [ SYMBOL printX VAR]
+codegen_decl [ SYMBOL printY VAR]
+codegen_decl [ MOV adr_buttons 65536]
+storeValue(adr_buttons, 65536)
+codegen_decl [ MOV adr_leds 65546]
+storeValue(adr_leds, 65546)
+codegen_decl [ MOV adr_screen 65556]
+storeValue(adr_screen, 65556)
+codegen_decl [ MOV adr_keyboard 65566]
+storeValue(adr_keyboard, 65566)
+codegen_decl [ MOV adr_console 65866]
+storeValue(adr_console, 65866)
+codegen_decl [ MOV printX 0]
+storeValue(printX, 0)
+codegen_decl [ MOV printY 0]
+storeValue(printY, 0)
+codegen_decl [ SYMBOL str_1 STRING no\\nu]
+codegen_decl [ SYMBOL str_2 STRING A.avg() = ]
+codegen_decl [ SYMBOL str_3 STRING ]
+codegen_decl [ SYMBOL str_4 STRING B.avg() = ]
+codegen_decl [ SYMBOL str_5 STRING ]
+codegen_decl [ SYMBOL str_6 STRING A.X = ]
+codegen_decl [ SYMBOL str_7 STRING , A.Y = ]
+codegen_decl [ SYMBOL str_8 STRING ]
+codegen_decl [ SYMBOL str_9 STRING switched]
+codegen_decl [ SYMBOL str_10 STRING A.X = ]
+codegen_decl [ SYMBOL str_11 STRING , A.Y = ]
+codegen_decl [ SYMBOL str_12 STRING ]
+codegen_decl [ CALL temp_81 _main]
+storeValue(temp_81, eax)
+codegen_decl [ /* float delay(float n) */]
+codegen_decl [ FUNCTION _delay BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00750368
+|frame.depth: 1
+|frame.cmd_index: 29
+|frame.lbl_from: lbl_1
+|frame.lbl_to: lbl_2
+|frame.symbols.size: 4
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_1) printed
+codegen_decl [   SYMBOL n ARG]
+codegen_decl [   /* while(n--) */]
+codegen_decl [   SYMBOL lbl_while_do LABEL]
+codegen_decl [   SYMBOL lbl_while_exit LABEL]
+codegen_decl [   LABEL lbl_while_do]
+codegen_decl [   MOV temp n]
+storeValue(temp, EBP:#2)
+codegen_decl [   SUB n n 1]
+allocated register 0 (R1)
+storeValue(n, R1)
+codegen_decl [   JE 0 temp lbl_while_exit]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do]
+codegen_decl [   LABEL lbl_while_exit]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _delay END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float scr(float a, float b) */]
+codegen_decl [ FUNCTION _scr BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00750888
+|frame.depth: 1
+|frame.cmd_index: 48
+|frame.lbl_from: lbl_4
+|frame.lbl_to: lbl_5
+|frame.symbols.size: 4
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_4) printed
+codegen_decl [   SYMBOL a ARG]
+codegen_decl [   SYMBOL b ARG]
+codegen_decl [   /* adr_screen[a] = b; */]
+codegen_decl [   ADD temp_1 a adr_screen]
+allocated register 1 (R2)
+storeValue(temp_1, R2)
+codegen_decl [   MOV *temp_1 b]
+storeValue(*temp_1, EBP:#3)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _scr END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strtest(float *str) */]
+codegen_decl [ FUNCTION _strtest BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00750D88
+|frame.depth: 1
+|frame.cmd_index: 60
+|frame.lbl_from: lbl_7
+|frame.lbl_to: lbl_8
+|frame.symbols.size: 6
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_7) printed
+codegen_decl [   SYMBOL str ARG]
+codegen_decl [   /* scr(3,str); */]
+codegen_decl [   CALL temp_2 _scr 3 str]
+storeValue(temp_2, eax)
+codegen_decl [   /* scr(4,*str); */]
+codegen_decl [   MOV temp_3 *str]
+allocated register 2 (R3)
+storeValue(temp_3, #R3)
+codegen_decl [   CALL temp_4 _scr 4 temp_3]
+storeValue(temp_4, eax)
+codegen_decl [   /* scr(5,str[0]); */]
+codegen_decl [   ADD temp_5 0 str]
+allocated register 3 (R4)
+storeValue(temp_5, R4)
+codegen_decl [   CALL temp_6 _scr 5 *temp_5]
+allocated register 4 (R5)
+storeValue(temp_6, eax)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strtest END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strlen(float *S) */]
+codegen_decl [ FUNCTION _strlen BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00751390
+|frame.depth: 1
+|frame.cmd_index: 76
+|frame.lbl_from: lbl_10
+|frame.lbl_to: lbl_11
+|frame.symbols.size: 6
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_10) printed
+codegen_decl [   SYMBOL S ARG]
+codegen_decl [   SYMBOL len VAR]
+codegen_decl [   MOV len 0]
+storeValue(len, 0)
+codegen_decl [   /* while(S[len++]) */]
+codegen_decl [   SYMBOL lbl_while_do_1 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_1 LABEL]
+codegen_decl [   LABEL lbl_while_do_1]
+codegen_decl [   MOV temp_7 len]
+storeValue(temp_7, EBP:#-1)
+codegen_decl [   ADD len len 1]
+allocated register 5 (R6)
+storeValue(len, R6)
+codegen_decl [   ADD temp_8 temp_7 S]
+allocated register 0 (R1)
+storeValue(temp_8, R1)
+codegen_decl [   JE 0 *temp_8 lbl_while_exit_1]
+allocated register 1 (R2)
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_1]
+codegen_decl [   LABEL lbl_while_exit_1]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* return --len; */]
+codegen_decl [   SUB len len 1]
+allocated register 2 (R3)
+storeValue(len, R3)
+codegen_decl [   RET len]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strlen END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float strrev(float *S) */]
+codegen_decl [ FUNCTION _strrev BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 007519F8
+|frame.depth: 1
+|frame.cmd_index: 101
+|frame.lbl_from: lbl_13
+|frame.lbl_to: lbl_14
+|frame.symbols.size: 20
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_13) printed
+codegen_decl [   SYMBOL S_1 ARG]
+codegen_decl [   SYMBOL len_1 VAR]
+codegen_decl [   SYMBOL I VAR]
+codegen_decl [   CALL temp_9 _strlen S_1]
+storeValue(temp_9, eax)
+codegen_decl [   MOV len_1 temp_9]
+storeValue(len_1, EBP:#-3)
+codegen_decl [   /* for(I = 0; I < len/2; I++) */]
+codegen_decl [      /* I = 0; */]
+codegen_decl [      /* I = 0; */]
+codegen_decl [      MOV I 0]
+storeValue(I, 0)
+codegen_decl [      SYMBOL lbl_for LABEL]
+codegen_decl [      SYMBOL lbl_for_exit LABEL]
+codegen_decl [      LABEL lbl_for]
+codegen_decl [      /* I < len/2 */]
+codegen_decl [      DIV temp_10 len_1 2]
+allocated register 3 (R4)
+storeValue(temp_10, R4)
+codegen_decl [      LESS temp_11 I temp_10]
+allocated register 4 (R5)
+storeValue(temp_11, R5)
+codegen_decl [      JE 0 temp_11 lbl_for_exit]
+codegen_decl [      /* loop body */]
+codegen_decl [      ADD temp_12 I S_1]
+allocated register 5 (R6)
+storeValue(temp_12, R6)
+codegen_decl [      MOV C *temp_12]
+allocated register 0 (R1)
+storeValue(C, #R1)
+codegen_decl [      /* S[I] = S[len-1-I]; */]
+codegen_decl [      ADD temp_13 I S_1]
+allocated register 1 (R2)
+storeValue(temp_13, R2)
+codegen_decl [      SUB temp_14 len_1 1]
+allocated register 2 (R3)
+storeValue(temp_14, R3)
+codegen_decl [      SUB temp_15 temp_14 I]
+allocated register 3 (R4)
+storeValue(temp_15, R4)
+codegen_decl [      ADD temp_16 temp_15 S_1]
+allocated register 4 (R5)
+storeValue(temp_16, R5)
+codegen_decl [      MOV *temp_13 *temp_16]
+allocated register 5 (R6)
+storeValue(*temp_13, #R6)
+codegen_decl [      /* S[len-1-I] = C; */]
+codegen_decl [      SUB temp_17 len_1 1]
+allocated register 0 (R1)
+storeValue(temp_17, R1)
+codegen_decl [      SUB temp_18 temp_17 I]
+allocated register 1 (R2)
+storeValue(temp_18, R2)
+codegen_decl [      ADD temp_19 temp_18 S_1]
+allocated register 2 (R3)
+storeValue(temp_19, R3)
+codegen_decl [      MOV *temp_19 C]
+storeValue(*temp_19, EBP:#-7)
+codegen_decl [      /* I++ */]
+codegen_decl [      MOV temp_20 I]
+storeValue(temp_20, EBP:#-2)
+codegen_decl [      ADD I I 1]
+allocated register 3 (R4)
+storeValue(I, R4)
+codegen_decl [      JMP lbl_for]
+codegen_decl [      LABEL lbl_for_exit]
+codegen_decl [      /* end for */]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _strrev END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float itoa(float *buff, float N) */]
+codegen_decl [ FUNCTION _itoa BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 0074FE18
+|frame.depth: 1
+|frame.cmd_index: 144
+|frame.lbl_from: lbl_16
+|frame.lbl_to: lbl_17
+|frame.symbols.size: 20
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_16) printed
+codegen_decl [   SYMBOL buff ARG]
+codegen_decl [   SYMBOL N ARG]
+codegen_decl [   SYMBOL I_1 VAR]
+codegen_decl [   MOV I_1 0]
+storeValue(I_1, 0)
+codegen_decl [   /* while(N) */]
+codegen_decl [   SYMBOL lbl_while_do_2 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_2 LABEL]
+codegen_decl [   LABEL lbl_while_do_2]
+codegen_decl [   JE 0 N lbl_while_exit_2]
+codegen_decl [   /* do */]
+codegen_decl [      /* buff[I++] = '0'+N%10; */]
+codegen_decl [      MOV temp_21 I_1]
+storeValue(temp_21, EBP:#-1)
+codegen_decl [      ADD I_1 I_1 1]
+allocated register 4 (R5)
+storeValue(I_1, R5)
+codegen_decl [      ADD temp_22 temp_21 buff]
+allocated register 5 (R6)
+storeValue(temp_22, R6)
+codegen_decl [      MOD temp_23 N 10]
+allocated register 0 (R1)
+storeValue(temp_23, R1)
+codegen_decl [      ADD temp_24 48 temp_23]
+allocated register 1 (R2)
+storeValue(temp_24, R2)
+codegen_decl [      MOV *temp_22 temp_24]
+storeValue(*temp_22, EBP:#-5)
+codegen_decl [      /* N = N/10; */]
+codegen_decl [      DIV temp_25 N 10]
+allocated register 2 (R3)
+storeValue(temp_25, R3)
+codegen_decl [      MOV N temp_25]
+storeValue(N, EBP:#-7)
+codegen_decl [   JMP lbl_while_do_2]
+codegen_decl [   LABEL lbl_while_exit_2]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* if(I==0) */]
+codegen_decl [   EQUAL temp_26 I_1 0]
+allocated register 3 (R4)
+storeValue(temp_26, R4)
+codegen_decl [   SYMBOL lbl_if_then LABEL]
+codegen_decl [   JE 0 temp_26 lbl_if_then]
+codegen_decl [   /* then */]
+codegen_decl [      /* buff[I++] = '0'; */]
+codegen_decl [      MOV temp_27 I_1]
+storeValue(temp_27, EBP:#-1)
+codegen_decl [      ADD I_1 I_1 1]
+allocated register 4 (R5)
+storeValue(I_1, R5)
+codegen_decl [      ADD temp_28 temp_27 buff]
+allocated register 5 (R6)
+storeValue(temp_28, R6)
+codegen_decl [      MOV *temp_28 48]
+storeValue(*temp_28, 48)
+codegen_decl [   SYMBOL lbl_if_exit LABEL]
+codegen_decl [   JMP lbl_if_exit]
+codegen_decl [   LABEL lbl_if_then]
+codegen_decl [   LABEL lbl_if_exit]
+codegen_decl [   /* end */]
+codegen_decl [   /* buff[I] = 0; */]
+codegen_decl [   ADD temp_29 I_1 buff]
+allocated register 0 (R1)
+storeValue(temp_29, R1)
+codegen_decl [   MOV *temp_29 0]
+storeValue(*temp_29, 0)
+codegen_decl [   /* strrev(buff); */]
+codegen_decl [   CALL temp_30 _strrev buff]
+storeValue(temp_30, eax)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _itoa END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float print(float *S) */]
+codegen_decl [ FUNCTION _print BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 007538B0
+|frame.depth: 1
+|frame.cmd_index: 194
+|frame.lbl_from: lbl_19
+|frame.lbl_to: lbl_20
+|frame.symbols.size: 10
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_19) printed
+codegen_decl [   SYMBOL S_2 ARG]
+codegen_decl [   SYMBOL len_2 VAR]
+codegen_decl [   /* printXY(S,printX,printY); */]
+codegen_decl [   CALL temp_31 _printXY S_2 printX printY]
+storeValue(temp_31, eax)
+codegen_decl [   CALL temp_32 _strlen S_2]
+storeValue(temp_32, eax)
+codegen_decl [   MOV len_2 temp_32]
+storeValue(len_2, EBP:#-3)
+codegen_decl [   /* while(len > 29) */]
+codegen_decl [   SYMBOL lbl_while_do_3 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_3 LABEL]
+codegen_decl [   LABEL lbl_while_do_3]
+codegen_decl [   GREATER temp_33 len_2 29]
+allocated register 1 (R2)
+storeValue(temp_33, R2)
+codegen_decl [   JE 0 temp_33 lbl_while_exit_3]
+codegen_decl [   /* do */]
+codegen_decl [      /* len = len - 30; */]
+codegen_decl [      SUB temp_34 len_2 30]
+allocated register 2 (R3)
+storeValue(temp_34, R3)
+codegen_decl [      MOV len_2 temp_34]
+storeValue(len_2, EBP:#-5)
+codegen_decl [      /* printX = 0; */]
+codegen_decl [      MOV printX 0]
+storeValue(printX, 0)
+codegen_decl [      /* printY++; */]
+codegen_decl [      MOV temp_35 printY]
+storeValue(temp_35, #printY_1)
+codegen_decl [      ADD printY printY 1]
+allocated register 3 (R4)
+storeValue(printY, R4)
+codegen_decl [   JMP lbl_while_do_3]
+codegen_decl [   LABEL lbl_while_exit_3]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* printX = printX + len; */]
+codegen_decl [   ADD temp_36 printX len_2]
+allocated register 4 (R5)
+storeValue(temp_36, R5)
+codegen_decl [   MOV printX temp_36]
+storeValue(printX, EBP:#-7)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _print END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float println(float *S) */]
+codegen_decl [ FUNCTION _println BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00754188
+|frame.depth: 1
+|frame.cmd_index: 228
+|frame.lbl_from: lbl_22
+|frame.lbl_to: lbl_23
+|frame.symbols.size: 6
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_22) printed
+codegen_decl [   SYMBOL S_3 ARG]
+codegen_decl [   /* print(S); */]
+codegen_decl [   CALL temp_37 _print S_3]
+storeValue(temp_37, eax)
+codegen_decl [   /* if(printX != 0) */]
+codegen_decl [   NOTEQUAL temp_38 printX 0]
+allocated register 5 (R6)
+storeValue(temp_38, R6)
+codegen_decl [   SYMBOL lbl_if_then_1 LABEL]
+codegen_decl [   JE 0 temp_38 lbl_if_then_1]
+codegen_decl [   /* then */]
+codegen_decl [      /* printY++; */]
+codegen_decl [      MOV temp_39 printY]
+storeValue(temp_39, #printY_1)
+codegen_decl [      ADD printY printY 1]
+allocated register 0 (R1)
+storeValue(printY, R1)
+codegen_decl [      /* printX = 0; */]
+codegen_decl [      MOV printX 0]
+storeValue(printX, 0)
+codegen_decl [   SYMBOL lbl_if_exit_1 LABEL]
+codegen_decl [   JMP lbl_if_exit_1]
+codegen_decl [   LABEL lbl_if_then_1]
+codegen_decl [   LABEL lbl_if_exit_1]
+codegen_decl [   /* end */]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _println END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float printnum(float N) */]
+codegen_decl [ FUNCTION _printnum BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 007547D0
+|frame.depth: 1
+|frame.cmd_index: 253
+|frame.lbl_from: lbl_25
+|frame.lbl_to: lbl_26
+|frame.symbols.size: 4
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_25) printed
+codegen_decl [   SYMBOL N_1 ARG]
+codegen_decl [   SYMBOL arr VAR ARRAY 20]
+codegen_decl [   /* itoa(arr,N); */]
+codegen_decl [   CALL temp_40 _itoa arr N_1]
+storeValue(temp_40, eax)
+codegen_decl [   /* print(arr); */]
+codegen_decl [   CALL temp_41 _print arr]
+storeValue(temp_41, eax)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _printnum END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float printXY(float *S, float X, float Y) */]
+codegen_decl [ FUNCTION _printXY BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00754CD0
+|frame.depth: 1
+|frame.cmd_index: 266
+|frame.lbl_from: lbl_28
+|frame.lbl_to: lbl_29
+|frame.symbols.size: 22
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_28) printed
+codegen_decl [   SYMBOL S_4 ARG]
+codegen_decl [   SYMBOL X ARG]
+codegen_decl [   SYMBOL Y ARG]
+codegen_decl [   SYMBOL I_2 VAR]
+codegen_decl [   SYMBOL C_1 VAR]
+codegen_decl [   MOV I_2 0]
+storeValue(I_2, 0)
+codegen_decl [   MOV temp_42 S_4]
+storeValue(temp_42, EBP:#2)
+codegen_decl [   ADD S_4 S_4 1]
+allocated register 1 (R2)
+storeValue(S_4, R2)
+codegen_decl [   MOV temp_43 *temp_42]
+allocated register 2 (R3)
+storeValue(temp_43, #R3)
+codegen_decl [   MOV C_1 temp_43]
+storeValue(C_1, EBP:#-4)
+codegen_decl [   /* while(C) */]
+codegen_decl [   SYMBOL lbl_while_do_4 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_4 LABEL]
+codegen_decl [   LABEL lbl_while_do_4]
+codegen_decl [   JE 0 C_1 lbl_while_exit_4]
+codegen_decl [   /* do */]
+codegen_decl [      SYMBOL Adr VAR]
+codegen_decl [      MUL temp_44 30 Y]
+allocated register 3 (R4)
+storeValue(temp_44, R4)
+codegen_decl [      ADD temp_45 temp_44 X]
+allocated register 4 (R5)
+storeValue(temp_45, R5)
+codegen_decl [      MOV Adr temp_45]
+storeValue(Adr, EBP:#-7)
+codegen_decl [      /* adr_console[2*Adr] = C; */]
+codegen_decl [      MUL temp_46 2 Adr]
+allocated register 5 (R6)
+storeValue(temp_46, R6)
+codegen_decl [      ADD temp_47 temp_46 adr_console]
+allocated register 0 (R1)
+storeValue(temp_47, R1)
+codegen_decl [      MOV *temp_47 C_1]
+storeValue(*temp_47, EBP:#-2)
+codegen_decl [      /* adr_console[2*Adr+1] = 999; */]
+codegen_decl [      MUL temp_48 2 Adr]
+allocated register 1 (R2)
+storeValue(temp_48, R2)
+codegen_decl [      ADD temp_49 temp_48 1]
+allocated register 2 (R3)
+storeValue(temp_49, R3)
+codegen_decl [      ADD temp_50 temp_49 adr_console]
+allocated register 3 (R4)
+storeValue(temp_50, R4)
+codegen_decl [      MOV *temp_50 999]
+storeValue(*temp_50, 999)
+codegen_decl [      /* X++; */]
+codegen_decl [      MOV temp_51 X]
+storeValue(temp_51, EBP:#3)
+codegen_decl [      ADD X X 1]
+allocated register 4 (R5)
+storeValue(X, R5)
+codegen_decl [      /* C = *S++; */]
+codegen_decl [      MOV temp_52 S_4]
+storeValue(temp_52, EBP:#2)
+codegen_decl [      ADD S_4 S_4 1]
+allocated register 5 (R6)
+storeValue(S_4, R6)
+codegen_decl [      MOV temp_53 *temp_52]
+allocated register 0 (R1)
+storeValue(temp_53, #R1)
+codegen_decl [      MOV C_1 temp_53]
+storeValue(C_1, EBP:#-17)
+codegen_decl [   JMP lbl_while_do_4]
+codegen_decl [   LABEL lbl_while_exit_4]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _printXY END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float unreachable(float) */]
+codegen_decl [ FUNCTION _unreachable BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00755D30
+|frame.depth: 1
+|frame.cmd_index: 313
+|frame.lbl_from: lbl_31
+|frame.lbl_to: lbl_32
+|frame.symbols.size: 2
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_31) printed
+codegen_decl [   /* while(1) */]
+codegen_decl [   SYMBOL lbl_while_do_5 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_5 LABEL]
+codegen_decl [   LABEL lbl_while_do_5]
+codegen_decl [   JE 0 1 lbl_while_exit_5]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_5]
+codegen_decl [   LABEL lbl_while_exit_5]
+codegen_decl [   /* end while*/]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _unreachable END]
+codegen_decl [ /* end */]
+codegen_decl [ STRUCT vec2 BEGIN]
+codegen_decl [ USING vec2]
+codegen_decl [ SYMBOL this ARG]
+codegen_decl [ SYMBOL X_1 VAR]
+codegen_decl [ SYMBOL Y_1 VAR]
+codegen_decl [ /* default class constructor */]
+codegen_decl [ FUNCTION constructor BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00756560
+|frame.depth: 2
+|frame.cmd_index: 334
+|frame.lbl_from: lbl_35
+|frame.lbl_to: lbl_36
+|frame.symbols.size: 0
+|frame.parent: 007560E8
++------------------
+lbl_from (lbl_35) printed
+codegen_decl [   USING vec2]
+codegen_decl [   RET]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ FUNCTION constructor END]
+codegen_decl [ /* end */]
+codegen_decl [ /* default class constructor */]
+codegen_decl [ FUNCTION destructor BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00756780
+|frame.depth: 2
+|frame.cmd_index: 342
+|frame.lbl_from: lbl_38
+|frame.lbl_to: lbl_39
+|frame.symbols.size: 0
+|frame.parent: 007560E8
++------------------
+lbl_from (lbl_38) printed
+codegen_decl [   USING vec2]
+codegen_decl [   RET]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ FUNCTION destructor END]
+codegen_decl [ /* end */]
+codegen_decl [ STRUCT vec2 END]
+codegen_decl [ /* float avg(float) */]
+codegen_decl [ FUNCTION _avg BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00752918
+|frame.depth: 1
+|frame.cmd_index: 351
+|frame.lbl_from: lbl_41
+|frame.lbl_to: lbl_42
+|frame.symbols.size: 3
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_41) printed
+codegen_decl [   USING vec2]
+codegen_decl [   SYMBOL this_1 ARG]
+codegen_decl [   /* return (X+Y)/2; */]
+codegen_decl [   ADD temp_54 X_1 Y_1]
+allocated register 1 (R2)
+storeValue(temp_54, R2)
+codegen_decl [   DIV temp_55 temp_54 2]
+allocated register 2 (R3)
+storeValue(temp_55, R3)
+codegen_decl [   RET temp_55]
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _avg END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float switch(float) */]
+codegen_decl [ FUNCTION _switch BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 00756EB0
+|frame.depth: 1
+|frame.cmd_index: 364
+|frame.lbl_from: lbl_44
+|frame.lbl_to: lbl_45
+|frame.symbols.size: 2
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_44) printed
+codegen_decl [   USING vec2]
+codegen_decl [   SYMBOL this_2 ARG]
+codegen_decl [   SYMBOL Z VAR]
+codegen_decl [   MOV Z X_1]
+storeValue(Z, EBP:#-1)
+codegen_decl [   /* X = Y; */]
+codegen_decl [   MOV X_1 Y_1]
+storeValue(X_1, EBP:#-2)
+codegen_decl [   /* Y = Z; */]
+codegen_decl [   MOV Y_1 Z]
+storeValue(Y_1, EBP:#-1)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _switch END]
+codegen_decl [ /* end */]
+codegen_decl [ /* float main(float) */]
+codegen_decl [ FUNCTION _main BEGIN]
+codegen_decl [   FRAME ENTER]
+entering frame:
++------------------
+|frame 007572B0
+|frame.depth: 1
+|frame.cmd_index: 379
+|frame.lbl_from: lbl_47
+|frame.lbl_to: lbl_48
+|frame.symbols.size: 41
+|frame.parent: 0074DC50
++------------------
+lbl_from (lbl_47) printed
+codegen_decl [   SYMBOL A VAR]
+codegen_decl [   SYMBOL B VAR]
+codegen_decl [   /* initialize A */]
+codegen_decl [   CALL temp_56 constructor A]
+storeValue(temp_56, eax)
+codegen_decl [   /* initialize B */]
+codegen_decl [   CALL temp_57 constructor B]
+storeValue(temp_57, eax)
+codegen_decl [   /* println("Hello Wo */]
+codegen_decl [   CALL temp_58 _println str_1]
+storeValue(temp_58, eax)
+codegen_decl [   /* B.X = 1; */]
+codegen_decl [   ADD X_1_1 B &X_1]
+allocated register 3 (R4)
+storeValue(X_1_1, R4)
+codegen_decl [   MOV *X_1_1 1]
+storeValue(*X_1_1, 1)
+codegen_decl [   /* B.Y = 3; */]
+codegen_decl [   ADD Y_1_1 B &Y_1]
+allocated register 4 (R5)
+storeValue(Y_1_1, R5)
+codegen_decl [   MOV *Y_1_1 3]
+storeValue(*Y_1_1, 3)
+codegen_decl [   /* A.X = 5; */]
+codegen_decl [   ADD X_1_2 A &X_1]
+allocated register 5 (R6)
+storeValue(X_1_2, R6)
+codegen_decl [   MOV *X_1_2 5]
+storeValue(*X_1_2, 5)
+codegen_decl [   /* A.Y = 7; */]
+codegen_decl [   ADD Y_1_2 A &Y_1]
+allocated register 0 (R1)
+storeValue(Y_1_2, R1)
+codegen_decl [   MOV *Y_1_2 7]
+storeValue(*Y_1_2, 7)
+codegen_decl [   /* print("A.avg() = "); */]
+codegen_decl [   CALL temp_59 _print str_2]
+storeValue(temp_59, eax)
+codegen_decl [   /* printnum(A.avg()); */]
+codegen_decl [   CALL temp_60 _avg]
+storeValue(temp_60, eax)
+codegen_decl [   CALL temp_61 _printnum temp_60]
+storeValue(temp_61, eax)
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_62 _println str_3]
+storeValue(temp_62, eax)
+codegen_decl [   /* print("B.avg() = "); */]
+codegen_decl [   CALL temp_63 _print str_4]
+storeValue(temp_63, eax)
+codegen_decl [   /* printnum(B.avg()); */]
+codegen_decl [   CALL temp_64 _avg]
+storeValue(temp_64, eax)
+codegen_decl [   CALL temp_65 _printnum temp_64]
+storeValue(temp_65, eax)
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_66 _println str_5]
+storeValue(temp_66, eax)
+codegen_decl [   /* print("A.X = "); */]
+codegen_decl [   CALL temp_67 _print str_6]
+storeValue(temp_67, eax)
+codegen_decl [   /* printnum(A.X); */]
+codegen_decl [   ADD X_1_3 A &X_1]
+allocated register 1 (R2)
+storeValue(X_1_3, R2)
+codegen_decl [   CALL temp_68 _printnum *X_1_3]
+allocated register 2 (R3)
+storeValue(temp_68, eax)
+codegen_decl [   /* print(", A.Y = "); */]
+codegen_decl [   CALL temp_69 _print str_7]
+storeValue(temp_69, eax)
+codegen_decl [   /* printnum(A.Y); */]
+codegen_decl [   ADD Y_1_3 A &Y_1]
+allocated register 3 (R4)
+storeValue(Y_1_3, R4)
+codegen_decl [   CALL temp_70 _printnum *Y_1_3]
+allocated register 4 (R5)
+storeValue(temp_70, eax)
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_71 _println str_8]
+storeValue(temp_71, eax)
+codegen_decl [   /* A.switch(); */]
+codegen_decl [   CALL temp_72 _switch]
+storeValue(temp_72, eax)
+codegen_decl [   /* println("switched"); */]
+codegen_decl [   CALL temp_73 _println str_9]
+storeValue(temp_73, eax)
+codegen_decl [   /* print("A.X = "); */]
+codegen_decl [   CALL temp_74 _print str_10]
+storeValue(temp_74, eax)
+codegen_decl [   /* printnum(A.X); */]
+codegen_decl [   ADD X_1_4 A &X_1]
+allocated register 5 (R6)
+storeValue(X_1_4, R6)
+codegen_decl [   CALL temp_75 _printnum *X_1_4]
+allocated register 0 (R1)
+storeValue(temp_75, eax)
+codegen_decl [   /* print(", A.Y = "); */]
+codegen_decl [   CALL temp_76 _print str_11]
+storeValue(temp_76, eax)
+codegen_decl [   /* printnum(A.Y); */]
+codegen_decl [   ADD Y_1_4 A &Y_1]
+allocated register 1 (R2)
+storeValue(Y_1_4, R2)
+codegen_decl [   CALL temp_77 _printnum *Y_1_4]
+allocated register 2 (R3)
+storeValue(temp_77, eax)
+codegen_decl [   /* println(""); */]
+codegen_decl [   CALL temp_78 _println str_12]
+storeValue(temp_78, eax)
+codegen_decl [   /* while(1) */]
+codegen_decl [   SYMBOL lbl_while_do_6 LABEL]
+codegen_decl [   SYMBOL lbl_while_exit_6 LABEL]
+codegen_decl [   LABEL lbl_while_do_6]
+codegen_decl [   JE 0 1 lbl_while_exit_6]
+codegen_decl [   /* do */]
+codegen_decl [   JMP lbl_while_do_6]
+codegen_decl [   LABEL lbl_while_exit_6]
+codegen_decl [   /* end while*/]
+codegen_decl [   /* destroy A */]
+codegen_decl [   CALL temp_79 destructor A]
+storeValue(temp_79, eax)
+codegen_decl [   /* destroy B */]
+codegen_decl [   CALL temp_80 destructor B]
+storeValue(temp_80, eax)
+codegen_decl [   FRAME LEAVE]
+back to frame:
++------------------
+|frame 0074DC50
+|frame.depth: 0
+|frame.cmd_index: -1
+|frame.lbl_from: code_segment_start
+|frame.lbl_to: code_segment_end
+|frame.symbols.size: 35
+|frame.parent: 00000000
++------------------
+codegen_decl [ RET]
+codegen_decl [ FUNCTION _main END]
+codegen_decl [ /* end */]
+emitting debug info

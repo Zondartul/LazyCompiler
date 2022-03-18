@@ -44,3 +44,52 @@ VARIABLE_SEGMENT <name> //the following code goes into the
 IF <val> THEN <label> //if condition, jump to label
 RETURN				//return from call
 <name>:				//define label <name>
+
+
+current IR:
+
+LABEL <name>
+RET
+alloc <val> <size> stack
+<comment>
+<code segment>
+JNE <val> <val> <label>
+JMP <label>
+<val> = add <val> <val>
+<val> = call <val/label> {<val>}
+<val> = exponent <val> <val>
+<val> = divide <val> <val>
+<val> = multiply <val> <val>
+<val> = subtract <val> <val>
+	add
+	equal
+	notequal
+	greater
+	less
+<val> = <val>
+insert <cs>
+....
+LABEL(1)
+RET
+RET(0)
+JMP_L,_E,_G,_LE,_GE,_NE(3)
+JMP(1)
+CALL(1+)
+MOV(2)
+MATH <val result> <val op1> <val op2>:add,sub,mul,div,exp,equal,notequal,greater,less
+ASM(...)
+ALLOC STACK(2)
+INSERT(1)
+
+
+in the future - AST into AST_imperative_annotated:
+CS
+-symbol table
+ -symbol_var
+ -symbol_member
+ -symbol_func
+ -symbol_class
+-commands
+ -init var
+ -expression
+  -expression

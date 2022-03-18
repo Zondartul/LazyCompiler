@@ -1,0 +1,527 @@
+  SYMBOL adr_buttons VAR
+  SYMBOL adr_leds VAR
+  SYMBOL adr_screen VAR
+  SYMBOL adr_keyboard VAR
+  SYMBOL adr_console VAR
+  SYMBOL printX VAR
+  SYMBOL printY VAR
+  MOV adr_buttons 65536
+  MOV adr_leds 65546
+  MOV adr_screen 65556
+  MOV adr_keyboard 65566
+  MOV adr_console 65866
+  MOV printX 0
+  MOV printY 0
+  SYMBOL str_1 STRING no\\nu
+  SYMBOL str_2 STRING A.avg() = 
+  SYMBOL str_3 STRING 
+  SYMBOL str_4 STRING B.avg() = 
+  SYMBOL str_5 STRING 
+  SYMBOL str_6 STRING A.X = 
+  SYMBOL str_7 STRING , A.Y = 
+  SYMBOL str_8 STRING 
+  SYMBOL str_9 STRING switched
+  SYMBOL str_10 STRING A.X = 
+  SYMBOL str_11 STRING , A.Y = 
+  SYMBOL str_12 STRING 
+  CALL temp_81 _main
+  /* float delay(float n) */
+  FUNCTION _delay BEGIN
+    FRAME ENTER
+    SYMBOL n ARG
+    /* while(n--) */
+    SYMBOL lbl_while_do LABEL
+    SYMBOL lbl_while_exit LABEL
+    LABEL lbl_while_do
+    MOV temp n
+    SUB n n 1
+    JE 0 temp lbl_while_exit
+    /* do */
+    JMP lbl_while_do
+    LABEL lbl_while_exit
+    /* end while*/
+    FRAME LEAVE
+  RET
+  FUNCTION _delay END
+  /* end */
+  /* float scr(float a, float b) */
+  FUNCTION _scr BEGIN
+    FRAME ENTER
+    SYMBOL a ARG
+    SYMBOL b ARG
+    /* adr_screen[a] = b; */
+    ADD temp_1 a adr_screen
+    MOV *temp_1 b
+    FRAME LEAVE
+  RET
+  FUNCTION _scr END
+  /* end */
+  /* float strtest(float *str) */
+  FUNCTION _strtest BEGIN
+    FRAME ENTER
+    SYMBOL str ARG
+    /* scr(3,str); */
+    CALL temp_2 _scr 3 str
+    /* scr(4,*str); */
+    MOV temp_3 *str
+    CALL temp_4 _scr 4 temp_3
+    /* scr(5,str[0]); */
+    ADD temp_5 0 str
+    CALL temp_6 _scr 5 *temp_5
+    FRAME LEAVE
+  RET
+  FUNCTION _strtest END
+  /* end */
+  /* float strlen(float *S) */
+  FUNCTION _strlen BEGIN
+    FRAME ENTER
+    SYMBOL S ARG
+    SYMBOL len VAR
+    MOV len 0
+    /* while(S[len++]) */
+    SYMBOL lbl_while_do_1 LABEL
+    SYMBOL lbl_while_exit_1 LABEL
+    LABEL lbl_while_do_1
+    MOV temp_7 len
+    ADD len len 1
+    ADD temp_8 temp_7 S
+    JE 0 *temp_8 lbl_while_exit_1
+    /* do */
+    JMP lbl_while_do_1
+    LABEL lbl_while_exit_1
+    /* end while*/
+    /* return --len; */
+    SUB len len 1
+    RET len
+    FRAME LEAVE
+  RET
+  FUNCTION _strlen END
+  /* end */
+  /* float strrev(float *S) */
+  FUNCTION _strrev BEGIN
+    FRAME ENTER
+    SYMBOL S_1 ARG
+    SYMBOL len_1 VAR
+    SYMBOL I VAR
+    CALL temp_9 _strlen S_1
+    MOV len_1 temp_9
+    /* for(I = 0; I < len/2; I++) */
+       /* I = 0; */
+       /* I = 0; */
+       MOV I 0
+       SYMBOL lbl_for LABEL
+       SYMBOL lbl_for_exit LABEL
+       LABEL lbl_for
+       /* I < len/2 */
+       DIV temp_10 len_1 2
+       LESS temp_11 I temp_10
+       JE 0 temp_11 lbl_for_exit
+       /* loop body */
+       ADD temp_12 I S_1
+       MOV C *temp_12
+       /* S[I] = S[len-1-I]; */
+       ADD temp_13 I S_1
+       SUB temp_14 len_1 1
+       SUB temp_15 temp_14 I
+       ADD temp_16 temp_15 S_1
+       MOV *temp_13 *temp_16
+       /* S[len-1-I] = C; */
+       SUB temp_17 len_1 1
+       SUB temp_18 temp_17 I
+       ADD temp_19 temp_18 S_1
+       MOV *temp_19 C
+       /* I++ */
+       MOV temp_20 I
+       ADD I I 1
+       JMP lbl_for
+       LABEL lbl_for_exit
+       /* end for */
+    FRAME LEAVE
+  RET
+  FUNCTION _strrev END
+  /* end */
+  /* float itoa(float *buff, float N) */
+  FUNCTION _itoa BEGIN
+    FRAME ENTER
+    SYMBOL buff ARG
+    SYMBOL N ARG
+    SYMBOL I_1 VAR
+    MOV I_1 0
+    /* while(N) */
+    SYMBOL lbl_while_do_2 LABEL
+    SYMBOL lbl_while_exit_2 LABEL
+    LABEL lbl_while_do_2
+    JE 0 N lbl_while_exit_2
+    /* do */
+       /* buff[I++] = '0'+N%10; */
+       MOV temp_21 I_1
+       ADD I_1 I_1 1
+       ADD temp_22 temp_21 buff
+       MOD temp_23 N 10
+       ADD temp_24 48 temp_23
+       MOV *temp_22 temp_24
+       /* N = N/10; */
+       DIV temp_25 N 10
+       MOV N temp_25
+    JMP lbl_while_do_2
+    LABEL lbl_while_exit_2
+    /* end while*/
+    /* if(I==0) */
+    EQUAL temp_26 I_1 0
+    SYMBOL lbl_if_then LABEL
+    JE 0 temp_26 lbl_if_then
+    /* then */
+       /* buff[I++] = '0'; */
+       MOV temp_27 I_1
+       ADD I_1 I_1 1
+       ADD temp_28 temp_27 buff
+       MOV *temp_28 48
+    SYMBOL lbl_if_exit LABEL
+    JMP lbl_if_exit
+    LABEL lbl_if_then
+    LABEL lbl_if_exit
+    /* end */
+    /* buff[I] = 0; */
+    ADD temp_29 I_1 buff
+    MOV *temp_29 0
+    /* strrev(buff); */
+    CALL temp_30 _strrev buff
+    FRAME LEAVE
+  RET
+  FUNCTION _itoa END
+  /* end */
+  /* float print(float *S) */
+  FUNCTION _print BEGIN
+    FRAME ENTER
+    SYMBOL S_2 ARG
+    SYMBOL len_2 VAR
+    /* printXY(S,printX,printY); */
+    CALL temp_31 _printXY S_2 printX printY
+    CALL temp_32 _strlen S_2
+    MOV len_2 temp_32
+    /* while(len > 29) */
+    SYMBOL lbl_while_do_3 LABEL
+    SYMBOL lbl_while_exit_3 LABEL
+    LABEL lbl_while_do_3
+    GREATER temp_33 len_2 29
+    JE 0 temp_33 lbl_while_exit_3
+    /* do */
+       /* len = len - 30; */
+       SUB temp_34 len_2 30
+       MOV len_2 temp_34
+       /* printX = 0; */
+       MOV printX 0
+       /* printY++; */
+       MOV temp_35 printY
+       ADD printY printY 1
+    JMP lbl_while_do_3
+    LABEL lbl_while_exit_3
+    /* end while*/
+    /* printX = printX + len; */
+    ADD temp_36 printX len_2
+    MOV printX temp_36
+    FRAME LEAVE
+  RET
+  FUNCTION _print END
+  /* end */
+  /* float println(float *S) */
+  FUNCTION _println BEGIN
+    FRAME ENTER
+    SYMBOL S_3 ARG
+    /* print(S); */
+    CALL temp_37 _print S_3
+    /* if(printX != 0) */
+    NOTEQUAL temp_38 printX 0
+    SYMBOL lbl_if_then_1 LABEL
+    JE 0 temp_38 lbl_if_then_1
+    /* then */
+       /* printY++; */
+       MOV temp_39 printY
+       ADD printY printY 1
+       /* printX = 0; */
+       MOV printX 0
+    SYMBOL lbl_if_exit_1 LABEL
+    JMP lbl_if_exit_1
+    LABEL lbl_if_then_1
+    LABEL lbl_if_exit_1
+    /* end */
+    FRAME LEAVE
+  RET
+  FUNCTION _println END
+  /* end */
+  /* float printnum(float N) */
+  FUNCTION _printnum BEGIN
+    FRAME ENTER
+    SYMBOL N_1 ARG
+    SYMBOL arr VAR ARRAY 20
+    /* itoa(arr,N); */
+    CALL temp_40 _itoa arr N_1
+    /* print(arr); */
+    CALL temp_41 _print arr
+    FRAME LEAVE
+  RET
+  FUNCTION _printnum END
+  /* end */
+  /* float printXY(float *S, float X, float Y) */
+  FUNCTION _printXY BEGIN
+    FRAME ENTER
+    SYMBOL S_4 ARG
+    SYMBOL X ARG
+    SYMBOL Y ARG
+    SYMBOL I_2 VAR
+    SYMBOL C_1 VAR
+    MOV I_2 0
+    MOV temp_42 S_4
+    ADD S_4 S_4 1
+    MOV temp_43 *temp_42
+    MOV C_1 temp_43
+    /* while(C) */
+    SYMBOL lbl_while_do_4 LABEL
+    SYMBOL lbl_while_exit_4 LABEL
+    LABEL lbl_while_do_4
+    JE 0 C_1 lbl_while_exit_4
+    /* do */
+       SYMBOL Adr VAR
+       MUL temp_44 30 Y
+       ADD temp_45 temp_44 X
+       MOV Adr temp_45
+       /* adr_console[2*Adr] = C; */
+       MUL temp_46 2 Adr
+       ADD temp_47 temp_46 adr_console
+       MOV *temp_47 C_1
+       /* adr_console[2*Adr+1] = 999; */
+       MUL temp_48 2 Adr
+       ADD temp_49 temp_48 1
+       ADD temp_50 temp_49 adr_console
+       MOV *temp_50 999
+       /* X++; */
+       MOV temp_51 X
+       ADD X X 1
+       /* C = *S++; */
+       MOV temp_52 S_4
+       ADD S_4 S_4 1
+       MOV temp_53 *temp_52
+       MOV C_1 temp_53
+    JMP lbl_while_do_4
+    LABEL lbl_while_exit_4
+    /* end while*/
+    FRAME LEAVE
+  RET
+  FUNCTION _printXY END
+  /* end */
+  /* float unreachable(float) */
+  FUNCTION _unreachable BEGIN
+    FRAME ENTER
+    /* while(1) */
+    SYMBOL lbl_while_do_5 LABEL
+    SYMBOL lbl_while_exit_5 LABEL
+    LABEL lbl_while_do_5
+    JE 0 1 lbl_while_exit_5
+    /* do */
+    JMP lbl_while_do_5
+    LABEL lbl_while_exit_5
+    /* end while*/
+    FRAME LEAVE
+  RET
+  FUNCTION _unreachable END
+  /* end */
+  STRUCT vec2 BEGIN
+  USING vec2
+  SYMBOL this ARG
+  SYMBOL X_1 VAR
+  SYMBOL Y_1 VAR
+  /* default class constructor */
+  FUNCTION constructor BEGIN
+    FRAME ENTER
+    USING vec2
+    RET
+    FRAME LEAVE
+  FUNCTION constructor END
+  /* end */
+  /* default class constructor */
+  FUNCTION destructor BEGIN
+    FRAME ENTER
+    USING vec2
+    RET
+    FRAME LEAVE
+  FUNCTION destructor END
+  /* end */
+  STRUCT vec2 END
+  /* float avg(float) */
+  FUNCTION _avg BEGIN
+    FRAME ENTER
+    USING vec2
+    SYMBOL this_1 ARG
+    /* return (X+Y)/2; */
+    ADD temp_54 X_1 Y_1
+    DIV temp_55 temp_54 2
+    RET temp_55
+    FRAME LEAVE
+  RET
+  FUNCTION _avg END
+  /* end */
+  /* float switch(float) */
+  FUNCTION _switch BEGIN
+    FRAME ENTER
+    USING vec2
+    SYMBOL this_2 ARG
+    SYMBOL Z VAR
+    MOV Z X_1
+    /* X = Y; */
+    MOV X_1 Y_1
+    /* Y = Z; */
+    MOV Y_1 Z
+    FRAME LEAVE
+  RET
+  FUNCTION _switch END
+  /* end */
+  /* float main(float) */
+  FUNCTION _main BEGIN
+    FRAME ENTER
+    SYMBOL A VAR
+    SYMBOL B VAR
+    /* initialize A */
+    CALL temp_56 constructor A
+    /* initialize B */
+    CALL temp_57 constructor B
+    /* println("Hello Wo */
+    CALL temp_58 _println str_1
+    /* B.X = 1; */
+    ADD X_1_1 B &X_1
+    MOV *X_1_1 1
+    /* B.Y = 3; */
+    ADD Y_1_1 B &Y_1
+    MOV *Y_1_1 3
+    /* A.X = 5; */
+    ADD X_1_2 A &X_1
+    MOV *X_1_2 5
+    /* A.Y = 7; */
+    ADD Y_1_2 A &Y_1
+    MOV *Y_1_2 7
+    /* print("A.avg() = "); */
+    CALL temp_59 _print str_2
+    /* printnum(A.avg()); */
+    CALL temp_60 _avg
+    CALL temp_61 _printnum temp_60
+    /* println(""); */
+    CALL temp_62 _println str_3
+    /* print("B.avg() = "); */
+    CALL temp_63 _print str_4
+    /* printnum(B.avg()); */
+    CALL temp_64 _avg
+    CALL temp_65 _printnum temp_64
+    /* println(""); */
+    CALL temp_66 _println str_5
+    /* print("A.X = "); */
+    CALL temp_67 _print str_6
+    /* printnum(A.X); */
+    ADD X_1_3 A &X_1
+    CALL temp_68 _printnum *X_1_3
+    /* print(", A.Y = "); */
+    CALL temp_69 _print str_7
+    /* printnum(A.Y); */
+    ADD Y_1_3 A &Y_1
+    CALL temp_70 _printnum *Y_1_3
+    /* println(""); */
+    CALL temp_71 _println str_8
+    /* A.switch(); */
+    CALL temp_72 _switch
+    /* println("switched"); */
+    CALL temp_73 _println str_9
+    /* print("A.X = "); */
+    CALL temp_74 _print str_10
+    /* printnum(A.X); */
+    ADD X_1_4 A &X_1
+    CALL temp_75 _printnum *X_1_4
+    /* print(", A.Y = "); */
+    CALL temp_76 _print str_11
+    /* printnum(A.Y); */
+    ADD Y_1_4 A &Y_1
+    CALL temp_77 _printnum *Y_1_4
+    /* println(""); */
+    CALL temp_78 _println str_12
+    /* while(1) */
+    SYMBOL lbl_while_do_6 LABEL
+    SYMBOL lbl_while_exit_6 LABEL
+    LABEL lbl_while_do_6
+    JE 0 1 lbl_while_exit_6
+    /* do */
+    JMP lbl_while_do_6
+    LABEL lbl_while_exit_6
+    /* end while*/
+    /* destroy A */
+    CALL temp_79 destructor A
+    /* destroy B */
+    CALL temp_80 destructor B
+    FRAME LEAVE
+  RET
+  FUNCTION _main END
+  /* end */
+
+===========================
+Symbol table:
+Symbol table 'ST':
+classes:
+name	ir_name	scope
+vec2	vec2	ST_21
+functions:
+type	name	ir_name	scope	code
+float	delay	_delay	ST_1	CS_2
+float	scr	_scr	ST_3	CS_4
+float	strtest	_strtest	ST_4	CS_5
+float	strlen	_strlen	ST_5	CS_6
+float	strrev	_strrev	ST_7	CS_8
+float	itoa	_itoa	ST_9	CS_10
+float	print	_print	ST_12	CS_13
+float	println	_println	ST_14	CS_15
+float	printnum	_printnum	ST_16	CS_17
+float	printXY	_printXY	ST_17	CS_18
+float	unreachable	_unreachable	ST_19	CS_20
+float	main	_main	ST_24	CS_26
+float	avg	_avg	ST_22	CS_24
+float	switch	_switch	ST_23	CS_25
+void	constructor	constructor	ST_26	CS_22
+void	destructor	destructor	ST_27	CS_23
+parameters:
+type	name	ir_name	size	pos
+float	n	n	1	0
+float	a	a	1	0
+float	b	b	1	1
+float	str	str	1	0
+float	S	S	1	0
+float	S	S_1	1	0
+float	buff	buff	1	0
+float	N	N	1	1
+float	S	S_2	1	0
+float	S	S_3	1	0
+float	N	N_1	1	0
+float	S	S_4	1	0
+float	X	X	1	1
+float	Y	Y	1	2
+vec2	this	this	-1163005939	0
+vec2	this	this_1	1	0
+vec2	this	this_2	1	0
+variables:
+type	name	ir_name	size	pos
+float	adr_buttons	adr_buttons	1	0
+float	adr_leds	adr_leds	1	1
+float	adr_screen	adr_screen	1	2
+float	adr_keyboard	adr_keyboard	1	3
+float	adr_console	adr_console	1	4
+float	printX	printX	1	5
+float	printY	printY	1	6
+float	len	len	1	0
+float	len	len_1	1	0
+float	I	I	1	1
+float	C	C	1	0
+float	I	I_1	1	0
+float	len	len_2	1	0
+float	arr	arr	1	0
+float	I	I_2	1	0
+float	C	C_1	1	1
+float	Adr	Adr	1	0
+float	X	X_1	1	0
+float	Y	Y_1	1	1
+float	Z	Z	1	0
+vec2	A	A	2	0
+vec2	B	B	2	1

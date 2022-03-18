@@ -1,6 +1,6 @@
 CC = gcc
 CCFLAGS = -fmax-errors=1 -g -Werror -Wfatal-errors -Wimplicit
-SOURCEFILES = lex.yy.c yaccin.tab.c vector.c AST.c semantic.c
+SOURCEFILES = main.c preprocess.c lex.yy.c yaccin.tab.c vector.c AST.c semantic.c codegen.c
 LEX = flex.exe
 BISON = bison.exe
 LIBS = -L"C:\GnuWin32\lib" -lfl

@@ -1,162 +1,714 @@
 program
 \decl_stmt_list
  +decl_stmt
- |\func_def "import"
- | +typename "int"
- | +var_decl_list
- | |\var_decl "arg"
- | | \typename "int"
- | \stmt_list "<empty>"
+ |\var_decl_assign "adr_buttons"
+ | +typename "float"
+ | |\ptr_stars
+ | | \stars "*"
+ | \expr_const "65536"
  +decl_stmt
- |\func_def "export"
- | +typename "int"
+ |\var_decl_assign "adr_leds"
+ | +typename "float"
+ | |\ptr_stars
+ | | \stars "*"
+ | \expr_const "65546"
+ +decl_stmt
+ |\var_decl_assign "adr_screen"
+ | +typename "float"
+ | |\ptr_stars
+ | | \stars "*"
+ | \expr_const "65556"
+ +decl_stmt
+ |\var_decl_assign "adr_keyboard"
+ | +typename "float"
+ | |\ptr_stars
+ | | \stars "*"
+ | \expr_const "65566"
+ +decl_stmt
+ |\var_decl_assign "adr_console"
+ | +typename "float"
+ | |\ptr_stars
+ | | \stars "*"
+ | \expr_const "65866"
+ +decl_stmt
+ |\func_def "delay"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
  | +var_decl_list
- | |\var_decl "arg"
- | | \typename "int"
+ | |\var_decl "n"
+ | | \typename "float"
+ | |  \ptr_stars "<empty>"
  | \stmt_list
  |  \stmt
  |   \imp_stmt
- |    \expr_id "arg"
+ |    \while_loop
+ |     +expr_--
+ |     |\expr_id "n"
+ |     \stmt_list "<empty>"
  +decl_stmt
- |\func_def "print"
- | +typename "int"
+ |\func_def "scr"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |+var_decl "a"
+ | ||\typename "float"
+ | || \ptr_stars "<empty>"
+ | |\var_decl "b"
+ | | \typename "float"
+ | |  \ptr_stars "<empty>"
+ | \stmt_list
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_=
+ |     +expr_index
+ |     |+expr_id "adr_screen"
+ |     |\expr_id "a"
+ |     \expr_id "b"
+ +decl_stmt
+ |\func_def "strtest"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
  | +var_decl_list
  | |\var_decl "str"
- | | \typename "string"
- | \stmt_list "<empty>"
+ | | \typename "float"
+ | |  \ptr_stars
+ | |   \stars "*"
+ | \stmt_list
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_call
+ |  |  +expr_id "scr"
+ |  |  \expr_list
+ |  |   +expr_const "3"
+ |  |   \expr_id "str"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_call
+ |  |  +expr_id "scr"
+ |  |  \expr_list
+ |  |   +expr_const "4"
+ |  |   \expr_deref
+ |  |    \expr_id "str"
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_call
+ |     +expr_id "scr"
+ |     \expr_list
+ |      +expr_const "5"
+ |      \expr_index
+ |       +expr_id "str"
+ |       \expr_const "0"
  +decl_stmt
- |\func_def "main"
- | +typename "int"
+ |\func_def "strlen"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
  | +var_decl_list
- | |+var_decl "argc"
- | ||\typename "int"
- | |\var_decl "argv"
- | | \typename "int"
+ | |\var_decl "S"
+ | | \typename "float"
+ | |  \ptr_stars
+ | |   \stars "*"
  | \stmt_list
  |  +stmt
  |  |\decl_stmt
- |  | \var_decl "C"
- |  |  \typename "char"
- |  +stmt
- |  |\decl_stmt
- |  | \var_decl "A"
- |  |  \typename "int"
+ |  | \var_decl_assign "len"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_const "0"
  |  +stmt
  |  |\imp_stmt
- |  | \if_block
- |  |  +if_then
- |  |  |+expr_==
- |  |  ||+expr_id "argc"
- |  |  ||\expr_const "0"
- |  |  |\stmt_list
- |  |  | +stmt
- |  |  | |\imp_stmt
- |  |  | | \expr_call
- |  |  | |  +expr_id "print"
- |  |  | |  \expr_list
- |  |  | |   \expr_const ""usage: a.exe arg1 arg2""
- |  |  | +stmt
- |  |  | |\imp_stmt
- |  |  | | \expr_=
- |  |  | |  +expr_id "A"
- |  |  | |  \expr_const "5"
- |  |  | \stmt
- |  |  |  \imp_stmt
- |  |  |   \expr_const "1"
+ |  | \while_loop
+ |  |  +expr_index
+ |  |  |+expr_id "S"
+ |  |  |\expr_++
+ |  |  | \expr_id "len"
+ |  |  \stmt_list "<empty>"
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_--
+ |     \expr_id "len"
+ +decl_stmt
+ |\func_def "strrev"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |\var_decl "S"
+ | | \typename "float"
+ | |  \ptr_stars
+ | |   \stars "*"
+ | \stmt_list
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl_assign "len"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_call
+ |  |   +expr_id "strlen"
+ |  |   \expr_list
+ |  |    \expr_id "S"
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl "I"
+ |  |  \typename "float"
+ |  |   \ptr_stars "<empty>"
+ |  \stmt
+ |   \imp_stmt
+ |    \for_loop
+ |     +stmt
+ |     |\imp_stmt
+ |     | \expr_=
+ |     |  +expr_id "I"
+ |     |  \expr_const "0"
+ |     +expr_<
+ |     |+expr_id "I"
+ |     |\expr_/
+ |     | +expr_id "len"
+ |     | \expr_const "2"
+ |     +expr_++
+ |     |\expr_id "I"
+ |     \stmt_list
+ |      +stmt
+ |      |\decl_stmt
+ |      | \var_decl_assign "C"
+ |      |  +typename "float"
+ |      |  |\ptr_stars "<empty>"
+ |      |  \expr_index
+ |      |   +expr_id "S"
+ |      |   \expr_id "I"
+ |      +stmt
+ |      |\imp_stmt
+ |      | \expr_=
+ |      |  +expr_index
+ |      |  |+expr_id "S"
+ |      |  |\expr_id "I"
+ |      |  \expr_index
+ |      |   +expr_id "S"
+ |      |   \expr_-
+ |      |    +expr_-
+ |      |    |+expr_id "len"
+ |      |    |\expr_const "1"
+ |      |    \expr_id "I"
+ |      \stmt
+ |       \imp_stmt
+ |        \expr_=
+ |         +expr_index
+ |         |+expr_id "S"
+ |         |\expr_-
+ |         | +expr_-
+ |         | |+expr_id "len"
+ |         | |\expr_const "1"
+ |         | \expr_id "I"
+ |         \expr_id "C"
+ +decl_stmt
+ |\func_def "itoa"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |+var_decl "buff"
+ | ||\typename "float"
+ | || \ptr_stars
+ | ||  \stars "*"
+ | |\var_decl "N"
+ | | \typename "float"
+ | |  \ptr_stars "<empty>"
+ | \stmt_list
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl_assign "I"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_const "0"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \while_loop
+ |  |  +expr_id "N"
  |  |  \stmt_list
- |  |   +stmt
- |  |   |\decl_stmt
- |  |   | \var_decl_assign "A"
- |  |   |  +typename "float"
- |  |   |  \expr_call
- |  |   |   +expr_id "import"
- |  |   |   \expr_list
- |  |   |    \expr_id "argc"
  |  |   +stmt
  |  |   |\imp_stmt
  |  |   | \expr_=
- |  |   |  +expr_id "A"
- |  |   |  \expr_*
- |  |   |   +expr_id "A"
- |  |   |   \expr_id "argv"
- |  |   +stmt
- |  |   |\imp_stmt
- |  |   | \expr_call
- |  |   |  +expr_id "export"
- |  |   |  \expr_list
- |  |   |   \expr_id "A"
- |  |   +stmt
- |  |   |\imp_stmt
- |  |   | \while_loop
- |  |   |  +expr_id "A"
- |  |   |  \stmt_list
- |  |   |   +stmt
- |  |   |   |\imp_stmt
- |  |   |   | \expr_call
- |  |   |   |  +expr_id "print"
- |  |   |   |  \expr_list
- |  |   |   |   +expr_id "A"
- |  |   |   |   \expr_id "argc"
- |  |   |   +stmt
- |  |   |   |\imp_stmt
- |  |   |   | \expr_=
- |  |   |   |  +expr_id "A"
- |  |   |   |  \expr_/
- |  |   |   |   +expr_id "A"
- |  |   |   |   \expr_const "1"
- |  |   |   +stmt
- |  |   |   |\imp_stmt
- |  |   |   | \if_block
- |  |   |   |  \if_then
- |  |   |   |   +expr_==
- |  |   |   |   |+expr_id "A"
- |  |   |   |   |\expr_const "1"
- |  |   |   |   \stmt_list
- |  |   |   |    \stmt
- |  |   |   |     \imp_stmt
- |  |   |   |      \expr_const "1"
- |  |   |   \stmt
- |  |   |    \imp_stmt
- |  |   |     \if_block
- |  |   |      \if_then
- |  |   |       +if_then
- |  |   |       |+expr_<
- |  |   |       ||+expr_id "A"
- |  |   |       ||\expr_const "3"
- |  |   |       |\stmt_list
- |  |   |       | \stmt
- |  |   |       |  \imp_stmt
- |  |   |       |   \expr_const "2"
- |  |   |       +expr_>
- |  |   |       |+expr_id "A"
- |  |   |       |\expr_const "2"
- |  |   |       \stmt_list
- |  |   |        \stmt
- |  |   |         \imp_stmt
- |  |   |          \expr_const "3"
+ |  |   |  +expr_index
+ |  |   |  |+expr_id "buff"
+ |  |   |  |\expr_++
+ |  |   |  | \expr_id "I"
+ |  |   |  \expr_+
+ |  |   |   +expr_const "'0'"
+ |  |   |   \expr_%
+ |  |   |    +expr_id "N"
+ |  |   |    \expr_const "10"
  |  |   \stmt
  |  |    \imp_stmt
- |  |     \expr_const "0"
+ |  |     \expr_=
+ |  |      +expr_id "N"
+ |  |      \expr_/
+ |  |       +expr_id "N"
+ |  |       \expr_const "10"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \if_block
+ |  |  \if_then
+ |  |   +expr_==
+ |  |   |+expr_id "I"
+ |  |   |\expr_const "0"
+ |  |   \stmt_list
+ |  |    \stmt
+ |  |     \imp_stmt
+ |  |      \expr_=
+ |  |       +expr_index
+ |  |       |+expr_id "buff"
+ |  |       |\expr_++
+ |  |       | \expr_id "I"
+ |  |       \expr_const "'0'"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_=
+ |  |  +expr_index
+ |  |  |+expr_id "buff"
+ |  |  |\expr_id "I"
+ |  |  \expr_const "0"
  |  \stmt
- |   \decl_stmt
- |    \var_decl "boop"
- |     \typename "string"
+ |   \imp_stmt
+ |    \expr_call
+ |     +expr_id "strrev"
+ |     \expr_list
+ |      \expr_id "buff"
+ +decl_stmt
+ |\var_decl_assign "printX"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | \expr_const "0"
+ +decl_stmt
+ |\var_decl_assign "printY"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | \expr_const "0"
+ +decl_stmt
+ |\func_def "print"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |\var_decl "S"
+ | | \typename "float"
+ | |  \ptr_stars
+ | |   \stars "*"
+ | \stmt_list
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_call
+ |  |  +expr_id "printXY"
+ |  |  \expr_list
+ |  |   +expr_id "S"
+ |  |   +expr_id "printX"
+ |  |   \expr_id "printY"
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl_assign "len"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_call
+ |  |   +expr_id "strlen"
+ |  |   \expr_list
+ |  |    \expr_id "S"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \while_loop
+ |  |  +expr_>
+ |  |  |+expr_id "len"
+ |  |  |\expr_const "29"
+ |  |  \stmt_list
+ |  |   +stmt
+ |  |   |\imp_stmt
+ |  |   | \expr_=
+ |  |   |  +expr_id "len"
+ |  |   |  \expr_-
+ |  |   |   +expr_id "len"
+ |  |   |   \expr_const "30"
+ |  |   +stmt
+ |  |   |\imp_stmt
+ |  |   | \expr_=
+ |  |   |  +expr_id "printX"
+ |  |   |  \expr_const "0"
+ |  |   \stmt
+ |  |    \imp_stmt
+ |  |     \expr_++
+ |  |      \expr_id "printY"
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_=
+ |     +expr_id "printX"
+ |     \expr_+
+ |      +expr_id "printX"
+ |      \expr_id "len"
+ +decl_stmt
+ |\func_def "println"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |\var_decl "S"
+ | | \typename "float"
+ | |  \ptr_stars
+ | |   \stars "*"
+ | \stmt_list
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_call
+ |  |  +expr_id "print"
+ |  |  \expr_list
+ |  |   \expr_id "S"
+ |  \stmt
+ |   \imp_stmt
+ |    \if_block
+ |     \if_then
+ |      +expr_!=
+ |      |+expr_id "printX"
+ |      |\expr_const "0"
+ |      \stmt_list
+ |       +stmt
+ |       |\imp_stmt
+ |       | \expr_++
+ |       |  \expr_id "printY"
+ |       \stmt
+ |        \imp_stmt
+ |         \expr_=
+ |          +expr_id "printX"
+ |          \expr_const "0"
+ +decl_stmt
+ |\func_def "printnum"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |\var_decl "N"
+ | | \typename "float"
+ | |  \ptr_stars "<empty>"
+ | \stmt_list
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl "arr"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_const "20"
+ |  +stmt
+ |  |\imp_stmt
+ |  | \expr_call
+ |  |  +expr_id "itoa"
+ |  |  \expr_list
+ |  |   +expr_id "arr"
+ |  |   \expr_id "N"
+ |  \stmt
+ |   \imp_stmt
+ |    \expr_call
+ |     +expr_id "print"
+ |     \expr_list
+ |      \expr_id "arr"
+ +decl_stmt
+ |\func_def "printXY"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list
+ | |+var_decl "S"
+ | ||\typename "float"
+ | || \ptr_stars
+ | ||  \stars "*"
+ | |+var_decl "X"
+ | ||\typename "float"
+ | || \ptr_stars "<empty>"
+ | |\var_decl "Y"
+ | | \typename "float"
+ | |  \ptr_stars "<empty>"
+ | \stmt_list
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl_assign "I"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_const "0"
+ |  +stmt
+ |  |\decl_stmt
+ |  | \var_decl_assign "C"
+ |  |  +typename "float"
+ |  |  |\ptr_stars "<empty>"
+ |  |  \expr_deref
+ |  |   \expr_++
+ |  |    \expr_id "S"
+ |  \stmt
+ |   \imp_stmt
+ |    \while_loop
+ |     +expr_id "C"
+ |     \stmt_list
+ |      +stmt
+ |      |\decl_stmt
+ |      | \var_decl_assign "Adr"
+ |      |  +typename "float"
+ |      |  |\ptr_stars "<empty>"
+ |      |  \expr_+
+ |      |   +expr_*
+ |      |   |+expr_const "30"
+ |      |   |\expr_id "Y"
+ |      |   \expr_id "X"
+ |      +stmt
+ |      |\imp_stmt
+ |      | \expr_=
+ |      |  +expr_index
+ |      |  |+expr_id "adr_console"
+ |      |  |\expr_*
+ |      |  | +expr_const "2"
+ |      |  | \expr_id "Adr"
+ |      |  \expr_id "C"
+ |      +stmt
+ |      |\imp_stmt
+ |      | \expr_=
+ |      |  +expr_index
+ |      |  |+expr_id "adr_console"
+ |      |  |\expr_+
+ |      |  | +expr_*
+ |      |  | |+expr_const "2"
+ |      |  | |\expr_id "Adr"
+ |      |  | \expr_const "1"
+ |      |  \expr_const "999"
+ |      +stmt
+ |      |\imp_stmt
+ |      | \expr_++
+ |      |  \expr_id "X"
+ |      \stmt
+ |       \imp_stmt
+ |        \expr_=
+ |         +expr_id "C"
+ |         \expr_deref
+ |          \expr_++
+ |           \expr_id "S"
+ +decl_stmt
+ |\func_def "unreachable"
+ | +typename "float"
+ | |\ptr_stars "<empty>"
+ | +var_decl_list "<empty>"
+ | \stmt_list
+ |  \stmt
+ |   \imp_stmt
+ |    \while_loop
+ |     +expr_const "1"
+ |     \stmt_list "<empty>"
+ +decl_stmt
+ |\class_def "vec2"
+ | \decl_stmt_list
+ |  +decl_stmt
+ |  |\var_decl "X"
+ |  | \typename "float"
+ |  |  \ptr_stars "<empty>"
+ |  +decl_stmt
+ |  |\var_decl "Y"
+ |  | \typename "float"
+ |  |  \ptr_stars "<empty>"
+ |  +decl_stmt
+ |  |\func_def "avg"
+ |  | +typename "float"
+ |  | |\ptr_stars "<empty>"
+ |  | +var_decl_list "<empty>"
+ |  | \stmt_list
+ |  |  \stmt
+ |  |   \imp_stmt
+ |  |    \expr_/
+ |  |     +expr_subexpr
+ |  |     |\expr_+
+ |  |     | +expr_id "X"
+ |  |     | \expr_id "Y"
+ |  |     \expr_const "2"
+ |  \decl_stmt
+ |   \func_def "switch"
+ |    +typename "float"
+ |    |\ptr_stars "<empty>"
+ |    +var_decl_list "<empty>"
+ |    \stmt_list
+ |     +stmt
+ |     |\decl_stmt
+ |     | \var_decl_assign "Z"
+ |     |  +typename "float"
+ |     |  |\ptr_stars "<empty>"
+ |     |  \expr_id "X"
+ |     +stmt
+ |     |\imp_stmt
+ |     | \expr_=
+ |     |  +expr_id "X"
+ |     |  \expr_id "Y"
+ |     \stmt
+ |      \imp_stmt
+ |       \expr_=
+ |        +expr_id "Y"
+ |        \expr_id "Z"
  \decl_stmt
-  \class_def "horse"
-   \decl_stmt_list
-    +decl_stmt
-    |\var_decl_assign "fluff"
-    | +typename "float"
-    | \expr_const "5"
-    \decl_stmt
-     \func_def "boop"
-      +typename "int"
-      +var_decl_list "<empty>"
-      \stmt_list
-       \stmt
-        \imp_stmt
-         \expr_=
-          +expr_id "fluff"
-          \expr_+
-           +expr_id "fluff"
-           \expr_const "1"
+  \func_def "main"
+   +typename "float"
+   |\ptr_stars "<empty>"
+   +var_decl_list "<empty>"
+   \stmt_list
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const "no\nu"
+    +stmt
+    |\decl_stmt
+    | \var_decl "A"
+    |  \typename "vec2"
+    |   \ptr_stars "<empty>"
+    +stmt
+    |\decl_stmt
+    | \var_decl "B"
+    |  \typename "vec2"
+    |   \ptr_stars "<empty>"
+    +stmt
+    |\imp_stmt
+    | \expr_=
+    |  +expr_.
+    |  |+expr_id "B"
+    |  |\expr_id "X"
+    |  \expr_const "1"
+    +stmt
+    |\imp_stmt
+    | \expr_=
+    |  +expr_.
+    |  |+expr_id "B"
+    |  |\expr_id "Y"
+    |  \expr_const "3"
+    +stmt
+    |\imp_stmt
+    | \expr_=
+    |  +expr_.
+    |  |+expr_id "A"
+    |  |\expr_id "X"
+    |  \expr_const "5"
+    +stmt
+    |\imp_stmt
+    | \expr_=
+    |  +expr_.
+    |  |+expr_id "A"
+    |  |\expr_id "Y"
+    |  \expr_const "7"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const "A.avg() = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "A"
+    |    \expr_call
+    |     +expr_id "avg"
+    |     \expr_list "<empty>"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const ""
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const "B.avg() = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "B"
+    |    \expr_call
+    |     +expr_id "avg"
+    |     \expr_list "<empty>"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const ""
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const "A.X = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "A"
+    |    \expr_id "X"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const ", A.Y = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "A"
+    |    \expr_id "Y"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const ""
+    +stmt
+    |\imp_stmt
+    | \expr_.
+    |  +expr_id "A"
+    |  \expr_call
+    |   +expr_id "switch"
+    |   \expr_list "<empty>"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const "switched"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const "A.X = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "A"
+    |    \expr_id "X"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "print"
+    |  \expr_list
+    |   \expr_const ", A.Y = "
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "printnum"
+    |  \expr_list
+    |   \expr_.
+    |    +expr_id "A"
+    |    \expr_id "Y"
+    +stmt
+    |\imp_stmt
+    | \expr_call
+    |  +expr_id "println"
+    |  \expr_list
+    |   \expr_const ""
+    \stmt
+     \imp_stmt
+      \while_loop
+       +expr_const "1"
+       \stmt_list "<empty>"
