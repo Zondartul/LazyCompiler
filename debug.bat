@@ -1,0 +1,1 @@
+gdb bin\lazycomp < gdbinput.txt

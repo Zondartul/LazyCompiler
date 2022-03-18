@@ -1,0 +1,1046 @@
+#include "codegen.h"
+#include "semantic.h"
+#include "string.h"
+#include "ctype.h"
+#include "stdio.h"
+#include "codegen_gen_command.h"
+
+// todo:
+// make it so each function has only one frame
+// no need to look at parent frame for any reason
+// global vars have absolute address
+// SYMBOL means var becomes visible (but space needs to be pre-allocated at entry)
+// FORGET means var becomes invisible (space can be deallocated)
+//
+// allocation:
+// check frame-claimed stackspace for FREE nodes
+//	if found, return free node
+//  if not found, claim more stackspace and return next node
+// deallocated node becomes FREE but does not become unclaimed.
+//
+// alternative: all symbols preallocated and never deallocated
+//
+
+
+//generated
+//definition_vector_of(ptr_reg);
+//definition_vector_of(ptr_debugInfoFunc);
+//definition_vector_of(ptr_debugInfoVar);
+
+//constants
+//#define DEBUGMEM 68866
+//#define if_first(x) {static int count = 0; if(!first++){x;}}
+//#define if_not_first(x) {static int first = 0; if(first++){x;}}
+
+//vars
+int debugInvade = 0;
+int debugInvadeHalt = 1;
+int comments = 1;
+FILE *fasm;
+int CurCMD = 0;
+vector2_ptr_char stringStore_labels;
+vector2_ptr_char stringStore_strings;
+ptr_code_segment CurCS = 0;
+ptr_frame curframe = 0;
+ptr_frame firstframe = 0;
+int codegen_decl = 0;
+const char *lbl_frameStart = 0;
+const char *lbl_frameEnd = 0;
+vector2_ptr_char frameStarts;
+//vector2_int frameIndices;
+vector3_int frameIndices;
+vector2_ptr_frame frames;
+vector2_ptr_frame framestack;
+//vector2_int varstacks;
+//vector2_int argstacks;
+vector3_int varstacks;
+vector3_int argstacks;
+vector2_ptr_reg registers;
+vector2_ptr_debugInfoFunc debug_funcs;
+vector2_ptr_debugInfoVar debug_vars;
+int cmd_index = 0;
+const char *codegen_str = 0;
+char *codegen_tok = 0;
+int trace_gens = 1;	//if 1, every assembly line will have "emitted from here" trace
+
+//functions ===============================================
+//void storeValue(const char *val, const char *reg);
+//void printTraceCode();
+//void printDebugInfo();
+//void printStringStore();
+//void printGlobalVars();
+//void printindent();
+
+
+
+void asm_println2(const char *postfix, const char *fmt, ...){
+	va_list args;
+	va_start(args,fmt);
+	char buff[2000];
+	vsprintf(buff, fmt, args);
+	//vfprintf(fasm, fmt, args);
+	va_end(args);
+	int len = strlen(buff);
+	int pos = 80;
+	for(int I = len; I < pos; I++){
+		buff[I] = ' ';
+	}
+	if(trace_gens){
+		//fprintf(fasm, "%s", postfix);
+		sprintf(buff+pos,"%s", postfix);
+	}
+	len = strlen(buff);
+	//force the output to be on one line
+	for(int I = 0; I < len; I++){
+		if((buff[I] == '\n') || (buff[I] == '\r')){
+			buff[I] = ' ';
+		}
+	}
+	sprintf(buff+strlen(buff),"\n");
+	//fprintf(fasm, "\n");
+	fprintf(fasm, "%s",buff);
+}
+
+void asm_printblk2(const char *prefix, const char *fmt, ...){
+	va_list args;
+	va_start(args, fmt);
+	if(trace_gens){asm_println(prefix, "// block begin");}
+	vfprintf(fasm, fmt, args);
+	va_end(args);
+	if(trace_gens){asm_println(prefix, "// block end");}
+}
+
+
+ptr_IR_symbol new_IR_symbol(){
+	ptr_IR_symbol S = malloc(sizeof(struct IR_symbol));
+	S->IR_name = "";
+	S->username = "";
+	S->type = 0;
+	S->lbl_at = 0;
+	S->lbl_from = 0;//"section_code";
+	S->lbl_to = 0;//"section_code_end";
+	S->temp = 0;
+	S->pointerlevel = 0;
+	S->pos = 0;
+	S->framedepth = 0;
+	S->arraysize = 0;
+	S->scope = 0;
+	return S;
+}
+
+const char *stringStore_add(const char *str){
+	if(!curframe){error("[CODE GEN] no frame ");}
+	const char *lbl = IR_next_name(firstframe->namespace,"str");
+	m(stringStore_labels,push_back,lbl);
+	m(stringStore_strings,push_back,stralloc(str));
+	return lbl;
+}
+
+void printStringStore(){
+	asm_println("string_store:"); //fprintf(fasm,"string_store:\n");
+	int i;
+	for(i = 0; i < stringStore_labels.size; i++){
+		//fprintf(fasm,"%s: db \"%s\",0\n",m(stringStore_labels,get,i),m(stringStore_strings,get,i));
+		const char *str_lbl = m(stringStore_labels,get,i);
+		const char *str_str = m(stringStore_strings,get,i);
+		asm_println("%s: db \"%s\",0",str_lbl,str_str);
+	}
+}
+
+void printTraceHelper(const char *str){
+	if(debugInvade){
+		asm_println("#ifdef DEBUG"); //fprintf(fasm,"#ifdef DEBUG\n");
+		if(str){
+			const char *lbl = stringStore_add(str);
+			printindent();
+			asm_println("push %s",lbl); //fprintf(fasm,"push %s\n",lbl);
+		}else{
+			printindent();
+			asm_println("push 0"); //fprintf(fasm,"push 0\n");
+		}
+		printindent();
+		asm_println("call trace"); fprintf(fasm,"call trace\n");
+		printindent();
+		asm_println("inc esp"); //fprintf(fasm,"inc esp\n");//deallocate the argument
+		asm_println("#endif"); //fprintf(fasm,"#endif\n");
+	}
+}
+void printTrace(){
+	const char *str = m(CurCS->commands,get,CurCMD);
+	printTraceHelper(str);
+}
+
+void print_skeleton_start(){
+	int debugMem = DEBUGMEM;
+	//fprintf(fasm,
+	//"code_segment_start:\n"
+	//"#define DEBUG\n"
+	//"mov ebp, 20000\n"		//so we can tell stack pointers from code pointers
+	//"mov esp, 19999\n"
+	//"mov #%d, debug_info\n"
+	//,debugMem+20);
+	asm_println("code_segment_start:");
+	asm_println("#define DEBUG");
+	asm_println("mov ebp, 20000");
+	asm_println("mov esp, 19999");
+	asm_println("mov #%d, debug_info", debugMem+20);
+	
+	//CurEBP = 20000;
+	printTraceHelper("program start");
+	//fprintf(fasm,
+	//"section_code_body:\n"
+	////"call main\n"//haaax?..
+	//);
+	asm_println("section_code_body:");
+}
+
+void print_skeleton_end(){
+	asm_println("code_segment_epilog:"); //fprintf(fasm,"code_segment_epilog:\n");
+	
+	printTraceCode();
+	asm_println("code_segment_end:"); //fprintf(fasm,"code_segment_end:\n");
+	asm_println("data_segment_dynamic_start:"); //fprintf(fasm,"data_segment_dynamic_start:\n");
+	printGlobalVars();
+	asm_println("data_segment_dynamic_end:"); // fprintf(fasm,"data_segment_dynamic_end:\n");
+	asm_println("data_segment_static_start:");//fprintf(fasm,"data_segment_static_start:\n");
+	printStringStore();
+	printDebugInfo();
+	asm_println("data_segment_static_end:"); //fprintf(fasm,"data_segment_static_end:\n");
+}
+
+void printTraceCode(){
+	int debugMem = DEBUGMEM;
+	asm_printblk(
+	"trace:\n"
+	"cmp #%d,0\n"//"cmp #65884,0\n" //debugMem + 18
+	"je trace_exit\n"
+	"pusha\n"
+	"mov eax, %d\n"//"mov eax, 65866\n" //debugMem
+	"mov eax:#0, ESP:#0\n"
+	"mov eax:#1, ESP:#1\n"
+	"mov eax:#2, ESP:#2\n"
+	"mov eax:#3, ESP:#3\n"
+	"mov eax:#4, ESP:#4\n"
+	"mov eax:#5, ESP:#5\n"
+	"mov eax:#6, ESP:#6\n"
+	"mov eax:#7, ESP:#7\n"
+	"mov eax:#8, ESP:#8\n"
+	"mov eax:#9, ESP:#9\n"
+	"mov eax:#10, ESP:#10\n"
+	"mov eax:#11, ESP:#11\n"
+	"mov eax:#12, ESP:#12\n"
+	"mov eax:#13, ESP:#13\n"
+	"mov eax:#14, ESP:#14\n"
+	"mov eax:#15, ESP:#15\n"
+	"mov eax:#16, ESP:#16\n"
+	"mov eax:#17, ESP:#17\n"
+	//"mov eax:#18, ESP:#18\n"
+	"mov eax:#19, ESP\n"
+	"mov eax:#20, debug_info\n"
+	"popa\n"
+	,debugMem+18,debugMem);
+	if(debugInvadeHalt){fprintf(fasm,"int 1\n");}
+	asm_printblk(
+	"ret\n"
+	"trace_exit:\n"
+	"ret\n"
+	);
+}
+
+//void resizeStacks();
+
+void new_frame(){
+	ptr_frame F = malloc(sizeof(struct frame));
+	if(curframe){
+		F->depth = curframe->depth+1;
+	}else{
+		F->depth = 0;
+	}
+	F->cmd_index = 0;
+	F->lbl_from = 0;
+	F->lbl_to = 0;
+	F->symbols = vector2_ptr_IR_symbol_here();
+	F->parent = curframe;
+	F->namespace = vector2_ptr_char_new();
+	F->stackvarsize = 0;
+	F->stackargsize = 0;
+	curframe = F;
+	//resizeStacks();
+	m(frames,push_back,F);
+	printf("new frame, depth:%d, vs.size:%d, as.size:%d\n",F->depth,varstacks.size,argstacks.size);
+}
+
+void make_first_frame(){
+	new_frame();
+	curframe->lbl_from = "code_segment_start";
+	curframe->lbl_to = "code_segment_end";
+	curframe->cmd_index = -1;
+	firstframe = curframe;
+}
+
+void printframe(ptr_frame F){
+	if(!F){printf("+------\n|(null)\n+------\n");return;}
+	printf("+------------------\n");
+	printf("|frame %p\n",F);
+	printf("|frame.depth: %d\n",F->depth);
+	printf("|frame.cmd_index: %d\n",F->cmd_index);
+	printf("|frame.lbl_from: %s\n",F->lbl_from);
+	printf("|frame.lbl_to: %s\n",F->lbl_to);
+	printf("|frame.symbols.size: %d\n",F->symbols.size);
+	printf("|frame.parent: %p\n",F->parent);
+	printf("+------------------\n");
+}
+
+void printGlobalVars(){
+	while(curframe->parent){curframe = curframe->parent;}
+	for(int I = 0; I < curframe->symbols.size; I++){
+		ptr_IR_symbol S = m(curframe->symbols,get,I);
+		if(!strcmp(S->type,"VAR")){
+			if(!S->arraysize){
+				asm_println("%s: db 0 //%s",S->lbl_at,S->IR_name);
+			}else{
+				asm_println("%s: alloc %d //%s",S->lbl_at,S->arraysize,S->IR_name);
+			}
+		}
+		if(!strcmp(S->type,"STRING")){
+			asm_println("%s: db \"%s\",0",S->lbl_at,escape_string(S->str));
+		}
+	}
+}
+
+ptr_frame find_frame_by_cmd_index(int idx){
+	int i;
+	for(i = 0; i < frames.size; i++){
+		ptr_frame F = m(frames,get,i);
+		if(F->cmd_index == idx){return F;}
+	}
+	error("can't find frame for cmd_index %d\n",idx);
+	return 0;
+}
+
+void push_frame(){
+	m(framestack,push_back,curframe);
+}
+
+void pop_frame(){
+	curframe = m(framestack,pop_back);
+}
+
+ptr_IR_symbol find_IR_symbol(const char *IR_name){
+	int i;
+	ptr_IR_symbol S;
+	for(i = 0; i < curframe->symbols.size;i++){//for(i = 0; i < IR_symbol_table.size; i++){
+		S = m(curframe->symbols,get,i);//m(IR_symbol_table,get,i);
+		if(!strcmp(S->IR_name,IR_name)){
+			return S;
+		}
+		if(!strcmp(S->type,"STRUCT")){
+			if(!S->scope){error("[CODE GEN] struct without a scope ");}
+			int j;
+			for(j = 0; j < S->scope->symbols.size; j++){
+				ptr_IR_symbol S2 = m(S->scope->symbols,get,j);
+				if(!strcmp(S2->IR_name,IR_name)){
+					return S2;
+				}
+			}
+		}
+	}
+	if(curframe->parent){
+		ptr_frame F = curframe;
+		curframe = curframe->parent;
+		S = find_IR_symbol(IR_name);
+		curframe = F;
+		return S;
+	}
+	return 0;
+}
+
+ptr_reg new_reg(const char *name, const char *val, int age){
+	ptr_reg R = malloc(sizeof(struct reg));
+	*R = (struct reg){name,val,age};
+	return R;
+}
+
+
+ptr_debugInfoFunc find_debugInfoFunc(const char* name){
+	int i;
+	for(i = 0; i < debug_funcs.size; i++){
+		ptr_debugInfoFunc F = m(debug_funcs,get,i);
+		if(!strcmp(F->IR_name,name)){
+			return F;
+		}
+	}
+	return 0;
+}
+
+ptr_debugInfoVar find_debugInfoVar(const char* name){
+	int i;
+	for(i = 0; i < debug_vars.size; i++){
+		ptr_debugInfoVar V = m(debug_vars,get,i);
+		if(!strcmp(V->IR_name,name)){
+			return V;
+		}
+	}
+	return 0;
+}
+
+void initializeRegTable(){
+	if_not_first(return);
+	printf("initializing register table\n");
+	registers = vector2_ptr_reg_here();
+	m(registers,push_back,new_reg("R1",0,0));
+	m(registers,push_back,new_reg("R2",0,0));
+	m(registers,push_back,new_reg("R3",0,0));
+	m(registers,push_back,new_reg("R4",0,0));
+	m(registers,push_back,new_reg("R5",0,0));
+	m(registers,push_back,new_reg("R6",0,0));
+	//m(registers,push_back,new_reg("R7",0,0));
+	//m(registers,push_back,new_reg("R8",0,0));
+	printf("reg table initialize\n");
+}
+
+ptr_reg allocRegister(){
+	initializeRegTable();
+	static int age = 0;
+	int i;
+	for(i = 0; i < registers.size; i++){
+		ptr_reg R = m(registers,get,i);
+		if(R->val == 0){
+			printf("allocated register %d (%s)\n",i,R->name);
+			R->age = age++;
+			return R;
+		}
+	}
+	//all regs in use, need to spill.
+	int minage = m(registers,get,0)->age;
+	int minageI = 0;
+	for(i = 1; i < registers.size; i++){
+		ptr_reg R = m(registers,get,i);
+		if(R->age < minage){minage = R->age; minageI = i;}
+	}
+	ptr_reg R = m(registers,get,minageI);
+	/*
+	if(R->val){
+		printf("spilling register %d (%s)\n",minageI,R->name);
+		storeValue(R->val,R->name);
+	}else{
+		printf("assuming register %s is free (no assoc. value)\n",R->name);
+		error("unreachable code?...");
+	}
+	*/
+	if(R->val){if(comments){asm_println("//discarding %s from %s",R->val,R->name);}}
+	R->val = 0;
+	R->age = age++;
+	printf("allocated register %d (%s)\n",minageI,R->name);
+	return R;
+}
+
+
+ptr_symbol find_symbol_by_ir_name(ptr_symbol_table ST, const char *name){
+	int i;
+	for(i = 0; i < ST->symbols.size; i++){
+		ptr_symbol S = m(ST->symbols,get,i);
+		if(strcmp(S->IR_name,name)==0){
+			return S;
+		}
+	}
+	return 0;
+}
+
+void printDebugInfo(){
+	printf("emitting debug info\n");
+	int j;
+	int i;
+	
+	asm_println("debug_info:");
+	//fprintf(fasm,"debug_info_frames:\n");
+	//fprintf(fasm,"DB %d\n //number of frames\n",frames.size);
+	//fprintf(fasm,"//lbl_frm, lbl_to, depth\n");
+	//for(j = 0; j < frames.size; j++) {
+	//	ptr_frame F = m(frames,get,j);
+	//	fprintf(fasm,"DB %s,%s,%d\n",F->lbl_from,F->lbl_to,F->depth);
+	// }
+	asm_println("debug_info_funcs:");
+	int numFuncs = 0;
+	int numVars = 0;
+	for(j = 0; j < frames.size; j++){
+		ptr_frame F = m(frames,get,j);
+		for(i = 0; i < F->symbols.size; i++){
+			ptr_IR_symbol S = m(F->symbols,get,i);
+			if(!strcmp(S->type,"FUNC")){
+				numFuncs++;
+			}
+			if((!strcmp(S->type,"VAR")||!strcmp(S->type,"ARG"))&&(!S->temp)){
+				numVars++;
+			}
+		}
+	}
+	asm_println("DB %d\n //number of functions\n",numFuncs);
+	if(comments){asm_println("//[len][entrance,exit,[len][IR_name],[len][username]]\n");}
+	
+	for(j = 0; j < frames.size; j++){
+		ptr_frame F = m(frames,get,j);
+		for(i = 0; i< F->symbols.size; i++){
+			ptr_IR_symbol S = m(F->symbols,get,i);
+			//record: db recordlen, data1, data2... datan
+			//record2[1] = (record1+recordlen)[1]
+			if(!strcmp(S->type,"FUNC")){
+				int str1len = 0;
+				if(S->IR_name){str1len = strlen(S->IR_name);}
+				int record1len = str1len+1;
+				int str2len = 0;
+				if(S->username){str2len = strlen(S->username);}
+				int record2len = str2len+1;
+				int recordlen = 3+record1len+record2len;
+				//fprintf(fasm,"DB %d, %s, %s,\"%s\",0\n",recordlen,F->entrance,F->exit,F->name);
+				asm_println("DB %d, ",recordlen);
+				asm_println("%s, ",S->lbl_from);
+				asm_println("%s, ",S->lbl_to);
+				asm_println("%d, \"%s\",0, ",str1len,S->IR_name);
+				asm_println("%d, \"%s\",0;",str2len,S->username);
+			}			
+		}
+	}
+	asm_println("debug_info_vars:\n");
+	asm_println("DB %d\n //number of variables\n",numVars);
+	if(comments){asm_println("//[len][visible_from,visible_to,pos,framedepth,[len][IR_name],[len][username]]\n");}
+	for(j = 0; j < frames.size; j++){
+		ptr_frame F = m(frames,get,j);
+		for(i = 0; i< F->symbols.size; i++){
+			ptr_IR_symbol S = m(F->symbols,get,i);
+			//record: db recordlen, data1, data2... datan
+			//record2[1] = (record1+recordlen)[1]
+			if((!strcmp(S->type,"VAR")||!strcmp(S->type,"ARG"))&&(!S->temp)){
+				int str1len = 0;
+				if(S->IR_name){str1len = strlen(S->IR_name);}
+				int record1len = str1len+1;
+				int str2len = 0;
+				if(S->username){str2len = strlen(S->username);}
+				int record2len = str2len+1;
+				int recordlen = 4+record1len+record2len;
+				
+				asm_println("\n//%s %s",S->type,S->IR_name);
+				asm_println("DB %d //recordlen",recordlen);
+				asm_println("DB %s //%s->lbl_from",S->lbl_from, S->IR_name);
+				asm_println("DB %s //%s->lbl_to",S->lbl_to, S->IR_name);
+				if(S->framedepth){
+					asm_println("DB %d //%s->pos",S->pos, S->IR_name);
+				}else{
+					asm_println("DB %s //%s->lbl_at",S->lbl_at,S->IR_name);
+				}
+				asm_println("DB %d //%s->framedepth",S->framedepth, S->IR_name);
+				asm_println("DB %d, \"%s\",0 //%s->IR_name",str1len,S->IR_name, S->IR_name);
+				asm_println("DB %d, \"%s\",0//%s->username",str2len,S->username, S->IR_name);
+				//fprintf(fasm,"DB %d, %s, %s, %d, \"%s\",0\n",recordlen,V->visible_from,V->visible_to,V->framedepth,V->name);
+			}
+		}
+	}
+}
+
+int allocStackVar(int size){
+	if(!curframe){error("[CODE GEN] no frame ");}
+	//int cursize = curframe->stackvarsize; //unused
+	curframe->stackvarsize+=size;
+	return -curframe->stackvarsize; //remember that the stack grows downwards because magic
+}
+
+int allocStackArg(int size){
+	if(!curframe){error("[CODE GEN] no frame ");}
+	int cursize = curframe->stackargsize;
+	curframe->stackargsize += size;
+	return 2+cursize;
+}
+
+//some register = value
+//returns something you can put into "mov eax, X"
+const char* loadRValue(const char *val){
+	if(!val){error("[CODE GEN] trying to load null value ");}
+	if(isnumber(val)){return val;}
+	int deref = 0;
+	int ref = 0;
+	char buff[80];
+	
+	if(val[0] == '*'){deref = 1; val++;}
+	if(val[0] == '&'){ref = 1; val++;}
+		
+	ptr_IR_symbol S = find_IR_symbol(val);
+	if(!S){error("[CODE GEN] undefined value '%s' (line %d) ",val,CurCMD+1);}
+	if(!strcmp(S->type,"FUNC")){
+		if(deref){error("[CODE GEN] can't dereference a function ");}
+		if(ref){error("[CODE GEN] function names are already references (line %d)",CurCMD+1);}
+		return val;
+	}
+	if(!strcmp(S->type,"LABEL")){
+		if(deref)	{sprintf(buff,"#%s",val); return stralloc(buff);}
+		if(ref)		{error("[CODE GEN] labels are already references ");}
+		else		{return val;}
+	}
+	if(!strcmp(S->type,"STRING")){
+		if(deref)	{sprintf(buff,"#%s",S->lbl_at); return stralloc(buff);}
+		if(ref)		{error("[CODE GEN] const strings are already references ");}
+		else		{return S->lbl_at;}
+	}
+	if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
+		if(S->framedepth == 0){
+			//global var
+			if(ref || S->arraysize){
+				sprintf(buff, "%d",S->pos);
+				return stralloc(buff);
+			}
+			if(deref){
+				//todo: check if some register already contains that val
+				ptr_reg R = allocRegister();
+				const char *reg = R->name;
+				R->val = stralloc(val);
+				printindent();
+				asm_println("mov %s, #%s", reg, S->lbl_at);
+				sprintf(buff, "#%s", reg);
+				return stralloc(buff);
+			}
+			sprintf(buff, "#%s", S->lbl_at);
+			return stralloc(buff);
+		}else{
+			//local var
+			if(ref || S->arraysize){
+				sprintf(buff, "EBP:%d",S->pos);
+				return stralloc(buff);
+			}
+			if(deref){
+				//todo: check if some register already contains that val
+				ptr_reg R = allocRegister();
+				const char *reg = R->name;
+				R->val = stralloc(val);
+				printindent();
+				asm_println("rstack %s, EBP:%d", reg, S->pos);
+				sprintf(buff, "#%s", reg);
+				return stralloc(buff);
+			}
+			sprintf(buff,"EBP:#%d",S->pos); 
+			return stralloc(buff);		
+		}
+	}
+	error("[CODE GEN] trying to load unsupported symbol type %s ",S->type);
+	return 0;
+}
+
+//same but also puts the value in a register
+const char* loadLValue(const char* val){
+	if(!val){error("[CODE GEN] trying to load null value ");}
+	//const char *reg2 = "R7"; //unused
+	if(isnumber(val)){
+		//immediate value
+		ptr_reg reg = allocRegister();
+		if(comments){printindent(); asm_println("//load %s into %s",val, reg->name);}
+		reg->val = stralloc(val);
+		printindent();
+		asm_println("mov %s, %s",reg->name,val);
+		return reg->name;
+	}else{
+		//stored value
+		int ref = 0;
+		int deref = 0;
+		if(val[0] == '*'){deref = 1; val++;}
+		if(val[0] == '&'){ref = 1; val++;}
+		//ptr_symbol S = find_symbol_by_ir_name(CurCS->scope,val);
+		ptr_IR_symbol S = find_IR_symbol(val);
+		if(S){
+			int adr = S->pos;//S->store_adr+1; //because #[EBP:0] is prevEBP
+			ptr_reg reg = allocRegister();
+			int framediff = curframe->depth-S->framedepth;
+			if(comments){printindent(); asm_println("//load %s into %s (cf:%d, fd:%d)",val,reg->name,curframe->depth,S->framedepth);}
+			if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
+				//if(adr < 0){fprintf(fasm,"*RECORD SCRATCH*\n");error("[CODE GEN] Error: unknown address for val [%s]",val);}
+				//it is negative for func arguments
+				if(S->framedepth == 0){
+					//global
+					if(ref)				{printindent(); asm_println("mov %s, %s",reg->name,S->lbl_at);}
+					else				{printindent(); asm_println("mov %s, #%s",reg->name,S->lbl_at);}
+					if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+					if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+				}else{
+					//local
+					if(framediff < 0){asm_println("*RECORD SCRATCH*");error("[CODE GEN] Error: attempt to access val [%s] in a deeper frame (%d) than current (%d)",val,S->framedepth,curframe);}
+					if(framediff == 0){
+						if(ref)				{printindent(); asm_println("mov %s, EBP:%d", reg->name, adr);} //reg = ESP+adr
+						else				{printindent(); asm_println("rstack %s, EBP:%d", reg->name, adr);}
+						if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+						if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+					}else{
+						error("[CODE GEN] Error: frame-climbing is disabled\n");
+						if(comments){printindent(); asm_println("//climbing %d frames",framediff);}
+						printindent(); asm_println("mov %s, #EBP",reg->name); //frame climbing (r7 = EBP_prev)
+						int i;
+						for(i = 1; i < framediff; i++){
+							printindent(); asm_println("mov %s, #%s", reg->name,reg->name);
+						}
+						printindent(); asm_println("mov %s, %s:%d", reg->name, reg->name, adr);
+						if(!ref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);} //reg = ESP+adr
+						if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+						if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+					}
+				}
+				reg->val = stralloc(val);
+				return reg->name;
+			}
+			if(!strcmp(S->type,"LABEL") || !strcmp(S->type,"FUNC")){
+				if(deref){
+					printindent(); asm_println("mov %s, #%s",reg->name,val);
+				}else{
+					printindent(); asm_println("mov %s, %s",reg->name,val); //also label
+				}
+				if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
+				reg->val = stralloc(val);
+				return reg->name;
+			}
+			
+			error("[CODE GEN] trying to load unsupported symbol type %s ",S->type);
+			
+		}else{
+			error("[CODE GEN] Error: undefined value [%s]\n",val);
+			return 0;
+		}
+	}
+	return 0;
+}
+
+
+
+//value = register
+void storeValue(const char *val, const char *reg){
+	if(!val){error("[CODE GEN] trying to store null value ");}
+	if(!reg){error("[CODE GEN] trying to store to null register ");}
+	printf("storeValue(%s, %s)\n",val,reg);
+	if(isnumber(val)){if(comments){asm_println("//discard %s from %s",val,reg);}return;}
+	if(comments){asm_println("//store %s into %s",reg,val);}
+	const char *reg2 = "R7";
+	//stored value
+	int deref = 0;
+	if(val[0] == '*'){deref = 1; val++;} //*val = reg is yep,&val = reg is nope
+	//ptr_symbol S = find_symbol_by_ir_name(CurCS->scope,val);
+	ptr_IR_symbol S = find_IR_symbol(val);
+	if(S){
+		//address calculation
+		int adr = S->pos;//S->store_adr+1;
+		int framediff = curframe->depth - S->framedepth;
+		if(comments){printindent();asm_println("//(curframe:%d, framedepth:%d)",curframe->depth,S->framedepth);}
+		//ptr_reg reg2 = allocRegister(); //reg2 stays free by the time we're done
+		if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
+			//if(adr < 0){fprintf(fasm,"*RECORD SCRATCH*\n");error("[CODE GEN] Error: unknown address for val [%s]",val);}
+			if(S->framedepth == 0){
+				if(!S->lbl_at){error("[CODE GEN] global var has no lbl_at: %s ",val);}
+				//global // && !S->pointerlevel
+				if(!deref){printindent();asm_println("mov #%s, %s",S->lbl_at,reg);}
+				else{
+					printindent();asm_println("mov %s, %s",reg2,S->lbl_at);
+					if(deref)			{printindent();asm_println("mov %s, #%s",reg2,reg2);}
+					//if(S->pointerlevel)	{printindent();fprintf(fasm,"mov %s, #%s\n",reg2,reg2);}
+					printindent();asm_println("mov #%s, %s",reg2,reg);
+				}
+				return;
+			}else{
+				if(framediff < 0){printindent();asm_println("*RECORD SCRATCH*");error("[CODE GEN] Error: attempt to access val [%s] in a deeper frame (%d) than current (%d)",val,S->framedepth,curframe->depth);}
+				if(framediff == 0){
+					if(!deref && !S->pointerlevel){
+						printindent();asm_println("sstack EBP:%d, %s",adr,reg);
+					}else{
+						printindent();asm_println("mov %s, EBP:%d", reg2, adr); //reg = ESP+adr
+						if(deref)			{printindent();asm_println("mov %s, #%s",reg2,reg2);}
+						//if(S->pointerlevel)	{printindent();fprintf(fasm,"mov %s, #%s\n",reg2,reg2);}
+						printindent();asm_println("mov #%s, %s",reg2,reg);
+					}
+				}else{
+					error("[CODE GEN] Error: frame-climbing is disabled\n");
+					if(comments){printindent();asm_println("//climbing %d frames",framediff);}
+					printindent();asm_println("mov %s, #EBP",reg2); //frame climbing (r7 = EBP_prev)
+					int i;
+					for(i = 1; i < framediff; i++){
+						printindent();asm_println("mov %s, #%s", reg2,reg2);
+					}
+					if(!deref && ! S->pointerlevel){
+						printindent();asm_println("sstack %%EBP:%d, %s",adr,reg);
+					}else{				
+						printindent();asm_println("mov %s, %s:%d", reg2, reg2, adr);
+						if(deref)			{printindent();asm_println("mov %s, #%s",reg2,reg2);}
+						//if(S->pointerlevel)	{printindent();fprintf(fasm,"mov %s, #%s\n",reg2,reg2);}
+						//store value
+						printindent();asm_println("mov #%s, %s",reg2,reg);
+					}
+				}
+				return;
+			}
+		}
+		if(!strcmp(S->type,"LABEL")){
+			error("[CODE GEN]: can't write into labels");
+		}
+		if(!strcmp(S->type,"FUNC")){
+			error("[CODE GEN]: trying to store value into a function");
+		}
+		error("[CODE GEN]: unknown symbol type: [%s] (line %d)",S->type,CurCMD+1);
+		/*
+		switch(S->storage){
+			case(STORE_DATA_STACK):
+				if(framediff < 0){fprintf(fasm,"*RECORD SCRATCH*\n");error("[CODE GEN] Error: attempt to access val [%s] in a deeper frame (%d) than current (%d)",val,S->framedepth,curframe);}
+				if(framediff == 0){
+					fprintf(fasm,"mov %s, EBP:-%d\n", reg2, adr); //reg = ESP+adr
+				}else{
+					fprintf(fasm,"//climbing %d frames\n",framediff);
+					fprintf(fasm,"mov %s, #EBP\n",reg2); //frame climbing (r7 = EBP_prev)
+					int i;
+					for(i = 1; i < framediff; i++){
+						fprintf(fasm,"mov %s, #%s\n", reg2,reg2);
+					}
+					fprintf(fasm,"mov %s, %s:-%d\n", reg2, reg2, adr);
+				}
+			break;
+			case(STORE_DATA_MEMBER):
+				fprintf(fasm,"mov %s, %d\n",reg2,adr);
+			break;
+			case(STORE_DATA_POINTER):
+				fprintf(fasm,"mov %s, EBP:-%d\n",reg2,adr);
+				fprintf(fasm,"mov %s, #%s\n",reg2,reg2);
+			break;
+			case(STORE_CODE):
+				fprintf(fasm,"*RECORD SCRATCH*\n");
+				error("[CODE GEN] Error: can't write into code storage\n");
+			break;
+			default:
+				fprintf(fasm,"*RECORD SCRATCH*\n");
+				error("[CODE GEN] Error: unknown storage class for [%s]: [%d]\n",val,S->storage);
+			break;
+		}
+		*/
+		
+	}else{
+		//fprintf(fasm,"\n");
+		if(deref){
+			asm_println("*RECORD SCRATCH*");
+			error("[CODE GEN] Error: undefined value [%s], can't dereference\n",val);
+		}
+		//if(comments){fprintf(fasm,"//storing %s as new value\n",val);}
+		//create new value
+		error("[CODE GEN] temp vals should be found in decl pass ");
+		//ptr_IR_symbol S = new_IR_symbol();
+		//S->IR_name = stralloc(val);
+		//S->type = stralloc("VAR");
+		//S->pos = allocStackVar(1);
+		// S->temp = 1;
+		// S->framedepth = curframe->depth;
+		// S->pointerlevel = 0;
+		// S->lbl_from = curframe->lbl_from;
+		// S->lbl_to = curframe->lbl_to;
+		// m(curframe->symbols,push_back,S);
+		// printf("stored %s as new value\n",S->IR_name);
+		// if(comments){printindent();fprintf(fasm, "//temp value %s at EBP+%d\n",S->IR_name,S->pos);}
+		// printindent();fprintf(fasm, "sstack EBP:%d, %s\n",S->pos,reg);
+	}
+}
+
+void checkResult(const char *val){
+	ptr_IR_symbol S = find_IR_symbol(val);
+	if(S){return;}
+	S = new_IR_symbol();
+	S->IR_name = stralloc(val);
+	S->type = stralloc("VAR");
+	S->pos = allocStackVar(1);
+	S->temp = 1;
+	S->framedepth = curframe->depth;
+	if(!S->framedepth){S->lbl_at = IR_inexact_name(curframe->namespace,S->IR_name);}
+	S->pointerlevel = 0;
+	S->lbl_from = curframe->lbl_from;
+	S->lbl_to = curframe->lbl_to;
+	m(curframe->symbols,push_back,S);
+	printf("stored %s as new value\n",S->IR_name);
+	//if(comments){printindent();fprintf(fasm, "//temp value %s at EBP+%d\n",S->IR_name,S->pos);}
+	//printindent();fprintf(fasm, "sstack EBP:%d, %s\n",S->pos,reg);
+}
+
+//copies up to num bytes of string str into buff, skipping over comments.
+void bufferizeWithoutComments(char *buff, const char *str, int num){
+	int inComment = 0;
+	char C, C2;
+	C = *str++;
+	if(C){C2 = *str++;}
+	while(C && num){
+		if(!inComment){
+			if((C == '/') && (C2 == '*')){
+				inComment = 1;
+				C = C2;
+				C2 = *str++;
+			}else{
+				//normal char, put into buffer
+				*buff++ = C;
+				num--;
+			}
+		}else{
+			if((C == '*') && (C2 == '/')){
+				inComment = 0;
+				C = C2;
+				C2 = *str++;
+			}else{
+				//do nothing
+			}
+		}
+		C = C2;
+		if(C){C2 = *str++;}
+	}
+	*buff = 0;
+}
+
+const char *makeSingleLine(const char *str){
+	char buff[2000];
+	int len = strlen(str);
+	if(len > 2000){len = 2000;}
+	memcpy(buff,str,len);
+	buff[len] = 0;
+	for(int I = 0; I < len; I++){
+		char C = buff[I];
+		if((C == '\n')||(C == '\r')){
+			buff[I] = ' ';
+		}
+	}
+	return stralloc(buff);
+}
+
+void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int new_cmd_index){
+		cmd_index = new_cmd_index;
+		codegen_str = str;
+		if(!codegen_decl){if(comments){asm_println("//[%s]",makeSingleLine(str));}}
+		countindent(str);
+		printf("codegen_decl [%s]\n",str);
+		//int len = strlen(str);
+		//if(len > 120){
+			//for some reason we got a really long line...\n"
+		//	fprintf(stderr, "line %d too long (%d chars). Line:\n", cmd_index+1,len); 
+		//	fprintf(stderr, "-----------------------------------------\n");
+		//	fprintf(stderr, "%s",str);
+		//	fprintf(stderr, "-----------------------------------------\n");
+		//	len = 120;
+		// }
+		//char buff[121];
+		//char *tok;
+		//strcpy(buff,str);
+		char buff[120];
+		bufferizeWithoutComments(buff,str,120);
+		
+		//fprintf(stderr,"\ncode_gen_command, input str:\n");
+		//fprintf(stderr, "-----------------------------------------\n");
+		//fprintf(stderr, "%s",str);
+		//fprintf(stderr, "\n-----------------------------------------\n");
+		//fprintf(stderr,"code_gen_command, output str:\n");
+		//fprintf(stderr, "-----------------------------------------\n");
+		//fprintf(stderr, "%s",buff);
+		//fprintf(stderr, "\n-----------------------------------------\n\n");
+		//int fd = -1;
+		//if(curframe){fd = curframe->depth;}
+		fprintf(stderr, "code_gen_command [%s]\n", buff);
+		//fprintf(stderr, ", FR %p, fd %d\n", curframe, fd);
+		
+		if(strlen(buff) == 0){
+			fprintf(stderr, "codegen_gen_command, resulting str is empty, leaving\n");
+			return;
+		}
+		
+		//memcpy(buff,str,len);
+		//buff[len] = 0;
+		/*tok*/
+		codegen_tok = strtok(buff," ");
+		if(!codegen_tok){
+			fprintf(stderr, "codegen_gen_command: no tokens\n");
+			return;
+		}
+		//codegen_tok = tok; //illegal reference smuggling
+		
+		if(strcmp(codegen_tok,"/*")==0){return;}
+		
+		// <val> <type> [pointerlevel] [pos]
+		//type:
+		//	var - local stack variable (ESP-d)
+		//	arg - local stack argument (ESP+1+d)
+		//	label - verbatim assembler label
+		
+		if(strcmp(codegen_tok,"SYMBOL")==0)		{gen_command_symbol(); 		return;}
+		if(strcmp(codegen_tok,"FUNCTION")==0)	{gen_command_function();	return;}
+		if(strcmp(codegen_tok,"LABEL")==0)		{gen_command_label();		return;}
+		if(strcmp(codegen_tok,"RET")==0)		{gen_command_ret();			return;}
+		if(strcmp(codegen_tok,"JMP")==0)		{gen_command_jmp();			return;}
+		if(strcmp(codegen_tok,"JNE")==0)		{gen_command_jne();			return;}
+		if(strcmp(codegen_tok,"JE")==0)			{gen_command_je();			return;}
+		if(strcmp(codegen_tok,"CALL")==0)		{gen_command_call();		return;}
+		if(strcmp(codegen_tok,"MOV")==0)		{gen_command_mov();			return;}
+		if(strcmp(codegen_tok,"ADD")==0)		{gen_command_add();			return;}
+		if(strcmp(codegen_tok,"SUB")==0)		{gen_command_sub();			return;}
+		if(strcmp(codegen_tok,"DIV")==0)		{gen_command_div();			return;}
+		if(strcmp(codegen_tok,"MUL")==0)		{gen_command_mul();			return;}
+		if(strcmp(codegen_tok,"MOD")==0)		{gen_command_mod();			return;}
+		if(strcmp(codegen_tok,"AND")==0)		{gen_command_and();			return;}
+		if(strcmp(codegen_tok,"OR")==0)			{gen_command_or();			return;}
+		if(strcmp(codegen_tok,"NOT")==0)		{gen_command_not();			return;}
+		if(strcmp(codegen_tok,"NEG")==0)		{gen_command_neg();			return;}
+		if(strcmp(codegen_tok,"DEREF")==0)		{gen_command_deref();		return;}
+		if(strcmp(codegen_tok,"EQUAL")==0)		{gen_command_equal();		return;}
+		if(strcmp(codegen_tok,"NOTEQUAL")==0)	{gen_command_notequal();	return;}
+		if(strcmp(codegen_tok,"GREATER")==0)	{gen_command_greater();		return;}
+		if(strcmp(codegen_tok,"LESS")==0)		{gen_command_less();		return;}
+		if(strcmp(codegen_tok,"ALLOC")==0)		{gen_command_alloc();		return;}
+		if(strcmp(codegen_tok,"STRUCT")==0)		{gen_command_struct();		return;}
+		if(strcmp(codegen_tok,"USING")==0)		{gen_command_using();		return;}
+		if(strcmp(codegen_tok,"INSERT")==0)		{gen_command_insert();		return;}
+		if(strcmp(codegen_tok,"FRAME")==0)		{gen_command_frame();		return;}
+		if(strcmp(codegen_tok,"DEBUG")==0)		{gen_command_debug();		return;}
+		asm_println("*RECORD SCRATCH*\n");
+		error("[CODE GEN] Error: unsupported command [%s] (line %d)",codegen_tok,CurCMD+1);
+		/*
+		while(tok){
+			printf("<%s>",tok);
+			tok = strtok(0," ");
+		}*/
+		//printf("\n");
+}
+
+void codegen_gen_code_segment(ptr_code_segment CS){
+	printf("CS %p:\n",CS);
+	CurCS = CS;
+	make_first_frame();
+	print_skeleton_start();
+	//fprintf(fasm,"enter 0\n");
+	printf("\nCS DECLARATIVE PASS ===============================\n\n");
+	int i;
+	codegen_decl = 1;
+	for(i = 0; i < CS->commands.size; i++){
+		CurCMD = i;
+		const char *str = m(CS->commands,get,i);
+		codegen_gen_command(/*CS,*/str,i);
+	}
+	printf("\nCS IMPERATIVE PASS ===============================\n\n");
+	codegen_decl = 0;
+	for(i = 0; i < CS->commands.size; i++){
+		CurCMD = i;
+		const char *str = m(CS->commands,get,i);
+		codegen_gen_command(/*CS,*/str,i);
+	}
+	print_skeleton_end();
+}
+
+void codegen_generate(){
+	fasm = fopen("data_out/aout_assembly.txt","w");
+	IR_init();
+	initializeRegTable();
+	debug_funcs = vector2_ptr_debugInfoFunc_here();
+	debug_vars = vector2_ptr_debugInfoVar_here();
+	varstacks = vector3_int_here();//vector2_int_here();
+	argstacks = vector3_int_here();//vector2_int_here();
+	//IR_symbol_table = vector2_ptr_IR_symbol_here();
+	stringStore_labels = vector2_ptr_char_here();
+	stringStore_strings = vector2_ptr_char_here();
+	frameStarts = vector2_ptr_char_here();
+	frameIndices = vector3_int_here();//vector2_int_here();
+	frames = vector2_ptr_frame_here();
+	framestack = vector2_ptr_frame_here();
+	int i;
+	for(i = 0; i < CS_list.size; i++){
+		codegen_gen_code_segment(m(CS_list,get,i));
+	}
+	asm_println("// CODEGEN: ASSEMBLY GENERATION COMPLETE //");
+}
+
+

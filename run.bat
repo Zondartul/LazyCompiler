@@ -1,1 +1,1 @@
-a.exe lazy2.txt 1>aout.txt 2>aerr.txt
+bin\a.exe data_in/lazy2.txt

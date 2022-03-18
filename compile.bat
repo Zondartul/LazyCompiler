@@ -1,1 +1,0 @@
-mingw32-make -B && gdb a.exe < gdbcmd.txt 1> aout.txt && copy assembly.txt "C:\Program Files (x86)\Steam\SteamApps\common\GarrysMod\garrysmod\data\cpuchip\assembly.txt" /Y
