@@ -76,50 +76,50 @@ int main(int argc, char **argv){
 	//printf("table:----------------\n%s\n-------------------\n",formtable);
 	printf("table:\n%s\n", formtable);
 	
-//	fprintf(stderr,"preprocessing...");
-//	freopen(/*"aout_preproc.txt"*/path_out_preproc,"w",stdout);
-//	preprocess(argv[1]);
-//	fprintf(stderr,"\tdone\n");
-//	
-//	fprintf(stderr,"parsing...");
-//	//fclose(stdout);
-//	freopen(/*"aout_parse.txt"*/path_out_parse,"w",stdout);
-//	//fclose(yyin);
-//	fclose(yyin2);
-//	yyin = fopen(/*"ain_preproc.txt"*/path_in_preproc,"r");
-//	if(!yyin){error("can't fopen ");}
-//	yyin2 = fopen(/*"ain_preproc.txt"*/path_in_preproc,"r");
-//	if(!yyin2){error("can't freopen ");}
-//	yyparse();
-//	fprintf(stderr,"\t\tdone\n");
-//	
-//	fprintf(stderr,"printing ast...");
-//	FILE *fp = fopen(/*"aout2.txt"*/path_out_2,"w");
-//	if(!fp){return 1;}
-//	ast_print(/*ast_get_node(finalNode)*/ finalNode, fp);
-//	fclose(fp);
-//	fp = fopen(/*"aout3.gv"*/path_out_graphviz,"w");
-//	if(!fp){return 1;}
-//	ast_print_graph(/*ast_get_node(finalNode)*/finalNode,fp,"A"); //graphViz file
-//	fprintf(stderr,"\t\tdone\n");
-//	
-//	fprintf(stderr,"analyzing...");
-//	freopen(/*"aout_semantic.txt"*/path_out_semantic,"w",stdout);
-//	semantic_init();
-//	semantic_analyze(/*ast_get_node(finalNode)*/finalNode);
-//	fprintf(stderr,"\t\tdone\n");
-//	
-//	fprintf(stderr,"printing semantic...");
-//	freopen(/*"aout_IR.txt"*/path_out_IR,"w",stdout);
-//	setbuf(stdout, NULL);
-//	print_semantic();
-//	fprintf(stderr,"\tdone\n");
-//	
-//	fprintf(stderr,"generating...");
-//	freopen(/*"aout_codegen.txt"*/path_out_codegen,"w",stdout);
-//	codegen_generate();
-//	fprintf(stderr,"\t\tdone\n");
-//	printstamp();
+	fprintf(stderr,"preprocessing...");
+	freopen(/*"aout_preproc.txt"*/path_out_preproc,"w",stdout);
+	preprocess(argv[1]);
+	fprintf(stderr,"\tdone\n");
+	
+	fprintf(stderr,"parsing...");
+	//fclose(stdout);
+	freopen(/*"aout_parse.txt"*/path_out_parse,"w",stdout);
+	//fclose(yyin);
+	fclose(yyin2);
+	yyin = fopen(/*"ain_preproc.txt"*/path_in_preproc,"r");
+	if(!yyin){error("can't fopen ");}
+	yyin2 = fopen(/*"ain_preproc.txt"*/path_in_preproc,"r");
+	if(!yyin2){error("can't freopen ");}
+	yyparse();
+	fprintf(stderr,"\t\tdone\n");
+	
+	fprintf(stderr,"printing ast...");
+	FILE *fp = fopen(/*"aout2.txt"*/path_out_2,"w");
+	if(!fp){return 1;}
+	ast_print(/*ast_get_node(finalNode)*/ finalNode, fp);
+	fclose(fp);
+	fp = fopen(/*"aout3.gv"*/path_out_graphviz,"w");
+	if(!fp){return 1;}
+	ast_print_graph(/*ast_get_node(finalNode)*/finalNode,fp,"A"); //graphViz file
+	fprintf(stderr,"\t\tdone\n");
+	
+	fprintf(stderr,"analyzing...");
+	freopen(/*"aout_semantic.txt"*/path_out_semantic,"w",stdout);
+	semantic_init();
+	semantic_analyze(/*ast_get_node(finalNode)*/finalNode);
+	fprintf(stderr,"\t\tdone\n");
+	
+	fprintf(stderr,"printing semantic...");
+	freopen(/*"aout_IR.txt"*/path_out_IR,"w",stdout);
+	setbuf(stdout, NULL);
+	print_semantic();
+	fprintf(stderr,"\tdone\n");
+	
+	fprintf(stderr,"generating...");
+	freopen(/*"aout_codegen.txt"*/path_out_codegen,"w",stdout);
+	codegen_generate();
+	fprintf(stderr,"\t\tdone\n");
+	printstamp();
 	flushAllFiles();
 	
 	return 0;
@@ -129,5 +129,3 @@ int main(int argc, char **argv){
 //or 1 if there are no more files to process.
 //also this should be done by %noyywrap option instead.
 int yywrap(){return 1;}
-
-

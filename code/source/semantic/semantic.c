@@ -848,9 +848,9 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 	fprintf(stdout, "@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	va_end(ap);
 	
-	char buff[200];
-	sprintf(buff,"notepad++ %s -n%d &",file,line);
-	system(buff);
+	//char buff[200];
+	//sprintf(buff,"notepad++ %s -n%d &",file,line);
+	//system(buff);
 	exit(*(int*)0);
 }
 

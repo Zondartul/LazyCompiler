@@ -410,8 +410,50 @@ void semantic_analyze_imp_stmt(ast_node *node){
 	}
 }
 
+const char* emit_push_label(const char* lbl) {
+	const char* lbl2 = IR_next_name(namespace_semantic, lbl);
+	push_expr(lbl2);
+	emit_code("SYMBOL %s LABEL", lbl2);
+	return lbl2;
+}
+
+int is_prefix_of(const char* str1, const char* str2) {
+	return (strncmp(str1, str2, strlen(str1)) == 0);
+}
+
+int is_label_type(const char* lbl1, const char* lbl2) {
+	return is_prefix_of(lbl2, lbl1);
+}
+
+int is_temp_val(const char* val) {
+	return is_prefix_of("temp", val);
+}
+
+void assert_label_type(const char* lbl1, const char* lbl2) {
+	if (!is_label_type(lbl1, lbl2)) {
+		error("internal semantic error: got lbl [%s], expected one of [%s]", lbl1, lbl2);
+	}
+}
+
+void assert_temp_val(const char* val) {
+	if (!is_temp_val(val)) {
+		error("internal semantic error: got [%s], expected a temporary value", val);
+	}
+}
+
+void assert_is_if_exit(const char* lbl) {
+	assert_label_type(lbl, "lbl_if_exit");
+}
+
+void assert_is_if_else(const char* lbl) {
+	if (strcmp(lbl, "NOELSE") != 0) {
+		assert_label_type(lbl, "lbl_if_else"); //elseif also matches
+	}
+}
+
 void semantic_analyze_if_block(ast_node *node){
-	const char *if_end;
+	const char *if_exit;
+	const char* if_else;
 	if(semantic_decl){
 		push_symbol_table();
 		switch(node->token.production){
@@ -434,21 +476,29 @@ void semantic_analyze_if_block(ast_node *node){
 		push_symbol_table();
 		switch(node->token.production){
 			case(0)://if_then END
+				if_exit = emit_push_label("lbl_if_exit");
+				push_expr("NOELSE");
 				semantic_analyze(ast_get_child(node,0));
-				if_end = pop_expr();
-				emit_code("LABEL %s",if_end);
-				emit_code("/* end */");
+				if_else = pop_expr(); assert_is_if_else(if_else);
+				if_exit = pop_expr(); assert_is_if_exit(if_exit);
+				emit_code("LABEL %s",if_exit);
+				emit_code("/* end if */");
 				break;
 			case(1)://if_then ELSE stmt_list END
+				if_exit = emit_push_label("lbl_if_exit");
+				if_else = emit_push_label("lbl_if_else");
+
 				semantic_analyze(ast_get_child(node,0));
 				emit_code("/* else */");
+				emit_code("LABEL %s", if_else);
 				struct code_segment *CSinsert;
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node,1));
 				analyze_scope(ast_get_child(node,1),0,&CSinsert,&currentSymbolTable,0,1);
 				emit_code_segment(CSinsert);
+				if_else = pop_expr();	assert_is_if_else(if_else);
+				if_exit = pop_expr();	assert_is_if_exit(if_exit);
+				emit_code("LABEL %s",if_exit);
 				emit_code("/* end if */");
-				if_end = pop_expr();
-				emit_code("LABEL %s",if_end);
 			break;
 			default:
 				error("semantic error: unknown switch case");
@@ -460,6 +510,7 @@ void semantic_analyze_if_block(ast_node *node){
 
 void semantic_analyze_if_then(ast_node *node){
 	const char *if_exit;
+	const char* if_else;
 	if(semantic_decl){
 		push_symbol_table();
 		switch(node->token.production){
@@ -485,62 +536,88 @@ void semantic_analyze_if_then(ast_node *node){
 		//const char *CSname; //unused
 		YYLTYPE pos;
 		push_symbol_table();
+
+		if_else = pop_expr();	assert_is_if_else(if_else);
+		if_exit = pop_expr();	assert_is_if_exit(if_exit);
+		const char* nextLabel = if_else;
+		if (strcmp(if_else, "NOELSE") == 0) { nextLabel = if_exit; }
+		else { nextLabel = if_else; }
+
 		switch(node->token.production){
-			case(0): //IF ( expr ) stmt_list
+			case(0): 
+			{
+				//IF ( expr ) stmt_list
 				//(expr)
-				pos = ast_get_child(node,0)->token.pos;
-				emit_code("/* if(%s) */",get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				struct code_segment *CSinsert;
-				//currentSymbolTable = find_symbol_table_by_node(ast_get_child(node,0));
-				//analyze_scope(ast_get_child(node,0),0,&CSinsert,&currentSymbolTable,0);		
-				//emit_code_segment(CSinsert);
-				semantic_analyze(ast_get_child(node,0));
+				pos = ast_get_child(node, 0)->token.pos;
+				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+				semantic_analyze(ast_get_child(node, 0));
+				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//if then
-				const char *nextLabel = IR_next_name(namespace_semantic,"lbl_if_then");
-				emit_code("SYMBOL %s LABEL",nextLabel);
-				emit_code("JE 0 %s %s", pop_expr(), nextLabel); 
-				emit_code("/* then */");
-				
+				//const char *nextLabel = IR_next_name(namespace_semantic,"lbl_if_then");
+				emit_code("/* this skips untrue if's */");
+				emit_code("JE 0 %s %s", condition_result, nextLabel);
+				emit_code("/* 'if' is true: */");
+
 				//stmt_list
-				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node,1));
-				analyze_scope(ast_get_child(node,1),0,&CSinsert,&currentSymbolTable,0,1);
+				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 1));
+				struct code_segment* CSinsert;
+				analyze_scope(ast_get_child(node, 1), 0, &CSinsert, &currentSymbolTable, 0, 1);
 				emit_code_segment(CSinsert);
-				if_exit = IR_next_name(namespace_semantic,"lbl_if_exit");
-				emit_code("SYMBOL %s LABEL",if_exit);
-				emit_code("JMP %s",if_exit);
-				push_expr(if_exit);
-				//end
-				emit_code("LABEL %s", nextLabel);
-				break;
-			case(2): //if_then ELSEIF ( expr ) THEN stmt_list
-				//if_then
-				semantic_analyze(ast_get_child(node,0));
-				//else if
-				YYLTYPE pos = ast_get_child(node,1)->token.pos;
-				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				//( expr )
-				//analyze_scope(ast_get_child(node,1),0,&CSinsert,0,0);
-				//emit_code_segment(CSinsert);
-				semantic_analyze(ast_get_child(node,1));
-				//then
-				const char *label1 = IR_next_name(namespace_semantic,"lbl_elseif_then");
-				emit_code("SYMBOL %s LABEL",label1);
-				emit_code("JE 0 %s %s", pop_expr(), label1);
-				emit_code("/* then */");
-				//stmt_list
-				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node,2));
-				analyze_scope(ast_get_child(node,2),0,&CSinsert,&currentSymbolTable,0,1);
-				emit_code_segment(CSinsert);
-				if_exit = pop_expr(); //using existing exit
+				//if_exit = IR_next_name(namespace_semantic,"lbl_if_exit");
 				//emit_code("SYMBOL %s LABEL",if_exit);
-				emit_code("JMP %s",if_exit);
-				push_expr(if_exit);
-				emit_code("LABEL %s", label1);
+				if (nextLabel != if_exit) {  
+					emit_code("JMP %s", if_exit);
+				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
+				//push_expr(if_exit);
+				//end
+				//emit_code("LABEL %s", nextLabel);
 				break;
+			}
+			case(2): 
+			{
+				//if_then ELSEIF ( expr ) THEN stmt_list
+				//the inner if-then should use the same exit as us, but use us as the else.
+				push_expr(if_exit);
+				const char* if_elseif = emit_push_label("lbl_if_elseif");
+
+				//if_then
+				semantic_analyze(ast_get_child(node, 0)); 
+				assert_is_if_else(pop_expr()); //discard the labels from inner if_then
+				assert_is_if_exit(pop_expr()); 
+				//else if
+				YYLTYPE pos = ast_get_child(node, 1)->token.pos;
+				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+				emit_code("LABEL %s", if_elseif);
+				//( expr )
+				semantic_analyze(ast_get_child(node, 1));
+				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
+				//then
+				//const char* label1 = IR_next_name(namespace_semantic, "lbl_elseif_then");
+				//emit_code("SYMBOL %s LABEL",label1);
+				//emit_code("JE 0 %s %s", pop_expr(), label1);
+				emit_code("/* this skips untrue if's */");
+				emit_code("JE 0 %s %s", condition_result, nextLabel);
+				emit_code("/* then */");
+				//stmt_list
+				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 2));
+				struct code_segment* CSinsert;
+				analyze_scope(ast_get_child(node, 2), 0, &CSinsert, &currentSymbolTable, 0, 1);
+				emit_code_segment(CSinsert);
+				//if_exit = pop_expr(); //using existing exit
+				if (nextLabel != if_exit) {
+					emit_code("JMP %s", if_exit);
+				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
+				//push_expr(if_exit);
+				//emit_code("LABEL %s", label1);
+				break;
+			}
 			default:
 				error("semantic error: unknown switch case");
 				break;
 		};
+		push_expr(if_exit);
+		push_expr(if_else);
+
 		pop_symbol_table();
 	}
 }

@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 		H.fluff = 10;
 		H.boop();
 		while(A)
-			print(A, argc); //this generates a temp val that is stuck on the expr stack; we need to know when to discard results.
+			print(A, argc);
 			A = A/1;
 			if(A == 1) return 1; end
 			if(A < 3)

@@ -666,7 +666,7 @@ const char* loadLValue(const char* val){
 						if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 						if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 					}else{
-						error("[CODE GEN] Error: frame-climbing is disabled\n");
+						//error("[CODE GEN] Error: frame-climbing is disabled\n");
 						if(comments){printindent(); asm_println("//climbing %d frames",framediff);}
 						printindent(); asm_println("mov %s, #EBP",reg->name); //frame climbing (r7 = EBP_prev)
 						int i;
@@ -749,7 +749,7 @@ void storeValue(const char *val, const char *reg){
 						printindent();asm_println("mov #%s, %s",reg2,reg);
 					}
 				}else{
-					error("[CODE GEN] Error: frame-climbing is disabled\n");
+					//error("[CODE GEN] Error: frame-climbing is disabled\n");
 					if(comments){printindent();asm_println("//climbing %d frames",framediff);}
 					printindent();asm_println("mov %s, #EBP",reg2); //frame climbing (r7 = EBP_prev)
 					int i;
@@ -757,7 +757,8 @@ void storeValue(const char *val, const char *reg){
 						printindent();asm_println("mov %s, #%s", reg2,reg2);
 					}
 					if(!deref && ! S->pointerlevel){
-						printindent();asm_println("sstack %%EBP:%d, %s",adr,reg);
+						//printindent();asm_println("sstack %%EBP:%d, %s",adr,reg);
+						printindent(); asm_println("sstack EBP:%d, %s", adr, reg); //why the %%?
 					}else{				
 						printindent();asm_println("mov %s, %s:%d", reg2, reg2, adr);
 						if(deref)			{printindent();asm_println("mov %s, #%s",reg2,reg2);}
