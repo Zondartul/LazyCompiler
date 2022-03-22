@@ -2,6 +2,8 @@
 #include "yaccin.tab.h" //for get_source_text2()
 
 void semantic_analyze_program(ast_node *node){
+	//program :	decl_stmt_list	;
+	
 	//printf("got program\n");
 	new_symbol_table(node);
 	new_code_segment();
@@ -13,36 +15,32 @@ void semantic_analyze_program(ast_node *node){
 	analyze_scope(ast_get_child(node,0),&currentCodeSegment,0,&currentSymbolTable,0,0);
 	semantic_decl = 0;
 	analyze_scope(ast_get_child(node,0),&currentCodeSegment,0,&currentSymbolTable,0,1);
-	// new_symbol_table();
-	// push_symbol_table();
-	// semantic_decl = 1;
-	// semantic_analyze(ast_get_child(node, 0));
-	// semantic_decl = 0;
-	// semantic_analyze(ast_get_child(node, 0));
-	// pop_symbol_table();
+
 	semantic_finalize();
 	printf("semantic: done\n");
 }
 
 void semantic_analyze_decl_stmt_list(ast_node *node){
-	//printf("got decl_stmt_list\n");
-	//semantic_decl = 1;
+	//decl_stmt_list:	decl_stmt_list_ne | ;
+	//decl_stmt_list_ne: decl_stmt_list_ne decl_stmt | decl_stmt;
+	//...
+	//linearized: decl_stmt_list: decl_stmt ... decl_stmt ;
+
 	for(int i = 0; i < node->children.size; i++){
-		semantic_analyze(ast_get_child(node, i));
+		semantic_analyze(ast_get_child(node, i)); //decl_stmt
 	}
-	// semantic_decl = 0;
-	// for(i = 0; i < node->children.size; i++){
-		// semantic_analyze(ast_get_child(node, i));
-	// }
+
 }
 
 void semantic_analyze_decl_stmt(ast_node *node){
-	//if(!semantic_decl){return;}
-	//printf("got decl_stmt\n");
-	semantic_analyze(ast_get_child(node,0));
+	//decl_stmt:		class_def | func_def | var_decl ';' ;
+
+	semantic_analyze(ast_get_child(node,0)); //class_def | func_def | var_decl
 }
 
 void semantic_analyze_func_def(ast_node *node){
+	//func_def	:	typename ID '('	var_decl_list ')' stmt_list END ;
+	
 	//if(!semantic_decl){return;}
 	//printf("got func_def\n");
 	/*
@@ -117,9 +115,7 @@ void semantic_analyze_func_def(ast_node *node){
 			push_symbol(S);
 		}
 		semantic_context = SEMANTIC_PARAM;
-			//use new separate symbol table
-		//struct ast_node *list = ast_get_child(node,1);
-		//semantic_analyze(ast_get_child(node,1));
+			//use new separate symbol table;
 		struct type_name *signature = malloc(sizeof(struct type_name));
 		signature->name = 0;
 		signature->symclass = 0;
@@ -127,6 +123,7 @@ void semantic_analyze_func_def(ast_node *node){
 		//parameter as visible from scope VS signature parameter, is confusing.
 		int i;
 		//wait, shouldn't we go through var_decl_list_ne first?
+		//no, it's linearized now
 		fprintf(stderr,"func_def, node_var_decl_list.token.type = [%s]\n",node_var_decl_list->token.type);
 		for(i = 0; i < /*list*/node_var_decl_list->children.size; i++){
 			struct ast_node *arg = ast_get_child(node_var_decl_list,i);//(list,i);
@@ -134,7 +131,7 @@ void semantic_analyze_func_def(ast_node *node){
 			//struct ast_node *arg_typename = ast_get_child(arg,0); //unused
 			struct type_name *T2 = parseTypename(node_typename);//(ast_get_child(arg,0));//semantic_get_type(ast_get_child(arg,0)->token.value);
 			m((*(signature->args)),push_back,T2);
-			semantic_analyze(arg);
+			semantic_analyze(arg); //var_decl
 		}
 		S->symfunction.signature = signature;
 		//S->size = 0;
@@ -207,13 +204,22 @@ void semantic_analyze_func_def(ast_node *node){
 }
 
 void semantic_analyze_var_decl_list(ast_node *node){
+	//var_decl_list:	var_decl_list_ne | ;
+	//var_decl_list_ne:	var_decl_list_ne ',' var_decl | var_decl;
+	//...
+	//linearized: var_decl ',' ... var_decl
 	//printf("got var_decl_list\n");
 	for(int i = 0; i < node->children.size; i++){
-		semantic_analyze(ast_get_child(node, i));
+		semantic_analyze(ast_get_child(node, i)); //var_decl
 	}
 }
 
 void semantic_analyze_var_decl(ast_node *node){
+	//var_decl:	typename ID
+	//| typename ID '[' expr ']'
+	//| typename ID '=' expr
+	//;
+
 	if(!semantic_decl){return;}//goto semantic_exit;}
 	//printf("got var_decl\n");
 	struct type_name *T = parseTypename(ast_get_child(node,0));//semantic_get_type(ast_get_child(node,0)->token.value);
@@ -330,7 +336,7 @@ void semantic_analyze_var_decl_assign(ast_node *node){
 		push_symbol(S);
 		//put into symbol table
 		//will deal with assignment later; ignore for now.
-		//semantic_analyze(ast_get_child(node,1));
+		//semantic_analyze(ast_get_child(node,1)); //expr (assignment)
 		//put expression as "initial value"?
 	}else{
 		if(semantic_context != SEMANTIC_MEMBER){
@@ -341,7 +347,8 @@ void semantic_analyze_var_decl_assign(ast_node *node){
 				currentCodeSegment = init_CS;
 			}
 			//emit_code("INITIALIZER %s BEGIN",result1);
-			semantic_analyze(node_expr);//ast_get_child(node,1));
+			push_expr("NODISCARD");
+			semantic_analyze(node_expr); //expr (what to assign)
 			const char *result2 = pop_expr();
 			emit_code("MOV %s %s", result1, result2);
 			//emit_code("INITIALIZER %s END",result1);
@@ -352,26 +359,40 @@ void semantic_analyze_var_decl_assign(ast_node *node){
 }
 
 void semantic_analyze_stmt_list(ast_node *node){
+	//stmt_list: stmt_list_ne | ;
+	//stmt_list_ne: stmt_list_ne stmt | stmt;
+	//...
+	//linearized: stmt stmt ... stmt
+
 	//printf("got stmt_list\n");
 	for(int i = 0; i < node->children.size; i++){
-		semantic_analyze(ast_get_child(node, i));
+		semantic_analyze(ast_get_child(node, i)); //stmt
 	}
 }
 
 void semantic_analyze_stmt(ast_node *node){
-	semantic_analyze(ast_get_child(node,0));
+	//stmt	:	imp_stmt	|	decl_stmt	;
+	semantic_analyze(ast_get_child(node,0)); // imp_stmt | decl_stmt
 }
 
 void semantic_analyze_imp_stmt(ast_node *node){
+	//imp_stmt:		if_block
+	//| while_loop
+	//| expr ';'
+	//| RETURN ';'
+	//| RETURN expr ';'
+	//| for_loop
+	//;
+
 	//if(semantic_decl){goto semantic_exit;}
 	////imperative pass: 
 	//some things are now both declarative and imperative, oddly.
 	switch(node->token.production){
 		case(0)://if_block
-			semantic_analyze(ast_get_child(node,0));
+			semantic_analyze(ast_get_child(node,0)); //if_block
 			break;
 		case(1)://while_loop
-			semantic_analyze(ast_get_child(node,0));
+			semantic_analyze(ast_get_child(node,0)); //while_loop
 			break;
 		case(2)://expr
 			if(semantic_decl){return;}//{goto semantic_exit;} //this one still imp-only though
@@ -380,7 +401,8 @@ void semantic_analyze_imp_stmt(ast_node *node){
 								node->token.pos.end,
 								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
-			semantic_analyze(ast_get_child(node,0));
+			push_expr("DISCARD");
+			semantic_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
 			if(semantic_decl){return;}//{goto semantic_exit;}
@@ -398,11 +420,12 @@ void semantic_analyze_imp_stmt(ast_node *node){
 								node->token.pos.end,
 								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
-			semantic_analyze(ast_get_child(node,0));
+			push_expr("NODISCARD");
+			semantic_analyze(ast_get_child(node,0)); //expr (what to return)
 			emit_code("RET %s",pop_expr());
 			break;
 		case(5)://for_loop
-			semantic_analyze(ast_get_child(node,0));
+			semantic_analyze(ast_get_child(node,0)); //for_loop
 			break;
 		default:
 			error("semantic error: unknown switch case");
@@ -451,18 +474,29 @@ void assert_is_if_else(const char* lbl) {
 	}
 }
 
+void assert_expr_res(const char* val) {
+	if (strcmp(val, "DISCARD") != 0) {
+		if (strcmp(val, "NODISCARD") != 0) {
+			//assert_temp_val(val);
+			error("internal semantic error: got [%s], expected a discard/nodiscard", val);
+		}
+	}
+}
+
 void semantic_analyze_if_block(ast_node *node){
+	//if_block	:	if_then END |	if_then ELSE stmt_list END ;
+
 	const char *if_exit;
 	const char* if_else;
 	if(semantic_decl){
 		push_symbol_table();
 		switch(node->token.production){
 			case(0)://if_then END
-				semantic_analyze(ast_get_child(node,0));
+				semantic_analyze(ast_get_child(node,0)); //if_then
 				break;
 			case(1)://if_then ELSE stmt_list END
-				semantic_analyze(ast_get_child(node,0));
-				new_symbol_table(ast_get_child(node,1));
+				semantic_analyze(ast_get_child(node,0)); //if_then
+				new_symbol_table(ast_get_child(node,1)); 
 				analyze_scope(ast_get_child(node,1),0,0,&currentSymbolTable,0,1);
 				break;
 			default:
@@ -478,7 +512,7 @@ void semantic_analyze_if_block(ast_node *node){
 			case(0)://if_then END
 				if_exit = emit_push_label("lbl_if_exit");
 				push_expr("NOELSE");
-				semantic_analyze(ast_get_child(node,0));
+				semantic_analyze(ast_get_child(node,0)); //if_then
 				if_else = pop_expr(); assert_is_if_else(if_else);
 				if_exit = pop_expr(); assert_is_if_exit(if_exit);
 				emit_code("LABEL %s",if_exit);
@@ -488,7 +522,7 @@ void semantic_analyze_if_block(ast_node *node){
 				if_exit = emit_push_label("lbl_if_exit");
 				if_else = emit_push_label("lbl_if_else");
 
-				semantic_analyze(ast_get_child(node,0));
+				semantic_analyze(ast_get_child(node,0)); //if_then
 				emit_code("/* else */");
 				emit_code("LABEL %s", if_else);
 				struct code_segment *CSinsert;
@@ -509,6 +543,10 @@ void semantic_analyze_if_block(ast_node *node){
 }
 
 void semantic_analyze_if_then(ast_node *node){
+	//if_then:	IF '(' expr ')' stmt_list
+	//| if_then ELSEIF '(' expr ')' stmt_list
+	//;
+
 	const char *if_exit;
 	const char* if_else;
 	if(semantic_decl){
@@ -521,7 +559,7 @@ void semantic_analyze_if_then(ast_node *node){
 			case(2): //if_then ELSEIF ( expr ) stmt_list
 				//new_symbol_table(ast_get_child(node,1));
 				//analyze_scope(ast_get_child(node,1),0,0,&currentSymbolTable,0);
-				semantic_analyze(ast_get_child(node,0));
+				semantic_analyze(ast_get_child(node,0)); //if_then
 				new_symbol_table(ast_get_child(node,2));
 				analyze_scope(ast_get_child(node,2),0,0,&currentSymbolTable,0,1);
 				break;
@@ -550,7 +588,8 @@ void semantic_analyze_if_then(ast_node *node){
 				//(expr)
 				pos = ast_get_child(node, 0)->token.pos;
 				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				semantic_analyze(ast_get_child(node, 0));
+				push_expr("NODISCARD");
+				semantic_analyze(ast_get_child(node, 0)); //expr (condition)
 				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//if then
 				//const char *nextLabel = IR_next_name(namespace_semantic,"lbl_if_then");
@@ -581,7 +620,7 @@ void semantic_analyze_if_then(ast_node *node){
 				const char* if_elseif = emit_push_label("lbl_if_elseif");
 
 				//if_then
-				semantic_analyze(ast_get_child(node, 0)); 
+				semantic_analyze(ast_get_child(node, 0)); //if_then
 				assert_is_if_else(pop_expr()); //discard the labels from inner if_then
 				assert_is_if_exit(pop_expr()); 
 				//else if
@@ -589,7 +628,8 @@ void semantic_analyze_if_then(ast_node *node){
 				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 				emit_code("LABEL %s", if_elseif);
 				//( expr )
-				semantic_analyze(ast_get_child(node, 1));
+				push_expr("NODISCARD");
+				semantic_analyze(ast_get_child(node, 1)); //expr (condition)
 				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//then
 				//const char* label1 = IR_next_name(namespace_semantic, "lbl_elseif_then");
@@ -623,6 +663,8 @@ void semantic_analyze_if_then(ast_node *node){
 }
 
 void semantic_analyze_while_loop(ast_node *node){
+	//while_loop	:	WHILE '(' expr ')' stmt_list END ;
+
 	if(semantic_decl){
 		push_symbol_table();
 		new_symbol_table(node);
@@ -636,7 +678,8 @@ void semantic_analyze_while_loop(ast_node *node){
 		emit_code("SYMBOL %s LABEL",label1);
 		emit_code("SYMBOL %s LABEL",label2);
 		emit_code("LABEL %s",label1);
-		semantic_analyze(ast_get_child(node,0));
+		push_expr("NODISCARD");
+		semantic_analyze(ast_get_child(node,0)); //expr (condition)
 		//analyze_scope(ast_get_child(node,0),0,&CSinsert,0,0);
 		//emit_code_segment(CSinsert);
 		emit_code("JE 0 %s %s",pop_expr(), label2);
@@ -654,11 +697,13 @@ void semantic_analyze_while_loop(ast_node *node){
 }
 
 void semantic_analyze_for_loop(ast_node *node){
+	//for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END ;
+
 	if(semantic_decl){
 		push_symbol_table();
 		new_symbol_table(node);
-		semantic_analyze(ast_get_child(node,0));
-		semantic_analyze(ast_get_child(node,3));
+		semantic_analyze(ast_get_child(node,0)); //stmt (first)
+		semantic_analyze(ast_get_child(node,3)); //stmt_list
 		//analyze_scope(ast_get_child(node,3),0,0,&currentSymbolTable,0);
 		pop_symbol_table();
 	}else{
@@ -675,7 +720,7 @@ void semantic_analyze_for_loop(ast_node *node){
 		new_code_segment();
 		//emit_code("FRAME ENTER"); -- nope
 		emit_code("/* %s */",removeComments(get_source_text2(pos1)));//get_source_text(pos1.start,pos1.end,pos1.filename));
-		semantic_analyze(ast_get_child(node,0));
+		semantic_analyze(ast_get_child(node,0)); //stmt (int i = 0;)
 		const char *loopCondition = IR_next_name(namespace_semantic,"lbl_for");
 		const char *loopExit = IR_next_name(namespace_semantic,"lbl_for_exit");
 		emit_code("SYMBOL %s LABEL",loopCondition);
@@ -683,14 +728,16 @@ void semantic_analyze_for_loop(ast_node *node){
 		//LOOP CONDITION
 		emit_code("LABEL %s",loopCondition);
 		emit_code("/* %s */",removeComments(get_source_text2(pos2)));//get_source_text(pos2.start,pos2.end,pos2.filename));
-		semantic_analyze(ast_get_child(node,1));
+		push_expr("NODISCARD");
+		semantic_analyze(ast_get_child(node,1)); //expr (i < 10;)
 		const char *condition = pop_expr();
 		emit_code("JE 0 %s %s",condition,loopExit);
 		emit_code("/* loop body */");
 		//LOOP BODY
-		semantic_analyze(ast_get_child(node,3));
+		semantic_analyze(ast_get_child(node,3)); //stmt_list
 		emit_code("/* %s */",removeComments(get_source_text2(pos3)));//get_source_text(pos3.start,pos3.end,pos3.filename));
-		semantic_analyze(ast_get_child(node,2));
+		push_expr("DISCARD");
+		semantic_analyze(ast_get_child(node,2)); //expr (i++)
 		emit_code("JMP %s",loopCondition);
 		emit_code("LABEL %s",loopExit);
 		emit_all_deinitializers();
@@ -752,7 +799,7 @@ void semantic_analyze_class_def(ast_node *node){
 		
 		push_symbol(T);
 		
-		semantic_analyze(node_dsl);//(ast_get_child(node,0));
+		semantic_analyze(node_dsl); //decl_stmt_list
 		pop_semantic_context();
 		class_def_finalize();
 		semantic_this = 0;
@@ -770,7 +817,7 @@ void semantic_analyze_class_def(ast_node *node){
 		//semantic_this = "ERROR";//lookup_symbol("this")->IR_name;//symbolThis->IR_name;//"this";
 		
 		semantic_context = SEMANTIC_MEMBER;
-		semantic_analyze(node_dsl);//(ast_get_child(node,0)); //this adds functions that were actually defined in code
+		semantic_analyze(node_dsl);//decl_stmt_list //this adds functions that were actually defined in code
 		semantic_context = SEMANTIC_NORMAL;
 		
 		//semantic_this = 0;
@@ -782,17 +829,30 @@ void semantic_analyze_class_def(ast_node *node){
 }
 
 void semantic_analyze_expr_list(ast_node *node){
+	//expr_list:	expr_list_ne | ;
+	//expr_list_ne: expr_list_ne ',' expr | expr;
+	//...
+	//linearized: expr_list: expr ',' expr ... ',' expr ;
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//imperative pass: 
 	//printf("got expr_list\n");
 	for(int i = 0; i < node->children.size; i++){
-		semantic_analyze(ast_get_child(node, i));
+		//so some of these may be expressions and some, expression lists. idk.
+		//well, actually, the list should be linearized.
+		push_expr("NODISCARD");
+		semantic_analyze(ast_get_child(node, i)); //expr
 		//give name to new expression result?
 		//put it in stack?
 	}
 }
 
 void semantic_analyze_expr_id(ast_node *node){
+	//expr	:	ID	
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	//printf("got expr_id = [%s]\n",node->token.value);
 	char *name = stralloc(node->token.value);
 	struct symbol *S = lookup_symbol(name);
@@ -843,6 +903,17 @@ void semantic_analyze_expr_id(ast_node *node){
 }
 
 void semantic_analyze_expr_const(ast_node *node){
+	//expr:
+		//| INTEGER
+		//| INTEGERX
+		//| INTEGERB
+		//| FLOATING
+		//| CHARACTER
+		//| STRING
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	//printf("got expr_const\n");
 	//char *exprResult = IR_next_name(namespace_semantic,"$reg");
 	//sanitize the value, maybe put it somewhere,
@@ -905,14 +976,24 @@ void semantic_analyze_expr_const(ast_node *node){
 }
 
 void semantic_analyze_expr_subexpr(ast_node *node){
+	//expr: '(' expr ')'
+	
 	//printf("got expr_subexpr\n");
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 }
 
 void semantic_analyze_expr_index(ast_node *node){
-	semantic_analyze(ast_get_child(node,1));
+	//expr '[' expr ']'
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr (array)
 	const char *index = pop_expr();
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr (index)
 	const char *ptr = pop_expr();
 	
 	struct symbol *S = lookup_symbol_IR(ptr);//lookup_symbol(ptr);
@@ -946,8 +1027,14 @@ void semantic_analyze_expr_index(ast_node *node){
 }
 
 void semantic_analyze_expr_call(ast_node *node){
+	//expr: expr '(' expr_list ')'
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	//printf("got expr_call\n");
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr (function name or reference expression)
 	const char *name = pop_expr();
 	//struct symbol *S = lookup_symbol_IR(name);
 	struct type_name *T = pop_exprtype();//S->symfunction.returntype;
@@ -961,7 +1048,8 @@ void semantic_analyze_expr_call(ast_node *node){
 	int len = 0;
 	vector2_ptr_char ministack = vector2_ptr_char_here();
 	for(i = 0; i < list->children.size; i++){
-		semantic_analyze(ast_get_child(list,i));
+		push_expr("NODISCARD");
+		semantic_analyze(ast_get_child(list,i)); //expr? one of func args?
 		const char *expr = pop_expr();
 		len += snprintf(0,0,"%s ",expr);
 		m(ministack,push_back,expr);
@@ -977,14 +1065,23 @@ void semantic_analyze_expr_call(ast_node *node){
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = CALL [%s][%s]",exprResult, name, buff);
 	emit_code("CALL %s %s%s",exprResult,name,buff);
-	push_expr(exprResult);
-	push_exprtype(T);
+	
+	if (!discardResult) {
+		push_expr(exprResult);
+		push_exprtype(T);
+	}
 }
 
 void semantic_analyze_expr_dot(ast_node *node){
+	//expr: expr '.' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//{goto semantic_exit;}
 	//printf("got expr_.\n");
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr (first one)
 	//what if $0 isn't an ID? need to figure out
 	//expression type... also instance... fuck, just redo this.
 	//struct ast_node *N = ast_get_child(node,0); //unused
@@ -998,17 +1095,25 @@ void semantic_analyze_expr_dot(ast_node *node){
 	push_symbol_table();
 	currentSymbolTable = T->symclass->symclass.scope;
 	semantic_this = pop_expr(); 
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr (member)
 	semantic_this = 0;
 	pop_symbol_table();
 	//emit code: member access
 }
 
 void semantic_analyze_expr_pow(ast_node *node){
+	//expr: expr '^' expr	
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_^\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr (base)
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr (exponent)
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1019,10 +1124,17 @@ void semantic_analyze_expr_pow(ast_node *node){
 }
 
 void semantic_analyze_expr_divide(ast_node *node){
+	//expr: expr '/' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_/\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr (top)
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr (bottom)
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1033,10 +1145,17 @@ void semantic_analyze_expr_divide(ast_node *node){
 }
 
 void semantic_analyze_expr_multiply(ast_node *node){
+	//expr: expr '*' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr 1
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr 2
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1047,10 +1166,17 @@ void semantic_analyze_expr_multiply(ast_node *node){
 }
 
 void semantic_analyze_expr_modulo(ast_node *node){
+	//expr: expr '%' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1061,10 +1187,17 @@ void semantic_analyze_expr_modulo(ast_node *node){
 }
 
 void semantic_analyze_expr_and(ast_node *node){
+	//expr: expr '&' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1075,10 +1208,17 @@ void semantic_analyze_expr_and(ast_node *node){
 }
 
 void semantic_analyze_expr_or(ast_node *node){
+	//expr: expr '|' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1089,9 +1229,14 @@ void semantic_analyze_expr_or(ast_node *node){
 }
 
 void semantic_analyze_expr_not(ast_node *node){
+	//expr: '!' expr
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
@@ -1101,10 +1246,16 @@ void semantic_analyze_expr_not(ast_node *node){
 }
 
 void semantic_analyze_expr_minus(ast_node *node){
+	//expr: expr '-' expr
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_-\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1115,10 +1266,16 @@ void semantic_analyze_expr_minus(ast_node *node){
 }
 
 void semantic_analyze_expr_plus(ast_node *node){
+	//expr: expr '+' expr
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1129,8 +1286,14 @@ void semantic_analyze_expr_plus(ast_node *node){
 }
 
 void semantic_analyze_expr_increment(ast_node *node){
+	//expr: INC	expr    %prec PREINC
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	if(node->token.production == 0){
 		//post-increment
 		const char *arg = pop_expr();
@@ -1147,8 +1310,13 @@ void semantic_analyze_expr_increment(ast_node *node){
 }
 
 void semantic_analyze_expr_decrement(ast_node *node){
+	//expr: DEC	expr    %prec PREDEC	
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	if(node->token.production == 0){
 		//post-decrement
 		const char *arg = pop_expr();
@@ -1165,16 +1333,28 @@ void semantic_analyze_expr_decrement(ast_node *node){
 }
 
 void semantic_analyze_expr_neg(ast_node *node){
+	//expr: '-' expr 	%prec PRENEG
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *result = pop_expr();
 	emit_code("NEG %s %s",result,result);
 	push_expr(result);
 }
 
 void semantic_analyze_expr_deref(ast_node *node){
+	//expr: '*' expr	%prec PREDEREF
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *arg = pop_expr();
 	const char *result = IR_next_name(namespace_semantic,"temp");
 	emit_code("MOV %s *%s",result, arg);
@@ -1182,8 +1362,14 @@ void semantic_analyze_expr_deref(ast_node *node){
 }
 
 void semantic_analyze_expr_ref(ast_node *node){
+	//expr: '&' expr	%prec PREREF
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *arg = pop_expr();
 	const char *result = IR_next_name(namespace_semantic,"temp");
 	emit_code("MOV %s &%s",result, arg);
@@ -1191,10 +1377,17 @@ void semantic_analyze_expr_ref(ast_node *node){
 }
 
 void semantic_analyze_expr_equals(ast_node *node){
+	//expr: expr EQUAL expr	
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1205,10 +1398,17 @@ void semantic_analyze_expr_equals(ast_node *node){
 }
 
 void semantic_analyze_expr_notequal(ast_node *node){
+	//expr: expr NOTEQUAL expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1219,10 +1419,17 @@ void semantic_analyze_expr_notequal(ast_node *node){
 }
 
 void semantic_analyze_expr_greater(ast_node *node){
+	//expr: expr '>' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1233,10 +1440,17 @@ void semantic_analyze_expr_greater(ast_node *node){
 }
 
 void semantic_analyze_expr_less(ast_node *node){
+	//expr: expr '<' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	semantic_analyze(ast_get_child(node,0));
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
@@ -1247,12 +1461,19 @@ void semantic_analyze_expr_less(ast_node *node){
 }
 
 void semantic_analyze_expr_assign(ast_node *node){
+	//expr: expr '=' expr
+
+	const char* res = pop_expr(); assert_expr_res(res);
+	int discardResult = (strcmp(res, "DISCARD") == 0);
+
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_=\n");
 	lvalue = 1;
-	semantic_analyze(ast_get_child(node,0));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,0)); //expr
 	lvalue = 0;
-	semantic_analyze(ast_get_child(node,1));
+	push_expr("NODISCARD");
+	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	//emit_code("%s = %s", result1, result2);
