@@ -552,7 +552,8 @@ char *unescape_string(const char *str){
 
 struct type_name *parseTypename(struct ast_node *N){
 	struct type_name *T = semantic_get_type(N->token.value);
-	struct ast_node *ptr_stars = m(N->children,get,0);//ast_get_node(m(N->children,get,0));
+	//struct ast_node *ptr_stars = m(N->children,get,0);//ast_get_node(m(N->children,get,0));
+	struct ast_node *ptr_stars = m(N->children,get,1); //22.03.2022 ptr_stars were not being detected
 	T->pointerlevel = ptr_stars->children.size;
 	return T;
 	/*

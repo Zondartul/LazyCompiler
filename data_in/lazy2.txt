@@ -1,44 +1,98 @@
-int import(int arg) end
-int export(int arg)
-	return arg;
-end
-int print(string str) end
 
-class horse
-	float fluff = 5;
-	int hooves;
-	int boop()
-		fluff = fluff+1;
+int infloop() 
+	int I = 0;
+	while(1)
+		writePort(7, I++);
+	end 
+end
+
+void writePort(int port, int val)
+   char* mem_port = 65536;
+   mem_port[port] = val;
+end
+
+class Screen
+  char* mem_scr;// = 65536;
+  int X;// = 0;
+  int Y;// = 0;
+  int Xmax;// = 30;
+  int Ymax;// = 19;
+  int col;// = 999;
+  
+  void constructor()
+    mem_scr = 65536+100;
+	X = 0;
+	Y = 0;
+	Xmax = 30;
+	Ymax = 19;
+	col = 999;
+  end
+  
+  void incXY()
+    X++;
+    if(X > Xmax)
+       X = 0;
+       Y++;
+       if(Y > Ymax)
+         Y = 0;
+       end
+    end
+  end 
+ 
+  void putchXY(char C, int X, int Y)
+    int adr = (X+Xmax*Y)*2;
+    mem_scr[adr] = C;      //this says "array access into non-pointer type char"
+    mem_scr[adr+1] = col;
+	//char**** ptr = mem_scr;     //this too
+	//ptr[adr] = C;
+	//ptr[adr+1] = col;
+  end
+ 
+  void printXY(char *str, int X, int Y)
+    while(*str)
+       putch(*str++, X++, Y);
+    end
+  end
+ 
+  void putch(char C)
+     putchXY(C, X, Y);
+     incXY();
+  end 
+ 
+  void print(char *str)
+    while(*str)
+       putch(*str++);
+    end 
+  end
+  
+  void test()
+	writePort(4, &X);
+	writePort(5, X);
+  end
+end
+
+void print(char *str, int X, int Y)
+	int *scr_adr = 65536+100;
+	while(*str)
+		char C = *str++;
+		int adr = (X+30*Y)*2;
+		scr_adr[adr] = C;
+		scr_adr[adr+1] = 999;
+		X++;
 	end
 end
 
 int main(int argc, char **argv)
-	char C;
-	int A;
-	class horse H;
-	if(argc == 1)
-		print("hello, I am %s"/*, argv[0]*/);
-		A = 5;
-		*argv = "beep";
-		return 1;
-	else
-		float A = import(argc);
-		A = A*argv;
-		export(A);
-		H.fluff = 10;
-		H.boop();
-		while(A)
-			print(A, argc); //this generates a temp val that is stuck on the expr stack; we need to know when to discard results.
-			A = A/1;
-			if(A == 1) return 1; end
-			if(A < 3)
-				return 2; 
-			elseif(A > 2)
-				return 3;
-			end
-		end
-		return 0;
-	end
-	string boop;
+	class Screen scr;
+    writePort(0, &scr);
+	//writePort(1, &(scr.X));
+	writePort(2, &scr.X);
+	writePort(3, scr.X);
+	scr.X = 123;
+	scr.print("hello world!");
+	scr.test();
+	writePort(6, scr.X);
+	print("well, I tried", 0, 0);
+	infloop();
 end
 

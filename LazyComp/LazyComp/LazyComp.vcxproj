@@ -84,6 +84,7 @@
     <ClInclude Include="..\..\code\include\semantic\types\type_name.h" />
     <ClInclude Include="..\..\code\include\semantic\types\varvalue.h" />
     <ClInclude Include="..\..\code\include\semantic\types\yylloc.h" />
+    <ClInclude Include="..\..\code\include\todo.h" />
     <ClInclude Include="..\..\code\include\util\allocator_override.h" />
     <ClInclude Include="..\..\code\include\util\cobject.h" />
     <ClInclude Include="..\..\code\include\util\globals.h" />

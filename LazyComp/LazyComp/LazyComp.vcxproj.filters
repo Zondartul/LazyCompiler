@@ -293,6 +293,9 @@
     <ClInclude Include="..\..\code\include\preproc\preprocess.h">
       <Filter>Header Files\include\preproc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\code\include\todo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\code\input\lexin.l">
