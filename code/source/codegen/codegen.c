@@ -562,7 +562,10 @@ const char* loadRValue(const char *val){
 	
 	if(val[0] == '*'){deref = 1; val++;}
 	if(val[0] == '&'){ref = 1; val++;}
-		
+	if (ref && deref) {
+		error("[CODE GEN] can't reference AND dereference");
+	}
+
 	ptr_IR_symbol S = find_IR_symbol(val);
 	if(!S){error("[CODE GEN] undefined value '%s' (line %d) ",val,CurCMD+1);}
 	if(!strcmp(S->type,"FUNC")){

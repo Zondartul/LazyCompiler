@@ -62,13 +62,109 @@ void assert_is_if_else(const char* lbl) {
 	}
 }
 
+int is_rval(const char* val) {
+	return is_prefix_of("rval", val);
+}
+
+void assert_rval(const char* val) {
+	if (!is_rval(val)) {
+		error("internal semantic error: got [%s], expected RValue", val);
+	}
+}
+
+int is_lval(const char* val) {
+	return is_prefix_of("lval", val);
+}
+
+void assert_lval(const char* val) {
+	if (!is_lval(val)) {
+		error("internal semantic error: got [%s], expected LValue", val);
+	}
+}
+
+int is_val(const char* val) {
+	return is_lval(val) || is_rval(val);
+}
+
+void assert_val(const char* val) {
+	if (!is_val(val)) {
+		error("inernal semantic error: got [%s], expected val", val);
+	}
+}
+
+int is_expr_res(const char* val) {
+	return (strcmp(val, "DISCARD") == 0) || is_val(val);
+}
+
 void assert_expr_res(const char* val) {
-	if (strcmp(val, "DISCARD") != 0) {
-		if (strcmp(val, "NODISCARD") != 0) {
-			//assert_temp_val(val);
-			error("internal semantic error: got [%s], expected a discard/nodiscard", val);
+	if (!is_expr_res(val)) {	
+		error("internal semantic error: got [%s], expected expr_res type");
+	}
+}
+
+void assert_no_result(const char* val) {
+	if (!(strcmp(val, "DISCARD") == 0)) {
+		error("internal semantic error: expr_res is [%s] but only DISCARD is allowed because there is no result.");
+	}
+}
+
+const char* new_rval() {return IR_next_name(namespace_semantic, "rval");}
+const char* new_lval() {return IR_next_name(namespace_semantic, "lval");}
+
+const char* to_prefixed_name(const char* prefix, const char *val) {
+	char buff[80];
+	snprintf(buff, "%s%s", prefix, val);
+	const char* res = IR_next_name(namespace_semantic, buff);
+	return res;
+}
+
+const char* to_rval_name(const char* val) { return to_prefixed_name("rval_", val); }
+const char* to_lval_name(const char* val) { return to_prefixed_name("lval_", val); }
+
+//outputs the value res_val into the destination res_dest,
+//changing r-v-qualification if necessary.
+//returns 1 if something was outputted and 0 otherwise.
+//... note: also maybe ask before emitting random code?
+int output_res(const char* res_dest, const char* res_val) {
+	assert_expr_res(res_dest);
+	//assert_val(res_val);
+	if (strcmp(res_dest, "DISCARD")) {
+		return 0;
+	}
+	else if (is_rval(res_dest)) {
+		if (is_rval(res_val)) {
+			emit_code("MOV %s %s /* R<-R, ref copy */", res_dest, res_val);
+			push_expr(res_dest);
+			return 1;
+		}
+		else{
+			//for both lvals and constants
+			//emit("MOV %s &%s /* R<-L, promote */", res_dest, res_val);
+			error("internal semantic error: cannot promote Lvalue to Rvalue");
 		}
 	}
+	else if (is_lval(res_dest)) {
+		if (is_rval(res_val)) {
+			emit_code("MOV %s *%s /* L<-R, demote/deref */", res_dest, res_val);
+			push_expr(res_dest);
+			return 1;
+		}
+		else if (is_lval(res_val)) {
+			emit_code("MOV %s %s /* L<-L, val copy */", res_dest, res_val);
+			push_expr(res_dest);
+			return 1;
+		}
+		else{
+			//probably a costant
+			emit_code("MOV %s %s /* L<-I, load immediate */", res_dest, res_val);
+			push_expr(res_dest);
+			return 1;
+		}
+	}
+	else {
+		error("internal semantic error: can only write to rvals and lvals");
+	}
+	return 0; //unreachable
 }
 
 void semantic_analyze_decl_stmt_list(ast_node *node){
@@ -90,9 +186,8 @@ void semantic_analyze_decl_stmt(ast_node *node){
 }
 
 void semantic_analyze_func_def(ast_node *node){
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
-
+	const char* res_dest = pop_expr(); //assert_expr_res(res_dest);
+	assert_no_result(res_dest);
 	//func_def	:	typename ID '('	var_decl_list ')' stmt_list END ;
 	
 	//if(!semantic_decl){return;}
@@ -185,7 +280,7 @@ void semantic_analyze_func_def(ast_node *node){
 			//struct ast_node *arg_typename = ast_get_child(arg,0); //unused
 			struct type_name *T2 = parseTypename(node_typename);//(ast_get_child(arg,0));//semantic_get_type(ast_get_child(arg,0)->token.value);
 			m((*(signature->args)),push_back,T2);
-			push_expr("NODISCARD");
+			push_expr(new_rval());//push_expr("NODISCARD");
 			semantic_analyze(arg); //var_decl
 		}
 		S->symfunction.signature = signature;
@@ -265,15 +360,15 @@ void semantic_analyze_var_decl_list(ast_node *node){
 	//linearized: var_decl ',' ... var_decl
 	//printf("got var_decl_list\n");
 	for(int i = 0; i < node->children.size; i++){
-		push_expr("NODISCARD");
+		push_expr(new_rval());//push_expr("NODISCARD");
 		semantic_analyze(ast_get_child(node, i)); //var_decl
 	}
 }
 
 void semantic_analyze_var_decl(ast_node *node){
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	//var_decl:	typename ID
 	//| typename ID '[' expr ']'
@@ -337,8 +432,8 @@ void semantic_analyze_var_decl(ast_node *node){
 
 void semantic_analyze_var_decl_assign(ast_node *node){
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	//production | typename ID '=' expr
 	//yacc refs	 |    $1    $2  $3  $4
@@ -411,12 +506,13 @@ void semantic_analyze_var_decl_assign(ast_node *node){
 				currentCodeSegment = init_CS;
 			}
 			//emit_code("INITIALIZER %s BEGIN",result1);
-			push_expr("NODISCARD");
+			push_expr(new_lval()); //only L-values can be written down //push_expr("NODISCARD");
 			semantic_analyze(node_expr); //expr (what to assign)
 			const char *result2 = pop_expr();
 			emit_code("MOV %s %s", result1, result2);
 			//emit_code("INITIALIZER %s END",result1);
-			if (!discardResult) { push_expr(result1); }
+			//if (!discardResult) { push_expr(result1); }
+			output_res(res_dest, result1);
 			pop_code_segment();
 		}
 	}
@@ -484,7 +580,7 @@ void semantic_analyze_imp_stmt(ast_node *node){
 								node->token.pos.end,
 								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
-			push_expr("NODISCARD");
+			push_expr(new_lval());//push_expr("NODISCARD");
 			semantic_analyze(ast_get_child(node,0)); //expr (what to return)
 			emit_code("RET %s",pop_expr());
 			break;
@@ -603,7 +699,7 @@ void semantic_analyze_if_then(ast_node *node){
 				//(expr)
 				pos = ast_get_child(node, 0)->token.pos;
 				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				push_expr("NODISCARD");
+				push_expr(new_lval());//push_expr("NODISCARD");
 				semantic_analyze(ast_get_child(node, 0)); //expr (condition)
 				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//if then
@@ -643,7 +739,7 @@ void semantic_analyze_if_then(ast_node *node){
 				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 				emit_code("LABEL %s", if_elseif);
 				//( expr )
-				push_expr("NODISCARD");
+				push_expr(new_lval());//push_expr("NODISCARD");
 				semantic_analyze(ast_get_child(node, 1)); //expr (condition)
 				const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//then
@@ -693,7 +789,7 @@ void semantic_analyze_while_loop(ast_node *node){
 		emit_code("SYMBOL %s LABEL",label1);
 		emit_code("SYMBOL %s LABEL",label2);
 		emit_code("LABEL %s",label1);
-		push_expr("NODISCARD");
+		push_expr(new_lval());//push_expr("NODISCARD");
 		semantic_analyze(ast_get_child(node,0)); //expr (condition)
 		//analyze_scope(ast_get_child(node,0),0,&CSinsert,0,0);
 		//emit_code_segment(CSinsert);
@@ -743,7 +839,7 @@ void semantic_analyze_for_loop(ast_node *node){
 		//LOOP CONDITION
 		emit_code("LABEL %s",loopCondition);
 		emit_code("/* %s */",removeComments(get_source_text2(pos2)));//get_source_text(pos2.start,pos2.end,pos2.filename));
-		push_expr("NODISCARD");
+		push_expr(new_lval());//push_expr("NODISCARD");
 		semantic_analyze(ast_get_child(node,1)); //expr (i < 10;)
 		const char *condition = pop_expr();
 		emit_code("JE 0 %s %s",condition,loopExit);
@@ -766,8 +862,8 @@ void semantic_analyze_for_loop(ast_node *node){
 }
 
 void semantic_analyze_class_def(ast_node *node){
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	assert_no_result(res_dest);
 
 	//production|	CLASS ID decl_stmt_list END
 	//yacc refs |		  $1  $2     $3
@@ -858,7 +954,7 @@ void semantic_analyze_expr_list(ast_node *node){
 	for(int i = 0; i < node->children.size; i++){
 		//so some of these may be expressions and some, expression lists. idk.
 		//well, actually, the list should be linearized.
-		push_expr("NODISCARD");
+		push_expr(new_lval());//LV or RV? idk //push_expr("NODISCARD");
 		semantic_analyze(ast_get_child(node, i)); //expr
 		//give name to new expression result?
 		//put it in stack?
@@ -868,8 +964,7 @@ void semantic_analyze_expr_list(ast_node *node){
 void semantic_analyze_expr_id(ast_node *node){
 	//expr	:	ID	
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
 
 	//printf("got expr_id = [%s]\n",node->token.value);
 	char *name = stralloc(node->token.value);
@@ -893,19 +988,20 @@ void semantic_analyze_expr_id(ast_node *node){
 	}
 	printf("found variable '%s' of type '%s'\n",name,T->name);
 	//exprResult = name;
+	const char* S_full = to_rval_name(S->IR_name);
+
 	if(semantic_this){
-		//const char *result1 = IR_next_name(namespace_semantic,"$reg");
-		//emit_code("ADD %s %s %s",result1, semantic_this, S->IR_name);
-		char buff[80];
-		//emit_code("%s:%s = ADD %s REF %s",semantic_this,S->IR_name,semantic_this,S->IR_name);
-		//const char *this = lookup_symbol("this")->IR_name;
+		//char buff[80];
+		
 		if(S->type == SYMBOL_VARIABLE){
-			const char *S_full = IR_next_name(namespace_semantic,S->IR_name);//IR_next_name(namespace_semantic,S->IR_name);
+			//const char *S_full = IR_next_name(namespace_semantic,S->IR_name);//IR_next_name(namespace_semantic,S->IR_name);
 			emit_code("ADD %s %s &%s",S_full, semantic_this, S->IR_name);
-			sprintf(buff,"*%s",S_full);
-			if (!discardResult) { push_expr(stralloc(buff)); }
+			//sprintf(buff,"*%s",S_full);
+			//if (!discardResult) { push_expr(stralloc(buff)); }
+			output_res(res_dest, S_full);
 		}else if(S->type == SYMBOL_FUNCTION){
-			if (!discardResult) {push_expr(S->IR_name);}
+			//if (!discardResult) {push_expr(S->IR_name);}
+			output_res(res_dest, S_full);
 		}else{
 			error("[SEMANTIC] Unknown symbol type ");
 		}
@@ -913,7 +1009,8 @@ void semantic_analyze_expr_id(ast_node *node){
 		//const char *result1 = stralloc(buff);
 		//push_expr(result1);
 	}else{
-		if (!discardResult) { push_expr(S->IR_name); }
+		//if (!discardResult) { push_expr(S->IR_name); }
+		output_res(res_dest, S_full);
 		//push_expr(S->username);
 	}
 	push_exprtype(T);
@@ -929,9 +1026,8 @@ void semantic_analyze_expr_const(ast_node *node){
 		//| CHARACTER
 		//| STRING
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
-
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	
 	//printf("got expr_const\n");
 	//char *exprResult = IR_next_name(namespace_semantic,"$reg");
 	//sanitize the value, maybe put it somewhere,
@@ -943,35 +1039,42 @@ void semantic_analyze_expr_const(ast_node *node){
 	switch(node->token.production){
 		case(0): //int
 			T->name = "int";
-			if (!discardResult) {
-				push_expr(node->token.value);
-			}
+			
+			//if (!discardResult) {
+			//	push_expr(node->token.value);
+			//}
+			output_res(res_dest, node->token.value);
 		break;
 		case(1): //hex int
 			T->name = "int";
-			if (!discardResult) {
-				push_expr(node->token.value);
-			}
+			//if (!discardResult) {
+			//	push_expr(node->token.value);
+			//}
+			output_res(res_dest, node->token.value);
 		break;
 		case(2): //binary int
 			T->name = "int";
-			if (!discardResult) {
-				push_expr(node->token.value);
-			}
+			//if (!discardResult) {
+			//	push_expr(node->token.value);
+			//}
+			output_res(res_dest, node->token.value);
 		break;
 		case(3): //float
 			T->name = "float";
-			if (!discardResult) {
-				push_expr(node->token.value);
-			}
+			//if (!discardResult) {
+			//	push_expr(node->token.value);
+			//}
+			output_res(res_dest, node->token.value);
 		break;
 		case(4): //char
 			T->name = "char";
 			char buff[80];
 			sprintf(buff,"%d",node->token.value[1]);
-			if (!discardResult) {
-				push_expr(stralloc(buff));
-			}
+			const char* str = stralloc(buff);
+			//if (!discardResult) {
+			//	push_expr(stralloc(buff));
+			//}
+			output_res(res_dest, str);
 		break;
 		case(5): //string
 			T->name = "string";
@@ -990,9 +1093,10 @@ void semantic_analyze_expr_const(ast_node *node){
 			emit_code("SYMBOL %s STRING %s",str_name,escape_string(node->token.value));
 			pop_code_segment();
 			//emit_code("DATA STATIC %s %s",str_name, node->token.value);
-			if (!discardResult) {
-				push_expr(str_name);
-			}
+			//if (!discardResult) {
+			//	push_expr(str_name);
+			//}
+			output_res(res_dest, str_name);
 		break;
 		default:
 			error("semantic error: unknown switch case");
@@ -1009,20 +1113,21 @@ void semantic_analyze_expr_subexpr(ast_node *node){
 	//expr: '(' expr ')'
 	
 	//printf("got expr_subexpr\n");
-	push_expr("NODISCARD");
+	//push_expr("NODISCARD"); 
+	//-- just propagate the res_type we got.
 	semantic_analyze(ast_get_child(node,0)); //expr
 }
 
 void semantic_analyze_expr_index(ast_node *node){
 	//expr '[' expr ']'
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
-	push_expr("NODISCARD");
+	push_expr(new_rval()); //Rvalue, because we need a reference to memory //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr (array)
 	const char *index = pop_expr();
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //lval because numbers are ok //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr (index)
 	const char *ptr = pop_expr();
 	
@@ -1050,9 +1155,11 @@ void semantic_analyze_expr_index(ast_node *node){
 		//if(!lvalue){emit_code("MOV %s *%s",result,result);}
 		char buff[80];
 		sprintf(buff,"*%s",result);
-		if (!discardResult) {
-			push_expr(stralloc(buff));
-		}
+		const char* res_val = stralloc(buff);
+		//if (!discardResult) {
+		//	push_expr(stralloc(buff));
+		//}
+		output_res(res_dest, res_val);
 		return;//goto semantic_exit;
 	}
 	error("Semantic error: array access into %s, which is not a variable\n");
@@ -1061,11 +1168,11 @@ void semantic_analyze_expr_index(ast_node *node){
 void semantic_analyze_expr_call(ast_node *node){
 	//expr: expr '(' expr_list ')'
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	//printf("got expr_call\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr (function name or reference expression)
 	const char *name = pop_expr();
 	//struct symbol *S = lookup_symbol_IR(name);
@@ -1080,7 +1187,7 @@ void semantic_analyze_expr_call(ast_node *node){
 	int len = 0;
 	vector2_ptr_char ministack = vector2_ptr_char_here();
 	for(i = 0; i < list->children.size; i++){
-		push_expr("NODISCARD");
+		push_expr(new_lval());//push_expr("NODISCARD");
 		semantic_analyze(ast_get_child(list,i)); //expr? one of func args?
 		const char *expr = pop_expr();
 		len += snprintf(0,0,"%s ",expr);
@@ -1098,8 +1205,11 @@ void semantic_analyze_expr_call(ast_node *node){
 	//emit_code("%s = CALL [%s][%s]",exprResult, name, buff);
 	emit_code("CALL %s %s%s",exprResult,name,buff);
 	
-	if (!discardResult) {
-		push_expr(exprResult);
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//	push_exprtype(T);
+	//}
+	if (output_res(res_dest, exprResult)) {
 		push_exprtype(T);
 	}
 }
@@ -1107,12 +1217,12 @@ void semantic_analyze_expr_call(ast_node *node){
 void semantic_analyze_expr_dot(ast_node *node){
 	//expr: expr '.' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//{goto semantic_exit;}
 	//printf("got expr_.\n");
-	push_expr("NODISCARD");
+	push_expr(new_rval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr (first one)
 	//what if $0 isn't an ID? need to figure out
 	//expression type... also instance... fuck, just redo this.
@@ -1127,226 +1237,236 @@ void semantic_analyze_expr_dot(ast_node *node){
 	push_symbol_table();
 	currentSymbolTable = T->symclass->symclass.scope;
 	semantic_this = pop_expr(); 
-	push_expr("NODISCARD");
+	push_expr(new_rval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr (member)
 	const char* res2 = pop_expr();
 	semantic_this = 0;
 	pop_symbol_table();
 	//emit code: member access
-	if (!discardResult) {
-		push_expr(res2);
-	}
+	//if (!discardResult) {
+	//	push_expr(res2);
+	//}
+	output_res(res_dest, res2);
 }
 
 void semantic_analyze_expr_pow(ast_node *node){
 	//expr: expr '^' expr	
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_^\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr (base)
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr (exponent)
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = EXPONENT %s %s",exprResult, result1, result2);
 	emit_code("EXP %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: exp
 }
 
 void semantic_analyze_expr_divide(ast_node *node){
 	//expr: expr '/' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_/\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr (top)
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr (bottom)
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = DIVIDE %s %s",exprResult, result1, result2);
 	emit_code("DIV %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: div
 }
 
 void semantic_analyze_expr_multiply(ast_node *node){
 	//expr: expr '*' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr 1
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr 2
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
 	emit_code("MUL %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: mul
 }
 
 void semantic_analyze_expr_modulo(ast_node *node){
 	//expr: expr '%' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
 	emit_code("MOD %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: mul
 }
 
 void semantic_analyze_expr_and(ast_node *node){
 	//expr: expr '&' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
 	emit_code("AND %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: mul
 }
 
 void semantic_analyze_expr_or(ast_node *node){
 	//expr: expr '|' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
 	emit_code("OR %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: mul
 }
 
 void semantic_analyze_expr_not(ast_node *node){
 	//expr: '!' expr
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_*\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = MULTIPLY %s %s",exprResult, result1, result2);
 	emit_code("NOT %s %s",exprResult, result1);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: mul
 }
 
 void semantic_analyze_expr_minus(ast_node *node){
 	//expr: expr '-' expr
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_-\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = SUBTRACT %s %s",exprResult, result1, result2);
 	emit_code("SUB %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: sub
 }
 
 void semantic_analyze_expr_plus(ast_node *node){
 	//expr: expr '+' expr
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = ADD %s %s",exprResult, result1, result2);
 	emit_code("ADD %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: add
 }
 
 void semantic_analyze_expr_increment(ast_node *node){
 	//expr: INC	expr    %prec PREINC
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
-	push_expr("NODISCARD");
+	push_expr(new_rval()); //because x = x+1; push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	if(node->token.production == 0){
 		//post-increment
@@ -1354,26 +1474,28 @@ void semantic_analyze_expr_increment(ast_node *node){
 		const char *result = IR_next_name(namespace_semantic,"temp");
 		emit_code("MOV %s %s",result,arg);
 		emit_code("ADD %s %s 1",arg,arg);
-		if (!discardResult) {
-			push_expr(result);
-		}
+		//if (!discardResult) {
+		//	push_expr(result);
+		//}
+		output_res(res_dest, result);
 	}else{
 		//pre-increment
 		const char *result = pop_expr();
 		emit_code("ADD %s %s 1",result,result);
-		if (!discardResult) {
-			push_expr(result);
-		}
+		//if (!discardResult) {
+		//	push_expr(result);
+		//}
+		output_res(res_dest, result);
 	}
 }
 
 void semantic_analyze_expr_decrement(ast_node *node){
 	//expr: DEC	expr    %prec PREDEC	
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
-	push_expr("NODISCARD");
+	push_expr(new_rval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	if(node->token.production == 0){
 		//post-decrement
@@ -1381,174 +1503,183 @@ void semantic_analyze_expr_decrement(ast_node *node){
 		const char *result = IR_next_name(namespace_semantic,"temp");
 		emit_code("MOV %s %s",result,arg);
 		emit_code("SUB %s %s 1",arg,arg);
-		if (!discardResult) {
-			push_expr(result);
-		}
+		//if (!discardResult) {
+		//	push_expr(result);
+		//}
+		output_res(res_dest, result);
 	}else{
 		//pre-decrement
 		const char *result = pop_expr();
 		emit_code("SUB %s %s 1",result,result);
-		if (!discardResult) {
-			push_expr(result);
-		}
+		//if (!discardResult) {
+		//	push_expr(result);
+		//}
+		output_res(res_dest, result);
 	}
 }
 
 void semantic_analyze_expr_neg(ast_node *node){
 	//expr: '-' expr 	%prec PRENEG
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *result = pop_expr();
 	emit_code("NEG %s %s",result,result);
-	if (!discardResult) {
-		push_expr(result);
-	}
+	//if (!discardResult) {
+	//	push_expr(result);
+	//}
+	output_res(res_dest, result);
 }
 
 void semantic_analyze_expr_deref(ast_node *node){
 	//expr: '*' expr	%prec PREDEREF
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *arg = pop_expr();
 	const char *result = IR_next_name(namespace_semantic,"temp");
 	emit_code("MOV %s *%s",result, arg);
-	if (!discardResult) {
-		push_expr(result);
-	}
+	//if (!discardResult) {
+	//	push_expr(result);
+	//}
+	output_res(res_dest, result);
 }
 
 void semantic_analyze_expr_ref(ast_node *node){
 	//expr: '&' expr	%prec PREREF
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
-	push_expr("NODISCARD");
+	push_expr(new_rval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	const char *arg = pop_expr();
 	const char *result = IR_next_name(namespace_semantic,"temp");
 	emit_code("MOV %s &%s",result, arg);
-	if (!discardResult) {
-		push_expr(result);
-	}
+	//if (!discardResult) {
+	//	push_expr(result);
+	//}
+	output_res(res_dest, result);
 }
 
 void semantic_analyze_expr_equals(ast_node *node){
 	//expr: expr EQUAL expr	
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = EQUAL %s %s",exprResult, result1, result2);
 	emit_code("EQUAL %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: add
 }
 
 void semantic_analyze_expr_notequal(ast_node *node){
 	//expr: expr NOTEQUAL expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = NOTEQUAL %s %s",exprResult, result1, result2);
 	emit_code("NOTEQUAL %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: add
 }
 
 void semantic_analyze_expr_greater(ast_node *node){
 	//expr: expr '>' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = GREATER %s %s",exprResult, result1, result2);
 	emit_code("GREATER %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: add
 }
 
 void semantic_analyze_expr_less(ast_node *node){
 	//expr: expr '<' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_+\n");
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
-	push_expr("NODISCARD");
+	push_expr(new_lval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
 	const char *exprResult = IR_next_name(namespace_semantic,"temp");
 	//emit_code("%s = LESS %s %s",exprResult, result1, result2);
 	emit_code("LESS %s %s %s",exprResult, result1, result2);
-	if (!discardResult) {
-		push_expr(exprResult);
-	}
+	//if (!discardResult) {
+	//	push_expr(exprResult);
+	//}
+	output_res(res_dest, exprResult);
 	//emit code: add
 }
 
 void semantic_analyze_expr_assign(ast_node *node){
 	//expr: expr '=' expr
 
-	const char* res = pop_expr(); assert_expr_res(res);
-	int discardResult = (strcmp(res, "DISCARD") == 0);
+	const char* res_dest = pop_expr(); assert_expr_res(res_dest);
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	if(semantic_decl){return;}//goto semantic_exit;}
 	//printf("got expr_=\n");
 	lvalue = 1;
-	push_expr("NODISCARD");
+	push_expr(new_rval()); //push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,0)); //expr
 	lvalue = 0;
-	push_expr("NODISCARD");
+	push_expr(new_lval());//push_expr("NODISCARD");
 	semantic_analyze(ast_get_child(node,1)); //expr
 	const char *result2 = pop_expr();
 	const char *result1 = pop_expr();
@@ -1558,6 +1689,7 @@ void semantic_analyze_expr_assign(ast_node *node){
 							//we are using push_expr for other things too.
 							//also means we can't have unused values on the stack? foo()?
 	//emit code: assign
+	output_res(res_dest, result1);
 }
 
 

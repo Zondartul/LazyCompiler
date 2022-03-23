@@ -85,7 +85,7 @@ end
 int main(int argc, char **argv)
 	class Screen scr;
     writePort(0, &scr);
-	//writePort(1, &(scr.X));
+	writePort(1, &(scr.X));
 	writePort(2, &scr.X);
 	writePort(3, scr.X);
 	scr.X = 123;
