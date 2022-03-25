@@ -31,6 +31,7 @@ const char* emit_push_label(const char* lbl) {
 }
 
 void output_res(expr_settings stg, const char* res_val, struct type_name *T) {
+	if (stg.res_type == E_ERROR) {error("internal semantic error: expr_settings null");}
 	if (stg.res_type == E_DISCARD) {
 		if (stg.res_out) { *(stg.res_out) = 0; }
 		if (stg.res_out_type) {*(stg.res_out_type) = 0;}
@@ -392,6 +393,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			emit_code("MOV %s %s", result1, result2);
 			//emit_code("INITIALIZER %s END",result1);
 			//if (!discardResult) { push_expr(result1); }
+			if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
 			output_res(stg, result1, result1type);
 			pop_code_segment();
 		}
@@ -585,7 +587,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 		if_else = stg.else_label;
 		if_exit = stg.exit_label;
 		const char* nextLabel = if_else;
-		if (strcmp(if_else, "NOELSE") == 0) { nextLabel = if_exit; }
+		if (!if_else) {nextLabel = if_exit;}//if (strcmp(if_else, "NOELSE") == 0) { nextLabel = if_exit; }
 		else { nextLabel = if_else; }
 
 		switch(node->token.production){

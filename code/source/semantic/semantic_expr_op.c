@@ -89,19 +89,21 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	//exprResult = name;
 	const char* S_full = IR_next_name(namespace_semantic, "temp");//to_rval_name(S->IR_name);
 
-	if (semantic_this) {
+	if(stg.sym_this){//if (semantic_this) {
+		const char* semantic_this = stg.sym_this.IR_name;
 		//char buff[80];
 
 		if (S->type == SYMBOL_VARIABLE) {
 			//const char *S_full = IR_next_name(namespace_semantic,S->IR_name);//IR_next_name(namespace_semantic,S->IR_name);
-			emit_code("ADD %s %s &%s", S_full, semantic_this, S->IR_name);
+			emit_code("ADD %s %s &%s /*id:this.var*/", S_full, semantic_this, S->IR_name);
 			//sprintf(buff,"*%s",S_full);
 			//if (!discardResult) { push_expr(stralloc(buff)); }
 			output_res(stg, S_full, T);
 		}
 		else if (S->type == SYMBOL_FUNCTION) {
+			emit_code("/*id:this.func*/");
 			//if (!discardResult) {push_expr(S->IR_name);}
-			output_res(stg, S_full, T);
+			output_res(stg, S->IR_name, T); //we use the globally unique IR name of the function (static dispatch)
 		}
 		else {
 			error("[SEMANTIC] Unknown symbol type ");
@@ -112,7 +114,10 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	}
 	else {
 		//if (!discardResult) { push_expr(S->IR_name); }
-		output_res(stg, S_full, T);
+		emit_code("/*id:global*/");
+		fprintf(stderr, "warning: id always global, can't see 'this'\n");
+#pragma message("warning: id always global");
+		output_res(stg, S->IR_name, T);
 		//push_expr(S->username);
 	}
 	push_exprtype(T);
@@ -235,7 +240,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	//push_expr(new_lval()); //lval because numbers are ok //push_expr("NODISCARD");
 
 	const char* res2 = 0; struct type_info* res2type = 0;
-	expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
+	expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
 	semantic_expr_analyze(ast_get_child(node, 0), stg2); //expr (index)
 	const char* ptr = res2;// pop_expr();
 

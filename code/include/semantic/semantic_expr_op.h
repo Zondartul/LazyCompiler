@@ -3,6 +3,7 @@
 
 //--- value-introducing expressions
 void semantic_analyze_expr_const(ast_node* node, expr_settings stg);
+void semantic_analyze_expr_id(ast_node* node, expr_settings stg);
 //--- reference-calcuation expressions
 void semantic_analyze_expr_list(ast_node* node);
 void semantic_analyze_expr_subexpr(ast_node* node, expr_settings stg);

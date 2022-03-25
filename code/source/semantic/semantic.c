@@ -142,7 +142,11 @@ int semantic_dispatch_general(struct ast_node* node) {
 	if (!strcmp(node->token.type, "if_block"))			{ semantic_analyze_if_block(node);			return 1; }
 	if (!strcmp(node->token.type, "while_loop"))		{ semantic_analyze_while_loop(node);		return 1; }
 	if (!strcmp(node->token.type, "for_loop"))			{ semantic_analyze_for_loop(node);			return 1; }
-	if (!strcmp(node->token.type, "class_def"))			{ semantic_analyze_class_def(node);			return 1; }
+	if (!strcmp(node->token.type, "class_def"))		{ semantic_analyze_class_def(node);			return 1; }
+	//it could be an expression (imperative statement)
+	//where we ignore the result.
+	expr_settings stg = { .res_type = E_DISCARD };
+	if (semantic_dispatch_expr(node, stg)) {return 1;}
 	return 0;
 }
 

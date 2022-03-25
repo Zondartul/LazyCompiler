@@ -10,6 +10,6 @@
 * [Bug] (null) values for lbl_to in debug info of some symbols
 * [Issue] lots of repeated code in semantic_analyze of operators
 * [Todo] display the source code location during semantic errors
-* 
-*  
+* [Todo] codegen comments // or another symbol
+* [Todo] codegen op as "OP ADD"
 */

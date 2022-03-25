@@ -53,10 +53,12 @@ typedef enum expr_type {
 typedef struct expr_settings {
 	expr_type res_type;   //this tells the analyzer if node should output an rvalue or lvalue or nothing
 	const char* res_dest; //if given, result should be put into this existing IR-val
-	const char** res_out; //if given, the result that was actually written will be put here
-	struct type_name** res_out_type;
+	const char** res_out; //out-ptr for actual value of result
+	struct type_name** res_out_type; //out-ptr for actual var type of result
+	struct symbol* sem_this; //symbol (struct) from which to look up symbols
 } expr_settings;
-#define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0})
+#define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})
+
 
 typedef struct if_settings {
 	const char* else_label;
@@ -64,7 +66,7 @@ typedef struct if_settings {
 	const char** out_else_label;
 	const char** out_exit_label;
 } if_settings;
-#define IF_SETTINGS_NULL ((if_settings){0,0})
+#define IF_SETTINGS_NULL ((if_settings){0,0,0,0})
 
 void output_res(expr_settings stg, const char* res_val, struct type_name* T);
 //types
