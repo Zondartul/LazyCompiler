@@ -45,6 +45,28 @@ struct symbol_class{
 #include "types/type_name.h"
 #include "types/semantic_context_kind.h"
 
+ //this section aims to remove all push_expr and such
+typedef enum expr_type {
+	E_ERROR, E_DISCARD, E_RVAL, E_LVAL
+} expr_type;
+
+typedef struct expr_settings {
+	expr_type res_type;   //this tells the analyzer if node should output an rvalue or lvalue or nothing
+	const char* res_dest; //if given, result should be put into this existing IR-val
+	const char** res_out; //if given, the result that was actually written will be put here
+	struct type_name** res_out_type;
+} expr_settings;
+#define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0})
+
+typedef struct if_settings {
+	const char* else_label;
+	const char* exit_label;
+	const char** out_else_label;
+	const char** out_exit_label;
+} if_settings;
+#define IF_SETTINGS_NULL ((if_settings){0,0})
+
+void output_res(expr_settings stg, const char* res_val, struct type_name* T);
 //types
 
 //generated
@@ -105,7 +127,12 @@ void push_expr(const char *expr);
 const char *pop_expr();
 void push_exprtype(struct type_name *T);
 struct type_name *pop_exprtype();
-void semantic_analyze(struct ast_node *node);
+void semantic_general_analyze(struct ast_node *node);
+void semantic_expr_analyze(struct ast_node* node, expr_settings stg);
+void semantic_if_analyze(struct ast_node* node, if_settings stg);
+int semantic_dispatch_general(struct ast_node* node);
+int semantic_dispatch_expr(struct ast_node* node, expr_settings stg);
+int semantic_dispatch_if(struct ast_node* node, if_settings stg);
 void print_semantic();
 int getNumParameters();
 int getNumMembers();

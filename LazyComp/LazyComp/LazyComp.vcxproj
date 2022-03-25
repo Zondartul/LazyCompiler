@@ -33,6 +33,7 @@
     <ClCompile Include="..\..\code\source\semantic\AST.c" />
     <ClCompile Include="..\..\code\source\semantic\semantic.c" />
     <ClCompile Include="..\..\code\source\semantic\semantic_analyze.c" />
+    <ClCompile Include="..\..\code\source\semantic\semantic_expr_op.c" />
     <ClCompile Include="..\..\code\source\semantic\types\ast_node.c" />
     <ClCompile Include="..\..\code\source\semantic\types\ast_token.c" />
     <ClCompile Include="..\..\code\source\semantic\types\code_segment.c" />
@@ -69,6 +70,7 @@
     <ClInclude Include="..\..\code\include\semantic\AST.h" />
     <ClInclude Include="..\..\code\include\semantic\semantic.h" />
     <ClInclude Include="..\..\code\include\semantic\semantic_analyze.h" />
+    <ClInclude Include="..\..\code\include\semantic\semantic_expr_op.h" />
     <ClInclude Include="..\..\code\include\semantic\types\ast_node.h" />
     <ClInclude Include="..\..\code\include\semantic\types\ast_token.h" />
     <ClInclude Include="..\..\code\include\semantic\types\code_segment.h" />

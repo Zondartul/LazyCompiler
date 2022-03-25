@@ -48,20 +48,20 @@ int nodeCountImp = 0;
 // vector expr_stack;
 //what is the context of our parsing
 
-void semantic_analyze(struct ast_node *node){
+void semantic_init_analyze(struct ast_node* node) {
 	curNode = node;
-	if(semantic_decl){nodeCountDecl++;}
-	else{nodeCountImp++;}
+	if (semantic_decl) { nodeCountDecl++; }
+	else { nodeCountImp++; }
 	//int trigger = (nodeCountImp == 8);
 	int i;
-	for(i = 0; i < semantic_analyze_pad; i++){printf(" ");}
+	for (i = 0; i < semantic_analyze_pad; i++) { printf(" "); }
 	semantic_analyze_pad++;
-	printf("semantic got %s,",node->token.type);
-	if(node->token.value){printf(" \"%s\",",node->token.value);}
-	printf(" prod %d,",node->token.production);
-	printf(" @ %d-%d,",node->token.pos.start,node->token.pos.end);
-	if(semantic_decl){printf(" declarative pass (%d)\n",nodeCountDecl);}
-	else{printf(" imperative pass (%d)\n",nodeCountImp);}
+	printf("semantic got %s,", node->token.type);
+	if (node->token.value) { printf(" \"%s\",", node->token.value); }
+	printf(" prod %d,", node->token.production);
+	printf(" @ %d-%d,", node->token.pos.start, node->token.pos.end);
+	if (semantic_decl) { printf(" declarative pass (%d)\n", nodeCountDecl); }
+	else { printf(" imperative pass (%d)\n", nodeCountImp); }
 	printf("-----------------\n%s\n-----------------\n",
 		removeComments(get_source_text2(node->token.pos)));//get_source_text(node->token.pos.start,node->token.pos.end,node->token.pos.filename));
 	//printf("node->token.pos (1) =\n");
@@ -69,52 +69,9 @@ void semantic_analyze(struct ast_node *node){
 	//printf("node->token.pos (2) =\n");
 	//printPos(node->token.pos);
 	//printf("----------------------\n");
-	if(!strcmp(node->token.type, "program"))		{semantic_analyze_program(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "decl_stmt_list"))	{semantic_analyze_decl_stmt_list(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "decl_stmt"))		{semantic_analyze_decl_stmt(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "func_def"))		{semantic_analyze_func_def(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "var_decl_list"))	{semantic_analyze_var_decl_list(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "var_decl"))		{semantic_analyze_var_decl(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "var_decl_assign")){semantic_analyze_var_decl_assign(node);goto semantic_exit;}
-	if(!strcmp(node->token.type, "stmt_list"))		{semantic_analyze_stmt_list(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "stmt"))			{semantic_analyze_stmt(node);			goto semantic_exit;}
-	if(!strcmp(node->token.type, "imp_stmt"))		{semantic_analyze_imp_stmt(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "if_block"))		{semantic_analyze_if_block(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "if_then"))		{semantic_analyze_if_then(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "while_loop"))		{semantic_analyze_while_loop(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "for_loop"))		{semantic_analyze_for_loop(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "class_def"))		{semantic_analyze_class_def(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_list"))		{semantic_analyze_expr_list(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_id"))		{semantic_analyze_expr_id(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_const"))		{semantic_analyze_expr_const(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_subexpr"))	{semantic_analyze_expr_subexpr(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_index"))		{semantic_analyze_expr_index(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_call"))		{semantic_analyze_expr_call(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_."))			{semantic_analyze_expr_dot(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_^"))			{semantic_analyze_expr_pow(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_/"))			{semantic_analyze_expr_divide(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_*"))			{semantic_analyze_expr_multiply(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_%"))			{semantic_analyze_expr_modulo(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_and"))		{semantic_analyze_expr_and(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_or"))		{semantic_analyze_expr_or(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_not"))		{semantic_analyze_expr_not(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_-"))			{semantic_analyze_expr_minus(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_+"))			{semantic_analyze_expr_plus(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_++"))		{semantic_analyze_expr_increment(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_--"))		{semantic_analyze_expr_decrement(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_neg"))		{semantic_analyze_expr_neg(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_deref"))		{semantic_analyze_expr_deref(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_ref"))		{semantic_analyze_expr_ref(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_=="))		{semantic_analyze_expr_equals(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_!="))		{semantic_analyze_expr_notequal(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_>"))			{semantic_analyze_expr_greater(node);	goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_<"))			{semantic_analyze_expr_less(node);		goto semantic_exit;}
-	if(!strcmp(node->token.type, "expr_="))			{semantic_analyze_expr_assign(node);	goto semantic_exit;}
-	//unknown node type
-	YYLTYPE pos = node->token.pos;
-	err("line %d: [%s]\n",pos.first_line,get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-	error("semantic: unknown node type: [%s]\n",node->token.type);
-	semantic_exit:
+}
+
+void semantic_fin_analyze(struct ast_node* node) {
 	//if(trigger){
 	//	trigger = 0;
 	//	printf("\n\npos after pass 8:===========\n");
@@ -123,8 +80,114 @@ void semantic_analyze(struct ast_node *node){
 	//}
 	semantic_analyze_pad--;
 	//printmemory(stdout);
+}
+
+void semantic_fail_dispatch(struct ast_node* node) {
+	YYLTYPE pos = node->token.pos;
+	err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+	error("semantic: unknown node type: [%s]\n", node->token.type);
+}
+
+int semantic_dispatch_expr_op(struct ast_node* node, expr_settings stg) {
+	if (!strcmp(node->token.type, "expr_^"))	{ semantic_analyze_expr_pow			(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_/"))	{ semantic_analyze_expr_divide		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_*"))	{ semantic_analyze_expr_multiply	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_%"))	{ semantic_analyze_expr_modulo		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_and"))	{ semantic_analyze_expr_and			(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_or"))	{ semantic_analyze_expr_or			(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_not"))	{ semantic_analyze_expr_not			(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_-"))	{ semantic_analyze_expr_minus		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_+"))	{ semantic_analyze_expr_plus		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_++"))	{ semantic_analyze_expr_increment	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_--"))	{ semantic_analyze_expr_decrement	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_=="))	{ semantic_analyze_expr_equals		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_!="))	{ semantic_analyze_expr_notequal	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_>"))	{ semantic_analyze_expr_greater		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_<"))	{ semantic_analyze_expr_less		(node, stg);	return 1; }
+	return 0;
+}
+
+int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
+	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_list"))		{ semantic_analyze_expr_list	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_id"))		{ semantic_analyze_expr_id		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_const"))	{ semantic_analyze_expr_const	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_subexpr"))	{ semantic_analyze_expr_subexpr	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_index"))	{ semantic_analyze_expr_index	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_call"))		{ semantic_analyze_expr_call	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_."))		{ semantic_analyze_expr_dot		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_neg"))		{ semantic_analyze_expr_neg		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_deref"))	{ semantic_analyze_expr_deref	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_ref"))		{ semantic_analyze_expr_ref		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_="))		{ semantic_analyze_expr_assign	(node, stg);	return 1; }
+	if (semantic_dispatch_expr_op(node, stg)) { return 1; }
+	return 0;
+}
+
+int semantic_dispatch_if(struct ast_node* node, if_settings stg) {
+	if (!strcmp(node->token.type, "if_then")) { semantic_analyze_if_then(node, stg); return 1; }
+}
+
+int semantic_dispatch_general(struct ast_node* node) {
+	if (!strcmp(node->token.type, "program"))			{ semantic_analyze_program(node);			return 1; }
+	if (!strcmp(node->token.type, "decl_stmt_list"))	{ semantic_analyze_decl_stmt_list(node);	return 1; }
+	if (!strcmp(node->token.type, "decl_stmt"))			{ semantic_analyze_decl_stmt(node);			return 1; }
+	if (!strcmp(node->token.type, "func_def"))			{ semantic_analyze_func_def(node);			return 1; }
+	if (!strcmp(node->token.type, "var_decl_list"))		{ semantic_analyze_var_decl_list(node);		return 1; }
+	if (!strcmp(node->token.type, "var_decl"))			{ semantic_analyze_var_decl(node);			return 1; }
+	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, EXPR_SETTINGS_NULL);	return 1; }
+	if (!strcmp(node->token.type, "stmt_list"))			{ semantic_analyze_stmt_list(node);			return 1; }
+	if (!strcmp(node->token.type, "stmt"))				{ semantic_analyze_stmt(node);				return 1; }
+	if (!strcmp(node->token.type, "imp_stmt"))			{ semantic_analyze_imp_stmt(node);			return 1; }
+	if (!strcmp(node->token.type, "if_block"))			{ semantic_analyze_if_block(node);			return 1; }
+	if (!strcmp(node->token.type, "while_loop"))		{ semantic_analyze_while_loop(node);		return 1; }
+	if (!strcmp(node->token.type, "for_loop"))			{ semantic_analyze_for_loop(node);			return 1; }
+	if (!strcmp(node->token.type, "class_def"))			{ semantic_analyze_class_def(node);			return 1; }
+	return 0;
+}
+
+
+
+void semantic_general_analyze(struct ast_node *node){
+	semantic_init_analyze(node);
+	if (semantic_dispatch_general(node)) {
+		//semantic_exit:
+		semantic_fin_analyze(node);
+	}else {
+		//unknown node type
+		semantic_fail_dispatch(node);
+	}
 	return;
 }
+
+
+void semantic_expr_analyze(struct ast_node* node, expr_settings stg) {
+	semantic_init_analyze(node);
+	if (semantic_dispatch_expr(node, stg)) {
+		//semantic_exit:
+		semantic_fin_analyze(node);
+	}
+	else {
+		//unknown node type
+		semantic_fail_dispatch(node);
+	}
+	return;
+}
+
+void semantic_if_analyze(struct ast_node* node, if_settings stg) {
+	semantic_init_analyze(node);
+	if (semantic_dispatch_if(node, stg)) {
+		//semantic_exit:
+		semantic_fin_analyze(node);
+	}
+	else {
+		//unknown node type
+		semantic_fail_dispatch(node);
+	}
+	return;
+}
+
+
 
 void bufferizeWithoutComments(char *buff, const char *str, int num);
 char *removeComments(const char *str){
@@ -436,7 +499,7 @@ void analyze_scope(struct ast_node *N,
 		printf("analyzing (decl) scope %s\n",currentSymbolTable->name);
 		printf("symbol table so far:\n");
 		print_symbol_table(currentSymbolTable);
-		semantic_analyze(N);
+		semantic_general_analyze(N);
 	}else{
 		struct code_segment *CCS = currentCodeSegment;
 		if(CCS){push_code_segment();}
@@ -454,7 +517,7 @@ void analyze_scope(struct ast_node *N,
 		print_symbol_table(currentSymbolTable);	
 		emit_all_declarations();
 		emit_all_initializers();
-		semantic_analyze(N);
+		semantic_general_analyze(N);
 		emit_all_deinitializers();
 		emit_all_undeclarations();
 		if(!noEnterLeave){emit_code("FRAME LEAVE");}

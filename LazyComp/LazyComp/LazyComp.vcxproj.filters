@@ -183,6 +183,9 @@
     <ClCompile Include="..\..\code\source\preproc\preprocess.c">
       <Filter>Source Files\source\preproc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\code\source\semantic\semantic_expr_op.c">
+      <Filter>Source Files\source\semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\code\generated\yaccin.tab.h">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="..\..\code\include\todo.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\include\semantic\semantic_expr_op.h">
+      <Filter>Header Files\include\semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

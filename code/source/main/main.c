@@ -106,7 +106,7 @@ int main(int argc, char **argv){
 	fprintf(stderr,"analyzing...");
 	freopen(/*"aout_semantic.txt"*/path_out_semantic,"w",stdout);
 	semantic_init();
-	semantic_analyze(/*ast_get_node(finalNode)*/finalNode);
+	semantic_general_analyze(/*ast_get_node(finalNode)*/finalNode);
 	fprintf(stderr,"\t\tdone\n");
 	
 	fprintf(stderr,"printing semantic...");
