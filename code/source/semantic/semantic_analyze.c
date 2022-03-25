@@ -1,5 +1,6 @@
 #include "semantic.h"
 #include "yaccin.tab.h" //for get_source_text2()
+#include "ctype.h"
 
 void semantic_analyze_program(ast_node *node){
 	//program :	decl_stmt_list	;
@@ -82,8 +83,29 @@ void assert_lval(const char* val) {
 	}
 }
 
+int is_number(const char* val) {
+	//1. check if it only has digits and format symbols
+	int len = strlen(val);
+	for (int i = 0; i < len; i++) {
+		char c = val[i];
+		if (isdigit(c) || (c == '.')) //how do we deal with 0x, 0c, 0b?
+		{
+			continue;
+		}
+		else {
+			return 0;
+		}
+	}
+	//2. maybe check if it actually reads? nah
+	return 1;
+}
+
+int is_ival(const char* val) {
+	return is_number(val);
+}
+
 int is_val(const char* val) {
-	return is_lval(val) || is_rval(val);
+	return is_lval(val) || is_rval(val) || is_ival(val);
 }
 
 void assert_val(const char* val) {
@@ -108,6 +130,7 @@ void assert_no_result(const char* val) {
 	}
 }
 
+
 const char* new_rval() {return IR_next_name(namespace_semantic, "rval");}
 const char* new_lval() {return IR_next_name(namespace_semantic, "lval");}
 
@@ -127,8 +150,8 @@ const char* to_lval_name(const char* val) { return to_prefixed_name("lval_", val
 //... note: also maybe ask before emitting random code?
 int output_res(const char* res_dest, const char* res_val) {
 	assert_expr_res(res_dest);
-	//assert_val(res_val);
-	if (strcmp(res_dest, "DISCARD")) {
+	assert_val(res_val);
+	if (strcmp(res_dest, "DISCARD")==0) {
 		return 0;
 	}
 	else if (is_rval(res_dest)) {
@@ -137,10 +160,14 @@ int output_res(const char* res_dest, const char* res_val) {
 			push_expr(res_dest);
 			return 1;
 		}
-		else{
+		else if(is_lval(res_val)){
+
 			//for both lvals and constants
 			//emit("MOV %s &%s /* R<-L, promote */", res_dest, res_val);
-			error("internal semantic error: cannot promote Lvalue to Rvalue");
+			error("internal semantic error: cannot promote Lvalue (%s) to Rvalue", res_val);
+		}
+		else {
+			error("internal semantic error: cannot promote I-Lvalue (%s) to Rvalue", res_val);
 		}
 	}
 	else if (is_lval(res_dest)) {
@@ -1131,13 +1158,19 @@ void semantic_analyze_expr_index(ast_node *node){
 	semantic_analyze(ast_get_child(node,0)); //expr (index)
 	const char *ptr = pop_expr();
 	
-	struct symbol *S = lookup_symbol_IR(ptr);//lookup_symbol(ptr);
-	if((S->type == SYMBOL_PARAM) ||
-	(S->type == SYMBOL_MEMBER) ||
-	(S->type == SYMBOL_VARIABLE)){
-		struct type_name *T = S->symvariable.type;
+	//okay first of all, expr isn't necessarily a symtable symbol but
+	//it could just be an rvalue expression (i.e. temporary value)
+	//struct symbol *S = lookup_symbol_IR(ptr);//lookup_symbol(ptr);
+	//if((S->type == SYMBOL_PARAM) ||
+	//(S->type == SYMBOL_MEMBER) ||
+	//(S->type == SYMBOL_VARIABLE)){
+		//struct type_name *T = S->symvariable.type;
+		struct type_name* T = pop_exprtype();
 		if(T->pointerlevel == 0){
-			error("Semantic error: array access into %s, which has non-pointer type %s\n",S->username,T->name);
+			//error("Semantic error: array access into %s, which has non-pointer type %s\n",S->username,T->name);
+			const char* expr1_text = 0; //how do
+			const char* expr1_type_text = 0;
+			error("Semantic error: array access into %s, which has non-pointer type %s\n", expr1_text, expr1_type_text);
 		}
 		struct type_name *T2 = malloc(sizeof(struct type_name));
 		*T2 = *T;
@@ -1147,11 +1180,11 @@ void semantic_analyze_expr_index(ast_node *node){
 		const char *result = IR_next_name(namespace_semantic,"temp");
 		
 		//if(lvalue){emit_code("SYMBOL %s VAR 1",result);}
-		if(S->symvariable.array){
-			emit_code("ADD %s %s &%s",result,index,ptr);
-		}else{
+		//if(S->symvariable.array){
+		//	emit_code("ADD %s %s &%s",result,index,ptr);
+		//}else{
 			emit_code("ADD %s %s %s",result,index,ptr);
-		}
+		//}
 		//if(!lvalue){emit_code("MOV %s *%s",result,result);}
 		char buff[80];
 		sprintf(buff,"*%s",result);
@@ -1161,7 +1194,7 @@ void semantic_analyze_expr_index(ast_node *node){
 		//}
 		output_res(res_dest, res_val);
 		return;//goto semantic_exit;
-	}
+	//}
 	error("Semantic error: array access into %s, which is not a variable\n");
 }
 

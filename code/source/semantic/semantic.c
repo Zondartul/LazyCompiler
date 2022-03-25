@@ -848,7 +848,17 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 	fprintf(stdout, "%s", KNRM);
 	fprintf(stdout, "@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	va_end(ap);
-	
+
+	if (curNode) {
+		const char* str = get_source_text2(curNode->token.pos);
+		//fprintf(stderr, "when analyzing source text: [%s]\n", str);
+		YYLTYPE pos = curNode->token.pos;
+		point_out_error(pos.first_line, pos.first_column, pos.filename, "", strlen(str));
+	}
+	else {
+		fprintf(stderr, "no source text\n");
+	}
+
 	//char buff[200];
 	//sprintf(buff,"notepad++ %s -n%d &",file,line);
 	//system(buff);

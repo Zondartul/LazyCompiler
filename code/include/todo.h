@@ -9,10 +9,7 @@
 * [Issue] too many comments in assembly 
 * [Bug] (null) values for lbl_to in debug info of some symbols
 * [Issue] lots of repeated code in semantic_analyze of operators
+* [Todo] display the source code location during semantic errors
 * 
-* 
-* 
-* 
-* 
-* 
+*  
 */

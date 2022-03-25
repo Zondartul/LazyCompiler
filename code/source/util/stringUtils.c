@@ -197,7 +197,8 @@ void point_out_error(int line, int pos, const char *file, const char *s, int len
 	//printf("pos: %d:%d:%d:%d\n",y1,x1,y2,x2);
     const char *str = get_source_line2(line,file);
 	//fprintf(stderr, "%s\n", get_source_line(lexlinestart));
-	fprintf(stderr, "\n\nfile: %s, line %d:",file, line);
+	//fprintf(stderr, "\n\nfile: %s, line %d:",file, line);
+	fprintf(stderr, "file: %s, line %d:",file, line);
 	fprintf(stderr, "\n%s\n", str);
 	int i;
 	//for(i = 0; i < lexnumtabs; i++){fprintf(stderr, "\t");}
