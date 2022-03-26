@@ -93,6 +93,7 @@ int main(int argc, char **argv){
 	yyparse();
 	fprintf(stderr,"\t\tdone\n");
 	
+	
 	fprintf(stderr,"printing ast...");
 	FILE *fp = fopen(/*"aout2.txt"*/path_out_2,"w");
 	if(!fp){return 1;}
@@ -119,8 +120,21 @@ int main(int argc, char **argv){
 	freopen(/*"aout_codegen.txt"*/path_out_codegen,"w",stdout);
 	codegen_generate();
 	fprintf(stderr,"\t\tdone\n");
-	printstamp();
+
 	flushAllFiles();
+	//copy the result over to gmod folder
+	const char* cmd_str = "copy "
+		"\"D:\\Stride\\compiler\\LazyComp\\data_out\\aout_assembly.txt\" "
+		"\"E:/PROGRA~2/Steam/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/aout_assembly.txt\" "
+		//	"\"E:\\Program Files(x86)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazycomp\\aout_assembly.txt\""
+		;
+	fprintf(stderr, "%s\n", cmd_str);
+	int res = system(cmd_str);
+	if (res) { fprintf(stderr, "copy failed: %d\n", res); }
+	else {fprintf(stderr, "file copied to garrysmod/data/cpuchip\n");}
+
+	printstamp();
+	
 	
 	return 0;
 }

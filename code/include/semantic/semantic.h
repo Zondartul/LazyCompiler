@@ -55,7 +55,7 @@ typedef struct expr_settings {
 	const char* res_dest; //if given, result should be put into this existing IR-val
 	const char** res_out; //out-ptr for actual value of result
 	struct type_name** res_out_type; //out-ptr for actual var type of result
-	struct symbol* sem_this; //symbol (struct) from which to look up symbols
+	struct symbol* sym_this; //symbol (struct) from which to look up symbols
 } expr_settings;
 #define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})
 

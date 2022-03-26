@@ -1,0 +1,1415 @@
+code_segment_start:                                                             // @ print_skeleton_start:182 I
+#define DEBUG                                                                   // @ print_skeleton_start:183 I
+mov ebp, 20000                                                                  // @ print_skeleton_start:184 I
+mov esp, 19999                                                                  // @ print_skeleton_start:185 I
+mov #68886, debug_info                                                          // @ print_skeleton_start:186 I
+section_code_body:                                                              // @ print_skeleton_start:194 I
+//[ SYMBOL str_3 STRING hello world!]                                           // @ codegen_gen_command:911 I
+//[ SYMBOL str_4 STRING well, I tried]                                          // @ codegen_gen_command:911 I
+//[ CALL temp_130 _main]                                                        // @ codegen_gen_command:911 I
+call _main                                                                      // @ gen_command_call:232 I
+add esp, 0                                                                      // @ gen_command_call:234 I
+//store eax into temp_130                                                       // @ storeValue:717 I
+//(curframe:0, framedepth:0)                                                    // @ storeValue:728 I
+mov #temp_130_1, eax                                                            // @ storeValue:735 I
+//[ /* int infloop((nullPos:text)) */]                                          // @ codegen_gen_command:911 I
+//[ FUNCTION _infloop BEGIN]                                                    // @ codegen_gen_command:911 I
+
+_infloop:                                                                       // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_1:                                                                          // @ gen_command_frame:667 I
+  enter 3                                                                         // @ gen_command_frame:670 I
+//[   SYMBOL I VAR]                                                             // @ codegen_gen_command:911 I
+//[   MOV I 0]                                                                  // @ codegen_gen_command:911 I
+//store 0 into I                                                                // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-1, 0                                                                // @ storeValue:747 I
+//[   /* while(1) */]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_do LABEL]                                                // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_exit LABEL]                                              // @ codegen_gen_command:911 I
+//[   LABEL lbl_while_do]                                                       // @ codegen_gen_command:911 I
+  lbl_while_do:                                                                   // @ gen_command_label:132 I
+//[   JE 0 1 lbl_while_exit]                                                    // @ codegen_gen_command:911 I
+  cmp 0, 1                                                                        // @ gen_command_je:200 I
+  je lbl_while_exit                                                               // @ gen_command_je:202 I
+//[   /* do */]                                                                 // @ codegen_gen_command:911 I
+//[      /* writePort(7, I++); */]                                              // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_2 I]                                                          // @ codegen_gen_command:911 I
+//store EBP:#-1 into temp_2                                                     // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-2, EBP:#-1                                                          // @ storeValue:747 I
+//[      ADD I I 1]                                                             // @ codegen_gen_command:911 I
+     //load I into R1 (cf:1, fd:1)                                                   // @ loadLValue:653 I
+     rstack R1, EBP:-1                                                               // @ loadLValue:668 I
+     add R1, 1                                                                       // @ gen_command_add:271 I
+//store R1 into I                                                               // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-1, R1                                                               // @ storeValue:747 I
+//[      CALL temp_3 _writePort 7 temp_2]                                       // @ codegen_gen_command:911 I
+     push EBP:#-2                                                                    // @ gen_command_call:228 I
+     push 7                                                                          // @ gen_command_call:228 I
+     call _writePort                                                                 // @ gen_command_call:232 I
+     add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_3                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-3, eax                                                              // @ storeValue:747 I
+//[   JMP lbl_while_do]                                                         // @ codegen_gen_command:911 I
+  jmp lbl_while_do                                                                // @ gen_command_jmp:170 I
+//[   LABEL lbl_while_exit]                                                     // @ codegen_gen_command:911 I
+  lbl_while_exit:                                                                 // @ gen_command_label:132 I
+//[   /* end while*/]                                                           // @ codegen_gen_command:911 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_2:                                                                          // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _infloop END]                                                      // @ codegen_gen_command:911 I
+lbl:                                                                            // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void writePort(int port, int val) */]                                    // @ codegen_gen_command:911 I
+//[ FUNCTION _writePort BEGIN]                                                  // @ codegen_gen_command:911 I
+
+_writePort:                                                                     // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_4:                                                                          // @ gen_command_frame:667 I
+  enter 3                                                                         // @ gen_command_frame:670 I
+//[   SYMBOL port ARG]                                                          // @ codegen_gen_command:911 I
+//[   SYMBOL val ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL mem_port VAR]                                                      // @ codegen_gen_command:911 I
+//[   MOV mem_port 65536]                                                       // @ codegen_gen_command:911 I
+//store 65536 into mem_port                                                     // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-1, 65536                                                            // @ storeValue:747 I
+//[   /* mem_port[port] = val; */]                                              // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   ADD temp_6 port mem_port]                                                 // @ codegen_gen_command:911 I
+  //load port into R2 (cf:1, fd:1)                                                // @ loadLValue:653 I
+  rstack R2, EBP:2                                                                // @ loadLValue:668 I
+  add R2, EBP:#-1                                                                 // @ gen_command_add:271 I
+//store R2 into temp_6                                                          // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-2, R2                                                               // @ storeValue:747 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV *temp_6 val]                                                          // @ codegen_gen_command:911 I
+//store EBP:#3 into *temp_6                                                     // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  mov R7, EBP:-2                                                                  // @ storeValue:749 I
+  mov R7, #R7                                                                     // @ storeValue:750 I
+  mov #R7, EBP:#3                                                                 // @ storeValue:752 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_5:                                                                          // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _writePort END]                                                    // @ codegen_gen_command:911 I
+lbl_3:                                                                          // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ STRUCT Screen BEGIN]                                                        // @ codegen_gen_command:911 I
+Screen:                                                                         // @ gen_command_struct:595 I
+//[ USING Screen]                                                               // @ codegen_gen_command:911 I
+//[ SYMBOL this ARG]                                                            // @ codegen_gen_command:911 I
+//[ SYMBOL mem_scr VAR]                                                         // @ codegen_gen_command:911 I
+//[ SYMBOL X VAR]                                                               // @ codegen_gen_command:911 I
+//[ SYMBOL Y VAR]                                                               // @ codegen_gen_command:911 I
+//[ SYMBOL Xmax VAR]                                                            // @ codegen_gen_command:911 I
+//[ SYMBOL Ymax VAR]                                                            // @ codegen_gen_command:911 I
+//[ SYMBOL col VAR]                                                             // @ codegen_gen_command:911 I
+//[ /* default class constructor */]                                            // @ codegen_gen_command:911 I
+//[ FUNCTION destructor BEGIN]                                                  // @ codegen_gen_command:911 I
+
+destructor:                                                                     // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_8:                                                                          // @ gen_command_frame:667 I
+  enter 0                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   RET]                                                                      // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_ret:154 I
+  ret                                                                             // @ gen_command_ret:156 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_9:                                                                          // @ gen_command_frame:680 I
+//[ FUNCTION destructor END]                                                    // @ codegen_gen_command:911 I
+lbl_7:                                                                          // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void constructor((nullPos:text)) */]                                     // @ codegen_gen_command:911 I
+//[ FUNCTION _constructor BEGIN]                                                // @ codegen_gen_command:911 I
+
+_constructor:                                                                   // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_11:                                                                         // @ gen_command_frame:667 I
+  enter 1                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_1 ARG]                                                        // @ codegen_gen_command:911 I
+//[   /* mem_scr = 65536+100; */]                                               // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   ADD temp_9 65536 100]                                                     // @ codegen_gen_command:911 I
+  //load 65536 into R3                                                            // @ loadLValue:636 I
+  mov R3, 65536                                                                   // @ loadLValue:639 I
+  add R3, 100                                                                     // @ gen_command_add:271 I
+//store R3 into temp_9                                                          // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, R3                                                               // @ storeValue:747 I
+//[   MOV mem_scr temp_9]                                                       // @ codegen_gen_command:911 I
+//store EBP:#-1 into mem_scr                                                    // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-1, EBP:#-1                                                          // @ storeValue:764 I
+//[   /* X = 0; */]                                                             // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV X 0]                                                                  // @ codegen_gen_command:911 I
+//store 0 into X                                                                // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-2, 0                                                                // @ storeValue:764 I
+//[   /* Y = 0; */]                                                             // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV Y 0]                                                                  // @ codegen_gen_command:911 I
+//store 0 into Y                                                                // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-3, 0                                                                // @ storeValue:764 I
+//[   /* Xmax = 30; */]                                                         // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV Xmax 30]                                                              // @ codegen_gen_command:911 I
+//store 30 into Xmax                                                            // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-4, 30                                                               // @ storeValue:764 I
+//[   /* Ymax = 19; */]                                                         // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV Ymax 19]                                                              // @ codegen_gen_command:911 I
+//store 19 into Ymax                                                            // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-5, 19                                                               // @ storeValue:764 I
+//[   /* col = 999; */]                                                         // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV col 999]                                                              // @ codegen_gen_command:911 I
+//store 999 into col                                                            // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-6, 999                                                              // @ storeValue:764 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_12:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _constructor END]                                                  // @ codegen_gen_command:911 I
+lbl_10:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void incXY((nullPos:text)) */]                                           // @ codegen_gen_command:911 I
+//[ FUNCTION _incXY BEGIN]                                                      // @ codegen_gen_command:911 I
+
+_incXY:                                                                         // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_14:                                                                         // @ gen_command_frame:667 I
+  enter 4                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_2 ARG]                                                        // @ codegen_gen_command:911 I
+//[   /* X++; */]                                                               // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_16 X]                                                            // @ codegen_gen_command:911 I
+//store EBP:#-2 into temp_16                                                    // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, EBP:#-2                                                          // @ storeValue:747 I
+//[   ADD X X 1]                                                                // @ codegen_gen_command:911 I
+  //load X into R4 (cf:2, fd:1)                                                   // @ loadLValue:653 I
+  //climbing 1 frames                                                             // @ loadLValue:673 I
+  mov R4, #EBP                                                                    // @ loadLValue:674 I
+  mov R4, R4:-2                                                                   // @ loadLValue:679 I
+  mov R4, #R4                                                                     // @ loadLValue:680 I
+  add R4, 1                                                                       // @ gen_command_add:271 I
+//store R4 into X                                                               // @ storeValue:717 I
+  //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+  //climbing 1 frames                                                             // @ storeValue:756 I
+  mov R7, #EBP                                                                    // @ storeValue:757 I
+  sstack EBP:-2, R4                                                               // @ storeValue:764 I
+//[   SYMBOL lbl_if_exit LABEL]                                                 // @ codegen_gen_command:911 I
+//[   /* if(X > Xmax) */]                                                       // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   GREATER temp_19 X Xmax]                                                   // @ codegen_gen_command:911 I
+  //load X into R5 (cf:2, fd:1)                                                   // @ loadLValue:653 I
+  //climbing 1 frames                                                             // @ loadLValue:673 I
+  mov R5, #EBP                                                                    // @ loadLValue:674 I
+  mov R5, R5:-2                                                                   // @ loadLValue:679 I
+  mov R5, #R5                                                                     // @ loadLValue:680 I
+  sub R5, EBP:#-4                                                                 // @ gen_command_greater:504 I
+  fsgn R5, R5                                                                     // @ gen_command_greater:506 I
+  max R5, 0                                                                       // @ gen_command_greater:508 I
+//store R5 into temp_19                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-2, R5                                                               // @ storeValue:747 I
+//[   /* this skips untrue if's */]                                             // @ codegen_gen_command:911 I
+//[   JE 0 temp_19 lbl_if_exit]                                                 // @ codegen_gen_command:911 I
+  cmp 0, EBP:#-2                                                                  // @ gen_command_je:200 I
+  je lbl_if_exit                                                                  // @ gen_command_je:202 I
+//[   /* 'if' is true: */]                                                      // @ codegen_gen_command:911 I
+//[      USING Screen]                                                          // @ codegen_gen_command:911 I
+//[      /* X = 0; */]                                                          // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV X 0]                                                               // @ codegen_gen_command:911 I
+//store 0 into X                                                                // @ storeValue:717 I
+     //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+     //climbing 1 frames                                                             // @ storeValue:756 I
+     mov R7, #EBP                                                                    // @ storeValue:757 I
+     sstack EBP:-2, 0                                                                // @ storeValue:764 I
+//[      /* Y++; */]                                                            // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_22 Y]                                                         // @ codegen_gen_command:911 I
+//store EBP:#-3 into temp_22                                                    // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-3, EBP:#-3                                                          // @ storeValue:747 I
+//[      ADD Y Y 1]                                                             // @ codegen_gen_command:911 I
+     //load Y into R6 (cf:2, fd:1)                                                   // @ loadLValue:653 I
+     //climbing 1 frames                                                             // @ loadLValue:673 I
+     mov R6, #EBP                                                                    // @ loadLValue:674 I
+     mov R6, R6:-3                                                                   // @ loadLValue:679 I
+     mov R6, #R6                                                                     // @ loadLValue:680 I
+     add R6, 1                                                                       // @ gen_command_add:271 I
+//store R6 into Y                                                               // @ storeValue:717 I
+     //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+     //climbing 1 frames                                                             // @ storeValue:756 I
+     mov R7, #EBP                                                                    // @ storeValue:757 I
+     sstack EBP:-3, R6                                                               // @ storeValue:764 I
+//[      SYMBOL lbl_if_exit_1 LABEL]                                            // @ codegen_gen_command:911 I
+//[      /* if(Y > Ymax) */]                                                    // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      GREATER temp_25 Y Ymax]                                                // @ codegen_gen_command:911 I
+//discarding I from R1                                                          // @ allocRegister:431 I
+     //load Y into R1 (cf:2, fd:1)                                                   // @ loadLValue:653 I
+     //climbing 1 frames                                                             // @ loadLValue:673 I
+     mov R1, #EBP                                                                    // @ loadLValue:674 I
+     mov R1, R1:-3                                                                   // @ loadLValue:679 I
+     mov R1, #R1                                                                     // @ loadLValue:680 I
+     sub R1, EBP:#-5                                                                 // @ gen_command_greater:504 I
+     fsgn R1, R1                                                                     // @ gen_command_greater:506 I
+     max R1, 0                                                                       // @ gen_command_greater:508 I
+//store R1 into temp_25                                                         // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-4, R1                                                               // @ storeValue:747 I
+//[      /* this skips untrue if's */]                                          // @ codegen_gen_command:911 I
+//[      JE 0 temp_25 lbl_if_exit_1]                                            // @ codegen_gen_command:911 I
+     cmp 0, EBP:#-4                                                                  // @ gen_command_je:200 I
+     je lbl_if_exit_1                                                                // @ gen_command_je:202 I
+//[      /* 'if' is true: */]                                                   // @ codegen_gen_command:911 I
+//[          USING Screen]                                                      // @ codegen_gen_command:911 I
+//[          /* Y = 0; */]                                                      // @ codegen_gen_command:911 I
+//[          /*id:global*/]                                                     // @ codegen_gen_command:911 I
+//[          MOV Y 0]                                                           // @ codegen_gen_command:911 I
+//store 0 into Y                                                                // @ storeValue:717 I
+         //(curframe:2, framedepth:1)                                                    // @ storeValue:728 I
+         //climbing 1 frames                                                             // @ storeValue:756 I
+         mov R7, #EBP                                                                    // @ storeValue:757 I
+         sstack EBP:-3, 0                                                                // @ storeValue:764 I
+//[      LABEL lbl_if_exit_1]                                                   // @ codegen_gen_command:911 I
+     lbl_if_exit_1:                                                                  // @ gen_command_label:132 I
+//[      /* end if */]                                                          // @ codegen_gen_command:911 I
+//[   LABEL lbl_if_exit]                                                        // @ codegen_gen_command:911 I
+  lbl_if_exit:                                                                    // @ gen_command_label:132 I
+//[   /* end if */]                                                             // @ codegen_gen_command:911 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_15:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _incXY END]                                                        // @ codegen_gen_command:911 I
+lbl_13:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void putchXY(char C, int X, int Y) */]                                   // @ codegen_gen_command:911 I
+//[ FUNCTION _putchXY BEGIN]                                                    // @ codegen_gen_command:911 I
+
+_putchXY:                                                                       // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_17:                                                                         // @ gen_command_frame:667 I
+  enter 9                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_3 ARG]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL C ARG]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL X_1 ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL Y_1 ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL adr VAR]                                                           // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MUL temp_30 Xmax Y_1]                                                     // @ codegen_gen_command:911 I
+//discarding port from R2                                                       // @ allocRegister:431 I
+  //load Xmax into R2 (cf:2, fd:1)                                                // @ loadLValue:653 I
+  //climbing 1 frames                                                             // @ loadLValue:673 I
+  mov R2, #EBP                                                                    // @ loadLValue:674 I
+  mov R2, R2:-4                                                                   // @ loadLValue:679 I
+  mov R2, #R2                                                                     // @ loadLValue:680 I
+  mul R2, EBP:#5                                                                  // @ gen_command_mul:327 I
+//store R2 into temp_30                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-2, R2                                                               // @ storeValue:747 I
+//[   ADD temp_31 X_1 temp_30]                                                  // @ codegen_gen_command:911 I
+//discarding 65536 from R3                                                      // @ allocRegister:431 I
+  //load X_1 into R3 (cf:2, fd:2)                                                 // @ loadLValue:653 I
+  rstack R3, EBP:4                                                                // @ loadLValue:668 I
+  add R3, EBP:#-2                                                                 // @ gen_command_add:271 I
+//store R3 into temp_31                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-3, R3                                                               // @ storeValue:747 I
+//[   MUL temp_32 temp_31 2]                                                    // @ codegen_gen_command:911 I
+//discarding X from R4                                                          // @ allocRegister:431 I
+  //load temp_31 into R4 (cf:2, fd:2)                                             // @ loadLValue:653 I
+  rstack R4, EBP:-3                                                               // @ loadLValue:668 I
+  mul R4, 2                                                                       // @ gen_command_mul:327 I
+//store R4 into temp_32                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-4, R4                                                               // @ storeValue:747 I
+//[   MOV adr temp_32]                                                          // @ codegen_gen_command:911 I
+//store EBP:#-4 into adr                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, EBP:#-4                                                          // @ storeValue:747 I
+//[   /* mem_scr[adr] = C; */]                                                  // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   ADD temp_35 adr mem_scr]                                                  // @ codegen_gen_command:911 I
+//discarding X from R5                                                          // @ allocRegister:431 I
+  //load adr into R5 (cf:2, fd:2)                                                 // @ loadLValue:653 I
+  rstack R5, EBP:-1                                                               // @ loadLValue:668 I
+  add R5, EBP:#-1                                                                 // @ gen_command_add:271 I
+//store R5 into temp_35                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-5, R5                                                               // @ storeValue:747 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV *temp_35 C]                                                           // @ codegen_gen_command:911 I
+//store EBP:#3 into *temp_35                                                    // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  mov R7, EBP:-5                                                                  // @ storeValue:749 I
+  mov R7, #R7                                                                     // @ storeValue:750 I
+  mov #R7, EBP:#3                                                                 // @ storeValue:752 I
+//[   /* mem_scr[adr+1] = col; */]                                              // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   ADD temp_38 adr 1]                                                        // @ codegen_gen_command:911 I
+//discarding Y from R6                                                          // @ allocRegister:431 I
+  //load adr into R6 (cf:2, fd:2)                                                 // @ loadLValue:653 I
+  rstack R6, EBP:-1                                                               // @ loadLValue:668 I
+  add R6, 1                                                                       // @ gen_command_add:271 I
+//store R6 into temp_38                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-7, R6                                                               // @ storeValue:747 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   ADD temp_40 temp_38 mem_scr]                                              // @ codegen_gen_command:911 I
+//discarding Y from R1                                                          // @ allocRegister:431 I
+  //load temp_38 into R1 (cf:2, fd:2)                                             // @ loadLValue:653 I
+  rstack R1, EBP:-7                                                               // @ loadLValue:668 I
+  add R1, EBP:#-1                                                                 // @ gen_command_add:271 I
+//store R1 into temp_40                                                         // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-8, R1                                                               // @ storeValue:747 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV *temp_40 col]                                                         // @ codegen_gen_command:911 I
+//store EBP:#-6 into *temp_40                                                   // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  mov R7, EBP:-8                                                                  // @ storeValue:749 I
+  mov R7, #R7                                                                     // @ storeValue:750 I
+  mov #R7, EBP:#-6                                                                // @ storeValue:752 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_18:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _putchXY END]                                                      // @ codegen_gen_command:911 I
+lbl_16:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void printXY(char *str, int X, int Y) */]                                // @ codegen_gen_command:911 I
+//[ FUNCTION _printXY BEGIN]                                                    // @ codegen_gen_command:911 I
+
+_printXY:                                                                       // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_20:                                                                         // @ gen_command_frame:667 I
+  enter 5                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_4 ARG]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL str ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL X_2 ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL Y_2 ARG]                                                           // @ codegen_gen_command:911 I
+//[   /* while(*str) */]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_do_1 LABEL]                                              // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_exit_1 LABEL]                                            // @ codegen_gen_command:911 I
+//[   LABEL lbl_while_do_1]                                                     // @ codegen_gen_command:911 I
+  lbl_while_do_1:                                                                 // @ gen_command_label:132 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_43 *str]                                                         // @ codegen_gen_command:911 I
+//discarding Xmax from R2                                                       // @ allocRegister:431 I
+  rstack R2, EBP:3                                                                // @ loadRValue:617 I
+//store #R2 into temp_43                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, #R2                                                              // @ storeValue:747 I
+//[   JE 0 temp_43 lbl_while_exit_1]                                            // @ codegen_gen_command:911 I
+  cmp 0, EBP:#-1                                                                  // @ gen_command_je:200 I
+  je lbl_while_exit_1                                                             // @ gen_command_je:202 I
+//[   /* do */]                                                                 // @ codegen_gen_command:911 I
+//[      USING Screen]                                                          // @ codegen_gen_command:911 I
+//[      /* putch(*str++, X++, Y); */]                                          // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_46 str]                                                       // @ codegen_gen_command:911 I
+//store EBP:#3 into temp_46                                                     // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-2, EBP:#3                                                           // @ storeValue:747 I
+//[      ADD str str 1]                                                         // @ codegen_gen_command:911 I
+//discarding X_1 from R3                                                        // @ allocRegister:431 I
+     //load str into R3 (cf:2, fd:2)                                                 // @ loadLValue:653 I
+     rstack R3, EBP:3                                                                // @ loadLValue:668 I
+     add R3, 1                                                                       // @ gen_command_add:271 I
+//store R3 into str                                                             // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:3, R3                                                                // @ storeValue:747 I
+//[      MOV temp_47 *temp_46]                                                  // @ codegen_gen_command:911 I
+//discarding temp_31 from R4                                                    // @ allocRegister:431 I
+     rstack R4, EBP:-2                                                               // @ loadRValue:617 I
+//store #R4 into temp_47                                                        // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-3, #R4                                                              // @ storeValue:747 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_49 X_2]                                                       // @ codegen_gen_command:911 I
+//store EBP:#4 into temp_49                                                     // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-4, EBP:#4                                                           // @ storeValue:747 I
+//[      ADD X_2 X_2 1]                                                         // @ codegen_gen_command:911 I
+//discarding adr from R5                                                        // @ allocRegister:431 I
+     //load X_2 into R5 (cf:2, fd:2)                                                 // @ loadLValue:653 I
+     rstack R5, EBP:4                                                                // @ loadLValue:668 I
+     add R5, 1                                                                       // @ gen_command_add:271 I
+//store R5 into X_2                                                             // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:4, R5                                                                // @ storeValue:747 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      CALL temp_51 _putch temp_47 temp_49 Y_2]                               // @ codegen_gen_command:911 I
+     push EBP:#5                                                                     // @ gen_command_call:228 I
+     push EBP:#-4                                                                    // @ gen_command_call:228 I
+     push EBP:#-3                                                                    // @ gen_command_call:228 I
+     call _putch                                                                     // @ gen_command_call:232 I
+     add esp, 3                                                                      // @ gen_command_call:234 I
+//store eax into temp_51                                                        // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-5, eax                                                              // @ storeValue:747 I
+//[   JMP lbl_while_do_1]                                                       // @ codegen_gen_command:911 I
+  jmp lbl_while_do_1                                                              // @ gen_command_jmp:170 I
+//[   LABEL lbl_while_exit_1]                                                   // @ codegen_gen_command:911 I
+  lbl_while_exit_1:                                                               // @ gen_command_label:132 I
+//[   /* end while*/]                                                           // @ codegen_gen_command:911 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_21:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _printXY END]                                                      // @ codegen_gen_command:911 I
+lbl_19:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void putch(char C) */]                                                   // @ codegen_gen_command:911 I
+//[ FUNCTION _putch BEGIN]                                                      // @ codegen_gen_command:911 I
+
+_putch:                                                                         // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_23:                                                                         // @ gen_command_frame:667 I
+  enter 2                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_5 ARG]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL C_1 ARG]                                                           // @ codegen_gen_command:911 I
+//[   /* putchXY(C, X, Y); */]                                                  // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_56 _putchXY C_1 X Y]                                            // @ codegen_gen_command:911 I
+  push EBP:#-3                                                                    // @ gen_command_call:228 I
+  push EBP:#-2                                                                    // @ gen_command_call:228 I
+  push EBP:#3                                                                     // @ gen_command_call:228 I
+  call _putchXY                                                                   // @ gen_command_call:232 I
+  add esp, 3                                                                      // @ gen_command_call:234 I
+//store eax into temp_56                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, eax                                                              // @ storeValue:747 I
+//[   /* incXY(); */]                                                           // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_58 _incXY]                                                      // @ codegen_gen_command:911 I
+  call _incXY                                                                     // @ gen_command_call:232 I
+  add esp, 0                                                                      // @ gen_command_call:234 I
+//store eax into temp_58                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-2, eax                                                              // @ storeValue:747 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_24:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _putch END]                                                        // @ codegen_gen_command:911 I
+lbl_22:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void print(char *str) */]                                                // @ codegen_gen_command:911 I
+//[ FUNCTION _print BEGIN]                                                      // @ codegen_gen_command:911 I
+
+_print:                                                                         // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_26:                                                                         // @ gen_command_frame:667 I
+  enter 4                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_6 ARG]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL str_1 ARG]                                                         // @ codegen_gen_command:911 I
+//[   /* while(*str) */]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_do_2 LABEL]                                              // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_exit_2 LABEL]                                            // @ codegen_gen_command:911 I
+//[   LABEL lbl_while_do_2]                                                     // @ codegen_gen_command:911 I
+  lbl_while_do_2:                                                                 // @ gen_command_label:132 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_60 *str_1]                                                       // @ codegen_gen_command:911 I
+//discarding adr from R6                                                        // @ allocRegister:431 I
+  rstack R6, EBP:3                                                                // @ loadRValue:617 I
+//store #R6 into temp_60                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, #R6                                                              // @ storeValue:747 I
+//[   JE 0 temp_60 lbl_while_exit_2]                                            // @ codegen_gen_command:911 I
+  cmp 0, EBP:#-1                                                                  // @ gen_command_je:200 I
+  je lbl_while_exit_2                                                             // @ gen_command_je:202 I
+//[   /* do */]                                                                 // @ codegen_gen_command:911 I
+//[      USING Screen]                                                          // @ codegen_gen_command:911 I
+//[      /* putch(*str++); */]                                                  // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_63 str_1]                                                     // @ codegen_gen_command:911 I
+//store EBP:#3 into temp_63                                                     // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-2, EBP:#3                                                           // @ storeValue:747 I
+//[      ADD str_1 str_1 1]                                                     // @ codegen_gen_command:911 I
+//discarding temp_38 from R1                                                    // @ allocRegister:431 I
+     //load str_1 into R1 (cf:2, fd:2)                                               // @ loadLValue:653 I
+     rstack R1, EBP:3                                                                // @ loadLValue:668 I
+     add R1, 1                                                                       // @ gen_command_add:271 I
+//store R1 into str_1                                                           // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:3, R1                                                                // @ storeValue:747 I
+//[      MOV temp_64 *temp_63]                                                  // @ codegen_gen_command:911 I
+//discarding str from R2                                                        // @ allocRegister:431 I
+     rstack R2, EBP:-2                                                               // @ loadRValue:617 I
+//store #R2 into temp_64                                                        // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-3, #R2                                                              // @ storeValue:747 I
+//[      CALL temp_65 _putch temp_64]                                           // @ codegen_gen_command:911 I
+     push EBP:#-3                                                                    // @ gen_command_call:228 I
+     call _putch                                                                     // @ gen_command_call:232 I
+     add esp, 1                                                                      // @ gen_command_call:234 I
+//store eax into temp_65                                                        // @ storeValue:717 I
+     //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+     sstack EBP:-4, eax                                                              // @ storeValue:747 I
+//[   JMP lbl_while_do_2]                                                       // @ codegen_gen_command:911 I
+  jmp lbl_while_do_2                                                              // @ gen_command_jmp:170 I
+//[   LABEL lbl_while_exit_2]                                                   // @ codegen_gen_command:911 I
+  lbl_while_exit_2:                                                               // @ gen_command_label:132 I
+//[   /* end while*/]                                                           // @ codegen_gen_command:911 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_27:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _print END]                                                        // @ codegen_gen_command:911 I
+lbl_25:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* void test((nullPos:text)) */]                                            // @ codegen_gen_command:911 I
+//[ FUNCTION _test BEGIN]                                                       // @ codegen_gen_command:911 I
+
+_test:                                                                          // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_29:                                                                         // @ gen_command_frame:667 I
+  enter 3                                                                         // @ gen_command_frame:670 I
+//[   USING Screen]                                                             // @ codegen_gen_command:911 I
+//[   SYMBOL this_7 ARG]                                                        // @ codegen_gen_command:911 I
+//[   /* writePort(4, &X); */]                                                  // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_68 &X]                                                           // @ codegen_gen_command:911 I
+//store EBP:-2 into temp_68                                                     // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-1, EBP:-2                                                           // @ storeValue:747 I
+//[   CALL temp_69 _writePort 4 temp_68]                                        // @ codegen_gen_command:911 I
+  push EBP:#-1                                                                    // @ gen_command_call:228 I
+  push 4                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_69                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-2, eax                                                              // @ storeValue:747 I
+//[   /* writePort(5, X); */]                                                   // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_72 _writePort 5 X]                                              // @ codegen_gen_command:911 I
+  push EBP:#-2                                                                    // @ gen_command_call:228 I
+  push 5                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_72                                                        // @ storeValue:717 I
+  //(curframe:2, framedepth:2)                                                    // @ storeValue:728 I
+  sstack EBP:-3, eax                                                              // @ storeValue:747 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_30:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _test END]                                                         // @ codegen_gen_command:911 I
+lbl_28:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ STRUCT Screen END]                                                          // @ codegen_gen_command:911 I
+lbl_6:                                                                          // @ gen_command_struct:599 I
+//[ /* void print(char *str, int X, int Y) */]                                  // @ codegen_gen_command:911 I
+//[ FUNCTION _print_1 BEGIN]                                                    // @ codegen_gen_command:911 I
+
+_print_1:                                                                       // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_32:                                                                         // @ gen_command_frame:667 I
+  enter 16                                                                        // @ gen_command_frame:670 I
+//[   SYMBOL str_2 ARG]                                                         // @ codegen_gen_command:911 I
+//[   SYMBOL X_3 ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL Y_3 ARG]                                                           // @ codegen_gen_command:911 I
+//[   SYMBOL scr_adr VAR]                                                       // @ codegen_gen_command:911 I
+//[   ADD temp_73 65536 100]                                                    // @ codegen_gen_command:911 I
+//discarding str from R3                                                        // @ allocRegister:431 I
+  //load 65536 into R3                                                            // @ loadLValue:636 I
+  mov R3, 65536                                                                   // @ loadLValue:639 I
+  add R3, 100                                                                     // @ gen_command_add:271 I
+//store R3 into temp_73                                                         // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-2, R3                                                               // @ storeValue:747 I
+//[   MOV scr_adr temp_73]                                                      // @ codegen_gen_command:911 I
+//store EBP:#-2 into scr_adr                                                    // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-1, EBP:#-2                                                          // @ storeValue:747 I
+//[   /* while(*str) */]                                                        // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_do_3 LABEL]                                              // @ codegen_gen_command:911 I
+//[   SYMBOL lbl_while_exit_3 LABEL]                                            // @ codegen_gen_command:911 I
+//[   LABEL lbl_while_do_3]                                                     // @ codegen_gen_command:911 I
+  lbl_while_do_3:                                                                 // @ gen_command_label:132 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_75 *str_2]                                                       // @ codegen_gen_command:911 I
+//discarding temp_46 from R4                                                    // @ allocRegister:431 I
+  rstack R4, EBP:2                                                                // @ loadRValue:617 I
+//store #R4 into temp_75                                                        // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-3, #R4                                                              // @ storeValue:747 I
+//[   JE 0 temp_75 lbl_while_exit_3]                                            // @ codegen_gen_command:911 I
+  cmp 0, EBP:#-3                                                                  // @ gen_command_je:200 I
+  je lbl_while_exit_3                                                             // @ gen_command_je:202 I
+//[   /* do */]                                                                 // @ codegen_gen_command:911 I
+//[      SYMBOL C_2 VAR]                                                        // @ codegen_gen_command:911 I
+//[      SYMBOL adr_1 VAR]                                                      // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_77 str_2]                                                     // @ codegen_gen_command:911 I
+//store EBP:#2 into temp_77                                                     // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-6, EBP:#2                                                           // @ storeValue:747 I
+//[      ADD str_2 str_2 1]                                                     // @ codegen_gen_command:911 I
+//discarding X_2 from R5                                                        // @ allocRegister:431 I
+     //load str_2 into R5 (cf:1, fd:1)                                               // @ loadLValue:653 I
+     rstack R5, EBP:2                                                                // @ loadLValue:668 I
+     add R5, 1                                                                       // @ gen_command_add:271 I
+//store R5 into str_2                                                           // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:2, R5                                                                // @ storeValue:747 I
+//[      MOV temp_78 *temp_77]                                                  // @ codegen_gen_command:911 I
+//discarding str_1 from R6                                                      // @ allocRegister:431 I
+     rstack R6, EBP:-6                                                               // @ loadRValue:617 I
+//store #R6 into temp_78                                                        // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-7, #R6                                                              // @ storeValue:747 I
+//[      MOV C_2 temp_78]                                                       // @ codegen_gen_command:911 I
+//store EBP:#-7 into C_2                                                        // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-4, EBP:#-7                                                          // @ storeValue:747 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MUL temp_81 30 Y_3]                                                    // @ codegen_gen_command:911 I
+//discarding str_1 from R1                                                      // @ allocRegister:431 I
+     //load 30 into R1                                                               // @ loadLValue:636 I
+     mov R1, 30                                                                      // @ loadLValue:639 I
+     mul R1, EBP:#4                                                                  // @ gen_command_mul:327 I
+//store R1 into temp_81                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-8, R1                                                               // @ storeValue:747 I
+//[      ADD temp_82 X_3 temp_81]                                               // @ codegen_gen_command:911 I
+//discarding temp_63 from R2                                                    // @ allocRegister:431 I
+     //load X_3 into R2 (cf:1, fd:1)                                                 // @ loadLValue:653 I
+     rstack R2, EBP:3                                                                // @ loadLValue:668 I
+     add R2, EBP:#-8                                                                 // @ gen_command_add:271 I
+//store R2 into temp_82                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-9, R2                                                               // @ storeValue:747 I
+//[      MUL temp_83 temp_82 2]                                                 // @ codegen_gen_command:911 I
+//discarding 65536 from R3                                                      // @ allocRegister:431 I
+     //load temp_82 into R3 (cf:1, fd:1)                                             // @ loadLValue:653 I
+     rstack R3, EBP:-9                                                               // @ loadLValue:668 I
+     mul R3, 2                                                                       // @ gen_command_mul:327 I
+//store R3 into temp_83                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-10, R3                                                              // @ storeValue:747 I
+//[      MOV adr_1 temp_83]                                                     // @ codegen_gen_command:911 I
+//store EBP:#-10 into adr_1                                                     // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-5, EBP:#-10                                                         // @ storeValue:747 I
+//[      /* scr_adr[adr] = C; */]                                               // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      ADD temp_86 adr_1 scr_adr]                                             // @ codegen_gen_command:911 I
+//discarding str_2 from R4                                                      // @ allocRegister:431 I
+     //load adr_1 into R4 (cf:1, fd:1)                                               // @ loadLValue:653 I
+     rstack R4, EBP:-5                                                               // @ loadLValue:668 I
+     add R4, EBP:#-1                                                                 // @ gen_command_add:271 I
+//store R4 into temp_86                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-11, R4                                                              // @ storeValue:747 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV *temp_86 C_2]                                                      // @ codegen_gen_command:911 I
+//store EBP:#-4 into *temp_86                                                   // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     mov R7, EBP:-11                                                                 // @ storeValue:749 I
+     mov R7, #R7                                                                     // @ storeValue:750 I
+     mov #R7, EBP:#-4                                                                // @ storeValue:752 I
+//[      /* scr_adr[adr+1] = 999; */]                                           // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      ADD temp_89 adr_1 1]                                                   // @ codegen_gen_command:911 I
+//discarding str_2 from R5                                                      // @ allocRegister:431 I
+     //load adr_1 into R5 (cf:1, fd:1)                                               // @ loadLValue:653 I
+     rstack R5, EBP:-5                                                               // @ loadLValue:668 I
+     add R5, 1                                                                       // @ gen_command_add:271 I
+//store R5 into temp_89                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-13, R5                                                              // @ storeValue:747 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      ADD temp_91 temp_89 scr_adr]                                           // @ codegen_gen_command:911 I
+//discarding temp_77 from R6                                                    // @ allocRegister:431 I
+     //load temp_89 into R6 (cf:1, fd:1)                                             // @ loadLValue:653 I
+     rstack R6, EBP:-13                                                              // @ loadLValue:668 I
+     add R6, EBP:#-1                                                                 // @ gen_command_add:271 I
+//store R6 into temp_91                                                         // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-14, R6                                                              // @ storeValue:747 I
+//[      MOV *temp_91 999]                                                      // @ codegen_gen_command:911 I
+//store 999 into *temp_91                                                       // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     mov R7, EBP:-14                                                                 // @ storeValue:749 I
+     mov R7, #R7                                                                     // @ storeValue:750 I
+     mov #R7, 999                                                                    // @ storeValue:752 I
+//[      /* X++; */]                                                            // @ codegen_gen_command:911 I
+//[      /*id:global*/]                                                         // @ codegen_gen_command:911 I
+//[      MOV temp_93 X_3]                                                       // @ codegen_gen_command:911 I
+//store EBP:#3 into temp_93                                                     // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:-16, EBP:#3                                                          // @ storeValue:747 I
+//[      ADD X_3 X_3 1]                                                         // @ codegen_gen_command:911 I
+//discarding 30 from R1                                                         // @ allocRegister:431 I
+     //load X_3 into R1 (cf:1, fd:1)                                                 // @ loadLValue:653 I
+     rstack R1, EBP:3                                                                // @ loadLValue:668 I
+     add R1, 1                                                                       // @ gen_command_add:271 I
+//store R1 into X_3                                                             // @ storeValue:717 I
+     //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+     sstack EBP:3, R1                                                                // @ storeValue:747 I
+//[   JMP lbl_while_do_3]                                                       // @ codegen_gen_command:911 I
+  jmp lbl_while_do_3                                                              // @ gen_command_jmp:170 I
+//[   LABEL lbl_while_exit_3]                                                   // @ codegen_gen_command:911 I
+  lbl_while_exit_3:                                                               // @ gen_command_label:132 I
+//[   /* end while*/]                                                           // @ codegen_gen_command:911 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_33:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _print_1 END]                                                      // @ codegen_gen_command:911 I
+lbl_31:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+//[ /* int main(int argc, char **argv) */]                                      // @ codegen_gen_command:911 I
+//[ FUNCTION _main BEGIN]                                                       // @ codegen_gen_command:911 I
+
+_main:                                                                          // @ gen_command_function:114 I
+//[   FRAME ENTER]                                                              // @ codegen_gen_command:911 I
+  lbl_35:                                                                         // @ gen_command_frame:667 I
+  enter 15                                                                        // @ gen_command_frame:670 I
+//[   SYMBOL argc ARG]                                                          // @ codegen_gen_command:911 I
+//[   SYMBOL argv ARG]                                                          // @ codegen_gen_command:911 I
+//[   SYMBOL scr VAR]                                                           // @ codegen_gen_command:911 I
+//[   /* initialize scr */]                                                     // @ codegen_gen_command:911 I
+//[   CALL temp_94 _constructor scr]                                            // @ codegen_gen_command:911 I
+  push EBP:#-1                                                                    // @ gen_command_call:228 I
+  call _constructor                                                               // @ gen_command_call:232 I
+  add esp, 1                                                                      // @ gen_command_call:234 I
+//store eax into temp_94                                                        // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-2, eax                                                              // @ storeValue:747 I
+//[   /* writePort(0, &scr); */]                                                // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_97 &scr]                                                         // @ codegen_gen_command:911 I
+//store EBP:-1 into temp_97                                                     // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-3, EBP:-1                                                           // @ storeValue:747 I
+//[   CALL temp_98 _writePort 0 temp_97]                                        // @ codegen_gen_command:911 I
+  push EBP:#-3                                                                    // @ gen_command_call:228 I
+  push 0                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_98                                                        // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-4, eax                                                              // @ storeValue:747 I
+//[   /* writePort(1, &(scr.X)); */]                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_102 &scr]                                                        // @ codegen_gen_command:911 I
+//store EBP:-1 into temp_102                                                    // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-5, EBP:-1                                                           // @ storeValue:747 I
+//[   CALL temp_103 _writePort 1 temp_102]                                      // @ codegen_gen_command:911 I
+  push EBP:#-5                                                                    // @ gen_command_call:228 I
+  push 1                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_103                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-6, eax                                                              // @ storeValue:747 I
+//[   /* writePort(2, &scr.X); */]                                              // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV temp_106 &scr]                                                        // @ codegen_gen_command:911 I
+//store EBP:-1 into temp_106                                                    // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-7, EBP:-1                                                           // @ storeValue:747 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_108 _writePort 2 temp_106]                                      // @ codegen_gen_command:911 I
+  push EBP:#-7                                                                    // @ gen_command_call:228 I
+  push 2                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_108                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-8, eax                                                              // @ storeValue:747 I
+//[   /* writePort(3, scr.X); */]                                               // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_112 _writePort 3 scr]                                           // @ codegen_gen_command:911 I
+  push EBP:#-1                                                                    // @ gen_command_call:228 I
+  push 3                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_112                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-9, eax                                                              // @ storeValue:747 I
+//[   /* scr.X = 123; */]                                                       // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   MOV scr 123]                                                              // @ codegen_gen_command:911 I
+//store 123 into scr                                                            // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-1, 123                                                              // @ storeValue:747 I
+//[   /* scr.print("hello world!"); */]                                         // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_117 _print str_3]                                               // @ codegen_gen_command:911 I
+  push str_3_1                                                                    // @ gen_command_call:228 I
+  call _print                                                                     // @ gen_command_call:232 I
+  add esp, 1                                                                      // @ gen_command_call:234 I
+//store eax into temp_117                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-10, eax                                                             // @ storeValue:747 I
+//[   /* scr.test(); */]                                                        // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_120 _test]                                                      // @ codegen_gen_command:911 I
+  call _test                                                                      // @ gen_command_call:232 I
+  add esp, 0                                                                      // @ gen_command_call:234 I
+//store eax into temp_120                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-11, eax                                                             // @ storeValue:747 I
+//[   /* writePort(6, scr.X); */]                                               // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_124 _writePort 6 scr]                                           // @ codegen_gen_command:911 I
+  push EBP:#-1                                                                    // @ gen_command_call:228 I
+  push 6                                                                          // @ gen_command_call:228 I
+  call _writePort                                                                 // @ gen_command_call:232 I
+  add esp, 2                                                                      // @ gen_command_call:234 I
+//store eax into temp_124                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-12, eax                                                             // @ storeValue:747 I
+//[   /* print("well, I tried", 0, 0); */]                                      // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_126 _print_1 str_4 0 0]                                         // @ codegen_gen_command:911 I
+  push 0                                                                          // @ gen_command_call:228 I
+  push 0                                                                          // @ gen_command_call:228 I
+  push str_4_1                                                                    // @ gen_command_call:228 I
+  call _print_1                                                                   // @ gen_command_call:232 I
+  add esp, 3                                                                      // @ gen_command_call:234 I
+//store eax into temp_126                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-13, eax                                                             // @ storeValue:747 I
+//[   /* infloop(); */]                                                         // @ codegen_gen_command:911 I
+//[   /*id:global*/]                                                            // @ codegen_gen_command:911 I
+//[   CALL temp_128 _infloop]                                                   // @ codegen_gen_command:911 I
+  call _infloop                                                                   // @ gen_command_call:232 I
+  add esp, 0                                                                      // @ gen_command_call:234 I
+//store eax into temp_128                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-14, eax                                                             // @ storeValue:747 I
+//[   /* destroy scr */]                                                        // @ codegen_gen_command:911 I
+//[   CALL temp_129 destructor scr]                                             // @ codegen_gen_command:911 I
+  push EBP:#-1                                                                    // @ gen_command_call:228 I
+  call destructor                                                                 // @ gen_command_call:232 I
+  add esp, 1                                                                      // @ gen_command_call:234 I
+//store eax into temp_129                                                       // @ storeValue:717 I
+  //(curframe:1, framedepth:1)                                                    // @ storeValue:728 I
+  sstack EBP:-15, eax                                                             // @ storeValue:747 I
+//[   FRAME LEAVE]                                                              // @ codegen_gen_command:911 I
+  leave                                                                           // @ gen_command_frame:676 I
+  ret                                                                             // @ gen_command_frame:678 I
+  lbl_36:                                                                         // @ gen_command_frame:680 I
+//[ RET]                                                                        // @ codegen_gen_command:911 I
+leave                                                                           // @ gen_command_ret:154 I
+ret                                                                             // @ gen_command_ret:156 I
+//[ FUNCTION _main END]                                                         // @ codegen_gen_command:911 I
+lbl_34:                                                                         // @ gen_command_function:119 I
+
+//[ /* end */]                                                                  // @ codegen_gen_command:911 I
+code_segment_epilog:                                                            // @ print_skeleton_end:198 I
+// @ printTraceCode:241 I                                                       // @ asm_printblk2:107 I
+trace:
+cmp #68884,0
+je trace_exit
+pusha
+mov eax, 68866
+mov eax:#0, ESP:#0
+mov eax:#1, ESP:#1
+mov eax:#2, ESP:#2
+mov eax:#3, ESP:#3
+mov eax:#4, ESP:#4
+mov eax:#5, ESP:#5
+mov eax:#6, ESP:#6
+mov eax:#7, ESP:#7
+mov eax:#8, ESP:#8
+mov eax:#9, ESP:#9
+mov eax:#10, ESP:#10
+mov eax:#11, ESP:#11
+mov eax:#12, ESP:#12
+mov eax:#13, ESP:#13
+mov eax:#14, ESP:#14
+mov eax:#15, ESP:#15
+mov eax:#16, ESP:#16
+mov eax:#17, ESP:#17
+mov eax:#19, ESP
+mov eax:#20, debug_info
+popa
+// @ printTraceCode:241 I                                                       // @ asm_printblk2:110 I
+int 1
+// @ printTraceCode:247 I                                                       // @ asm_printblk2:107 I
+ret
+trace_exit:
+ret
+// @ printTraceCode:247 I                                                       // @ asm_printblk2:110 I
+code_segment_end:                                                               // @ print_skeleton_end:201 I
+data_segment_dynamic_start:                                                     // @ print_skeleton_end:202 I
+str_3_1: db "hello world!",0                                                    // @ printGlobalVars:306 I
+str_4_1: db "well, I tried",0                                                   // @ printGlobalVars:306 I
+temp_130_1: db 0 //temp_130                                                     // @ printGlobalVars:300 I
+data_segment_dynamic_end:                                                       // @ print_skeleton_end:204 I
+data_segment_static_start:                                                      // @ print_skeleton_end:205 I
+string_store:                                                                   // @ printStringStore:140 I
+debug_info:                                                                     // @ printDebugInfo:455 I
+debug_info_funcs:                                                               // @ printDebugInfo:463 I
+DB 12  //number of functions                                                    // @ printDebugInfo:478 I
+//[len][entrance,exit,[len][IR_name],[len][username]]                           // @ printDebugInfo:479 I
+DB 13,                                                                          // @ printDebugInfo:496 I
+_infloop,                                                                       // @ printDebugInfo:497 I
+lbl,                                                                            // @ printDebugInfo:498 I
+8, "_infloop",0,                                                                // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 15,                                                                          // @ printDebugInfo:496 I
+_writePort,                                                                     // @ printDebugInfo:497 I
+lbl_3,                                                                          // @ printDebugInfo:498 I
+10, "_writePort",0,                                                             // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 13,                                                                          // @ printDebugInfo:496 I
+_print_1,                                                                       // @ printDebugInfo:497 I
+lbl_31,                                                                         // @ printDebugInfo:498 I
+8, "_print_1",0,                                                                // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 10,                                                                          // @ printDebugInfo:496 I
+_main,                                                                          // @ printDebugInfo:497 I
+lbl_34,                                                                         // @ printDebugInfo:498 I
+5, "_main",0,                                                                   // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 15,                                                                          // @ printDebugInfo:496 I
+destructor,                                                                     // @ printDebugInfo:497 I
+lbl_7,                                                                          // @ printDebugInfo:498 I
+10, "destructor",0,                                                             // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 17,                                                                          // @ printDebugInfo:496 I
+_constructor,                                                                   // @ printDebugInfo:497 I
+lbl_10,                                                                         // @ printDebugInfo:498 I
+12, "_constructor",0,                                                           // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 11,                                                                          // @ printDebugInfo:496 I
+_incXY,                                                                         // @ printDebugInfo:497 I
+lbl_13,                                                                         // @ printDebugInfo:498 I
+6, "_incXY",0,                                                                  // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 13,                                                                          // @ printDebugInfo:496 I
+_putchXY,                                                                       // @ printDebugInfo:497 I
+lbl_16,                                                                         // @ printDebugInfo:498 I
+8, "_putchXY",0,                                                                // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 13,                                                                          // @ printDebugInfo:496 I
+_printXY,                                                                       // @ printDebugInfo:497 I
+lbl_19,                                                                         // @ printDebugInfo:498 I
+8, "_printXY",0,                                                                // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 11,                                                                          // @ printDebugInfo:496 I
+_putch,                                                                         // @ printDebugInfo:497 I
+lbl_22,                                                                         // @ printDebugInfo:498 I
+6, "_putch",0,                                                                  // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 11,                                                                          // @ printDebugInfo:496 I
+_print,                                                                         // @ printDebugInfo:497 I
+lbl_25,                                                                         // @ printDebugInfo:498 I
+6, "_print",0,                                                                  // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+DB 10,                                                                          // @ printDebugInfo:496 I
+_test,                                                                          // @ printDebugInfo:497 I
+lbl_28,                                                                         // @ printDebugInfo:498 I
+5, "_test",0,                                                                   // @ printDebugInfo:499 I
+0, "",0;                                                                        // @ printDebugInfo:500 I
+debug_info_vars:                                                                // @ printDebugInfo:504 I
+DB 36  //number of variables                                                    // @ printDebugInfo:505 I
+//[len][visible_from,visible_to,pos,framedepth,[len][IR_name],[len][username]]  // @ printDebugInfo:506 I
+ //VAR I                                                                        // @ printDebugInfo:522 I
+DB 7 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_1 //I->lbl_from                                                          // @ printDebugInfo:524 I
+DB lbl_2 //I->lbl_to                                                            // @ printDebugInfo:525 I
+DB -1 //I->pos                                                                  // @ printDebugInfo:527 I
+DB 1 //I->framedepth                                                            // @ printDebugInfo:531 I
+DB 1, "I",0 //I->IR_name                                                        // @ printDebugInfo:532 I
+DB 0, "",0//I->username                                                         // @ printDebugInfo:533 I
+ //ARG port                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_4 //port->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_5 //port->lbl_to                                                         // @ printDebugInfo:525 I
+DB 2 //port->pos                                                                // @ printDebugInfo:527 I
+DB 1 //port->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "port",0 //port->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//port->username                                                      // @ printDebugInfo:533 I
+ //ARG val                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_4 //val->lbl_from                                                        // @ printDebugInfo:524 I
+DB lbl_5 //val->lbl_to                                                          // @ printDebugInfo:525 I
+DB 3 //val->pos                                                                 // @ printDebugInfo:527 I
+DB 1 //val->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "val",0 //val->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//val->username                                                       // @ printDebugInfo:533 I
+ //VAR mem_port                                                                 // @ printDebugInfo:522 I
+DB 14 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_4 //mem_port->lbl_from                                                   // @ printDebugInfo:524 I
+DB lbl_5 //mem_port->lbl_to                                                     // @ printDebugInfo:525 I
+DB -1 //mem_port->pos                                                           // @ printDebugInfo:527 I
+DB 1 //mem_port->framedepth                                                     // @ printDebugInfo:531 I
+DB 8, "mem_port",0 //mem_port->IR_name                                          // @ printDebugInfo:532 I
+DB 0, "",0//mem_port->username                                                  // @ printDebugInfo:533 I
+ //ARG this                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB Screen //this->lbl_from                                                      // @ printDebugInfo:524 I
+DB (null) //this->lbl_to                                                        // @ printDebugInfo:525 I
+DB 2 //this->pos                                                                // @ printDebugInfo:527 I
+DB 1 //this->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "this",0 //this->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//this->username                                                      // @ printDebugInfo:533 I
+ //VAR mem_scr                                                                  // @ printDebugInfo:522 I
+DB 13 //recordlen                                                               // @ printDebugInfo:523 I
+DB Screen //mem_scr->lbl_from                                                   // @ printDebugInfo:524 I
+DB (null) //mem_scr->lbl_to                                                     // @ printDebugInfo:525 I
+DB -1 //mem_scr->pos                                                            // @ printDebugInfo:527 I
+DB 1 //mem_scr->framedepth                                                      // @ printDebugInfo:531 I
+DB 7, "mem_scr",0 //mem_scr->IR_name                                            // @ printDebugInfo:532 I
+DB 0, "",0//mem_scr->username                                                   // @ printDebugInfo:533 I
+ //VAR X                                                                        // @ printDebugInfo:522 I
+DB 7 //recordlen                                                                // @ printDebugInfo:523 I
+DB Screen //X->lbl_from                                                         // @ printDebugInfo:524 I
+DB (null) //X->lbl_to                                                           // @ printDebugInfo:525 I
+DB -2 //X->pos                                                                  // @ printDebugInfo:527 I
+DB 1 //X->framedepth                                                            // @ printDebugInfo:531 I
+DB 1, "X",0 //X->IR_name                                                        // @ printDebugInfo:532 I
+DB 0, "",0//X->username                                                         // @ printDebugInfo:533 I
+ //VAR Y                                                                        // @ printDebugInfo:522 I
+DB 7 //recordlen                                                                // @ printDebugInfo:523 I
+DB Screen //Y->lbl_from                                                         // @ printDebugInfo:524 I
+DB (null) //Y->lbl_to                                                           // @ printDebugInfo:525 I
+DB -3 //Y->pos                                                                  // @ printDebugInfo:527 I
+DB 1 //Y->framedepth                                                            // @ printDebugInfo:531 I
+DB 1, "Y",0 //Y->IR_name                                                        // @ printDebugInfo:532 I
+DB 0, "",0//Y->username                                                         // @ printDebugInfo:533 I
+ //VAR Xmax                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB Screen //Xmax->lbl_from                                                      // @ printDebugInfo:524 I
+DB (null) //Xmax->lbl_to                                                        // @ printDebugInfo:525 I
+DB -4 //Xmax->pos                                                               // @ printDebugInfo:527 I
+DB 1 //Xmax->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "Xmax",0 //Xmax->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//Xmax->username                                                      // @ printDebugInfo:533 I
+ //VAR Ymax                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB Screen //Ymax->lbl_from                                                      // @ printDebugInfo:524 I
+DB (null) //Ymax->lbl_to                                                        // @ printDebugInfo:525 I
+DB -5 //Ymax->pos                                                               // @ printDebugInfo:527 I
+DB 1 //Ymax->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "Ymax",0 //Ymax->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//Ymax->username                                                      // @ printDebugInfo:533 I
+ //VAR col                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB Screen //col->lbl_from                                                       // @ printDebugInfo:524 I
+DB (null) //col->lbl_to                                                         // @ printDebugInfo:525 I
+DB -6 //col->pos                                                                // @ printDebugInfo:527 I
+DB 1 //col->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "col",0 //col->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//col->username                                                       // @ printDebugInfo:533 I
+ //ARG this_1                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_11 //this_1->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_12 //this_1->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_1->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_1->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_1",0 //this_1->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_1->username                                                    // @ printDebugInfo:533 I
+ //ARG this_2                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_14 //this_2->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_15 //this_2->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_2->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_2->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_2",0 //this_2->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_2->username                                                    // @ printDebugInfo:533 I
+ //ARG this_3                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_17 //this_3->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_18 //this_3->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_3->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_3->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_3",0 //this_3->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_3->username                                                    // @ printDebugInfo:533 I
+ //ARG C                                                                        // @ printDebugInfo:522 I
+DB 7 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_17 //C->lbl_from                                                         // @ printDebugInfo:524 I
+DB lbl_18 //C->lbl_to                                                           // @ printDebugInfo:525 I
+DB 3 //C->pos                                                                   // @ printDebugInfo:527 I
+DB 2 //C->framedepth                                                            // @ printDebugInfo:531 I
+DB 1, "C",0 //C->IR_name                                                        // @ printDebugInfo:532 I
+DB 0, "",0//C->username                                                         // @ printDebugInfo:533 I
+ //ARG X_1                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_17 //X_1->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_18 //X_1->lbl_to                                                         // @ printDebugInfo:525 I
+DB 4 //X_1->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //X_1->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "X_1",0 //X_1->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//X_1->username                                                       // @ printDebugInfo:533 I
+ //ARG Y_1                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_17 //Y_1->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_18 //Y_1->lbl_to                                                         // @ printDebugInfo:525 I
+DB 5 //Y_1->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //Y_1->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "Y_1",0 //Y_1->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//Y_1->username                                                       // @ printDebugInfo:533 I
+ //VAR adr                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_17 //adr->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_18 //adr->lbl_to                                                         // @ printDebugInfo:525 I
+DB -1 //adr->pos                                                                // @ printDebugInfo:527 I
+DB 2 //adr->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "adr",0 //adr->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//adr->username                                                       // @ printDebugInfo:533 I
+ //ARG this_4                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_20 //this_4->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_21 //this_4->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_4->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_4->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_4",0 //this_4->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_4->username                                                    // @ printDebugInfo:533 I
+ //ARG str                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_20 //str->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_21 //str->lbl_to                                                         // @ printDebugInfo:525 I
+DB 3 //str->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //str->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "str",0 //str->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//str->username                                                       // @ printDebugInfo:533 I
+ //ARG X_2                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_20 //X_2->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_21 //X_2->lbl_to                                                         // @ printDebugInfo:525 I
+DB 4 //X_2->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //X_2->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "X_2",0 //X_2->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//X_2->username                                                       // @ printDebugInfo:533 I
+ //ARG Y_2                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_20 //Y_2->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_21 //Y_2->lbl_to                                                         // @ printDebugInfo:525 I
+DB 5 //Y_2->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //Y_2->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "Y_2",0 //Y_2->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//Y_2->username                                                       // @ printDebugInfo:533 I
+ //ARG this_5                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_23 //this_5->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_24 //this_5->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_5->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_5->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_5",0 //this_5->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_5->username                                                    // @ printDebugInfo:533 I
+ //ARG C_1                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_23 //C_1->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_24 //C_1->lbl_to                                                         // @ printDebugInfo:525 I
+DB 3 //C_1->pos                                                                 // @ printDebugInfo:527 I
+DB 2 //C_1->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "C_1",0 //C_1->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//C_1->username                                                       // @ printDebugInfo:533 I
+ //ARG this_6                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_26 //this_6->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_27 //this_6->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_6->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_6->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_6",0 //this_6->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_6->username                                                    // @ printDebugInfo:533 I
+ //ARG str_1                                                                    // @ printDebugInfo:522 I
+DB 11 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_26 //str_1->lbl_from                                                     // @ printDebugInfo:524 I
+DB lbl_27 //str_1->lbl_to                                                       // @ printDebugInfo:525 I
+DB 3 //str_1->pos                                                               // @ printDebugInfo:527 I
+DB 2 //str_1->framedepth                                                        // @ printDebugInfo:531 I
+DB 5, "str_1",0 //str_1->IR_name                                                // @ printDebugInfo:532 I
+DB 0, "",0//str_1->username                                                     // @ printDebugInfo:533 I
+ //ARG this_7                                                                   // @ printDebugInfo:522 I
+DB 12 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_29 //this_7->lbl_from                                                    // @ printDebugInfo:524 I
+DB lbl_30 //this_7->lbl_to                                                      // @ printDebugInfo:525 I
+DB 2 //this_7->pos                                                              // @ printDebugInfo:527 I
+DB 2 //this_7->framedepth                                                       // @ printDebugInfo:531 I
+DB 6, "this_7",0 //this_7->IR_name                                              // @ printDebugInfo:532 I
+DB 0, "",0//this_7->username                                                    // @ printDebugInfo:533 I
+ //ARG str_2                                                                    // @ printDebugInfo:522 I
+DB 11 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_32 //str_2->lbl_from                                                     // @ printDebugInfo:524 I
+DB lbl_33 //str_2->lbl_to                                                       // @ printDebugInfo:525 I
+DB 2 //str_2->pos                                                               // @ printDebugInfo:527 I
+DB 1 //str_2->framedepth                                                        // @ printDebugInfo:531 I
+DB 5, "str_2",0 //str_2->IR_name                                                // @ printDebugInfo:532 I
+DB 0, "",0//str_2->username                                                     // @ printDebugInfo:533 I
+ //ARG X_3                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_32 //X_3->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_33 //X_3->lbl_to                                                         // @ printDebugInfo:525 I
+DB 3 //X_3->pos                                                                 // @ printDebugInfo:527 I
+DB 1 //X_3->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "X_3",0 //X_3->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//X_3->username                                                       // @ printDebugInfo:533 I
+ //ARG Y_3                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_32 //Y_3->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_33 //Y_3->lbl_to                                                         // @ printDebugInfo:525 I
+DB 4 //Y_3->pos                                                                 // @ printDebugInfo:527 I
+DB 1 //Y_3->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "Y_3",0 //Y_3->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//Y_3->username                                                       // @ printDebugInfo:533 I
+ //VAR scr_adr                                                                  // @ printDebugInfo:522 I
+DB 13 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_32 //scr_adr->lbl_from                                                   // @ printDebugInfo:524 I
+DB lbl_33 //scr_adr->lbl_to                                                     // @ printDebugInfo:525 I
+DB -1 //scr_adr->pos                                                            // @ printDebugInfo:527 I
+DB 1 //scr_adr->framedepth                                                      // @ printDebugInfo:531 I
+DB 7, "scr_adr",0 //scr_adr->IR_name                                            // @ printDebugInfo:532 I
+DB 0, "",0//scr_adr->username                                                   // @ printDebugInfo:533 I
+ //VAR C_2                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_32 //C_2->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_33 //C_2->lbl_to                                                         // @ printDebugInfo:525 I
+DB -4 //C_2->pos                                                                // @ printDebugInfo:527 I
+DB 1 //C_2->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "C_2",0 //C_2->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//C_2->username                                                       // @ printDebugInfo:533 I
+ //VAR adr_1                                                                    // @ printDebugInfo:522 I
+DB 11 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_32 //adr_1->lbl_from                                                     // @ printDebugInfo:524 I
+DB lbl_33 //adr_1->lbl_to                                                       // @ printDebugInfo:525 I
+DB -5 //adr_1->pos                                                              // @ printDebugInfo:527 I
+DB 1 //adr_1->framedepth                                                        // @ printDebugInfo:531 I
+DB 5, "adr_1",0 //adr_1->IR_name                                                // @ printDebugInfo:532 I
+DB 0, "",0//adr_1->username                                                     // @ printDebugInfo:533 I
+ //ARG argc                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_35 //argc->lbl_from                                                      // @ printDebugInfo:524 I
+DB lbl_36 //argc->lbl_to                                                        // @ printDebugInfo:525 I
+DB 2 //argc->pos                                                                // @ printDebugInfo:527 I
+DB 1 //argc->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "argc",0 //argc->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//argc->username                                                      // @ printDebugInfo:533 I
+ //ARG argv                                                                     // @ printDebugInfo:522 I
+DB 10 //recordlen                                                               // @ printDebugInfo:523 I
+DB lbl_35 //argv->lbl_from                                                      // @ printDebugInfo:524 I
+DB lbl_36 //argv->lbl_to                                                        // @ printDebugInfo:525 I
+DB 3 //argv->pos                                                                // @ printDebugInfo:527 I
+DB 1 //argv->framedepth                                                         // @ printDebugInfo:531 I
+DB 4, "argv",0 //argv->IR_name                                                  // @ printDebugInfo:532 I
+DB 0, "",0//argv->username                                                      // @ printDebugInfo:533 I
+ //VAR scr                                                                      // @ printDebugInfo:522 I
+DB 9 //recordlen                                                                // @ printDebugInfo:523 I
+DB lbl_35 //scr->lbl_from                                                       // @ printDebugInfo:524 I
+DB lbl_36 //scr->lbl_to                                                         // @ printDebugInfo:525 I
+DB -1 //scr->pos                                                                // @ printDebugInfo:527 I
+DB 1 //scr->framedepth                                                          // @ printDebugInfo:531 I
+DB 3, "scr",0 //scr->IR_name                                                    // @ printDebugInfo:532 I
+DB 0, "",0//scr->username                                                       // @ printDebugInfo:533 I
+data_segment_static_end:                                                        // @ print_skeleton_end:208 I
+// CODEGEN: ASSEMBLY GENERATION COMPLETE //                                     // @ codegen_generate:1047 I

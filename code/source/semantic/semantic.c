@@ -801,21 +801,26 @@ void semantic_init(){
 	//currentSymbolTable = 0;
 }
 
+
 void print_semantic(){
+	//print_code_segment(m(CS_list,get,0));
+	//printf("\n===========================\nSymbol table:\n");
+	//print_symbol_table(m(ST_list,get,0));
+
+
 	print_code_segment(m(CS_list,get,0));
-	printf("\n===========================\nSymbol table:\n");
-	print_symbol_table(m(ST_list,get,0));
-	/*
+	printf("\n===========================\n");
+
 	printf("printing symbol tables (%d):\n",ST_list.size);
 	int i;
 	for(i = 0; i < ST_list.size; i++){
 		print_symbol_table(m(ST_list,get,i));
 	}
-	printf("printing code segments (%d):\n",CS_list.size);
-	for(i = 0; i < CS_list.size; i++){
-		print_code_segment(m(CS_list,get,i));
-	}
-	*/
+	//printf("printing code segments (%d):\n",CS_list.size);
+	//for(i = 0; i < CS_list.size; i++){
+	//	print_code_segment(m(CS_list,get,i));
+	//}
+	
 }
 
 int getNumParameters(){

@@ -91,6 +91,8 @@ ptr_symbol_table find_symbol_table_by_node(struct ast_node *node){
 }
 
 
+const char* formatAsTable(const char* str);
+
 void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 	padprint(indent);
 	if(!T->parent){
@@ -107,37 +109,45 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 	//const char *code = 0; //unused
 	//char *pos; //unused
 	//printf("symbol\tname\tir_name\ttype\tscope\tcode\tpos\n");
+	size_t buff_size = 80 * T->symbols.size;
+	char* buff = malloc(buff_size);
+	char* buffp;
+	char* buff_watermark = buff + buff_size - 80;
 	int i = 0;
 	int j = 0;
 	for(j = 0; j < T->symbols.size; j++){
 		struct symbol *S2 = m(T->symbols,get,j);
 		if(S2->type == SYMBOL_CLASS){
+			buffp = buff;
 			printf("classes:\n");
-			printf("name\tir_name\tscope\n");
+			//printf("name\tir_name\tscope\n");
+			buffp += sprintf(buffp, "name\tir_name\tscope\n");
+
 			for(i = 0; i < T->symbols.size; i++){
 				struct symbol *S = m(T->symbols,get,i);
 				if(S->type == SYMBOL_CLASS){
-					printf("%s\t%s\t%s\n",S->username,S->IR_name,S->symclass.scope->name);
+					//printf("%s\t%s\t%s\n",S->username,S->IR_name,S->symclass.scope->name);
+					buffp += sprintf(buffp, "%s\t%s\t%s\n", S->username, S->IR_name, S->symclass.scope->name);
+					if (buffp > buff_watermark) { buffp += sprintf(buffp, "\nBUFF OVERFLOW\n"); break; }
 				}
 			}
+			const char* tbl = formatAsTable(buff);
+			printf("%s\n", tbl);
 		break;
 		}
 	}
-	
 	
 	for(j = 0; j < T->symbols.size; j++){
 		struct symbol *S2 = m(T->symbols,get,j);
 		if(S2->type == SYMBOL_FUNCTION){
 			printf("functions:\n");
-			printf("type\tname\tir_name\tscope\tcode\n");
+			buffp = buff;
+			//printf("type\tname\tir_name\tscope\tcode\n");
+			buffp += sprintf(buffp, "type\tname\tir_name\tscope\tcode\n");
 			for(i = 0; i < T->symbols.size; i++){
 				struct symbol *S = m(T->symbols,get,i);
 				
 				if(S->type == SYMBOL_FUNCTION){
-					//printf("Symbol %p:\n",S);
-					//printf("returntype: %p\n",S->symfunction.returntype);
-					//printf("scope: %p\n",S->symfunction.scope);
-					//printf("code: %p\n",S->symfunction.code);
 					const char *type = "?";
 					if(S->symfunction.returntype){type = S->symfunction.returntype->name;}
 					const char *name = S->username;
@@ -146,36 +156,54 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 					if(S->symfunction.scope){scope = S->symfunction.scope->name;}
 					const char *code = "?";
 					if(S->symfunction.code){code = S->symfunction.code->name;}
-					printf("%s\t%s\t%s\t%s\t%s\n",type,name,ir_name,scope,code);
+					//printf("%s\t%s\t%s\t%s\t%s\n",type,name,ir_name,scope,code);
+					buffp += sprintf(buffp, "%s\t%s\t%s\t%s\t%s\n",type,name,ir_name,scope,code);
+					if (buffp > buff_watermark) { buffp += sprintf(buffp, "\nBUFF OVERFLOW\n"); break;  }
 				}
 			}
-		break;
+			const char* tbl = formatAsTable(buff);
+			printf("%s\n", tbl);
+			break;
 		}
 	}
-	
 	
 	for(j = 0; j < T->symbols.size; j++){
 		struct symbol *S2 = m(T->symbols,get,j);
 		if(S2->type == SYMBOL_PARAM){
+			buffp = buff;
 			printf("parameters:\n");
-			printf("type\tname\tir_name\tsize\tpos\n");
+			//printf("type\tname\tir_name\tsize\tpos\n");
+			buffp += sprintf(buffp, "type\tname\tir_name\tsize\tpos\n");
+
 			for(i = 0; i < T->symbols.size; i++){
 				struct symbol *S = m(T->symbols,get,i);
 				if(S->type == SYMBOL_PARAM){
 					const char *typename = S->symvariable.type->name;
-					printf("%s\t",typename);
+					//printf("%s\t",typename);
+					buffp += sprintf(buffp, "%s\t", typename);
+
 					const char *username = S->username;
-					printf("%s\t",username);
+					//printf("%s\t",username);
+					buffp += sprintf(buffp, "%s\t", username);
+
 					const char *IRname = S->IR_name;
-					printf("%s\t",IRname);
+					//printf("%s\t",IRname);
+					buffp += sprintf(buffp, "%s\t", IRname);
+
 					int size = S->symvariable.size;
-					printf("%d\t",size);
+					//printf("%d\t",size);
+					buffp += sprintf(buffp, "%d\t", size);
+
 					int addr = S->store_adr;
-					printf("%d\n",addr);
+					//printf("%d\n",addr);
+					buffp += sprintf(buffp, "%d\n", addr);
 					//printf("%s\t"	"%s\t"	 "%s\t"    "%d\t"  "%d\n",
 					//		typename,username,IRname,	size,	addr);
+					if (buffp > buff_watermark) { buffp += sprintf(buffp, "\nBUFF OVERFLOW\n"); break; }
 				}
 			}
+		const char* tbl = formatAsTable(buff);
+		printf("%s\n", tbl);
 		break;
 		}
 	}
@@ -184,14 +212,21 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 	for(j = 0; j < T->symbols.size; j++){
 		struct symbol *S2 = m(T->symbols,get,j);
 		if(S2->type == SYMBOL_MEMBER){
+			buffp = buff;
 			printf("members:\n");
-			printf("type\tname\tir_name\tsize\tpos\n");
+			//printf("type\tname\tir_name\tsize\tpos\n");
+			buffp += sprintf(buffp, "type\tname\tir_name\tsize\tpos\n");
+
 			for(i = 0; i < T->symbols.size; i++){
 				struct symbol *S = m(T->symbols,get,i);
 				if(S->type == SYMBOL_MEMBER){
-					printf("%s\t%s\t%s\t%d\t%d\n",S->symvariable.type->name,S->username,S->IR_name,S->symvariable.size,S->store_adr);
+					//printf("%s\t%s\t%s\t%d\t%d\n", S->symvariable.type->name, S->username, S->IR_name, S->symvariable.size, S->store_adr);
+					buffp += sprintf(buffp, "%s\t%s\t%s\t%d\t%d\n", S->symvariable.type->name, S->username, S->IR_name, S->symvariable.size, S->store_adr);
+					if (buffp > buff_watermark) { buffp += sprintf(buffp, "\nBUFF OVERFLOW\n"); break; }
 				}
 			}
+		const char* tbl = formatAsTable(buff);
+		printf("%s\n", tbl);
 		break;
 		}
 	}
@@ -200,14 +235,20 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 	for(j = 0; j < T->symbols.size; j++){
 		struct symbol *S2 = m(T->symbols,get,j);
 		if(S2->type == SYMBOL_VARIABLE){
+			buffp = buff;
 			printf("variables:\n");
-			printf("type\tname\tir_name\tsize\tpos\n");
+			//printf("type\tname\tir_name\tsize\tpos\n");
+			buffp += sprintf(buffp, "type\tname\tir_name\tsize\tpos\n");
 			for(i = 0; i < T->symbols.size; i++){
 				struct symbol *S = m(T->symbols,get,i);
 				if(S->type == SYMBOL_VARIABLE){
-					printf("%s\t%s\t%s\t%d\t%d\n",S->symvariable.type->name,S->username,S->IR_name,S->symvariable.size,S->store_adr);
+					//printf("%s\t%s\t%s\t%d\t%d\n", S->symvariable.type->name, S->username, S->IR_name, S->symvariable.size, S->store_adr);
+					buffp += sprintf(buffp, "%s\t%s\t%s\t%d\t%d\n", S->symvariable.type->name, S->username, S->IR_name, S->symvariable.size, S->store_adr);
+					if (buffp > buff_watermark) { buffp += sprintf(buffp, "\nBUFF OVERFLOW\n"); break; }
 				}
 			}
+		const char* tbl = formatAsTable(buff);
+		printf("%s\n", tbl);
 		break;
 		}
 	}

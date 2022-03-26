@@ -90,7 +90,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	const char* S_full = IR_next_name(namespace_semantic, "temp");//to_rval_name(S->IR_name);
 
 	if(stg.sym_this){//if (semantic_this) {
-		const char* semantic_this = stg.sym_this.IR_name;
+		const char* semantic_this = stg.sym_this->IR_name;
 		//char buff[80];
 
 		if (S->type == SYMBOL_VARIABLE) {
