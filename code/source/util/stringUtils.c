@@ -2,6 +2,8 @@
 #include "semantic.h" //for curNode
 #include "codegen.h" //for fasm
 #include "ctype.h"
+#include "assert.h"
+
 //vars
 int indent = 0;
 int num_gst2_calls = 0;
@@ -498,8 +500,53 @@ const char *formatAsTable(const char *str){
 	return buff;
 }
 
+//27.03.2022
 
+int vec_vnprintf(vector2_char* vstr, int size, const char* format, va_list vlist) {
+	assert(vstr); //nonnull
+	va_list vlist2;
+	va_copy(vlist2, vlist);
+	int res = 0;
+	int mode_limited = (size > 0);
+	int mode_unlimited = (size == -1);
+	int mode_print = mode_limited || mode_unlimited;
+	int mode_no_print = (size == 0);
 
-
+	if (mode_unlimited || mode_no_print) {
+		//1. preprint to figure out the size
+		size = vsnprintf(0, 0, format, vlist)+1;
+		res = size;
+	}
+	if (mode_print) {
+		//2. figure out the necessary size of the vector
+		int idx_begin = 0;
+		int cursize = vstr->size;
+		if (cursize) { idx_begin = cursize - 1; } //if vstr has previous contents, append to them
+		if (idx_begin && (vstr->data[idx_begin - 1] == 0)) { idx_begin--; } //if vstr is null-terminated, overwrite the terminator
+		int needsize = idx_begin + size; //though it might already contain a terminating zero? idk
+		m(*vstr, resize, needsize);
+		//3. print the string to the vector
+		//if (vstr->data[cursize - 1] == 0) {cursize--;}
+		char* buff = &(vstr->data[idx_begin]); //we sub 1 for existing terminator
+		res = vsnprintf(buff, size, format, vlist);
+	}
+	return res;
+}
+int vec_nprintf(vector2_char* vstr, int size, const char* format, ...) {
+	assert(vstr);
+	va_list va;
+	va_start(va, format);
+	int res = vec_vnprintf(vstr, size, format, va);
+	va_end(va);
+	return res;
+}
+int vec_printf(vector2_char* vstr, const char* format, ...) {
+	assert(vstr);
+	va_list va;
+	va_start(va, format);
+	int res = vec_vnprintf(vstr, -1, format, va);
+	va_end(va);
+	return res;
+}
 
 

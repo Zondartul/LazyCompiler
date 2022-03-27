@@ -30,7 +30,28 @@ const char *path_out_assembly = "data_out/assembly.txt";
 const char *path_out_2 = "data_out/aout2.txt";
 const char *path_out_graphviz = "data_out/aout3.gv";
 
-const char *formatAsTable(const char *str);
+const char* formatAsTable(const char* str);
+
+void test_formatAsTable() {
+	//this was a table test. it passes after fixes of 18.03.2022
+	const char* myTable = "beep\tT\tval\tpos\n"			//4
+		"oh\thi\twhat's\tup?\n"		//4
+		"this\tline\tshort\n"			//3
+		"and\t\tone\tmissing\n"		//3
+		"this\tis\tthe\tlast\tline";	//5
+	const char* formtable = formatAsTable(myTable);
+	//printf("table:----------------\n%s\n-------------------\n",formtable);
+	printf("table:\n%s\n", formtable);
+}
+
+void test_vec_printf() {
+	vector2_char vstr = vector2_char_here();
+	vec_printf(&vstr, "hello this is a test [%d] [%f], ", 123, 3.14);
+	vec_printf(&vstr, "this is another test [%s], ", "hello");
+	vec_nprintf(&vstr, 13, "quick [%s] fox jumps over the lazy dog", "lazy");
+	vec_printf(&vstr, ", that's all folks.");
+	printf("%s\n", vstr.data);
+}
 
 int main(int argc, char **argv){
 	initFiles();
@@ -51,6 +72,10 @@ int main(int argc, char **argv){
 	fprintf(stderr,"ASSEMBLY:\t\t%s\n",path_out_assembly);
 	fprintf(stderr,"\n");
 	
+	test_formatAsTable();
+	test_vec_printf();
+	return 0;
+
 	fprintf(stderr,"initializing...");
 	//printf("sizeof ast_node = '%d'\n",sizeof(ast_node));
 	//int *test = malloc(sizeof(int));
@@ -66,15 +91,7 @@ int main(int argc, char **argv){
 	lexnumtabs = 0;
 	fprintf(stderr,"\t\tdone\n");
 	
-	//this was a table test. it passes after fixes of 18.03.2022
-	const char *myTable = "beep\tT\tval\tpos\n"			//4
-						  "oh\thi\twhat's\tup?\n"		//4
-						  "this\tline\tshort\n"			//3
-						  "and\t\tone\tmissing\n"		//3
-						  "this\tis\tthe\tlast\tline";	//5
-	const char *formtable = formatAsTable(myTable);
-	//printf("table:----------------\n%s\n-------------------\n",formtable);
-	printf("table:\n%s\n", formtable);
+
 	
 	fprintf(stderr,"preprocessing...");
 	freopen(/*"aout_preproc.txt"*/path_out_preproc,"w",stdout);

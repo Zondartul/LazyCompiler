@@ -46,7 +46,7 @@ struct vector2_##T{	\
 	T		(*get)(struct vector2_##T *this, int pos);	\
 	/* overwrite the element at the position */\
 	void	(*set)(struct vector2_##T *this, T element, int pos);	\
-	/* normal vector resize operation */\
+	/* normal vector resize operation, size (num of elements) changes, capacity may also change. */\
 	void	(*resize)(struct vector2_##T *this, int size); \
 };	\
 typedef struct vector2_##T vector2_##T;	\
