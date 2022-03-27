@@ -109,13 +109,15 @@ void ast_print(struct ast_node *N, FILE *fp){
 }
 
 void ast_print_graph_helper(struct ast_node *N, FILE *fp, const char *str){
+	vector2_char vstr = vector2_char_here();
 	//vector Names;
 	int len = strlen(str);
 	int namelen = len+5;
-	char *namebuff = (char *)malloc(namelen);
-	strcpy(namebuff, str);
-	char *suffix = namebuff+len;
+	//char *namebuff = (char *)malloc(namelen);
+	//strcpy(namebuff, str);
+	//char *suffix = namebuff+len;
 	//vector_constructor(&Names, namelen);
+	vec_printf(&vstr, "%s", str);
 	if(N->token.value){
 		//fprintf(fp, "%s [label = \"%s\n\\\"%s\\\"\"]\n", namebuff, N->token.type, N->token.value);
 	}else{
@@ -123,8 +125,10 @@ void ast_print_graph_helper(struct ast_node *N, FILE *fp, const char *str){
 	}
 	int i;
 	for(i = 0; i < N->children.size; i++){
-		snprintf(suffix,4,"_%d",i);
-		ast_print_graph_helper(ast_get_child(N,i),fp,namebuff);
+		//snprintf(suffix,4,"_%d",i);
+		vec_printf(&vstr, "_%d", i);
+		//ast_print_graph_helper(ast_get_child(N,i),fp,namebuff);
+		ast_print_graph_helper(ast_get_child(N, i), fp, stralloc(vstr.data));
 		if(len){
 			//fprintf(fp, "%s -- ", str);
 			//fprintf(fp, "%s\n", namebuff);

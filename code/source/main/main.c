@@ -74,7 +74,7 @@ int main(int argc, char **argv){
 	
 	test_formatAsTable();
 	test_vec_printf();
-	return 0;
+	//return 0;
 
 	fprintf(stderr,"initializing...");
 	//printf("sizeof ast_node = '%d'\n",sizeof(ast_node));

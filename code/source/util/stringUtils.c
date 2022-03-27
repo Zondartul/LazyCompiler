@@ -265,9 +265,9 @@ const char* concat2(int num, ...){
 }
 
 const char* my_itoa(int N){
-	char buff[80];
-	sprintf(buff,"%d",N);
-	return stralloc(buff);
+	vector2_char vstr = vector2_char_here();
+	vec_printf(&vstr, "%d", N);
+	return stralloc(vstr.data);
 }
 
 

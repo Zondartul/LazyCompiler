@@ -704,48 +704,49 @@ int IR_name_in_use(vector2_ptr_char *namespace, const char *name){
 	return 0;
 }
 
-char *IR_name_helper(vector2_ptr_char *namespace, const char* prefix, int allowExact, int allowInexact){
-	char *buff = malloc(strlen(prefix)+20);
-	sprintf(buff,"%s",prefix);
-	if(allowExact && !IR_name_in_use(namespace,buff)){
-		m(*namespace,push_back,buff);
-		return buff;
+char* IR_name_helper(vector2_ptr_char* namespace, const char* prefix, int allowExact, int allowInexact) {
+	vector2_char vstr = vector2_char_here();
+	vec_printf(&vstr, "%s", prefix);
+	if (allowExact && !IR_name_in_use(namespace, vstr.data)){//buff)) {
+		m(*namespace, push_back, vstr.data);//buff);
+		return stralloc(vstr.data);//return buff;
 	}
-	if(!allowInexact){error("Error: Exact IR_name (%s) already taken ", prefix);}
+	if (!allowInexact) { error("Error: Exact IR_name (%s) already taken ", prefix); }
 	int I = 1;
-	while(1){
-		sprintf(buff,"%s_%d",prefix,I++);
-		if(!IR_name_in_use(namespace,buff)){
-			m(*namespace,push_back,buff);
-			return buff;
+	while (1) {
+		m(vstr, clear);
+		vec_printf(&vstr, "%s_%d", prefix, I++);
+		if (!IR_name_in_use(namespace, vstr.data)){//buff)) {
+			m(*namespace, push_back, vstr.data);//buff);
+			return stralloc(vstr.data);//return buff;
 		}
 	}
 }
+
+
 
 char *IR_next_name(vector2_ptr_char *namespace, const char* prefix){return IR_name_helper(namespace,prefix,1,1);}
 char *IR_exact_name(vector2_ptr_char *namespace, const char* prefix){return IR_name_helper(namespace,prefix,1,0);}
 char *IR_inexact_name(vector2_ptr_char *namespace, const char* prefix){return IR_name_helper(namespace,prefix,0,1);}
 
-void emit_code(const char *fmt, ...){
-	if(!currentCodeSegment){error("emit_code: no code segment\n");}
+void emit_code(const char* fmt, ...) {
+	if (!currentCodeSegment) { error("emit_code: no code segment\n"); }
 	va_list ap;
-	va_start(ap, fmt);
-	char buff2[1];
-	char *buff;
-	int len = vsnprintf(buff2,1,fmt,ap);
+	
 	emit_code_pad = currentCodeSegment->indent;
 	//int pad = emit_code_pad; //unused
-	buff = malloc(sizeof(char)*(len+1+emit_code_pad));
-	va_end(ap);
+	//buff = malloc(sizeof(char) * (len + 1 + emit_code_pad));
+	//va_end(ap);
 	va_start(ap, fmt);
-	int i;
-	for(i = 0; i < emit_code_pad; i++){
-		sprintf(buff+i," ");
-	}
-	vsprintf(buff+emit_code_pad,fmt,ap);
+	//1. pad the string
+	vector2_char vstr = vector2_char_here();
+	const char* pad80blanks = "                                                                                ";
+	vec_nprintf(&vstr, emit_code_pad, pad80blanks);
+
+	vec_vnprintf(&vstr, -1, fmt, ap);
 	va_end(ap);
 	//vector_push_back(&currentCodeSegment->commands,&buff);
-	m(currentCodeSegment->commands,push_back,buff);
+	m(currentCodeSegment->commands, push_back, stralloc(vstr.data));//buff);
 }
 
 void emit_code_segment(struct code_segment *CS){
@@ -931,9 +932,6 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 		fprintf(stderr, "no source text\n");
 	}
 
-	//char buff[200];
-	//sprintf(buff,"notepad++ %s -n%d &",file,line);
-	//system(buff);
 	exit(*(int*)0);
 }
 

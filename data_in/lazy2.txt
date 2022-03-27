@@ -71,12 +71,12 @@ void dbgprint(char *str10, int num10, char c10)
 	printnl();
 end
 
-void delay(int n)
-	float trap;
-	trap = 1000;
-	//for(int i = 0; i < n*k; i++)
-	//end
-end
+//void delay(int n)
+//	float trap;
+//	trap = 1000;
+//	//for(int i = 0; i < n*k; i++)
+//	//end
+//end
 
 int main(int argc, char **argv)
 	class Screen scr;
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	print("num 5 = "); printnum2(5); print(", ok"); printnl();
 	print("char S = ["); printc('S'); print("]"); printnl();
 	print("ok.");
-	delay(1000);
+	//delay(1000);
 	screen_clear();
 	//setPrintCursor(0,2);
 	Prints("ohai ",999); Printn(123,999); Prints(" yep",999);

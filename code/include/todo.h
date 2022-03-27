@@ -62,7 +62,8 @@
 * 
 * 
 * --------- unsorted -------------------
-* [Todo] memory safety - replace all sprintfs with snprintfs or other safety things.
+* [FIXED Todo] memory safety - replace all sprintfs with snprintfs or other safety things.
+*  \[note] replaced s(n)printf with vec_printf
 * [Todo] memory safety - remove all manually managed buffers, replace with vec.
 * 
 * 

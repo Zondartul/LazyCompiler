@@ -96,7 +96,6 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 		if (S->type == SYMBOL_VARIABLE) {
 			//const char *S_full = IR_next_name(namespace_semantic,S->IR_name);//IR_next_name(namespace_semantic,S->IR_name);
 			emit_code("ADD %s %s &%s /*id:this.var*/", S_full, semantic_this, S->IR_name);
-			//sprintf(buff,"*%s",S_full);
 			//if (!discardResult) { push_expr(stralloc(buff)); }
 			output_res(stg, S_full, T);
 		}
@@ -108,7 +107,6 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 		else {
 			error("[SEMANTIC] Unknown symbol type ");
 		}
-		//sprintf(buff,"%s:%s",semantic_this,S->IR_name);
 		//const char *result1 = stralloc(buff);
 		//push_expr(result1);
 	}
@@ -174,15 +172,17 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 		output_res(stg, node->token.value, T);
 		break;
 	case(4): //char
+	{
 		T->name = "char";
-		char buff[80];
-		sprintf(buff, "%d", node->token.value[1]);
-		const char* str = stralloc(buff);
+		vector2_char vstr = vector2_char_here();
+		vec_printf(&vstr, "%d", node->token.value[1]);
+		const char* str = stralloc(vstr.data);//stralloc(buff);
 		//if (!discardResult) {
 		//	push_expr(stralloc(buff));
 		//}
 		output_res(stg, str, T);
 		break;
+	}
 	case(5): //string
 		T->name = "string";
 		const char* str_name = IR_next_name(namespace_semantic, "str");
@@ -272,9 +272,9 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	emit_code("ADD %s %s %s", result, index, ptr);
 	//}
 	//if(!lvalue){emit_code("MOV %s *%s",result,result);}
-	char buff[80];
-	sprintf(buff, "*%s", result);
-	const char* res_val = stralloc(buff);
+	vector2_char vstr = vector2_char_here();
+	vec_printf(&vstr, "*%s", result);
+	const char* res_val = stralloc(vstr.data);//stralloc(buff);
 	//if (!discardResult) {
 	//	push_expr(stralloc(buff));
 	//}
@@ -306,7 +306,7 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	}
 	ast_node* list = ast_get_child(node, 1);
 	int i;
-	int len = 0;
+	//int len = 0;
 	vector2_ptr_char ministack = vector2_ptr_char_here();
 	for (i = 0; i < list->children.size; i++) {
 		//push_expr(new_lval());//push_expr("NODISCARD");
@@ -315,20 +315,20 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 		expr_settings stg2 = { .res_type = E_RVAL, .res_out = &res2, .res_out_type = &res2type };
 		semantic_expr_analyze(ast_get_child(list, i), stg2); //expr? one of func args?
 		const char* expr = res2;//pop_expr();
-		len += snprintf(0, 0, "%s ", expr);
+		//len += snprintf(0, 0, "%s ", expr);
 		m(ministack, push_back, expr);
 	}
-	char* buff = malloc(sizeof(char) * (len + 1));
-	char* buff2 = buff;
-	if (list->children.size == 0) { buff = ""; }
+	//char* buff = malloc(sizeof(char) * (len + 1));
+	//char* buff2 = buff;
+	vector2_char vstr = vector2_char_here();
+	if (list->children.size == 0) { vec_printf(&vstr, ""); } //{ buff = ""; }
 	for (i = 0; i < list->children.size; i++) {
 		const char* expr = m(ministack, pop_front);
-		buff2 = buff2 + sprintf(buff2, " %s", expr); //writes to beginning of string, and moves the beginning?
-		//buff = buff+sprintf(buff," %s",expr);
+		vec_printf(&vstr, " %s", expr);
 	}
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	//emit_code("%s = CALL [%s][%s]",exprResult, name, buff);
-	emit_code("CALL %s %s%s", exprResult, name, buff);
+	emit_code("CALL %s %s%s", exprResult, name, vstr.data);//buff);
 
 	//if (!discardResult) {
 	//	push_expr(exprResult);

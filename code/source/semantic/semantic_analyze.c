@@ -104,9 +104,9 @@ void semantic_analyze_func_def(ast_node *node){
 		S->storage = STORE_CODE;
 		S->username = name;
 		if(semantic_flatten){
-			char buff[200];
-			sprintf(buff,"_%s",name);
-			S->IR_name = IR_next_name(namespace_semantic,buff);
+			vector2_char vstr = vector2_char_here();
+			vec_printf(&vstr, "_%s", name);
+			S->IR_name = IR_next_name(namespace_semantic, vstr.data);//buff);
 		}else{
 			S->IR_name = name;
 		}

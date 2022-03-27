@@ -50,29 +50,44 @@ char *codegen_tok = 0;
 int trace_gens = 1;	//if 1, every assembly line will have "emitted from here" trace
 
 
-void asm_println2(const char *postfix, const char *fmt, ...){
+
+void asm_println2(const char* postfix, const char* fmt, ...) {
+	//1. print the args
 	va_list args;
-	va_start(args,fmt);
-	char buff[2000];
-	vsprintf(buff, fmt, args);
+	va_start(args, fmt);
+	vector2_char vstr = vector2_char_here();
+	vec_vnprintf(&vstr, -1, fmt, args);
 	va_end(args);
-	int len = strlen(buff);
-	int pos = 80;
-	for(int I = len; I < pos; I++){
-		buff[I] = ' ';
+	
+	//2. pad the end of the string with whitespace
+	int len = vstr.size - 1;//strlen(buff);
+	const char* pad80blanks = "                                                                                ";
+	vec_nprintf(&vstr, 80 - len, pad80blanks);
+	//int pos = 80;
+	//for (int I = len; I < pos; I++) {
+	//	buff[I] = ' ';
+	//}
+	
+	//3. print the postfix string
+	if (trace_gens) {
+		vec_printf(&vstr, "%s", postfix);
 	}
-	if(trace_gens){
-		sprintf(buff+pos,"%s", postfix);
-	}
-	len = strlen(buff);
-	//force the output to be on one line
-	for(int I = 0; I < len; I++){
-		if((buff[I] == '\n') || (buff[I] == '\r')){
-			buff[I] = ' ';
+
+	//4. force the output to be on one line
+	//len = strlen(buff);
+	//for (int I = 0; I < len; I++) {
+	//	if ((buff[I] == '\n') || (buff[I] == '\r')) {
+	//		buff[I] = ' ';
+	//	}
+	//}
+	len = vstr.size - 1;
+	for (int I = 0; I < len; I++) {
+		if ((vstr.data[I] == '\n') || (vstr.data[I] == '\r')) {
+			vstr.data[I] == ' ';
 		}
 	}
-	sprintf(buff+strlen(buff),"\n");
-	fprintf(fasm, "%s",buff);
+	vec_printf(&vstr, "\n");
+	fprintf(fasm, "%s", vstr.data);
 }
 
 void asm_printblk2(const char *prefix, const char *fmt, ...){
@@ -529,78 +544,81 @@ int allocStackArg(int size){
 
 //some register = value
 //returns something you can put into "mov eax, X"
-const char* loadRValue(const char *val){
-	if(!val){error("[CODE GEN] trying to load null value ");}
-	if(isnumber(val)){return val;}
+const char* loadRValue(const char* val) {
+	if (!val) { error("[CODE GEN] trying to load null value "); }
+	if (isnumber(val)) { return val; }
 	int deref = 0;
 	int ref = 0;
-	char buff[80];
-	
-	if(val[0] == '*'){deref = 1; val++;}
-	if(val[0] == '&'){ref = 1; val++;}
+	//char buff[80];
+	vector2_char vstr = vector2_char_here();
+
+	if (val[0] == '*') { deref = 1; val++; }
+	if (val[0] == '&') { ref = 1; val++; }
 	if (ref && deref) {
 		error("[CODE GEN] can't reference AND dereference");
 	}
 
 	ptr_IR_symbol S = find_IR_symbol(val);
-	if(!S){error("[CODE GEN] undefined value '%s' (line %d) ",val,CurCMD+1);}
-	if(!strcmp(S->type,"FUNC")){
-		if(deref){error("[CODE GEN] can't dereference a function ");}
-		if(ref){error("[CODE GEN] function names are already references (line %d)",CurCMD+1);}
+	if (!S) { error("[CODE GEN] undefined value '%s' (line %d) ", val, CurCMD + 1); }
+	if (!strcmp(S->type, "FUNC")) {
+		if (deref) { error("[CODE GEN] can't dereference a function "); }
+		if (ref) { error("[CODE GEN] function names are already references (line %d)", CurCMD + 1); }
 		return val;
 	}
-	if(!strcmp(S->type,"LABEL")){
-		if(deref)	{sprintf(buff,"#%s",val); return stralloc(buff);}
-		if(ref)		{error("[CODE GEN] labels are already references ");}
-		else		{return val;}
+	if (!strcmp(S->type, "LABEL")) {
+		if (deref) { vec_printf(&vstr, "#%s", val); return stralloc(vstr.data); }
+		if (ref) { error("[CODE GEN] labels are already references "); }
+		else { return val; }
 	}
-	if(!strcmp(S->type,"STRING")){
-		if(deref)	{sprintf(buff,"#%s",S->lbl_at); return stralloc(buff);}
-		if(ref)		{error("[CODE GEN] const strings are already references ");}
-		else		{return S->lbl_at;}
+	if (!strcmp(S->type, "STRING")) {
+		if (deref) { vec_printf(&vstr, "#%s", S->lbl_at); return stralloc(vstr.data); }
+		if (ref) { error("[CODE GEN] const strings are already references "); }
+		else { return S->lbl_at; }
 	}
-	if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
-		if(S->framedepth == 0){
+	if (!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) {
+		if (S->framedepth == 0) {
 			//global var
-			if(ref || S->arraysize){
-				sprintf(buff, "%d",S->pos);
-				return stralloc(buff);
+			if (ref || S->arraysize) {
+				vec_printf(&vstr, "%d", S->pos);
+				return stralloc(vstr.data);//return stralloc(buff);
 			}
-			if(deref){
+			if (deref) {
 				//todo: check if some register already contains that val
 				ptr_reg R = allocRegister();
-				const char *reg = R->name;
+				const char* reg = R->name;
 				R->val = stralloc(val);
 				printindent();
 				asm_println("mov %s, #%s", reg, S->lbl_at);
-				sprintf(buff, "#%s", reg);
-				return stralloc(buff);
+				vec_printf(&vstr, "#%s", reg);
+				return stralloc(vstr.data);//return stralloc(buff);
 			}
-			sprintf(buff, "#%s", S->lbl_at);
-			return stralloc(buff);
-		}else{
+			vec_printf(&vstr, "#%s", S->lbl_at);
+			return stralloc(vstr.data); //return stralloc(buff);
+		}
+		else {
 			//local var
-			if(ref || S->arraysize){
-				sprintf(buff, "EBP:%d",S->pos);
-				return stralloc(buff);
+			if (ref || S->arraysize) {
+				vec_printf(&vstr, "EBP:%d", S->pos);
+				return stralloc(vstr.data); //return stralloc(buff);
 			}
-			if(deref){
+			if (deref) {
 				//todo: check if some register already contains that val
 				ptr_reg R = allocRegister();
-				const char *reg = R->name;
+				const char* reg = R->name;
 				R->val = stralloc(val);
 				printindent();
 				asm_println("rstack %s, EBP:%d", reg, S->pos);
-				sprintf(buff, "#%s", reg);
-				return stralloc(buff);
+				vec_printf(&vstr, "#%s", reg);
+				return stralloc(vstr.data);//return stralloc(buff);
 			}
-			sprintf(buff,"EBP:#%d",S->pos); 
-			return stralloc(buff);		
+			vec_printf(&vstr, "EBP:#%d", S->pos);
+			return stralloc(vstr.data);//return stralloc(buff);
 		}
 	}
-	error("[CODE GEN] trying to load unsupported symbol type %s ",S->type);
+	error("[CODE GEN] trying to load unsupported symbol type %s ", S->type);
 	return 0;
 }
+
 
 //same but also puts the value in a register
 const char* loadLValue(const char* val){
