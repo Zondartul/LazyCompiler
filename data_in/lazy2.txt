@@ -53,6 +53,23 @@ void printnum2(int num)
 	if(num > 10) print("(>10)"); end
 end
 
+void fillderp(char *buff, int size, char *dz)
+	int len = strlen(dz);
+	for(int i = 0; i < size; i++)
+		buff[i] = dz[i%len];
+	end
+	buff[size-1] = 0;
+end
+
+void printnum3(int num)
+	char buff[10];
+	fillderp(buff, 10, "derp");
+	//print("<"); print(buff); print(">");
+	int2str(num, buff);
+	//print("<"); print(buff); print(">");
+	print(buff);
+end
+
 void printc(char c)
 	char arr[2];
 	arr[0] = c;
@@ -71,30 +88,73 @@ void dbgprint(char *str10, int num10, char c10)
 	printnl();
 end
 
-//void delay(int n)
-//	float trap;
-//	trap = 1000;
-//	//for(int i = 0; i < n*k; i++)
-//	//end
-//end
+void delay(int n)
+	float k = 1/32;
+	for(int i = 0; i < n*k; i++)
+	end
+end
+
+void clock()
+	int i = 0;
+	while(1)
+		printnum2(i++);
+		if(i > 10) i = 0; end
+		delay(1000);
+	end
+end
+
+void iftest(int n)
+	print("iftest: if("); printnum3(n); print(" == 2): ");
+	if(n == 2)
+		print("yes.");
+	else
+		print("no.");
+	end
+	print("end."); printnl();
+end
+
+
+void iftest2(int n)
+	print("iftest2: if("); printnum3(n); print(" == 2): ");
+	if(n == 2)
+		print("yes.");
+	end
+	if(n != 2)
+		print("no.");
+	end
+	print("end."); printnl();
+end
 
 int main(int argc, char **argv)
 	class Screen scr;
     screen_set(65536+100);
 	screen_clear();
 	print ("hello world! ");
+	libconsolescreen_init();
 	print ("another hello"); printnl();
-	print("num 5 = "); printnum2(5); print(", ok"); printnl();
-	print("char S = ["); printc('S'); print("]"); printnl();
+	//print("num 5 = "); printnum2(5); print(", ok"); printnl();
+	//print("char S = ["); printc('S'); print("]"); printnl();
+	//print("num 123 = ["); printnum3(123); print("]"); printnl();
+	//iftest(2);
+	//iftest(3);
+	//iftest2(2);
+	//iftest2(3);
 	print("ok.");
-	//delay(1000);
+	//delay(2000);
 	screen_clear();
+	setPrintCursor(0,0);
+	//Prints("ohai ",999); Printn(123,999); Prints(" yep",999);
+	printf("hi%dm\nye\n",1);
+	infloop();
+	printf("printf test1\n");
+	//setPrintCursor(0,1);
+	printf("printf [%d] test2\n", 123);
 	//setPrintCursor(0,2);
-	Prints("ohai ",999); Printn(123,999); Prints(" yep",999);
-	//printf("printf test1    ");
-	//printf("printf %d test2", 123);
-	//printf("printf %f test3", 21/4);
-	//printf("printf %s test4", "hello");
+	printf("printf [%f] test3\n", 21/4);
+	//setPrintCursor(0,3);
+	printf("printf [%s] test4\n", "hello");
+	//setPrintCursor(0,4);
+	printf("printf [%c] test5\n", '\');
 	//writePort(0, &scr);
 	//writePort(1, &(scr.X));
 	//writePort(2, &scr.X);
@@ -109,6 +169,7 @@ int main(int argc, char **argv)
 	//	printXY(str, 0, i);
 	//end
 	printXY("done", 0, 11);
+	//clock();
 	infloop();
 end
 

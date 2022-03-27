@@ -20,26 +20,41 @@ end
 void setPrintCursor(int x, int y) printScrX = x; printScrY = y; end
 
 void printCharXY(int X, int Y, char C, int col)
-	dbgprint("pcXY, X/C ",X,C);
-	dbgprint("pcXY, Y ",Y,0);
+	//dbgprint("pcXY, X/C ",X,C);
+	//dbgprint("pcXY, Y ",Y,0);
 	int offs = 2*(X+Y*30);
 	char *P = AdrScreen + offs;
-	*P++ = C;
-	*P = col;
-	dbgprint("pcXY, offs ",offs,0);
-	dbgprint("pcXY, AdrScr ", AdrScreen,0);
+	//*P++ = C;
+	P[0] = C;
+	P++;
+	//*P = col;
+	P[0] = col;
+	//dbgprint("pcXY, offs ",offs,0);
+	//dbgprint("pcXY, AdrScr ", AdrScreen,0);
+end
+
+void newline()
+	printScrX = 0;
+	printScrY++;
+	if(printScrY > cs_last_y-1)
+		ConsoleShiftUp();
+	end
+end
+
+void newcol()
+	printScrX++;
+	if(printScrX > cs_last_x)
+		newline();
+	end
 end
 
 void PrintChar(char C, int col)
 	//dbgprint("printchar ", C, C);
-	printCharXY(printScrX, printScrY, C, col);
-	printScrX++;
-	if(printScrX > cs_last_x)
-		printScrX = 0;
-		printScrY++;
-		if(printScrY > cs_last_y-1)
-			ConsoleShiftUp();
-		end
+	if(C == 10) newline(); end
+	if(C == 13) printScrX = 0; end
+	if(C > 31)
+		printCharXY(printScrX, printScrY, C, col);
+		newcol();
 	end
 end
 
@@ -99,4 +114,4 @@ void ConsoleShiftUp()
 	end
 end
 
-void delay(int n) end
+//void delay(int n) end

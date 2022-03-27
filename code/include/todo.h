@@ -33,11 +33,25 @@
 			int k = 1000;
 		end
 	>>> undefined symbol 'k' (looking in symtable ST_85).
-	\[note] imperative var_decl_assign.
-	 \[note] same error if we do this:
-	  	int k;
-		k = 1000;
-		\[note] can't print symbol table at this time because of buffer overflow in getSourceText2(). Stack fuckery?
+	|[note] imperative var_decl_assign.
+	|\[note] same error if we do this:
+	| 	int k;
+	|	k = 1000;
+	|	\[FIXED note] can't print symbol table at this time because of buffer overflow in getSourceText2(). Stack fuckery?
+	[note] was actually because function delay() was already defined elsewhere so we fetched an older symtable.
+* [todo] make all declarations look check if symbol is already declared and throw an error if so.
+* [bug] this doesn't work:
+	|	int End = 0;
+	|	while(!End)
+	|	... loop doesn't execute at all.
+	[note] this doesn't work either: if(!num)
+* [bug] *buff++ = 0; doesn't work, but buff[0] = 0; buff++; does.
+*  \[note] *buff = 0; also doesn't work.
+* [BUUUG] if-then is completely fucked. psuedocode:
+		func test(x): if(x) print(yes) else print(no) end
+		>>test(1): yes no end
+		>>test(0): end
+		if-else will either do both or none, not A or B. this is stupid.
 * ---------- class/struct bugs: ---------------------------
 * [Bug] initial values for the class members do not get set (have to manually write in a constructor)
 * [bug] class methods can't fetch member variables (might be frameclimbing, or even lack of 'this' ptr)
@@ -65,7 +79,8 @@
 * [FIXED Todo] memory safety - replace all sprintfs with snprintfs or other safety things.
 *  \[note] replaced s(n)printf with vec_printf
 * [Todo] memory safety - remove all manually managed buffers, replace with vec.
-* 
-* 
+* [BUG] somehow this causes a segfault in vector2_ptr_char_internal_resize. 
+	printf("hi%dm\nye\n\\n\\\\",1);
+* [issue] lazy2.txt printf can't see \ slashes, maybe because of internally unescaped strings?
 * 
 */

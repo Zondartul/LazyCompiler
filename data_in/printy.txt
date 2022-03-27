@@ -86,22 +86,34 @@ end
 
 void int2str(float num, char *buff)
 	char *buffInit = buff;
+	//print("int2str.");
 	if(num == 0)
-		*buff++ = '0';
-		*buff++ = 0;
+		//print("s1.");
+		buff[0] = 0;//*buff++ = '0';
+		buff++;
+		buff[0] = 1;//*buff = 0;
 	end
+	//print("s2.");
 	int End = 0;
-	while(!End)
+	while(End==0)
+		//print("s3.");
 		int d = num % 10;	
-		*buff++ = '0' + d;
+		//printnum2(d);
+		//*buff++ = '0' + d;
+		buff[0] = '0'+d;
+		buff++;
 		num = num / 10;
 		
-		if(!num)
-			*buff++ = 0;
+		if(num==0)
+			//print("s4.");
+			//*buff = 0;
+			buff[0] = 0;
 			End = 1;
 		end
 	end
+	//print("s5.");
 	string_reverse(buffInit);
+	//print("s6.");
 end
 
 void memmoveback(char *dest, char *src, int size)
@@ -154,11 +166,14 @@ void float2str(float num, int prec, char *buff)
 	if(isNeg) num = -num; end
 	int num_whole = floor(num);
 	float num_frac = floorPrec(frac(num), prec);
-	if(isNeg) *buff++ = '-'; end
+	//if(isNeg) *buff++ = '-'; end
+	if(isNeg) buff[0] = '-'; buff++; end
 	int2str(num_whole, buff);
 	buff = buff + strlen(buff);
 	if(frac)
-		*buff++ = '.';
+		//*buff++ = '.';
+		buff[0] = '.';
+		buff++;
 		int2str(num_frac, buff);
 		strPadBegin(buff, prec, '0');
 	end
@@ -169,15 +184,23 @@ end
 
 int sprintf(char *buff, char *fmt, float arg)
 	int printed = 0;
+	//print("sprintf 1.");
 	while(*fmt)
+		//print("sp 2.");
 		char c = *fmt;
+		//print("c = ["); printc(c); print("].");
+		//print("fmt = ["); printnum3(fmt); print("].");
+		print("[");printc(c);print("-");
 		if(c == '%')
+			print("c%[");printc(c);print("-");
+			//print("sp 3.");
 			fmt++;
-			c = *fmt;
-			if(c == 'd') int2str(arg, buff); end
-			if(c == 'f') float2str(arg, 4, buff); end
-			if(c == 's') strmove(arg, buff); end
-			if(c == 'c') buff[0] = arg; buff[1] = 0; end
+			char c2 = *fmt;
+			fmt++;
+			if(c2 == 'd') int2str(arg, buff); end
+			if(c2 == 'f') float2str(arg, 4, buff); end
+			if(c2 == 's') strmove(buff, arg); end
+			if(c2 == 'c') buff[0] = arg; buff[1] = 0; end
 			int inc = strlen(buff);
 			printed = printed + inc;
 			buff = buff + inc;
@@ -187,13 +210,39 @@ int sprintf(char *buff, char *fmt, float arg)
 		//	if(c == 'n') buff[0] = 10; buff[1] = 0; end
 		//	printed++;
 		//	buff++;
-		else
-			buff[0] = c;
-			buff[1] = 0;
-			printed++;
-			buff++;
-			fmt++;
 		end
+		if(c != '%')
+			print(".sp 4.");
+			if(c == '\')
+				print("c\,");printc(c);print("-");
+				fmt++;
+				char c2 = *fmt;
+				Prints(".c2=",999); PrintChar(c2,999); Prints(".",999);
+				fmt++;
+				if(c2 == 'n') Prints(".=n.",999); buff[0] = 10; buff[1] = 0; end
+				if(c2 == 'r') buff[0] = 13; buff[1] = 0; end
+				if(c2 == 'f') 
+					int len = 19 - printScrX;
+					for(int i = 0; i < len; i++)
+						buff[i] = ' ';
+					end
+					buff[len] = 0;
+				end
+				int inc = strlen(buff);
+				printed = printed + inc;
+				buff = buff+inc;
+			end
+			if(c != '\')
+				print("cA,");printc(c);print("-");
+				buff[0] = c;
+				buff[1] = 0;
+				printed++;
+				buff++;
+				fmt++;
+			end
+		end
+		//print("sp 5.");
+		printc(c);print("],");
 	end
 	return printed;
 end
@@ -201,8 +250,11 @@ end
 int printf(char *fmt, float arg)
 	int printed = 0;
 	char buff[80];
-	sprintf(buff, fmt, arg);
-	print(buff);
+	//print("printf 1.");
+	printed = sprintf(buff, fmt, arg);
+	//print("printf 2.[");
+	Prints(buff, 999);
+	//print("] printf 3.");
 	return printed;
 end
 

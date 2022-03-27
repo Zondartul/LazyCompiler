@@ -99,6 +99,12 @@ void semantic_analyze_func_def(ast_node *node){
 	struct type_name *T = parseTypename(node_typename);//(ast_get_child(node,0));//semantic_get_type(ast_get_child(node,0)->token.value);
 	const char *name = node->token.value;
 	if(semantic_decl){
+		//27.03.2022: make sure the symbol is not 'already declared'
+		struct symbol* Sprev = try_lookup_symbol(name);
+		if (Sprev) {
+			error("semantic error: symbol [%s] already declared", name);
+		}
+
 		struct symbol *S = symbol_new0();//new_symbol();
 		S->type = SYMBOL_FUNCTION;
 		S->storage = STORE_CODE;

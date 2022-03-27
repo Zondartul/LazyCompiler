@@ -87,7 +87,7 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 				fprintf(stderr,"\nWARNING: gst2: overshoot2: report\n");
 				fprintf(stderr,"node ==================\n");
 				const char *snode = 0;
-				if(curNode){snode = get_source_text2(curNode->token.pos);}
+				//if(curNode){snode = get_source_text2(curNode->token.pos);} //this sometimes causes a stack overflow
 				fprintf(stderr,"%s\n",snode);
 				fprintf(stderr,"semantic ============\n");
 				fprintf(stderr,"decl = %d, nodesDecl = %d, nodesImp = %d\n",
