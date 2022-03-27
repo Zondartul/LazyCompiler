@@ -282,7 +282,7 @@ char *get_source_text2(YYLTYPE pos);
 			printf("|-child loc valid: %d\n",valid2);
 		}
 		if(!(node->token.pos.null) && (node->token.pos.filename)){
-			printf("|node sourcecode: [%s]\n",get_source_text2(node->token.pos));
+			//printf("|node sourcecode: [%s]\n",get_source_text2(node->token.pos));
 		}else{
 			printf("|no source\n");
 		}

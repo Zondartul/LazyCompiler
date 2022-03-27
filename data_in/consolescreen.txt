@@ -1,0 +1,102 @@
+
+char *AdrScreen = 0;
+int screen_print_x_min = 0;
+int screen_print_y_min = 0;
+int screen_print_x_max = 30;
+int screen_print_y_max = 19;
+
+int cs_last_x = 29;
+int cs_last_y = 17;
+int printScrX = 0;
+int printScrY = 0;
+
+void libconsolescreen_init()
+	cs_last_x = 29;
+	cs_last_y = 17;
+	printScrX = 0;
+	printScrY = 0;
+end
+
+void setPrintCursor(int x, int y) printScrX = x; printScrY = y; end
+
+void printCharXY(int X, int Y, char C, int col)
+	dbgprint("pcXY, X/C ",X,C);
+	dbgprint("pcXY, Y ",Y,0);
+	int offs = 2*(X+Y*30);
+	char *P = AdrScreen + offs;
+	*P++ = C;
+	*P = col;
+	dbgprint("pcXY, offs ",offs,0);
+	dbgprint("pcXY, AdrScr ", AdrScreen,0);
+end
+
+void PrintChar(char C, int col)
+	//dbgprint("printchar ", C, C);
+	printCharXY(printScrX, printScrY, C, col);
+	printScrX++;
+	if(printScrX > cs_last_x)
+		printScrX = 0;
+		printScrY++;
+		if(printScrY > cs_last_y-1)
+			ConsoleShiftUp();
+		end
+	end
+end
+
+void Prints(char *str2, int col) //maybe str conflicts with the str in print?
+//	int dbgNum = 0;
+	while(*str2)
+//		char c = *str2;
+//		print("prints: i=");
+//		printnum2(dbgNum);
+//		print(",c=");
+//		printc(c);
+//		printnl();
+//		dbgNum++;
+		PrintChar(*str2++, col);
+	end
+end
+
+void Printn(int num, int col)
+	char buff[20];
+	int2str(num, buff);
+	Prints(buff, col);
+end
+
+void screen_set(char *scr) AdrScreen = scr; end
+void screen_clear() AdrScreen[2041] = 1; end
+void screen_cursor_enable() AdrScreen[2046] = 1; end
+void screen_cursor_disable() AdrScreen[2046] = 0; end
+void screen_set_cursor_pos(int pos) AdrScreen[2045] = 2*pos; end
+void screen_set_cursor_pos_xy(int x, int y) AdrScreen[2045] = 2*(30*y+x); end
+void screen_force_refresh() AdrScreen[2020] = 1; delay(1); end
+void screen_set_shift_box_x1(int n) AdrScreen[2031] = n; end
+void screen_set_shift_box_x2(int n) AdrScreen[2032] = n; end
+void screen_set_shift_box_y1(int n) AdrScreen[2033] = n; end
+void screen_set_shift_box_y2(int n) AdrScreen[2034] = n; end
+
+void screen_set_shift_box(int x1, int x2, int y1, int y2)
+	AdrScreen[2031] = x1;
+	AdrScreen[2032] = x2;
+	AdrScreen[2033] = y1;
+	AdrScreen[2034] = y2;
+end
+
+void screen_set_print_box(int x1, int y1, int x2, int y2)
+	screen_print_x_min = x1;
+	screen_print_y_min = y1;
+	screen_print_x_max = x2;
+	screen_print_y_max = y2;
+end
+
+void screen_shift_vertical(int n) AdrScreen[2038] = n; end
+void screen_shift_horizontal(int n) AdrScreen[2037] = n; end
+
+void ConsoleShiftUp()
+	if(printScrY > cs_last_y-1)
+		screen_shift_vertical(1);
+		printScrY--;
+	end
+end
+
+void delay(int n) end

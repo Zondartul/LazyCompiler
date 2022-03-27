@@ -1,0 +1,60 @@
+
+class Screen
+  char* mem_scr;// = 65536;
+  int X;// = 0;
+  int Y;// = 0;
+  int Xmax;// = 30;
+  int Ymax;// = 19;
+  int col;// = 999;
+  
+  void constructor()
+    mem_scr = 65536+100;
+	X = 0;
+	Y = 0;
+	Xmax = 30;
+	Ymax = 19;
+	col = 999;
+  end
+  
+  void incXY()
+    X++;
+    if(X > Xmax)
+       X = 0;
+       Y++;
+       if(Y > Ymax)
+         Y = 0;
+       end
+    end
+  end 
+ 
+  void putchXY(char C, int X, int Y)
+    int adr = (X+Xmax*Y)*2;
+    mem_scr[adr] = C;      //this says "array access into non-pointer type char"
+    mem_scr[adr+1] = col;
+	//char**** ptr = mem_scr;     //this too
+	//ptr[adr] = C;
+	//ptr[adr+1] = col;
+  end
+ 
+  void printXY(char *str, int X, int Y)
+    while(*str)
+       putch(*str++, X++, Y);
+    end
+  end
+ 
+  void putch(char C)
+     putchXY(C, X, Y);
+     incXY();
+  end 
+ 
+  void print(char *str)
+    while(*str)
+       putch(*str++);
+    end 
+  end
+  
+  void test()
+	writePort(4, &X);
+	writePort(5, X);
+  end
+end

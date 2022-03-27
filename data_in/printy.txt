@@ -1,0 +1,222 @@
+//hello, am printy
+
+char *lorem_ipsum(int I)
+   int sw = I % 10;
+   if(sw == 0) return "Lorem ipsum dolor sit amet, "; end
+   if(sw == 1) return "consectetur adipiscing elit. "; end
+   if(sw == 2) return "Nam auctor lorem in massa tempor bibendum. "; end
+   if(sw == 3) return "Nulla in metus in nunc ornare "; end
+   if(sw == 4) return "porta ullamcorper non enim. "; end
+   if(sw == 5) return "Donec tincidunt magna "; end
+   if(sw == 6) return "non tellus blandit faucibus. "; end
+   if(sw == 7) return "Nullam ac sem vitae lectus gravida vulputate. "; end
+   if(sw == 8) return "Quisque quis lacinia risus, "; end
+   if(sw == 9) return "non rutrum turpis. "; end
+   return "(oops)";
+end
+
+//returns the (floored) log10 of a number, i.e. number of digits in floor(num).
+//assumes num is positive
+int ilog10(float num)
+	for(int i = 0; i < 10; i++)
+		if(num < 10) return i; end
+		num = num / 10;
+	end
+end
+
+//returns 10^num
+int ipow10(int num)
+	int x = 1;
+	for(int i = 0; i < num; i++)
+		x = x*10;
+	end
+	return x;
+end
+
+int numDigits(float num) return ilog10(num); end
+
+int getNdigit(float num, int dig)
+	//1. remove the lower parts
+	num = num / ipow10(dig);
+	//2. get the lowest remaining digit
+	num = num % 10;
+	return num;
+end
+
+int floor(float num)
+	int res = 0;
+	int n = numDigits(num);
+	for(int i = 0; i < n; i++)
+		int d = getNdigit(num, i);
+		res = res + d * ipow10(i);
+	end
+	return res;
+end
+
+int floorPrec(float num, float prec)
+	num = num * ipow10(prec);
+	num = floor(num);
+	num = num / ipow10(prec);
+	return num;
+end
+
+float frac(float num)
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	float f = num - floor(num);
+	if(isNeg) f = -f; end
+	return f;
+end
+
+int strlen(char *str)
+	int i = 0;
+	while(*str++) i++; end
+	return i;
+end
+
+void string_reverse(char *str)
+	int len = strlen(str);
+	for(int i = 0; i < len/2; i++)
+		int opposite = len-1-i;
+		char d = str[i];
+		str[i] = str[opposite];
+		str[opposite] = d;
+	end	
+end
+
+void int2str(float num, char *buff)
+	char *buffInit = buff;
+	if(num == 0)
+		*buff++ = '0';
+		*buff++ = 0;
+	end
+	int End = 0;
+	while(!End)
+		int d = num % 10;	
+		*buff++ = '0' + d;
+		num = num / 10;
+		
+		if(!num)
+			*buff++ = 0;
+			End = 1;
+		end
+	end
+	string_reverse(buffInit);
+end
+
+void memmoveback(char *dest, char *src, int size)
+	for(int i = size-1; i > -1; i--)
+		dest[i] = src[i];
+	end
+end
+
+void memmove(char *dest, char *src, int size)
+	if(dest > src)
+		memmoveback(dest, src, size);
+	else
+		for(int i = 0; i < size; i++)
+			dest[i] = src[i];
+		end
+	end
+end
+
+void strmove(char *dest, char *src)
+	int len = strlen(src);
+	memmove(dest, src, len+1); //includes terminating zero
+end
+
+//if the string is shorter than padlen, pads in with padchar
+void strPadBegin(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		strmove(str+diff, str);
+		for(int i = 0; i < diff; i++)
+			str[i] = padchar;
+		end
+	end
+end
+
+void strPadEnd(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		for(int i = 0; i < diff; i++)
+			str[len+i] = padchar;
+		end
+		str[padlen] = 0;
+	end
+end
+
+void float2str(float num, int prec, char *buff)
+	char *buffInit = buff;
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	int num_whole = floor(num);
+	float num_frac = floorPrec(frac(num), prec);
+	if(isNeg) *buff++ = '-'; end
+	int2str(num_whole, buff);
+	buff = buff + strlen(buff);
+	if(frac)
+		*buff++ = '.';
+		int2str(num_frac, buff);
+		strPadBegin(buff, prec, '0');
+	end
+end
+
+//idea: functor as 'character inserter'. can check bounds, do /dev/null, etc.
+//so basically stream?
+
+int sprintf(char *buff, char *fmt, float arg)
+	int printed = 0;
+	while(*fmt)
+		char c = *fmt;
+		if(c == '%')
+			fmt++;
+			c = *fmt;
+			if(c == 'd') int2str(arg, buff); end
+			if(c == 'f') float2str(arg, 4, buff); end
+			if(c == 's') strmove(arg, buff); end
+			if(c == 'c') buff[0] = arg; buff[1] = 0; end
+			int inc = strlen(buff);
+			printed = printed + inc;
+			buff = buff + inc;
+		//elseif(c == '\\')
+		//	c = *++fmt;
+		//	if(c == '\\') buff[0] = '\\'; buff[1] = 0; end
+		//	if(c == 'n') buff[0] = 10; buff[1] = 0; end
+		//	printed++;
+		//	buff++;
+		else
+			buff[0] = c;
+			buff[1] = 0;
+			printed++;
+			buff++;
+			fmt++;
+		end
+	end
+	return printed;
+end
+
+int printf(char *fmt, float arg)
+	int printed = 0;
+	char buff[80];
+	sprintf(buff, fmt, arg);
+	print(buff);
+	return printed;
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

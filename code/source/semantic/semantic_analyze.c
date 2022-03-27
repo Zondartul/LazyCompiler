@@ -262,9 +262,11 @@ void semantic_analyze_var_decl(ast_node *node){
 	int arraysize = 0;
 	if(node->token.production == 1){
 		array = 1;
-		struct ast_node *Nsize = ast_get_child(node,1);
+		struct ast_node *Nsize = ast_get_child(node,2);
+		if ((strcmp(Nsize->token.type, "expr_const") != 0) || (!atoi(Nsize->token.value))){
+			error("semantic error: array size has to be positive integer");
+		}
 		arraysize = atoi(Nsize->token.value);
-		if(!arraysize){error("semantic error: array size has to be positive integer");}
 	}
 	struct symbol *S;// = lookup_symbol_here(name);
 	// if(S){

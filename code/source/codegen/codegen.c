@@ -21,17 +21,6 @@
 // alternative: all symbols preallocated and never deallocated
 //
 
-
-//generated
-//definition_vector_of(ptr_reg);
-//definition_vector_of(ptr_debugInfoFunc);
-//definition_vector_of(ptr_debugInfoVar);
-
-//constants
-//#define DEBUGMEM 68866
-//#define if_first(x) {static int count = 0; if(!first++){x;}}
-//#define if_not_first(x) {static int first = 0; if(first++){x;}}
-
 //vars
 int debugInvade = 0;
 int debugInvadeHalt = 1;
@@ -47,12 +36,9 @@ int codegen_decl = 0;
 const char *lbl_frameStart = 0;
 const char *lbl_frameEnd = 0;
 vector2_ptr_char frameStarts;
-//vector2_int frameIndices;
 vector3_int frameIndices;
 vector2_ptr_frame frames;
 vector2_ptr_frame framestack;
-//vector2_int varstacks;
-//vector2_int argstacks;
 vector3_int varstacks;
 vector3_int argstacks;
 vector2_ptr_reg registers;
@@ -63,22 +49,12 @@ const char *codegen_str = 0;
 char *codegen_tok = 0;
 int trace_gens = 1;	//if 1, every assembly line will have "emitted from here" trace
 
-//functions ===============================================
-//void storeValue(const char *val, const char *reg);
-//void printTraceCode();
-//void printDebugInfo();
-//void printStringStore();
-//void printGlobalVars();
-//void printindent();
-
-
 
 void asm_println2(const char *postfix, const char *fmt, ...){
 	va_list args;
 	va_start(args,fmt);
 	char buff[2000];
 	vsprintf(buff, fmt, args);
-	//vfprintf(fasm, fmt, args);
 	va_end(args);
 	int len = strlen(buff);
 	int pos = 80;
@@ -86,7 +62,6 @@ void asm_println2(const char *postfix, const char *fmt, ...){
 		buff[I] = ' ';
 	}
 	if(trace_gens){
-		//fprintf(fasm, "%s", postfix);
 		sprintf(buff+pos,"%s", postfix);
 	}
 	len = strlen(buff);
@@ -97,7 +72,6 @@ void asm_println2(const char *postfix, const char *fmt, ...){
 		}
 	}
 	sprintf(buff+strlen(buff),"\n");
-	//fprintf(fasm, "\n");
 	fprintf(fasm, "%s",buff);
 }
 
@@ -117,8 +91,8 @@ ptr_IR_symbol new_IR_symbol(){
 	S->username = "";
 	S->type = 0;
 	S->lbl_at = 0;
-	S->lbl_from = 0;//"section_code";
-	S->lbl_to = 0;//"section_code_end";
+	S->lbl_from = 0;
+	S->lbl_to = 0;
 	S->temp = 0;
 	S->pointerlevel = 0;
 	S->pos = 0;
@@ -137,10 +111,9 @@ const char *stringStore_add(const char *str){
 }
 
 void printStringStore(){
-	asm_println("string_store:"); //fprintf(fasm,"string_store:\n");
+	asm_println("string_store:");
 	int i;
 	for(i = 0; i < stringStore_labels.size; i++){
-		//fprintf(fasm,"%s: db \"%s\",0\n",m(stringStore_labels,get,i),m(stringStore_strings,get,i));
 		const char *str_lbl = m(stringStore_labels,get,i);
 		const char *str_str = m(stringStore_strings,get,i);
 		asm_println("%s: db \"%s\",0",str_lbl,str_str);
@@ -149,20 +122,20 @@ void printStringStore(){
 
 void printTraceHelper(const char *str){
 	if(debugInvade){
-		asm_println("#ifdef DEBUG"); //fprintf(fasm,"#ifdef DEBUG\n");
+		asm_println("#ifdef DEBUG");
 		if(str){
 			const char *lbl = stringStore_add(str);
 			printindent();
-			asm_println("push %s",lbl); //fprintf(fasm,"push %s\n",lbl);
+			asm_println("push %s",lbl);
 		}else{
 			printindent();
-			asm_println("push 0"); //fprintf(fasm,"push 0\n");
+			asm_println("push 0");
 		}
 		printindent();
 		asm_println("call trace"); fprintf(fasm,"call trace\n");
 		printindent();
-		asm_println("inc esp"); //fprintf(fasm,"inc esp\n");//deallocate the argument
-		asm_println("#endif"); //fprintf(fasm,"#endif\n");
+		asm_println("inc esp");
+		asm_println("#endif");
 	}
 }
 void printTrace(){
@@ -172,13 +145,7 @@ void printTrace(){
 
 void print_skeleton_start(){
 	int debugMem = DEBUGMEM;
-	//fprintf(fasm,
-	//"code_segment_start:\n"
-	//"#define DEBUG\n"
-	//"mov ebp, 20000\n"		//so we can tell stack pointers from code pointers
-	//"mov esp, 19999\n"
-	//"mov #%d, debug_info\n"
-	//,debugMem+20);
+
 	asm_println("code_segment_start:");
 	asm_println("#define DEBUG");
 	asm_println("mov ebp, 20000");
@@ -187,35 +154,32 @@ void print_skeleton_start(){
 	
 	//CurEBP = 20000;
 	printTraceHelper("program start");
-	//fprintf(fasm,
-	//"section_code_body:\n"
-	////"call main\n"//haaax?..
-	//);
+
 	asm_println("section_code_body:");
 }
 
 void print_skeleton_end(){
-	asm_println("code_segment_epilog:"); //fprintf(fasm,"code_segment_epilog:\n");
+	asm_println("code_segment_epilog:");
 	
 	printTraceCode();
-	asm_println("code_segment_end:"); //fprintf(fasm,"code_segment_end:\n");
-	asm_println("data_segment_dynamic_start:"); //fprintf(fasm,"data_segment_dynamic_start:\n");
+	asm_println("code_segment_end:");
+	asm_println("data_segment_dynamic_start:");
 	printGlobalVars();
-	asm_println("data_segment_dynamic_end:"); // fprintf(fasm,"data_segment_dynamic_end:\n");
-	asm_println("data_segment_static_start:");//fprintf(fasm,"data_segment_static_start:\n");
+	asm_println("data_segment_dynamic_end:");
+	asm_println("data_segment_static_start:");
 	printStringStore();
 	printDebugInfo();
-	asm_println("data_segment_static_end:"); //fprintf(fasm,"data_segment_static_end:\n");
+	asm_println("data_segment_static_end:");
 }
 
 void printTraceCode(){
 	int debugMem = DEBUGMEM;
 	asm_printblk(
 	"trace:\n"
-	"cmp #%d,0\n"//"cmp #65884,0\n" //debugMem + 18
+	"cmp #%d,0\n"
 	"je trace_exit\n"
 	"pusha\n"
-	"mov eax, %d\n"//"mov eax, 65866\n" //debugMem
+	"mov eax, %d\n"
 	"mov eax:#0, ESP:#0\n"
 	"mov eax:#1, ESP:#1\n"
 	"mov eax:#2, ESP:#2\n"
@@ -234,7 +198,6 @@ void printTraceCode(){
 	"mov eax:#15, ESP:#15\n"
 	"mov eax:#16, ESP:#16\n"
 	"mov eax:#17, ESP:#17\n"
-	//"mov eax:#18, ESP:#18\n"
 	"mov eax:#19, ESP\n"
 	"mov eax:#20, debug_info\n"
 	"popa\n"
@@ -246,8 +209,6 @@ void printTraceCode(){
 	"ret\n"
 	);
 }
-
-//void resizeStacks();
 
 void new_frame(){
 	ptr_frame F = malloc(sizeof(struct frame));
@@ -265,7 +226,6 @@ void new_frame(){
 	F->stackvarsize = 0;
 	F->stackargsize = 0;
 	curframe = F;
-	//resizeStacks();
 	m(frames,push_back,F);
 	printf("new frame, depth:%d, vs.size:%d, as.size:%d\n",F->depth,varstacks.size,argstacks.size);
 }
@@ -329,8 +289,8 @@ void pop_frame(){
 ptr_IR_symbol find_IR_symbol(const char *IR_name){
 	int i;
 	ptr_IR_symbol S;
-	for(i = 0; i < curframe->symbols.size;i++){//for(i = 0; i < IR_symbol_table.size; i++){
-		S = m(curframe->symbols,get,i);//m(IR_symbol_table,get,i);
+	for(i = 0; i < curframe->symbols.size;i++){
+		S = m(curframe->symbols,get,i);
 		if(!strcmp(S->IR_name,IR_name)){
 			return S;
 		}
@@ -394,8 +354,6 @@ void initializeRegTable(){
 	m(registers,push_back,new_reg("R4",0,0));
 	m(registers,push_back,new_reg("R5",0,0));
 	m(registers,push_back,new_reg("R6",0,0));
-	//m(registers,push_back,new_reg("R7",0,0));
-	//m(registers,push_back,new_reg("R8",0,0));
 	printf("reg table initialize\n");
 }
 
@@ -419,15 +377,7 @@ ptr_reg allocRegister(){
 		if(R->age < minage){minage = R->age; minageI = i;}
 	}
 	ptr_reg R = m(registers,get,minageI);
-	/*
-	if(R->val){
-		printf("spilling register %d (%s)\n",minageI,R->name);
-		storeValue(R->val,R->name);
-	}else{
-		printf("assuming register %s is free (no assoc. value)\n",R->name);
-		error("unreachable code?...");
-	}
-	*/
+
 	if(R->val){if(comments){asm_println("//discarding %s from %s",R->val,R->name);}}
 	R->val = 0;
 	R->age = age++;
@@ -447,91 +397,117 @@ ptr_symbol find_symbol_by_ir_name(ptr_symbol_table ST, const char *name){
 	return 0;
 }
 
+void asm_printdb_nonnull(const char* str) {
+	if (str == 0) {
+		asm_println("0, //(null)");
+	}
+	else {
+		asm_println("%s, ", str);
+	}
+}
+
 void printDebugInfo(){
 	printf("emitting debug info\n");
+	int b_printframes = 0;
+	int b_printfuncs = 1;
+	int b_printvars = 1;
+
 	int j;
 	int i;
-	
-	asm_println("debug_info:");
-	//fprintf(fasm,"debug_info_frames:\n");
-	//fprintf(fasm,"DB %d\n //number of frames\n",frames.size);
-	//fprintf(fasm,"//lbl_frm, lbl_to, depth\n");
-	//for(j = 0; j < frames.size; j++) {
-	//	ptr_frame F = m(frames,get,j);
-	//	fprintf(fasm,"DB %s,%s,%d\n",F->lbl_from,F->lbl_to,F->depth);
-	// }
-	asm_println("debug_info_funcs:");
 	int numFuncs = 0;
 	int numVars = 0;
-	for(j = 0; j < frames.size; j++){
-		ptr_frame F = m(frames,get,j);
-		for(i = 0; i < F->symbols.size; i++){
-			ptr_IR_symbol S = m(F->symbols,get,i);
-			if(!strcmp(S->type,"FUNC")){
-				numFuncs++;
-			}
-			if((!strcmp(S->type,"VAR")||!strcmp(S->type,"ARG"))&&(!S->temp)){
-				numVars++;
-			}
+
+	asm_println("debug_info:");
+	if (b_printframes) {
+		fprintf(fasm,"debug_info_frames:\n");
+		fprintf(fasm,"DB %d\n //number of frames\n",frames.size);
+		fprintf(fasm,"//lbl_frm, lbl_to, depth\n");
+		for(j = 0; j < frames.size; j++) {
+			ptr_frame F = m(frames,get,j);
+			fprintf(fasm,"DB %s,%s,%d\n",F->lbl_from,F->lbl_to,F->depth);
 		}
 	}
-	asm_println("DB %d\n //number of functions\n",numFuncs);
-	if(comments){asm_println("//[len][entrance,exit,[len][IR_name],[len][username]]\n");}
-	
-	for(j = 0; j < frames.size; j++){
-		ptr_frame F = m(frames,get,j);
-		for(i = 0; i< F->symbols.size; i++){
-			ptr_IR_symbol S = m(F->symbols,get,i);
-			//record: db recordlen, data1, data2... datan
-			//record2[1] = (record1+recordlen)[1]
-			if(!strcmp(S->type,"FUNC")){
-				int str1len = 0;
-				if(S->IR_name){str1len = strlen(S->IR_name);}
-				int record1len = str1len+1;
-				int str2len = 0;
-				if(S->username){str2len = strlen(S->username);}
-				int record2len = str2len+1;
-				int recordlen = 3+record1len+record2len;
-				//fprintf(fasm,"DB %d, %s, %s,\"%s\",0\n",recordlen,F->entrance,F->exit,F->name);
-				asm_println("DB %d, ",recordlen);
-				asm_println("%s, ",S->lbl_from);
-				asm_println("%s, ",S->lbl_to);
-				asm_println("%d, \"%s\",0, ",str1len,S->IR_name);
-				asm_println("%d, \"%s\",0;",str2len,S->username);
-			}			
-		}
-	}
-	asm_println("debug_info_vars:\n");
-	asm_println("DB %d\n //number of variables\n",numVars);
-	if(comments){asm_println("//[len][visible_from,visible_to,pos,framedepth,[len][IR_name],[len][username]]\n");}
-	for(j = 0; j < frames.size; j++){
-		ptr_frame F = m(frames,get,j);
-		for(i = 0; i< F->symbols.size; i++){
-			ptr_IR_symbol S = m(F->symbols,get,i);
-			//record: db recordlen, data1, data2... datan
-			//record2[1] = (record1+recordlen)[1]
-			if((!strcmp(S->type,"VAR")||!strcmp(S->type,"ARG"))&&(!S->temp)){
-				int str1len = 0;
-				if(S->IR_name){str1len = strlen(S->IR_name);}
-				int record1len = str1len+1;
-				int str2len = 0;
-				if(S->username){str2len = strlen(S->username);}
-				int record2len = str2len+1;
-				int recordlen = 4+record1len+record2len;
-				
-				asm_println("\n//%s %s",S->type,S->IR_name);
-				asm_println("DB %d //recordlen",recordlen);
-				asm_println("DB %s //%s->lbl_from",S->lbl_from, S->IR_name);
-				asm_println("DB %s //%s->lbl_to",S->lbl_to, S->IR_name);
-				if(S->framedepth){
-					asm_println("DB %d //%s->pos",S->pos, S->IR_name);
-				}else{
-					asm_println("DB %s //%s->lbl_at",S->lbl_at,S->IR_name);
+	if (b_printfuncs) {
+		asm_println("debug_info_funcs:");
+		for (j = 0; j < frames.size; j++) {
+			ptr_frame F = m(frames, get, j);
+			for (i = 0; i < F->symbols.size; i++) {
+				ptr_IR_symbol S = m(F->symbols, get, i);
+				if (!strcmp(S->type, "FUNC")) {
+					numFuncs++;
 				}
-				asm_println("DB %d //%s->framedepth",S->framedepth, S->IR_name);
-				asm_println("DB %d, \"%s\",0 //%s->IR_name",str1len,S->IR_name, S->IR_name);
-				asm_println("DB %d, \"%s\",0//%s->username",str2len,S->username, S->IR_name);
-				//fprintf(fasm,"DB %d, %s, %s, %d, \"%s\",0\n",recordlen,V->visible_from,V->visible_to,V->framedepth,V->name);
+				if ((!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) && (!S->temp)) {
+					numVars++;
+				}
+			}
+		}
+		asm_println("DB %d\n //number of functions\n", numFuncs);
+		if (comments) { asm_println("//[len][entrance,exit,[len][IR_name],[len][username]]\n"); }
+
+		for (j = 0; j < frames.size; j++) {
+			ptr_frame F = m(frames, get, j);
+			for (i = 0; i < F->symbols.size; i++) {
+				ptr_IR_symbol S = m(F->symbols, get, i);
+				//record: db recordlen, data1, data2... datan
+				//record2[1] = (record1+recordlen)[1]
+				if (!strcmp(S->type, "FUNC")) {
+					int str1len = 0;
+					if (S->IR_name) { str1len = strlen(S->IR_name); }
+					int record1len = str1len + 1;
+					int str2len = 0;
+					if (S->username) { str2len = strlen(S->username); }
+					int record2len = str2len + 1;
+					int recordlen = 3 + record1len + record2len;
+					//fprintf(fasm,"DB %d, %s, %s,\"%s\",0\n",recordlen,F->entrance,F->exit,F->name);
+					asm_println("DB %d, ", recordlen);
+					asm_printdb_nonnull(S->lbl_from); //asm_println("%s, ", S->lbl_from);
+					asm_printdb_nonnull(S->lbl_to);   //asm_println("%s, ", S->lbl_to);
+					asm_println("%d, \"%s\",0, ", str1len, S->IR_name);
+					asm_println("%d, \"%s\",0;", str2len, S->username);
+				}
+			}
+		}
+	}
+	if (b_printvars) {
+		asm_println("debug_info_vars:\n");
+		asm_println("DB %d\n //number of variables\n", numVars);
+		if (comments) { asm_println("//[len][visible_from,visible_to,pos,framedepth,[len][IR_name],[len][username]]\n"); }
+		for (j = 0; j < frames.size; j++) {
+			ptr_frame F = m(frames, get, j);
+			for (i = 0; i < F->symbols.size; i++) {
+				ptr_IR_symbol S = m(F->symbols, get, i);
+				//record: db recordlen, data1, data2... datan
+				//record2[1] = (record1+recordlen)[1]
+				if ((!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) && (!S->temp)) {
+					int str1len = 0;
+					if (S->IR_name) { str1len = strlen(S->IR_name); }
+					int record1len = str1len + 1;
+					int str2len = 0;
+					if (S->username) { str2len = strlen(S->username); }
+					int record2len = str2len + 1;
+					int recordlen = 4 + record1len + record2len;
+
+					//quick fix for that one bug where lbl_to is null.
+					const char* lbl_from = S->lbl_from;
+					if (!lbl_from) {lbl_from = "0";}
+					const char* lbl_to = S->lbl_to;
+					if (!lbl_to) {lbl_to = "0";}
+
+					asm_println("\n//%s %s", S->type, S->IR_name);
+					asm_println("DB %d //recordlen", recordlen);
+					asm_println("DB %s //%s->lbl_from", lbl_from, S->IR_name);
+					asm_println("DB %s //%s->lbl_to", lbl_to, S->IR_name);
+					if (S->framedepth) {
+						asm_println("DB %d //%s->pos", S->pos, S->IR_name);
+					}
+					else {
+						asm_println("DB %s //%s->lbl_at", S->lbl_at, S->IR_name);
+					}
+					asm_println("DB %d //%s->framedepth", S->framedepth, S->IR_name);
+					asm_println("DB %d, \"%s\",0 //%s->IR_name", str1len, S->IR_name, S->IR_name);
+					asm_println("DB %d, \"%s\",0//%s->username", str2len, S->username, S->IR_name);
+					//fprintf(fasm,"DB %d, %s, %s, %d, \"%s\",0\n",recordlen,V->visible_from,V->visible_to,V->framedepth,V->name);
+				}
 			}
 		}
 	}

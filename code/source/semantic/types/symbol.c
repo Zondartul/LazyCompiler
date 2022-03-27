@@ -68,6 +68,9 @@ struct symbol* symbol_new(
 //in the current symbol table, or in a symbol table accessible from it,
 //find a symbol with the given name.
 struct symbol *lookup_symbol(const char *name){
+	if (strcmp(name,"trap")==0) {
+		printf("trap symbol\n");
+	}
 	struct symbol *S = lookup_symbol_helper(name, currentSymbolTable);
 	if(S){
 		return S;

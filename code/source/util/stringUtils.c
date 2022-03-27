@@ -4,10 +4,14 @@
 #include "ctype.h"
 //vars
 int indent = 0;
-
+int num_gst2_calls = 0;
 //gets a string of source-code corresnonding to the range "YYLTYPE pos".
 //returns a new cstring.
 char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
+	num_gst2_calls++; //debug, cause we're crashing here
+	if (num_gst2_calls == 704) {
+		printf("DEBUG HAI");
+	}
 	if(pos.null){return "(nullPos:text)";}
 	if(!pos.filename){error("get_source_text2 called with no filename\n");}
 	FILE *fp = fopen(pos.filename,"r");
@@ -49,6 +53,7 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 	//char *str = malloc(sizeof(char)*(len+1));
 	char str[2000];
 	char *strP = str;
+	char* strWatermark = &str[1990];
 	//int err = fseek(fp,fpos,SEEK_SET);
 	//if(err){perror("fseek: "); error("gst2: fseek: err = %d",err);}
 	//line = pos.first_line;
@@ -61,10 +66,16 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 		while((C != '\n')&&(C != EOF)){
 			//write down every character until a newline
 			*strP++ = C; C = fgetc(fp);
+			if (strP >= strWatermark) {
+				break;
+			}
 		}
 		col = 0;
 		//write down the newline char
 		*strP++ = C; line++; C = fgetc(fp);
+		if (strP >= strWatermark) {
+			break;
+		}
 	}
 	while((col < pos.last_column)&&(C != EOF)){
 		//write down characters until we reach the column
