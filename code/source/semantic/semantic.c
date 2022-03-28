@@ -587,7 +587,7 @@ char *escape_string(const char *str){
 		buff[buffi++] = C;
 	}
 	buff[buffi] = 0;
-	//printf("string [%s] escaped to [%s]\n",str,buff);
+	printf("string [%s] escaped to [%s]\n",str,buff);
 	return buff;
 }
 
@@ -613,7 +613,7 @@ char *unescape_string(const char *str){
 		buff[buffi++] = C;
 	}
 	buff[buffi] = 0;
-	//printf("string [%s] unescaped to [%s]\n",str,buff);
+	printf("string [%s] unescaped to [%s]\n",str,buff);
 	return buff;
 }
 
@@ -889,6 +889,7 @@ int getTypeSize(ptr_type_name T){
 #define KMAG  "\x1B[35m"
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
+extern int compiler_restart_enabled;
 
 void newerror(const char *file, int line, const char *func, const char *fmt, ...){
 	//va_list ap;
@@ -932,6 +933,11 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 		fprintf(stderr, "no source text\n");
 	}
 
-	exit(*(int*)0);
+	if (compiler_restart_enabled) {
+		exit(1);
+	}
+	else {
+		exit(*(int*)0);
+	}
 }
 

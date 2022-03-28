@@ -87,7 +87,7 @@ struct symbol *lookup_symbol(const char *name){
 		print_symbol_table(currentSymbolTable);
 		int length = curNode->token.pos.last_column - curNode->token.pos.first_column;
 		if(length == 1){length = 0;}
-		point_out_error(curNode->token.pos.first_line,curNode->token.pos.first_column,curNode->token.pos.filename,"",length);
+		//point_out_error(curNode->token.pos.first_line,curNode->token.pos.first_column,curNode->token.pos.filename,"",length);
 		printf("also, pos = \n");
 		printPos(curNode->token.pos);
 		printf("===============\n");

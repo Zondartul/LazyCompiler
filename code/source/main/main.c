@@ -53,7 +53,50 @@ void test_vec_printf() {
 	printf("%s\n", vstr.data);
 }
 
-int main(int argc, char **argv){
+int argc_stored = 0;
+char** argv_stored = 0;
+
+int compiler_restart_enabled = 0;
+
+void restart_handler() {
+	atexit(0); //reset the callback in case we die before we set everything up
+	freopen(0, "w", stdout); //reset the stdout to terminal
+	printf("Restart?");
+	int repl = 0;
+	int isY, isN, isRepl;
+	do {
+		printf("Y/n\n");
+		repl = getch();
+		isY = ((repl == 'y') || (repl == 'Y'));
+		isN = ((repl == 'n') || (repl == 'N'));
+		isRepl = isY || isN;
+	} while (!isRepl);
+	if(isY)
+	{
+		atexit(restart_handler);
+		main_helper(argc_stored, argv_stored);
+	}
+	else {
+		exit(0);
+	}
+}
+
+
+int main(int argc, char** argv) {
+	if (compiler_restart_enabled) {
+		argc_stored = argc;
+		argv_stored = argv;
+		atexit(restart_handler);
+		main_helper(argc, argv);
+		atexit(0);
+		return 0;
+	}
+	else {
+		main_helper(argc, argv);
+	}
+}
+
+int main_helper(int argc, char **argv){
 	initFiles();
 	if(argc == 2){
 		yyin = fopen(argv[1],"r");
@@ -62,7 +105,7 @@ int main(int argc, char **argv){
 		printf("usage: %s inputfile\n",argv[0]);
 		return 0;
 	}
-	
+	fprintf(stderr, "THIS:\t\t\t%s\n", argv[0]);
 	fprintf(stderr,"INPUT:\t\t\t%s\n",argv[1]);
 	fprintf(stderr,"PREPROC:\t\t%s\n",path_out_preproc);
 	fprintf(stderr,"TOK/SYNTAX:\t\t%s\n",path_out_parse);
@@ -72,8 +115,8 @@ int main(int argc, char **argv){
 	fprintf(stderr,"ASSEMBLY:\t\t%s\n",path_out_assembly);
 	fprintf(stderr,"\n");
 	
-	test_formatAsTable();
-	test_vec_printf();
+	//test_formatAsTable();
+	//test_vec_printf();
 	//return 0;
 
 	fprintf(stderr,"initializing...");
@@ -140,14 +183,27 @@ int main(int argc, char **argv){
 
 	flushAllFiles();
 	//copy the result over to gmod folder
-	const char* cmd_str = "copy "
-		"\"D:\\Stride\\compiler\\LazyComp\\data_out\\aout_assembly.txt\" "
-		"\"E:/PROGRA~2/Steam/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/aout_assembly.txt\" "
-		//	"\"E:\\Program Files(x86)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazycomp\\aout_assembly.txt\""
-		;
-	fprintf(stderr, "%s\n", cmd_str);
+	int isOnLaptop = (strcmp(argv[0], "E:\\projects\\LazyComp\\bin\\LazyComp.exe") == 0);
+
+	const char* cmd_str = 0;
+	if (isOnLaptop) {
+		cmd_str = "copy /Y "
+			"E:\\projects\\LazyComp\\data_out\\aout_assembly.txt "
+			"E:\\SteamLibrary\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazycomp\\aout_assembly.txt"
+			;
+	} else { //on main pc
+		cmd_str = "copy "
+			"\"D:\\Stride\\compiler\\LazyComp\\data_out\\aout_assembly.txt\" "
+			"\"E:/PROGRA~2/Steam/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/aout_assembly.txt\" "
+			//	"\"E:\\Program Files(x86)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazycomp\\aout_assembly.txt\""
+			;
+	}
+
 	int res = system(cmd_str);
-	if (res) { fprintf(stderr, "copy failed: %d\n", res); }
+	if (res) { 
+		fprintf(stderr, "%s\n", cmd_str);
+		fprintf(stderr, "copy failed: %d\n", res); 
+	}
 	else {fprintf(stderr, "file copied to garrysmod/data/cpuchip\n");}
 
 	printstamp();

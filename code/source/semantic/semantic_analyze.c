@@ -158,10 +158,10 @@ void semantic_analyze_func_def(ast_node *node){
 		int i;
 		//wait, shouldn't we go through var_decl_list_ne first?
 		//no, it's linearized now
-		fprintf(stderr,"func_def, node_var_decl_list.token.type = [%s]\n",node_var_decl_list->token.type);
+		//fprintf(stderr,"func_def, node_var_decl_list.token.type = [%s]\n",node_var_decl_list->token.type);
 		for(i = 0; i < /*list*/node_var_decl_list->children.size; i++){
 			struct ast_node *arg = ast_get_child(node_var_decl_list,i);//(list,i);
-			fprintf(stderr,"func_def, child of node_var_decl_list is [%s]\n",arg->token.type);
+			//fprintf(stderr,"func_def, child of node_var_decl_list is [%s]\n",arg->token.type);
 			//struct ast_node *arg_typename = ast_get_child(arg,0); //unused
 			struct type_name *T2 = parseTypename(node_typename);//(ast_get_child(arg,0));//semantic_get_type(ast_get_child(arg,0)->token.value);
 			m((*(signature->args)),push_back,T2);
@@ -190,7 +190,7 @@ void semantic_analyze_func_def(ast_node *node){
 		//YYLTYPE pos2 = Nx->token.pos;
 		//fprintf(stderr,"function [%s]\nfrom (file %s, line %d:%d)\nto (file %s, line %d:%d)\n",S->username,pos1.filename,pos1.first_line,pos1.first_column,pos2.filename,pos2.first_line,pos2.first_column);
 	}else{
-		printf("semantic_analyze (imperative) of func_def %s\n",name);
+		//printf("semantic_analyze (imperative) of func_def %s\n",name);
 		struct symbol *S = lookup_symbol(name);
 		if(S->type != SYMBOL_FUNCTION){error("semantic: '%s' is not a function\n",S->username);}
 		//YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
@@ -683,7 +683,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 		};
 		//push_expr(if_exit);
 		//push_expr(if_else);
-		fprintf(stderr, "warning: if_then should probably output some stg stuff\n");
+		//fprintf(stderr, "warning: if_then should probably output some stg stuff\n");
 #pragma message("warning: if_then should output stg stuff\n");
 
 		pop_symbol_table();

@@ -29,12 +29,8 @@ end
 int printX = 0;
 
 void print(char *str)
-	//printXY(str, 0, 0);
 	printXY(str, printX, 0);
 	printX = printX + strlen(str);
-	//numOfPrint++;
-	//my_num++;
-	//if(numOfPrint > 19) numOfPrint = 0; end
 end
 
 void printnum2(int num)
@@ -125,6 +121,64 @@ void iftest2(int n)
 	print("end."); printnl();
 end
 
+void iftest3(int n)
+	print("iftest3: if("); printnum3(n); print("): ");
+	if(n)
+		print("yes.");
+	end
+	if(n == 0)
+		print("no.");
+	end
+end
+
+void dbgstrprint(char *str2)
+	int I = 0;
+	while(*str2)
+		print("[");printc(*str2);print("]");
+		str2++;
+		I++;
+	end
+	print(", "); printnum3(I); print(" chars"); printnl();
+end
+
+void testVarArg(int x1, int x2, int x3)
+	int v1 = 4;
+	int adr1 = &x1;
+	int adr2 = &x2;
+	int adr3 = &x3;
+	int adr4 = &v1;
+	printf("x1=%d, ", x1); printf("&x1=%d, ", adr1); printf("*(&x1)=%d\n", *adr1);
+	printf("x2=%d, ", x2); printf("&x2=%d, ", adr2); printf("*(&x2)=%d\n", *adr2);
+	printf("x3=%d, ", x3); printf("&x3=%d, ", adr3); printf("*(&x3)=%d\n", *adr3);
+	printf("v1=%d, ", v1); printf("&v1=%d, ", adr4); printf("*(&v1)=%d\n", *adr4);
+end
+
+void testVarArg2(int x)
+	printf("testVarArg2 begin\n");
+	int *adr = &x;
+	for(int i = 0; i < 6; i++)
+		printf(".");
+		int val = adr[i-3];
+		printf("adr[%d] = ", i); printf("[%d] = ", adr+i); printf("%d\n", val);
+	end
+	printf("testVarArg2 end\n");
+end
+
+void testilogpow10()	
+	printf("numDigits(1234){4}=%d\n", numDigits(1234));
+	printf("ilog10(1234) {3} = %d\n", ilog10(1234));
+	printf("ilog10(10) {1}   = %d\n", ilog10(10));
+	printf("ilog10(1) {0}    = %d\n", ilog10(1));
+	printf("ilog10(0) {ER}   = %d\n", ilog10(0));
+	printf("ilog10(-1) {ER}  = %d\n", ilog10(-1));
+	printf("ilog10(-10) {ER} = %d\n", ilog10(-10));
+	printf("ipow10(2) {100}  = %d\n", ipow10(2));
+	printf("ipow10(1) {10}   = %d\n", ipow10(1));
+	printf("ipow10(0) {1}    = %d\n", ipow10(0));
+	printf("ipow10(-1) {0.1} = %d\n", ipow10(-1));
+	printf("ipow10(-2) {0.02}= %d\n", ipow10(-2));
+end
+
 int main(int argc, char **argv)
 	class Screen scr;
     screen_set(65536+100);
@@ -132,44 +186,35 @@ int main(int argc, char **argv)
 	print ("hello world! ");
 	libconsolescreen_init();
 	print ("another hello"); printnl();
-	//print("num 5 = "); printnum2(5); print(", ok"); printnl();
-	//print("char S = ["); printc('S'); print("]"); printnl();
-	//print("num 123 = ["); printnum3(123); print("]"); printnl();
-	//iftest(2);
-	//iftest(3);
-	//iftest2(2);
-	//iftest2(3);
-	print("ok.");
-	//delay(2000);
-	screen_clear();
-	setPrintCursor(0,0);
-	//Prints("ohai ",999); Printn(123,999); Prints(" yep",999);
+	iftest3(1);
+	iftest3(123);
+	//iftest3(0);
+	//iftest3(-1);
+	//char* strx1 = "horse";
+	print("123 = "); printnum3(123); printnl();
+	//print("0 = "); printnum3(0); printnl();
+	screen_clear();setPrintCursor(0,0);
+	//testVarArg(1, 2, 3);
+	//testVarArg2(123, 202);
+	//print("ok.");
+	printf("test...");
+	printf("printf 1 = [%d]\n", 1);
+
+	
+	delay(3000);
+	screen_clear();setPrintCursor(0,0);
+	printf("%%d test: 0 = [%d],\n1 = [%d],\n-123 = [%d]\n", 0, 1, -123);
+	printf("%%f test: 0 = [%f],\n1 = [%f],\n0.5 = [%f],\n123.25 = [%f]\n",0,1,1/2,123+1/4);
+	printf("%%f test: 123.0012 =\n[%f]\n", 123+12/10000);
+	//setPrintCursor(0,0);
 	printf("hi%dm\nye\n",1);
-	infloop();
 	printf("printf test1\n");
-	//setPrintCursor(0,1);
-	printf("printf [%d] test2\n", 123);
-	//setPrintCursor(0,2);
-	printf("printf [%f] test3\n", 21/4);
-	//setPrintCursor(0,3);
-	printf("printf [%s] test4\n", "hello");
-	//setPrintCursor(0,4);
-	printf("printf [%c] test5\n", '\');
-	//writePort(0, &scr);
-	//writePort(1, &(scr.X));
-	//writePort(2, &scr.X);
-	//writePort(3, scr.X);
-	//scr.X = 123;
-	//scr.print("hello world!");
-	//scr.test();
-	//writePort(6, scr.X);
-	//print("well, I tried", 0, 0);
-	//for(int i = 0; i < 10; i ++)
-	//	char *str = lorem_ipsum(i);
-	//	printXY(str, 0, i);
-	//end
-	printXY("done", 0, 11);
-	//clock();
+	printf("printf [%d] %%d test2\n", 123);
+	printf("printf [%f] %%f test3\n", 21/4);
+	printf("printf [%s] %%s test4\n", "hello");
+	printf("printf [%c] %%c test5\n", '\');
+	printf("fill stuff and clear\r\f\rlol yep\n");
+	printf("rewrite\rlol ok\n");
 	infloop();
 end
 

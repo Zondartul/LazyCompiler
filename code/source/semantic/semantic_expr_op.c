@@ -113,7 +113,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	else {
 		//if (!discardResult) { push_expr(S->IR_name); }
 		emit_code("/*id:global*/");
-		fprintf(stderr, "warning: id always global, can't see 'this'\n");
+		//fprintf(stderr, "warning: id always global, can't see 'this'\n");
 #pragma message("warning: id always global");
 		output_res(stg, S->IR_name, T);
 		//push_expr(S->username);
@@ -458,11 +458,12 @@ void semantic_analyze_expr_neg(ast_node* node, expr_settings stg) {
 	expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
 	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
 	//const char* result = pop_expr();
-	emit_code("NEG %s %s", res1, res1);
+	const char* result = IR_next_name(namespace_semantic, "temp");
+	emit_code("NEG %s %s", result, res1);
 	//if (!discardResult) {
 	//	push_expr(result);
 	//}
-	output_res(stg, res1, res1type);
+	output_res(stg, result, res1type);
 }
 
 void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
@@ -483,7 +484,7 @@ void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
 	//if (!discardResult) {
 	//	push_expr(result);
 	//}
-	fprintf(stderr, "warning: deref should change expr pointerlevel, it doesn't atm\n");
+	//fprintf(stderr, "warning: deref should change expr pointerlevel, it doesn't atm\n");
 #pragma message("warning: deref pointerlevel")
 	output_res(stg, result, res1type);
 }
@@ -506,7 +507,7 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	//if (!discardResult) {
 	//	push_expr(result);
 	//}
-	fprintf(stderr, "warning: ref should change pointerlevel\n");
+	//fprintf(stderr, "warning: ref should change pointerlevel\n");
 #pragma message("warning: ref poitnerlevel")
 	output_res(stg, result, res1type);
 }

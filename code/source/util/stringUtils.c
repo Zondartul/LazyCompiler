@@ -32,10 +32,10 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 	while(line/*+1*/ < pos.first_line){while((C != '\n')&&(C != EOF)){C = fgetc(fp);} line++; C = fgetc(fp);}
 	while(col != pos.first_column){
 		if(C == '\n'){
-				fprintf(stderr,"\nWARNING: gst2: overshoot1: report\n");
-				fprintf(stderr,"pos:\n");
-				fprintf(stderr,"=====================\n");
-				printPosErr(pos);
+				//fprintf(stderr,"\nWARNING: gst2: overshoot1: report\n");
+				//fprintf(stderr,"pos:\n");
+				//fprintf(stderr,"=====================\n");
+				//printPosErr(pos);
 				break;
 			//error("gst2: overshot1 ");
 		} 
@@ -84,20 +84,20 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 		if(C == '\n'){
 			//*strP++ = 0;
 			if(report){
-				fprintf(stderr,"\nWARNING: gst2: overshoot2: report\n");
-				fprintf(stderr,"node ==================\n");
-				const char *snode = 0;
-				//if(curNode){snode = get_source_text2(curNode->token.pos);} //this sometimes causes a stack overflow
-				fprintf(stderr,"%s\n",snode);
-				fprintf(stderr,"semantic ============\n");
-				fprintf(stderr,"decl = %d, nodesDecl = %d, nodesImp = %d\n",
-						semantic_decl, nodeCountDecl, nodeCountImp);
-				fprintf(stderr,"str =================\n"
-							   "%s\n"
-							   "=====================\n",str);
-				fprintf(stderr,"pos:\n");
-				fprintf(stderr,"=====================\n");
-				printPosErr(pos);
+				//fprintf(stderr,"\nWARNING: gst2: overshoot2: report\n");
+				//fprintf(stderr,"node ==================\n");
+				//const char *snode = 0;
+				////if(curNode){snode = get_source_text2(curNode->token.pos);} //this sometimes causes a stack overflow
+				//fprintf(stderr,"%s\n",snode);
+				//fprintf(stderr,"semantic ============\n");
+				//fprintf(stderr,"decl = %d, nodesDecl = %d, nodesImp = %d\n",
+				//		semantic_decl, nodeCountDecl, nodeCountImp);
+				//fprintf(stderr,"str =================\n"
+				//			   "%s\n"
+				//			   "=====================\n",str);
+				//fprintf(stderr,"pos:\n");
+				//fprintf(stderr,"=====================\n");
+				//printPosErr(pos);
 			}
 			//the requested column further than the length of the line
 			//error("gst2: overshot2 ");
@@ -130,8 +130,8 @@ char *get_source_text(int start, int end,const char *file){
 	// for(i = 0; i < end-start; i++){
 		// buff[i] = fgetc(yyin2);
 	// }
-	fread(buff,1,end-start,fp);
-	buff[end-start] = 0;
+	fread(buff,1,end-start+1,fp);
+	buff[end-start+1] = 0; //28.03.2022
 	//fprintf(stderr,"got [%s]\n",buff);
 	//fread(buff,end-start,1,yyin2);
 	fclose(fp);
@@ -504,8 +504,6 @@ const char *formatAsTable(const char *str){
 
 int vec_vnprintf(vector2_char* vstr, int size, const char* format, va_list vlist) {
 	assert(vstr); //nonnull
-	va_list vlist2;
-	va_copy(vlist2, vlist);
 	int res = 0;
 	int mode_limited = (size > 0);
 	int mode_unlimited = (size == -1);
@@ -514,7 +512,14 @@ int vec_vnprintf(vector2_char* vstr, int size, const char* format, va_list vlist
 
 	if (mode_unlimited || mode_no_print) {
 		//1. preprint to figure out the size
-		size = vsnprintf(0, 0, format, vlist)+1;
+		//char fixbuff[2]; //for a bug in vsnprintf where it segfaults with 0 buff/0 size
+		va_list vlist2;
+		va_copy(vlist2, vlist);
+		assert(format);
+		//note: segfault if vlist empty (i.e. when no arguments)
+		size = vsnprintf(0, 0, format, vlist2)+1;
+		//size = vsnprintf(fixbuff, 1, format, vlist2) + 1;
+		va_end(vlist2);
 		res = size;
 	}
 	if (mode_print) {

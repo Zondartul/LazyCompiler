@@ -52,6 +52,16 @@
 		>>test(1): yes no end
 		>>test(0): end
 		if-else will either do both or none, not A or B. this is stupid.
+* [bug] expr_neg result is discarded, wrong result goes to function arg. see:
+		//[ NEG 123 123]                                                               // @ codegen_gen_command:924 I
+		//discarding 1 from R2                                                         // @ allocRegister:415 I
+		//load 123 into R2                                                             // @ loadLValue:649 I
+		mov R2, 123                                                                    // @ loadLValue:652 I
+		neg R2                                                                         // @ gen_command_neg:415 I
+		//discard 123 from R2                                                          // @ storeValue:729 I
+		//[ CALL temp_1118 _printf str_91 0 1 123]                                     // @ codegen_gen_command:924 I
+		push 123
+		>>> 123 is pushed instead of -123
 * ---------- class/struct bugs: ---------------------------
 * [Bug] initial values for the class members do not get set (have to manually write in a constructor)
 * [bug] class methods can't fetch member variables (might be frameclimbing, or even lack of 'this' ptr)
@@ -65,6 +75,7 @@
 * [Bug] (null) values for lbl_to in debug info of some symbols
 * [Todo] codegen comments // or another symbol
 * [Todo] codegen op as "OP ADD"
+* [Todo] add the ops: div_i32, div_f64, fint
 * -------- overal bugs: ---------------------------------------------
 * [FIXED Issue] code not copied to gmod folder
 * -------- language wishlist: ----------------------------------------
@@ -82,5 +93,10 @@
 * [BUG] somehow this causes a segfault in vector2_ptr_char_internal_resize. 
 	printf("hi%dm\nye\n\\n\\\\",1);
 * [issue] lazy2.txt printf can't see \ slashes, maybe because of internally unescaped strings?
+* [issue] gst2 overshoot report happens a lot, what's that do?
+* [zCPU bug] hlzasm tokenizer can't handle \\ (skips it) or \xnnn,
+*            so only way to insert \\ into string is as a number 92.
+* [FIXED bug] pointOutError eats the last character of the line
+* [Todo] make a restart mechanism for the compiler, though we need to reset some globals...
 * 
 */

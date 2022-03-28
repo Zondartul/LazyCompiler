@@ -4,6 +4,7 @@
 #include "ctype.h"
 #include "stdio.h"
 #include "codegen_gen_command.h"
+#include "assert.h"
 
 // todo:
 // make it so each function has only one frame
@@ -52,6 +53,7 @@ int trace_gens = 1;	//if 1, every assembly line will have "emitted from here" tr
 
 
 void asm_println2(const char* postfix, const char* fmt, ...) {
+	assert(fmt);
 	//1. print the args
 	va_list args;
 	va_start(args, fmt);
@@ -266,6 +268,22 @@ void printframe(ptr_frame F){
 	printf("+------------------\n");
 }
 
+void asm_printdbstring(const char* lbl, const char* str) {
+	//const char* str2 = escape_string(str);
+	vector2_char vstr = vector2_char_here();
+	vec_printf(&vstr, "%s: db ", lbl);
+	int I = 0;
+	while (str[I]) {
+		vec_printf(&vstr, "%d", str[I]);
+		if (str[I+1]) {
+			vec_printf(&vstr, ", ");
+		}
+		I++;
+	}
+	vec_printf(&vstr, ", 0; //%s", str);
+	asm_println("%s", vstr.data);
+}
+
 void printGlobalVars(){
 	while(curframe->parent){curframe = curframe->parent;}
 	for(int I = 0; I < curframe->symbols.size; I++){
@@ -278,7 +296,8 @@ void printGlobalVars(){
 			}
 		}
 		if(!strcmp(S->type,"STRING")){
-			asm_println("%s: db \"%s\",0",S->lbl_at,escape_string(S->str));
+			asm_printdbstring(S->lbl_at, S->str);
+			//asm_println("%s: db \"%s\",0",S->lbl_at,escape_string(S->str));
 		}
 	}
 }
@@ -930,11 +949,11 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		//fprintf(stderr, "\n-----------------------------------------\n\n");
 		//int fd = -1;
 		//if(curframe){fd = curframe->depth;}
-		fprintf(stderr, "code_gen_command [%s]\n", buff);
+		//fprintf(stderr, "code_gen_command [%s]\n", buff);
 		//fprintf(stderr, ", FR %p, fd %d\n", curframe, fd);
 		
 		if(strlen(buff) == 0){
-			fprintf(stderr, "codegen_gen_command, resulting str is empty, leaving\n");
+			//fprintf(stderr, "codegen_gen_command, resulting str is empty, leaving\n");
 			return;
 		}
 		
@@ -943,7 +962,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		/*tok*/
 		codegen_tok = strtok(buff," ");
 		if(!codegen_tok){
-			fprintf(stderr, "codegen_gen_command: no tokens\n");
+			//fprintf(stderr, "codegen_gen_command: no tokens\n");
 			return;
 		}
 		//codegen_tok = tok; //illegal reference smuggling

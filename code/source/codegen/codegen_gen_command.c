@@ -306,7 +306,7 @@ void gen_command_div(){
 		printindent();
 		asm_println("div %s, %s",arg1,arg2);
 		printindent();
-		asm_println("fint %s",arg1);
+		//asm_println("fint %s",arg1);
 		storeValue(result,arg1);
 	}
 	return;
