@@ -1,0 +1,4 @@
+//this file is to be included from a relative parent directory
+//i.e. #incldue "../inc_parent.lzt"
+
+void func_parent() end

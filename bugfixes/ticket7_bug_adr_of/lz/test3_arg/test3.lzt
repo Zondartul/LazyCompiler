@@ -1,0 +1,11 @@
+//[buf 7] can't handle the expression &(scr.X)
+//3. &arg
+
+void func(int arg)
+	writePort(0, &arg);
+end
+
+int main()
+	writePort(0, 0);
+	func(123);
+end

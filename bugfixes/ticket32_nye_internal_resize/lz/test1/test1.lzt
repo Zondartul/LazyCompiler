@@ -1,0 +1,8 @@
+//* [BUG 32] somehow this causes a segfault in vector2_ptr_char_internal_resize. 
+//1.	printf("hi%dm\nye\n\\n\\\\",1);
+	
+void printf(char *fmt, float arg) end
+	
+int main()
+	printf("hi%dm\nye\n\\n\\\\",1);
+end

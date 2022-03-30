@@ -1,0 +1,15 @@
+//[buf 7] can't handle the expression &(scr.X)
+//1. &(scr.X)
+
+class Screen
+	float X;
+	float Y;
+end
+
+int main()
+	Screen scr;
+	scr.X = 123;
+	writePort(0, 0);
+	
+	writePort(0, &(scr.X));
+end

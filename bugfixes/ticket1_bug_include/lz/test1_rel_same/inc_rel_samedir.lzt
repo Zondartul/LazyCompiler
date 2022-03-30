@@ -1,0 +1,4 @@
+//this file is to be included from the same directory as the main file
+//i.e. #include "inc_rel_samedir.lzt"
+
+void func_rel_samedir() end

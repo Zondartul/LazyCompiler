@@ -1,0 +1,22 @@
+// [bug 13] this doesn't work:
+	// |	int End = 0;
+	// |	while(!End)
+	// |	... loop doesn't execute at all.
+	// [note] this doesn't work either: if(!num)
+//1. while(!End)
+
+#include <testOutput.lzt>
+
+int main()
+	int I = 0;
+	writePort(0, 0);
+	writePort(1, 0);
+	
+	int End = 0;
+	while(!End)
+		I++;
+		writePort(0, I);
+		if(I > 10) End = 1; end
+	end
+	writePort(1,1);
+end

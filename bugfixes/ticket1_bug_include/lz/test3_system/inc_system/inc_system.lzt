@@ -1,0 +1,4 @@
+//this file is to be included as a system include
+//i.e. #include <inc_system.lzt>
+
+void func_system() end

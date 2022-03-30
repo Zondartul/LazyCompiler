@@ -1,0 +1,26 @@
+// [BUUUG 15] if-then is completely fucked. psuedocode:
+		// func test(x): if(x) print(yes) else print(no) end
+		// >>test(1): yes no end
+		// >>test(0): end
+		// if-else will either do both or none, not A or B. this is stupid.
+		
+//5. if(x == 1) one elseif (x==2) two end
+#include <testOutput>
+
+void test(int num, int port)
+	if(num == 1)
+		writePort(port, 1)
+	elseif(num == 2)
+		writePort(port, 2)
+	end
+end
+
+int main()
+	writePort(0, 123);
+	writePort(1, 123);
+	writePort(2, 123);
+	
+	test(0, 0);
+	test(1, 1);
+	test(2, 2);
+end

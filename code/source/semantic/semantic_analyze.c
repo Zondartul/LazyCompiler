@@ -32,7 +32,7 @@ const char* emit_push_label(const char* lbl) {
 
 void output_res(expr_settings stg, val_handle src, int do_emit) {
 	if (stg.dest.rv_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
-	if (stg.dest.rv_type = E_DISCARD) {
+	if (stg.dest.rv_type == E_DISCARD) {
 		if (stg.actual) {*(stg.actual) = (val_handle){ .val = 0 };}
 		return;
 	}
@@ -44,18 +44,18 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 		}
 		if (stg.dest.rv_type == E_RVAL) {	
 			if (src.rv_type == E_RVAL) { // temp_'arr[5]' = arr + 5;
-				emit_code("MOV %s, %s", stg.dest.val, src.val);
+				emit_code("MOV %s, %s //output(R<R)", stg.dest.val, src.val);
 			}
 			if (src.rv_type == E_LVAL) { // *x = y;
-				emit_code("MOV *%s, %s", stg.dest.val, src.val);
+				emit_code("MOV *%s, %s //output(R<L)", stg.dest.val, src.val);
 			}
 		}
 		if (stg.dest.rv_type == E_LVAL) { 
 			if (src.rv_type == E_RVAL) { // x = *y;
-				emit_code("MOV %s, *%s", stg.dest.val, src.val);
+				emit_code("MOV %s, *%s //output(L<R)", stg.dest.val, src.val);
 			}
 			if (src.rv_type == E_LVAL) { // temp_'1+1' = 1 + 1;	
-				emit_code("MOV %s, %s", stg.dest.val, src.val);
+				emit_code("MOV %s, %s //output(L<L)", stg.dest.val, src.val);
 			}
 		}
 	}
@@ -104,12 +104,8 @@ void semantic_analyze_decl_stmt(ast_node *node){
 }
 
 void semantic_analyze_func_def(ast_node *node){
-	//const char* res_dest = pop_expr(); //assert_expr_res(res_dest);
-	//assert_no_result(res_dest);
 	//func_def	:	typename ID '('	var_decl_list ')' stmt_list END ;
 	
-	//if(!semantic_decl){return;}
-	//printf("got func_def\n");
 	/*
 	func_def(ID)+3
 	+-typename(type)/(<class> ID)
@@ -135,7 +131,7 @@ void semantic_analyze_func_def(ast_node *node){
 	struct ast_node *node_var_decl_list	= ast_get_child(node_func_def,2);
 	struct ast_node *node_stmt_list 	= ast_get_child(node_func_def,3);
 	
-	struct type_name *T = parseTypename(node_typename);//(ast_get_child(node,0));//semantic_get_type(ast_get_child(node,0)->token.value);
+	struct type_name *T = parseTypename(node_typename);
 	const char *name = node->token.value;
 	if(semantic_decl){
 		//27.03.2022: make sure the symbol is not 'already declared'
@@ -144,7 +140,7 @@ void semantic_analyze_func_def(ast_node *node){
 			error("semantic error: symbol [%s] already declared", name);
 		}
 
-		struct symbol *S = symbol_new0();//new_symbol();
+		struct symbol *S = symbol_new0();
 		S->type = SYMBOL_FUNCTION;
 		S->storage = STORE_CODE;
 		S->username = name;
@@ -156,21 +152,18 @@ void semantic_analyze_func_def(ast_node *node){
 			S->IR_name = name;
 		}
 		//get arguments
-		//struct symbol_table *ST = new_symbol_table();
 		S->symfunction.returntype = T;
 		push_symbol_table();
 		new_symbol_table(node);
 		S->symfunction.scope = currentSymbolTable;
 		S->symfunction.code = 0;
-		//m(ST_stack,push_back,currentSymbolTable);
-		//if(semantic_context == SEMANTIC_MEMBER){
 		if(symbolThis){
 			//add param: this;
 			struct type_name *T = semantic_get_type(symbolThis->username);
 			T->pointerlevel = 1;
 			char *name = "this";
 			struct symbol *S;
-			S = symbol_new0();//new_symbol();
+			S = symbol_new0();
 			S->username = name;
 			if(semantic_flatten){
 				S->IR_name = IR_next_name(namespace_semantic,name);
@@ -181,7 +174,6 @@ void semantic_analyze_func_def(ast_node *node){
 			S->symvariable.type = T;
 			S->symvariable.array = 0;
 			S->symvariable.arraysize = 0;
-			//S->symvariable.pos = 0;
 			S->store_adr = 0;
 			S->symvariable.size = getTypeSize(T);
 			S->storage = STORE_DATA_STACK;
@@ -197,81 +189,56 @@ void semantic_analyze_func_def(ast_node *node){
 		int i;
 		//wait, shouldn't we go through var_decl_list_ne first?
 		//no, it's linearized now
-		//fprintf(stderr,"func_def, node_var_decl_list.token.type = [%s]\n",node_var_decl_list->token.type);
+		m((*(signature->args)), push_back, T);
+
 		for(i = 0; i < /*list*/node_var_decl_list->children.size; i++){
-			struct ast_node *arg = ast_get_child(node_var_decl_list,i);//(list,i);
-			//fprintf(stderr,"func_def, child of node_var_decl_list is [%s]\n",arg->token.type);
-			//struct ast_node *arg_typename = ast_get_child(arg,0); //unused
-			struct type_name *T2 = parseTypename(node_typename);//(ast_get_child(arg,0));//semantic_get_type(ast_get_child(arg,0)->token.value);
-			m((*(signature->args)),push_back,T2);
-			//push_expr(new_rval());//push_expr("NODISCARD");
+			struct ast_node *arg = ast_get_child(node_var_decl_list,i);
+			//struct type_name *T2 = parseTypename(node_typename);
+			//m((*(signature->args)),push_back,T2);
 			semantic_general_analyze(arg); //var_decl
 		}
 		S->symfunction.signature = signature;
-		//S->size = 0;
 			//join symbol table to definition
 		semantic_context = SEMANTIC_NORMAL;
 		//do not get code until imperative pass
-		//currentSymbolTable = m(ST_stack,pop_back);
 		pop_symbol_table();
 		push_symbol(S);
 		push_symbol_table();
 		currentSymbolTable = S->symfunction.scope;
-		analyze_scope(/*ast_get_child(node,2)*/node_stmt_list,0,0,&currentSymbolTable,0,0);
+		analyze_scope(node_stmt_list,0,0,&currentSymbolTable,0,0);
 		pop_symbol_table();
-		//ast_node *N =  ast_get_child(node,2);
-		//ast_node *N1 = ast_get_child(N,0); //error, no children
-		//ast_node *Nx = ast_get_child(N,N->children.size-1);
-		//N is node_stmt_list
-		//N1 is empty or stmt_list_ne
-		//Nx is N1
-		//YYLTYPE pos1 = N1->token.pos;
-		//YYLTYPE pos2 = Nx->token.pos;
-		//fprintf(stderr,"function [%s]\nfrom (file %s, line %d:%d)\nto (file %s, line %d:%d)\n",S->username,pos1.filename,pos1.first_line,pos1.first_column,pos2.filename,pos2.first_line,pos2.first_column);
 	}else{
 		//printf("semantic_analyze (imperative) of func_def %s\n",name);
 		struct symbol *S = lookup_symbol(name);
 		if(S->type != SYMBOL_FUNCTION){error("semantic: '%s' is not a function\n",S->username);}
-		//YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
-		//YYLTYPE pos2 = ast_get_child(node,1)->token.pos;	//note: do not get source text by start/end, as that includes #preprocessor directives, and those have been deleted
-		//fprintf(stderr,"get_source_text(%d,%d,%s) = [%s]\n",pos1.start,pos1.end,pos1.filename,get_source_text2(pos1));//get_source_text(pos1.start,pos1.end,pos1.filename));
-		//emit_code("/* %s %s(%s) */",get_source_text(pos1.start,pos1.end,pos1.filename), name, get_source_text(pos2.start,pos2.end,pos2.filename));
 		
-		//emit_code("/* %s %s(%s) */",get_source_text2(pos1), name, get_source_text2(pos2));
 		
 		const char *s_typename = get_source_text2(node_typename->token.pos);
 		const char *s_args = get_source_text2(node_var_decl_list->token.pos);
 		
 		emit_code("/* %s %s(%s) */", s_typename, name, s_args);
 		
-		//emit_code("DEBUG BEGIN FUNC %s %s",S->IR_name, S->username);
 		push_symbol_table();
 		currentSymbolTable = S->symfunction.scope;
-		//emit_all_declarations(); //the analyze_scope will handle symbols (they are inside a frame anyway)
-		//emit_code("SYMBOL %s LABEL",S->IR_name);
-		//emit_code("LABEL %s",S->IR_name);			
+		//the analyze_scope will handle symbols (they are inside a frame anyway)
+	
 		emit_code("FUNCTION %s BEGIN",S->IR_name);			
 		push_semantic_context();
 		
-		//const char *prev_semantic_this = semantic_this;
-		//if(semantic_this){semantic_this = lookup_symbol(semantic_this)->IR_name;}
-		//if(semantic_context == SEMANTIC_MEMBER){semantic_this = lookup_symbol("this")->IR_name;}
 		pop_symbol_table();
 		semantic_context = SEMANTIC_NORMAL;
 		printf("analyze statement list...\n");
-		analyze_scope(/*ast_get_child(node,2)*/ node_stmt_list,0,
+		analyze_scope(node_stmt_list,0,
 						&S->symfunction.code,
 						&S->symfunction.scope,
 						0,0);
 		printf("st.list done\n");
-		//semantic_this = prev_semantic_this;
 		semantic_this = 0;
 		pop_semantic_context();
 		emit_code_segment(S->symfunction.code);
 		emit_code("RET");
 		emit_all_undeclarations();
 		emit_code("FUNCTION %s END",S->IR_name);
-		//emit_code("DEBUG END FUNC %s",S->IR_name);
 		emit_code("/* end */");
 		printf("semantic_analyze (imperative) of func %s done\n",name);
 	}
@@ -482,10 +449,12 @@ void semantic_analyze_imp_stmt(ast_node *node){
 			if(semantic_decl){return;}
 			emit_code("/* %s */",
 				removeComments(get_source_text2(node->token.pos)));
-			const char* res1 = 0; struct type_info* res1type = 0;
-			expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
+			//const char* res1 = 0; struct type_info* res1type = 0;
+			//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
+			val_handle res1; val_handle dest1 = { .rv_type = E_RVAL };
+			expr_settings stg1 = { .dest = dest1, .actual = &res1 };
 			semantic_expr_analyze(ast_get_child(node,0), stg1); //expr (what to return)
-			emit_code("RET %s",res1);
+			emit_code("RET %s",res1.val);
 			break;
 		case(5)://for_loop
 			semantic_general_analyze(ast_get_child(node,0)); //for_loop
@@ -626,15 +595,14 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//(expr)
 				pos = ast_get_child(node, 0)->token.pos;
 				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				//push_expr(new_lval());//push_expr("NODISCARD");
-
-				const char* res1 = 0; struct type_info* res1type = 0;
-				expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
+				
+				//const char* res1 = 0; struct type_info* res1type = 0;
+				//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
+				val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+				expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 				semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr (condition)
-				const char* condition_result = res1;
-				//const char* condition_result = pop_expr(); assert_temp_val(condition_result);
+				const char* condition_result = res1.val;
 				//if then
-				//const char *nextLabel = IR_next_name(namespace_semantic,"lbl_if_then");
 				emit_code("/* this skips untrue if's */");
 				emit_code("JE 0 %s %s", condition_result, nextLabel);
 				emit_code("/* 'if' is true: */");
@@ -673,10 +641,12 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//( expr )
 				//push_expr(new_lval());//push_expr("NODISCARD");
 
-				const char* res2 = 0; struct type_info* res2type = 0;
-				expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
+				//const char* res2 = 0; struct type_info* res2type = 0;
+				//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
+				val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+				expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
 				semantic_expr_analyze(ast_get_child(node, 1), stg2); //expr (condition)
-				const char* condition_result = res2;
+				const char* condition_result = res2.val;
 				//const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//then
 				//const char* label1 = IR_next_name(namespace_semantic, "lbl_elseif_then");
@@ -727,12 +697,11 @@ void semantic_analyze_while_loop(ast_node *node){
 		emit_code("SYMBOL %s LABEL",label1);
 		emit_code("SYMBOL %s LABEL",label2);
 		emit_code("LABEL %s",label1);
-		//push_expr(new_lval());//push_expr("NODISCARD");
-		const char* res1 = 0; struct type_info* res1type = 0;
-		expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type }; 
+		//const char* res1 = 0; struct type_info* res1type = 0;
+		//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type }; 
+		val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+		expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 		semantic_expr_analyze(ast_get_child(node,0), stg1); //expr (condition)
-		//analyze_scope(ast_get_child(node,0),0,&CSinsert,0,0);
-		//emit_code_segment(CSinsert);
 		emit_code("JE 0 %s %s",res1, label2);
 		emit_code("/* do */");
 		push_symbol_table();
@@ -779,12 +748,12 @@ void semantic_analyze_for_loop(ast_node *node){
 		//LOOP CONDITION
 		emit_code("LABEL %s",loopCondition);
 		emit_code("/* %s */",removeComments(get_source_text2(pos2)));//get_source_text(pos2.start,pos2.end,pos2.filename));
-		//push_expr(new_lval());//push_expr("NODISCARD");
-		const char* res1 = 0; struct type_info* res1type = 0;
-		expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type }; 
+		//const char* res1 = 0; struct type_info* res1type = 0;
+		//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type }; 
+		val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+		expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 		semantic_expr_analyze(ast_get_child(node,1), stg1); //expr (i < 10;)
-		const char* condition = res1;
-		//const char *condition = pop_expr();
+		const char* condition = res1.val;
 		emit_code("JE 0 %s %s",condition,loopExit);
 		emit_code("/* loop body */");
 		//LOOP BODY
@@ -817,7 +786,7 @@ void semantic_analyze_class_def(ast_node *node){
 	if(semantic_decl){
 		//printf("got class_def\n");
 		const char *name = node->token.value;
-		struct symbol *S = symbol_new0();//new_symbol();
+		struct symbol *S = symbol_new0();
 		push_symbol(S);
 		S->username = name;
 		S->storage = STORE_CODE;
@@ -827,8 +796,6 @@ void semantic_analyze_class_def(ast_node *node){
 			S->IR_name = name;
 		}
 		S->type = SYMBOL_CLASS;
-		//make new symbol table
-		//struct symbol_table *ST = new_symbol_table();
 		push_symbol_table();
 		new_symbol_table(node);
 		S->symclass.scope = currentSymbolTable;
@@ -837,7 +804,7 @@ void semantic_analyze_class_def(ast_node *node){
 		symbolThis = S;
 		semantic_this = S->IR_name;
 		
-		struct symbol *T = symbol_new0();//new_symbol();
+		struct symbol *T = symbol_new0();
 		T->username = stralloc("this");
 		T->IR_name = IR_next_name(namespace_semantic,"this");
 		T->type = SYMBOL_PARAM; //wait a sec, wtf is a SYMBOL_MEMBER?
@@ -862,22 +829,17 @@ void semantic_analyze_class_def(ast_node *node){
 		semantic_this = 0;
 		symbolThis = 0;
 		pop_symbol_table();
-		//embed into existing symbol table
-		//push_symbol(S);
 	}else{
 		symbolThis = lookup_symbol(node->token.value);
 		class_emit_start();
 		
 		push_symbol_table();
-		//const char *name = node->token.value; //unused
-		currentSymbolTable = symbolThis->symclass.scope; //lookup_symbol(name)->symclass.scope;
-		//semantic_this = "ERROR";//lookup_symbol("this")->IR_name;//symbolThis->IR_name;//"this";
+		currentSymbolTable = symbolThis->symclass.scope; 
 		
 		semantic_context = SEMANTIC_MEMBER;
-		semantic_general_analyze(node_dsl);//decl_stmt_list //this adds functions that were actually defined in code
+		semantic_general_analyze(node_dsl);//this adds functions that were actually defined in code
 		semantic_context = SEMANTIC_NORMAL;
 		
-		//semantic_this = 0;
 		pop_symbol_table();
 		class_emit_end();
 		symbolThis = 0;

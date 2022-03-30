@@ -1,0 +1,25 @@
+// * [bug 18] class methods can't fetch member variables (might be frameclimbing, or even lack of 'this' ptr)
+// *  \[bug] variables and functions don't know they have a "this" symbol
+// *    \[bug?] semantic_flatten is in effect so the STs for individual structures are missing
+// *      \[issue] not sure how tightly coupled the codegen is, does it need the symbol table or not?
+// *        \[issue] does code gen even read aout_IR? Where does it get the IR?
+
+//2. this;
+
+class Foo
+	int x;
+	void bar()
+		writePort(0, this);
+	end
+end
+
+int main
+	Foo foof;
+	foof.x = 123;
+	writePort(0, 0);
+	writePort(1, 0);
+	
+	foof.bar();
+	writePort(1, &foof);
+	
+end

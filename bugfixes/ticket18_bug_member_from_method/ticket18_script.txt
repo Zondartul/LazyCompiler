@@ -1,0 +1,3 @@
+LazyComp -testYN lz/test1_X/test1.lzt
+LazyComp -testYN lz/test2_this/test2.lzt
+LazyComp -testYN lz/test3_this_X/test3.lzt

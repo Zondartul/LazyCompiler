@@ -1,0 +1,6 @@
+//[BUUG 5] can't read floats: 3.14 reads as "access member 14 of object 3"
+//6. 1234.5e9
+
+int main()
+	float f = 1234.5e9;
+end

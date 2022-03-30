@@ -1,0 +1,4 @@
+//this file is to be included from a relative subdirectory
+//i.e. #include "sub1/inc_subdir.lzt"
+
+void func_subdir() end

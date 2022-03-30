@@ -1,0 +1,5 @@
+//[bug 3] lexer or yacc can't handle '\\'.
+//1. char value '\\'
+int main()
+	char C = '\\';
+end

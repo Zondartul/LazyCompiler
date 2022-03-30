@@ -1,0 +1,7 @@
+//[Bug 1] can't find an include in the same directory as source file
+//3. - include system (stdlib)
+#include <inc_system.lzt>
+
+int main()
+	func_system();
+end

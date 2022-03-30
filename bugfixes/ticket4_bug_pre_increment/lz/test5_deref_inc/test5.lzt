@@ -1,0 +1,20 @@
+//[bug 4] pre-increment is not handled by semantic dispatch << c = *++fmt; >>
+//5. c = *++fmt
+#include <testOutput.lzt>
+
+int main()
+	char *str = "ohai";
+	int x = 10;
+	writePort(0, 0);
+	writePort(1, 0);
+	writePort(2, 0);
+	writePort(3, 0);
+	writePort(4, 0);
+	
+	writePort(0, fmt); 		//should be ...
+	writePort(1, *fmt);		//should be 'o'
+	writePort(2, *++fmt);	//should be 'h'
+	writePort(3, fmt); 		//should be ...+1
+	writePort(4, *fmt);		//should be 'h'
+	
+end

@@ -1,0 +1,10 @@
+//* [Bug 17] initial values for the class members do not get set (have to manually write in a constructor)
+//1. class foo int x = 1; end
+
+class foo int x = 123; end
+
+int main()
+	foo foof;
+	writePort(0, 0);
+	writePort(0, foof.x);
+end

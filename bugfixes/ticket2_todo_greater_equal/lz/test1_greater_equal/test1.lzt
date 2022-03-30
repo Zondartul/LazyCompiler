@@ -1,0 +1,20 @@
+//[Todo 2] implement >=
+//1. operator >=
+#include <testOutput.lzt>
+
+int main()
+	int V = 2;
+	int L = 1;
+	int E = 2;
+	int G = 3;
+	
+	writePort(0,0);
+	writePort(1,0);
+	writePort(2,0);
+	
+	if(V >= L) writePort(0, 1); end //should be 1
+	if(V >= E) writePort(1, 1); end //should be 1
+	if(V >= G) writePort(2, 1); end //should be 0
+	
+	infloop();
+end

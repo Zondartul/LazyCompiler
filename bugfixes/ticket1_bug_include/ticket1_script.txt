@@ -1,0 +1,8 @@
+LazyComp -testYN lz/test1_rel_same/test1.lzt
+LazyComp -testYN lz/test2_abs/test2.lzt
+LazyComp -testYN -Isystem lz/test3_sytem/inc_system lz/test3_system/test3.lzt
+LazyComp -testYN lz/test4_rel_subdir/test4.lzt
+LazyComp -testYN lz/test5_rel_subdir2/test5.lzt
+LazyComp -testYN lz/test6_rel_parent/dir/test6.lzt
+LazyComp -testYN lz/test7_rel_parent_sub/dir/test7.lzt
+LazyComp -testYN lz/test8_rel_parent2/dir/dir2/test8.lzt

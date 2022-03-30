@@ -1,0 +1,7 @@
+//[Bug 1] can't find an include in the same directory as source file
+//8. - include rel parent dir/parent dir
+#include "../../inc_parent.lzt"
+
+int main()
+	func_parent();
+end

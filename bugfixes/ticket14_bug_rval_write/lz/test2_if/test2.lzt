@@ -1,0 +1,23 @@
+// [bug 13] this doesn't work:
+	// |	int End = 0;
+	// |	while(!End)
+	// |	... loop doesn't execute at all.
+	// [note] this doesn't work either: if(!num)
+//2. if(!num)
+
+#include <testOutput.lzt>
+
+int main()
+	writePort(0, 0);
+	writePort(1, 0);
+	writePort(2, 0);
+	
+	int num = 0;
+	if(!num)
+		writePort(0, 1);
+	end
+	if(num)
+		writePort(1, 1);
+	end
+	writePort(2, 1);
+end

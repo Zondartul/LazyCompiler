@@ -63,7 +63,7 @@
 	// y = 4;
 // end
 
-void test_deref()
+int test_deref()
 	int x = 123;
 	int *p = &x;
 	int y = 0;

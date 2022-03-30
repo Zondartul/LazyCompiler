@@ -1,0 +1,5 @@
+//this file is to be included by absolute path
+//i.e. #include "E:/projects/LazyComp/bugfixes/ticket1_bug_include/lz/inc_abs/inc_abs.lzt"
+//(path changes depending on LazyComp install dir)
+
+void func_abs() end

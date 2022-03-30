@@ -1,0 +1,7 @@
+LazyComp -testYN lz/test1/test1.lzt
+LazyComp -testYN lz/test2/test2.lzt
+LazyComp -testYN lz/test3/test3.lzt
+LazyComp -testYN lz/test4/test4.lzt
+LazyComp -testYN lz/test5/test5.lzt
+LazyComp -testYN lz/test6/test6.lzt
+LazyComp -testYN lz/test7/test7.lzt

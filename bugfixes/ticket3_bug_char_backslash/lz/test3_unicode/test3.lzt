@@ -1,0 +1,5 @@
+//[bug 3] lexer or yacc can't handle '\\'.
+//3. char value '\unnnnn'
+int main()
+	char C = '\u0416'; //ж
+end

@@ -517,6 +517,7 @@ int vec_vnprintf(vector2_char* vstr, int size, const char* format, va_list vlist
 		va_copy(vlist2, vlist);
 		assert(format);
 		//note: segfault if vlist empty (i.e. when no arguments)
+		//(or maybe because of printf(user_input) as format string
 		size = vsnprintf(0, 0, format, vlist2)+1;
 		//size = vsnprintf(fixbuff, 1, format, vlist2) + 1;
 		va_end(vlist2);

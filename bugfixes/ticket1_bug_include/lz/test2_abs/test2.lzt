@@ -1,0 +1,7 @@
+//[Bug 1] can't find an include in the same directory as source file
+//2. - include abs
+#include "E:\projects\LazyComp\bugfixes\ticket1_bug_include\lz\test2_abs\inc_abs\inc_abs.lzt"
+
+int main()
+	func_abs();
+end

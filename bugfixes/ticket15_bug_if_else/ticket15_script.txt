@@ -1,0 +1,5 @@
+LazyComp -testYN lz/test1_if_else_end/test1.lzt
+LazyComp -testYN lz/test2_if_end_ifnot_end/test2.lzt
+LazyComp -testYN lz/test3_if_elseif_else_end/test3.lzt
+LazyComp -testYN lz/test4_if_else_if_else_end_end/test4.lzt
+LazyComp -testYN lz/test5_if_elseif_end/test5.lzt

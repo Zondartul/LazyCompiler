@@ -1,0 +1,7 @@
+//[Bug 1] can't find an include in the same directory as source file
+//1. - include relative same dir
+#include "inc_rel_samedir.lzt"
+
+int main()
+	func_rel_samedir();
+end

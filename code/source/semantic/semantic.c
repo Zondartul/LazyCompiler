@@ -129,13 +129,16 @@ int semantic_dispatch_if(struct ast_node* node, if_settings stg) {
 }
 
 int semantic_dispatch_general(struct ast_node* node) {
+	val_handle res = { .rv_type = E_DISCARD };
+	expr_settings stg = { .dest = res };
+
 	if (!strcmp(node->token.type, "program"))			{ semantic_analyze_program(node);			return 1; }
 	if (!strcmp(node->token.type, "decl_stmt_list"))	{ semantic_analyze_decl_stmt_list(node);	return 1; }
 	if (!strcmp(node->token.type, "decl_stmt"))			{ semantic_analyze_decl_stmt(node);			return 1; }
 	if (!strcmp(node->token.type, "func_def"))			{ semantic_analyze_func_def(node);			return 1; }
 	if (!strcmp(node->token.type, "var_decl_list"))		{ semantic_analyze_var_decl_list(node);		return 1; }
 	if (!strcmp(node->token.type, "var_decl"))			{ semantic_analyze_var_decl(node);			return 1; }
-	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, EXPR_SETTINGS_NULL);	return 1; }
+	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "stmt_list"))			{ semantic_analyze_stmt_list(node);			return 1; }
 	if (!strcmp(node->token.type, "stmt"))				{ semantic_analyze_stmt(node);				return 1; }
 	if (!strcmp(node->token.type, "imp_stmt"))			{ semantic_analyze_imp_stmt(node);			return 1; }
@@ -145,7 +148,6 @@ int semantic_dispatch_general(struct ast_node* node) {
 	if (!strcmp(node->token.type, "class_def"))		{ semantic_analyze_class_def(node);			return 1; }
 	//it could be an expression (imperative statement)
 	//where we ignore the result.
-	expr_settings stg = { .res_type = E_DISCARD };
 	if (semantic_dispatch_expr(node, stg)) {return 1;}
 	return 0;
 }

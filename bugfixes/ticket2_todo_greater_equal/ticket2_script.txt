@@ -1,0 +1,4 @@
+LazyComp -testYN lz/test1_greater_equal/test1.lzt
+LazyComp -testYN lz/test2_less_equal/test2.lzt
+LazyComp -testYN lz/test3_not_equal/test3.lzt
+LazyComp -testYN lz/test4_equal/test4.lzt

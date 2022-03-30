@@ -1,0 +1,4 @@
+//this file is to be included from a subdirectory of a relative parent directory
+//i.e. #include "../inc_parsub/inc_parsub.lzt"
+
+void func_parsub() end

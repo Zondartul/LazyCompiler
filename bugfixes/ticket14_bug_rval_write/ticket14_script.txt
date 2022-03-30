@@ -1,0 +1,4 @@
+LazyComp -testYN lz/test1_while/test1.lzt
+LazyComp -testYN lz/test2_if/test2.lzt
+LazyComp -testYN lz/test3_assign/test3.lzt
+LazyComp -testYN lz/test4_for/test4.lzt

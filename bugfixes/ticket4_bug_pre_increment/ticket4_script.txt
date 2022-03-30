@@ -1,0 +1,5 @@
+LazyComp -testYN lz/test1_inc/test1.lzt
+LazyComp -testYN lz/test2_inc_dec/test2.lzt
+LazyComp -testYN lz/test3_inc_inc/test3.lzt
+LazyComp -testYN lz/test4_pre_post_inc/test4.lzt
+LazyComp -testYN lz/test5_deref_inc/test5.lzt

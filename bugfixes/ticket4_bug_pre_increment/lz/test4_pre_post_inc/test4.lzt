@@ -1,0 +1,14 @@
+//[bug 4] pre-increment is not handled by semantic dispatch << c = *++fmt; >>
+//2. ++++x
+#include <testOutput.lzt>
+
+int main()
+	int x = 10;
+	writePort(0, 0);
+	writePort(1, 0);
+	writePort(2, 0);
+	
+	writePort(0, x); 		//should be 10
+	writePort(1, ++x++);	//should be err (++x is lvalue)
+	writePort(2, x);		//should be 11
+end

@@ -1,0 +1,9 @@
+//[buf 7] can't handle the expression &(scr.X)
+//2. &X
+
+int main()
+	float X = 123;
+	writePort(0, 0);
+	
+	writePort(0, &X);
+end

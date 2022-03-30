@@ -1,0 +1,7 @@
+//[Bug 1] can't find an include in the same directory as source file
+//5. - include rel subdir/subdir
+#include "sub1/sub2/inc_subdir2.lzt"
+
+int main()
+	func_subdir2();
+end

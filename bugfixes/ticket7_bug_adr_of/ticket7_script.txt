@@ -1,0 +1,5 @@
+LazyComp -testYN lz/test1_struct/test1.lzt
+LazyComp -testYN lz/test2_var/test2.lzt
+LazyComp -testYN lz/test3_arg/test3.lzt
+LazyComp -testYN lz/test4_arr1/test4.lzt
+LazyComp -testYN lz/test5_arr2/test5.lzt

@@ -1,0 +1,4 @@
+cd ticket1_bug_include; exec ticket1_script.txt; cd ..;
+cd ticket2_todo_greater_equal; exec ticket2_script.txt; cd ..;
+cd ticket3_bug_char_backslash; exec ticket3_script.txt; cd ..;
+cd ticket4_bug_pre_increment; exec ticket4_script.txt; cd ..;
