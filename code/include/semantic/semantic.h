@@ -85,6 +85,10 @@ typedef struct if_settings {
 void output_res(expr_settings stg, val_handle src, int do_emit);
 //types
 
+#define PREP_RES(res, type) val_handle res = { .rv_type = E_ERROR }; val_handle res##dest = { .rv_type = type }; \
+							expr_settings res##stg = { .dest = res##dest, .actual = & res };
+#define VERIFY_RES(res) if(res.rv_type == E_ERROR){error("internal semantic error: invalid expression result");}
+
 //generated
 
 //vars
@@ -159,5 +163,6 @@ extern vector2_ptr_code_segment CS_list;
 char *escape_string(const char *str);
 char *unescape_string(const char *str);
 char *removeComments(const char *str);
+const char *sanitize_string(const char* str);
 
 #endif

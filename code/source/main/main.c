@@ -195,7 +195,6 @@ int main_helper(int argc, char **argv){
 		cmd_str = "copy "
 			"\"D:\\Stride\\compiler\\LazyComp\\data_out\\aout_assembly.txt\" "
 			"\"E:/PROGRA~2/Steam/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/aout_assembly.txt\" "
-			//	"\"E:\\Program Files(x86)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazycomp\\aout_assembly.txt\""
 			;
 	}
 

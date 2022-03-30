@@ -220,7 +220,7 @@ void semantic_finalize(){
 		struct code_segment *CS = currentCodeSegment;
 		currentCodeSegment = init_CS;
 		const char *result = IR_next_name(namespace_semantic,"temp");
-		emit_code("CALL %s _main",result); //idk how to pass main's params yet.
+		emit_code("CALL %s _main", sanitize_string(result)); //idk how to pass main's params yet.
 		emit_code_segment(CS);
 		/*
 		for(i = 0; i < CS_list.size; i++){
@@ -257,7 +257,7 @@ void semantic_finalize(){
 
 void class_constructor_emit(struct symbol *S){
 	emit_code("/* default class constructor */");
-	emit_code("FUNCTION %s BEGIN",S->IR_name);
+	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
 	push_symbol_table();
 	new_symbol_table(0);
 	push_code_segment();
@@ -274,13 +274,13 @@ void class_constructor_emit(struct symbol *S){
 	pop_code_segment();
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);
-	emit_code("FUNCTION %s END",S->IR_name);
+	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
 	emit_code("/* end */");
 }
 
 void class_destructor_emit(struct symbol *S){
 	emit_code("/* default class destructor */");
-	emit_code("FUNCTION %s BEGIN",S->IR_name);
+	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
 	push_symbol_table();
 	new_symbol_table(0);
 	push_code_segment();
@@ -297,13 +297,13 @@ void class_destructor_emit(struct symbol *S){
 	pop_code_segment();
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);	
-	emit_code("FUNCTION %s END",S->IR_name);
+	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
 	emit_code("/* end */");
 }
 
 void class_emit_start(){
 	//emit struct code so member addresses are available
-	emit_code("STRUCT %s BEGIN", symbolThis->IR_name);
+	emit_code("STRUCT %s BEGIN", sanitize_string(symbolThis->IR_name));
 	//for(i = 0; i < currentSymbolTable->symbols.size; i++){}
 	const char *smt = semantic_this;
 	semantic_this = 0;
@@ -318,7 +318,7 @@ void class_emit_start(){
 }
 
 void class_emit_end(){
-	emit_code("STRUCT %s END", symbolThis->IR_name);
+	emit_code("STRUCT %s END", sanitize_string(symbolThis->IR_name));
 }
 
 void class_def_finalize(){
@@ -375,7 +375,7 @@ void class_def_finalize(){
 
 void emit_all_decl_helper(){
 	if(symbolThis){
-		emit_code("USING %s",symbolThis->IR_name);
+		emit_code("USING %s", sanitize_string(symbolThis->IR_name));
 	}
 	int i = 0;
 	for(i = 0; i < currentSymbolTable->symbols.size; i++){
@@ -386,11 +386,11 @@ void emit_all_decl_helper(){
 		}
 		if(S->type == SYMBOL_PARAM || S->type == SYMBOL_VARIABLE){
 			if(S->symvariable.array){
-				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG ARRAY %d",S->IR_name, S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
-				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR ARRAY %d",S->IR_name, S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG ARRAY %d", sanitize_string(S->IR_name), S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR ARRAY %d", sanitize_string(S->IR_name), S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
 			}else{
-				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG",S->IR_name);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
-				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR",S->IR_name);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG", sanitize_string(S->IR_name));}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR", sanitize_string(S->IR_name));}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
 			}
 		}else{
 			//if(S->type == SYMBOL_FUNCTION){emit_code("SYMBOL %s FUNC",S->IR_name);} nah, they're both define-anywhere
@@ -440,7 +440,7 @@ void emit_initializer(struct symbol *S){
 	}
 	*/
 	if(T->symclass){
-		emit_code("/* initialize %s */",S->username);
+		emit_code("/* initialize %s */", sanitize_string(S->username));
 		//emit_code("/* construct %s */",S->username);
 		struct symbol *S2 = T->symclass;
 		push_symbol_table();
@@ -448,7 +448,7 @@ void emit_initializer(struct symbol *S){
 		struct symbol *S3 = lookup_symbol("constructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
 		//emit_code("CALL %s %s %s",exprResult,S3->IR_name,S->IR_name);
-		emit_code("CALL %s %s %s",exprResult, S3->IR_name,S->IR_name);
+		emit_code("CALL %s %s %s", sanitize_string(exprResult), sanitize_string(S3->IR_name), sanitize_string(S->IR_name));
 		pop_symbol_table();
 	}else{
 		//primitive type
@@ -469,13 +469,13 @@ void emit_all_deinitializers(){
 void emit_deinitializer(struct symbol *S){
 	struct type_name *T = S->symvariable.type;
 	if(T->symclass){
-		emit_code("/* destroy %s */",S->username);
+		emit_code("/* destroy %s */", sanitize_string(S->username));
 		struct symbol *S2 = T->symclass;
 		push_symbol_table();
 		currentSymbolTable = S2->symclass.scope;
 		struct symbol *S3 = lookup_symbol("destructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
-		emit_code("CALL %s %s %s",exprResult,S3->IR_name,S->IR_name);
+		emit_code("CALL %s %s %s", sanitize_string(exprResult), sanitize_string(S3->IR_name), sanitize_string(S->IR_name));
 		pop_symbol_table();
 	}else{
 		//primitive type
@@ -708,7 +708,7 @@ int IR_name_in_use(vector2_ptr_char *namespace, const char *name){
 
 char* IR_name_helper(vector2_ptr_char* namespace, const char* prefix, int allowExact, int allowInexact) {
 	vector2_char vstr = vector2_char_here();
-	vec_printf(&vstr, "%s", prefix);
+	vec_printf(&vstr, "%s", sanitize_string(prefix));
 	if (allowExact && !IR_name_in_use(namespace, vstr.data)){//buff)) {
 		m(*namespace, push_back, vstr.data);//buff);
 		return stralloc(vstr.data);//return buff;
@@ -759,11 +759,11 @@ void emit_code_segment(struct code_segment *CS){
 		for(i = 0; i < CS->commands.size; i++){
 			const char *cmd = m(CS->commands,get,i);
 			printf("emitting command [%s]\n",cmd);
-			emit_code("%s",cmd);
+			emit_code("%s", sanitize_string(cmd));
 		}
 		//m(CS_list,pop_back);
 	}else{
-		emit_code("INSERT %s", CS->name);
+		emit_code("INSERT %s", sanitize_string(CS->name));
 	}
 }
 

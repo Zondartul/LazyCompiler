@@ -10,19 +10,20 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 
 	//const char* res1 = 0; struct type_info* res1type = 0;
 	//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1);
-	//const char* res2 = 0; struct type_info* res2type = 0;
-	//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
-	val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-	expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	semantic_expr_analyze(ast_get_child(node, 1), stg2);
-	//const char* result2 = pop_expr();
-	//const char* result1 = pop_expr();
+	//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg);
+	VERIFY_RES(res1);
+	//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+	PREP_RES(res2, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 1), res2stg);
+	VERIFY_RES(res2);
+
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("%s %s %s %s", OP, exprResult, res1.val, res2.val);
-	//output_res(stg, exprResult, res1type);
+	
 	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = res1.rv_type };
 	output_res(stg, result, NO_EMIT);
 }
@@ -52,13 +53,12 @@ void semantic_analyze_expr_list(ast_node* node) {
 	for (int i = 0; i < node->children.size; i++) {
 		//so some of these may be expressions and some, expression lists. idk.
 		//well, actually, the list should be linearized.
-		//push_expr(new_lval());//LV or RV? idk //push_expr("NODISCARD");
-
-		//const char* res1 = 0; struct type_info* res1type = 0;
-		//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-		val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-		expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-		semantic_expr_analyze(ast_get_child(node, i), stg1); //expr
+		
+		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+		PREP_RES(res1, E_LVAL);
+		semantic_expr_analyze(ast_get_child(node, i), res1stg); //expr
+		VERIFY_RES(res1);
 		//give name to new expression result?
 		//put it in stack?
 	}
@@ -103,37 +103,25 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 		//char buff[80];
 
 		if (S->type == SYMBOL_VARIABLE) {
-			//const char *S_full = IR_next_name(namespace_semantic,S->IR_name);//IR_next_name(namespace_semantic,S->IR_name);
 			emit_code("ADD %s %s &%s /*id:this.var*/", S_full, semantic_this, S->IR_name);
-			//if (!discardResult) { push_expr(stralloc(buff)); }
-			//output_res(stg, S_full, T);
 			val_handle result = { .val = S_full, .rv_type = E_RVAL, .T = T };
 			output_res(stg, result, NO_EMIT);
 		}
 		else if (S->type == SYMBOL_FUNCTION) {
 			emit_code("/*id:this.func*/");
-			//if (!discardResult) {push_expr(S->IR_name);}
-			//output_res(stg, S->IR_name, T); //we use the globally unique IR name of the function (static dispatch)
 			val_handle result = { .val = S->IR_name, .rv_type = E_LVAL, .T = T };
 			output_res(stg, result, NO_EMIT);
 		}
 		else {
 			error("[SEMANTIC] Unknown symbol type ");
 		}
-		//const char *result1 = stralloc(buff);
-		//push_expr(result1);
 	}
 	else {
-		//if (!discardResult) { push_expr(S->IR_name); }
 		emit_code("/*id:global*/");
-		//fprintf(stderr, "warning: id always global, can't see 'this'\n");
 #pragma message("warning: id always global");
-		//output_res(stg, S->IR_name, T);
 		val_handle result = { .val = S->IR_name, .rv_type = E_RVAL, .T = T };
 		output_res(stg, result, T);
 	}
-	//push_exprtype(T);
-	//put variable <name> on the stack
 }
 
 void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
@@ -156,7 +144,6 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	case(0): //int
 	{
 		T->name = "int";
-		//output_res(stg, node->token.value, T);
 		val_handle result = { .val = node->token.value, .T = T, .rv_type = E_LVAL };
 		output_res(stg, result, NO_EMIT);
 		break;
@@ -164,7 +151,6 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	case(1): //hex int
 	{
 		T->name = "int";
-		//output_res(stg, node->token.value, T);
 		val_handle result = { .val = node->token.value, .T = T, .rv_type = E_LVAL };
 		output_res(stg, result, NO_EMIT);
 		break;
@@ -172,7 +158,6 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	case(2): //binary int
 	{
 		T->name = "int";
-		//output_res(stg, node->token.value, T);
 		val_handle result = { .val = node->token.value, .T = T, .rv_type = E_LVAL };
 		output_res(stg, result, NO_EMIT);
 		break;
@@ -180,7 +165,6 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	case(3): //float
 	{
 		T->name = "float";
-		//output_res(stg, node->token.value, T);
 		val_handle result = { .val = node->token.value, .T = T, .rv_type = E_LVAL };
 		output_res(stg, result, NO_EMIT);
 		break;
@@ -190,8 +174,7 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 		T->name = "char";
 		vector2_char vstr = vector2_char_here();
 		vec_printf(&vstr, "%d", node->token.value[1]);
-		const char* str = stralloc(vstr.data);//stralloc(buff);
-		//output_res(stg, str, T);
+		const char* str = stralloc(vstr.data);
 		val_handle result = { .val = str, .T = T, .rv_type = E_LVAL };
 		output_res(stg, result, NO_EMIT);
 		break;
@@ -199,7 +182,7 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	case(5): //string
 		T->name = "string";
 		const char* str_name = IR_next_name(namespace_semantic, "str");
-		struct symbol* S = symbol_new0();//new_symbol();
+		struct symbol* S = symbol_new0();
 		S->type = SYMBOL_CONST;
 		S->storage = STORE_DATA_STATIC;
 		S->symconst.type = CONST_STRING;
@@ -259,27 +242,26 @@ struct type_name* reffed_type(struct type_name* T) {
 void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	//expr '[' expr ']'
 
-	
-	
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 1), stg1); //expr (array)
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 1), res1stg); //expr (array)
+	VERIFY_RES(res1);
+
 	const char* index = res1.val;
 	//lval because numbers are ok
 
-	//const char* res2 = 0; struct type_info* res2type = 0;
-	//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
-	val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-	expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg2); //expr (index)
+	//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+	PREP_RES(res2, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res2stg); //expr (index)
+	VERIFY_RES(res2);
 	const char* ptr = res2.val;
 
 	//okay first of all, expr isn't necessarily a symtable symbol but
 	//it could just be an rvalue expression (i.e. temporary value)
 
-	struct type_name* T = res1.T;//pop_exprtype();
+	struct type_name* T = res2.T;//pop_exprtype();
 	//if (T->pointerlevel == 0) {
 	//	//error("Semantic error: array access into %s, which has non-pointer type %s\n",S->username,T->name);
 	//	const char* expr1_text = 0; //how do
@@ -302,19 +284,19 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	
 	//output_res(stg, res_val, T2);
 	val_handle result = { .val = resultExpr, .rv_type = E_RVAL, .T = T2 };
-	return;
+	//return;//you piece of shit, you didn't output the result
+	output_res(stg, result, NO_EMIT);
 
-	//error("Semantic error: array access into %s, which is not a variable\n");
 }
 
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
 
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr (function name or reference expression)
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (function name or reference expression)
+	VERIFY_RES(res1);
 	const char* name = res1.val;
 	
 	struct type_name* T = res1.T;//pop_exprtype();//S->symfunction.returntype;
@@ -331,11 +313,11 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	vector2_ptr_char ministack = vector2_ptr_char_here();
 	for (i = 0; i < list->children.size; i++) {
 
-		//const char* res2 = 0; struct type_info* res2type = 0;
-		//expr_settings stg2 = { .res_type = E_RVAL, .res_out = &res2, .res_out_type = &res2type };
-		val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-		expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-		semantic_expr_analyze(ast_get_child(list, i), stg2); //expr? one of func args?
+		//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+		//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+		PREP_RES(res2, E_LVAL);
+		semantic_expr_analyze(ast_get_child(list, i), res2stg); //expr? one of func args?
+		VERIFY_RES(res2);
 		const char* expr = res2.val;
 		m(ministack, push_back, expr);
 	}
@@ -358,11 +340,11 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 
 	if (semantic_decl) { return; }
 	
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr (first one)
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (first one)
+	VERIFY_RES(res1);
 	//what if $0 isn't an ID? need to figure out
 	//expression type... also instance... fuck, just redo this.
 	struct type_name* T = res1.T;//pop_exprtype();
@@ -374,11 +356,13 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	push_symbol_table();
 	currentSymbolTable = T->symclass->symclass.scope;
 	semantic_this = res1.val;//pop_expr();
-	//const char* res2 = 0; struct type_name* res2type = 0;
-	//expr_settings stg2 = { .res_type = E_RVAL, .res_out = &res2, .res_out_type = &res2type };
-	val_handle res2; val_handle res2dest = { .rv_type = E_RVAL };
-	expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	semantic_expr_analyze(ast_get_child(node, 1), stg2); //expr (member)
+	
+	//val_handle res2; val_handle res2dest = { .rv_type = E_RVAL };
+	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+	PREP_RES(res2, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (member)
+	VERIFY_RES(res2);
+	
 	semantic_this = 0;
 	pop_symbol_table();
 	
@@ -394,11 +378,12 @@ void semantic_analyze_expr_increment(ast_node* node, expr_settings stg) {
 	//in rval, out lval
 
 	if (semantic_decl) { return; }//goto semantic_exit;}
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+	
 	if (node->token.production == 0) {
 		//post-increment
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
@@ -421,11 +406,12 @@ void semantic_analyze_expr_decrement(ast_node* node, expr_settings stg) {
 	//expr: DEC	expr    %prec PREDEC	
 	
 	if (semantic_decl) { return; }
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
 	if (node->token.production == 0) {
 		//post-decrement
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
@@ -450,12 +436,12 @@ void semantic_analyze_expr_neg(ast_node* node, expr_settings stg) {
 	
 	if (semantic_decl) { return; }
 	
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
-	
+	//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
 	emit_code("NEG %s %s", resultExpr, res1.val);
 	
@@ -474,19 +460,15 @@ void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
 	//if upstream wants RVAL, it takes it as is.
 	//if upstream wants LVAL, output_res dereferences it.
 	 
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
-	
+	//val_handle res1 = { .rv_type = E_ERROR }; val_handle res1dest = { .rv_type = E_LVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
 	struct type_name* T = res1.T;
 	struct type_name* T2 = dereffed_type(T);
 
-	//const char* result = IR_next_name(namespace_semantic, "temp");
-	//fprintf(stderr, "warning: deref should change expr pointerlevel, it doesn't atm\n");
-//#pragma message("warning: deref pointerlevel")
-	//output_res_and_emit(stg, result, res1type);
 	val_handle result = { .val = res1.val, .rv_type = E_RVAL, .T = T2 };
 	output_res(stg, result, YES_EMIT);
 }
@@ -498,14 +480,12 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 
 	//in RVAL, out LVAL
 
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
-	//const char* result = IR_next_name(namespace_semantic, "temp");
-	//emit_code("MOV %s &%s", result, res1);
-	//output_res(stg, result, res1type);
+	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
 	struct type* T = res1.T;
 	struct type* T2 = reffed_type(T);
 	val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = T2 };
@@ -518,21 +498,19 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
 
 	if (semantic_decl) { return; }
-//	lvalue = 1;
-//#pragma message("warning: lvalue=1, lvalue=0 get rid of it")
 
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
-	//lvalue = 0;
-	
-	//const char* res2 = 0; struct type_info* res2type = 0;
-	//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
-	val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-	expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	semantic_expr_analyze(ast_get_child(node, 1), stg2); //expr
+	//val_handle res1 = { .rv_type = E_ERROR }; val_handle res1dest = { .rv_type = E_RVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_RVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
+	//val_handle res2 = { .rv_type = E_ERROR }; val_handle res2dest = { .rv_type = E_LVAL };
+	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+	PREP_RES(res2, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
+	VERIFY_RES(res2);
+
 	emit_code("MOV %s %s //=", res1.val, res2.val);
 	//-- old note:
 	//currently the assignment can't have a value because
@@ -552,16 +530,16 @@ void semantic_analyze_expr_not(ast_node* node, expr_settings stg) {
 	
 	if (semantic_decl) { return; }
 	
-	//const char* res1 = 0; struct type_info* res1type = 0;
-	//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-	val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-	expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
-	
+	//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	PREP_RES(res1, E_LVAL);
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("NOT %s %s", exprResult, res1);
-	//output_res(stg, exprResult, res1type);
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = res1.T };
+	output_res(stg, result, NO_EMIT);
 }
 
 #if 0

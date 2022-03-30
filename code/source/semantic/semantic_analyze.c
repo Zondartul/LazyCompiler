@@ -23,10 +23,22 @@ void semantic_analyze_program(ast_node *node){
 	printf("semantic: done\n");
 }
 
+//verifies that a string is an actual printable ascii-string
+const char *sanitize_string(const char* str) {
+	int len = strlen(str);
+	const char* p = str;
+	while (*p) {
+		char c = *p++;
+		if (!isprint(c)) {
+			error("internal error: unclean string");
+		}
+	}
+}
+
 const char* emit_push_label(const char* lbl) {
 	const char* lbl2 = IR_next_name(namespace_semantic, lbl);
 	push_expr(lbl2);
-	emit_code("SYMBOL %s LABEL", lbl2);
+	emit_code("SYMBOL %s LABEL", sanitize_string(lbl2));
 	return lbl2;
 }
 
@@ -36,6 +48,13 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 		if (stg.actual) {*(stg.actual) = (val_handle){ .val = 0 };}
 		return;
 	}
+
+	//verify that the value we are outputting is initialized and stuff
+	if ((src.rv_type == E_ERROR)) {
+		error("internal semantic error: invalid source value");
+	}
+	printf("output_res (%s)\n", src.val);
+
 	if (stg.actual) { *(stg.actual) = src; }
 
 	if (do_emit) {
@@ -44,18 +63,18 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 		}
 		if (stg.dest.rv_type == E_RVAL) {	
 			if (src.rv_type == E_RVAL) { // temp_'arr[5]' = arr + 5;
-				emit_code("MOV %s, %s //output(R<R)", stg.dest.val, src.val);
+				emit_code("MOV %s, %s //output(R<R)", sanitize_string(stg.dest.val), sanitize_string(src.val));
 			}
 			if (src.rv_type == E_LVAL) { // *x = y;
-				emit_code("MOV *%s, %s //output(R<L)", stg.dest.val, src.val);
+				emit_code("MOV *%s, %s //output(R<L)", sanitize_string(stg.dest.val), sanitize_string(src.val));
 			}
 		}
 		if (stg.dest.rv_type == E_LVAL) { 
 			if (src.rv_type == E_RVAL) { // x = *y;
-				emit_code("MOV %s, *%s //output(L<R)", stg.dest.val, src.val);
+				emit_code("MOV %s, *%s //output(L<R)", sanitize_string(stg.dest.val), sanitize_string(src.val));
 			}
 			if (src.rv_type == E_LVAL) { // temp_'1+1' = 1 + 1;	
-				emit_code("MOV %s, %s //output(L<L)", stg.dest.val, src.val);
+				emit_code("MOV %s, %s //output(L<L)", sanitize_string(stg.dest.val), sanitize_string(src.val));
 			}
 		}
 	}
@@ -146,7 +165,7 @@ void semantic_analyze_func_def(ast_node *node){
 		S->username = name;
 		if(semantic_flatten){
 			vector2_char vstr = vector2_char_here();
-			vec_printf(&vstr, "_%s", name);
+			vec_printf(&vstr, "_%s", sanitize_string(name));
 			S->IR_name = IR_next_name(namespace_semantic, vstr.data);//buff);
 		}else{
 			S->IR_name = name;
@@ -216,7 +235,7 @@ void semantic_analyze_func_def(ast_node *node){
 		const char *s_typename = get_source_text2(node_typename->token.pos);
 		const char *s_args = get_source_text2(node_var_decl_list->token.pos);
 		
-		emit_code("/* %s %s(%s) */", s_typename, name, s_args);
+		emit_code("/* %s %s(%s) */", sanitize_string(s_typename), sanitize_string(name), sanitize_string(s_args));
 		
 		push_symbol_table();
 		currentSymbolTable = S->symfunction.scope;
@@ -381,13 +400,13 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 				currentCodeSegment = init_CS;
 			}
 			
-			//const char* result2 = 0; struct type_name* result2type = 0;
-			val_handle res2;
-			val_handle res2dest = { .rv_type = E_LVAL };
-			//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &result2, .res_out_type = &result2type };
-			expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-			semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
-			
+			//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+			//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+			//semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
+			PREP_RES(res2, E_LVAL);
+			semantic_expr_analyze(node_expr, res2stg);
+			VERIFY_RES(res2);
+
 			//emit_code("MOV %s %s", result1, result2);
 			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
 			//output_res(stg, result1, result1type);
@@ -449,11 +468,10 @@ void semantic_analyze_imp_stmt(ast_node *node){
 			if(semantic_decl){return;}
 			emit_code("/* %s */",
 				removeComments(get_source_text2(node->token.pos)));
-			//const char* res1 = 0; struct type_info* res1type = 0;
-			//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
-			val_handle res1; val_handle dest1 = { .rv_type = E_RVAL };
-			expr_settings stg1 = { .dest = dest1, .actual = &res1 };
-			semantic_expr_analyze(ast_get_child(node,0), stg1); //expr (what to return)
+			PREP_RES(res1, E_RVAL);
+			semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (what to return)
+			VERIFY_RES(res1);
+
 			emit_code("RET %s",res1.val);
 			break;
 		case(5)://for_loop
@@ -596,11 +614,12 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				pos = ast_get_child(node, 0)->token.pos;
 				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 				
-				//const char* res1 = 0; struct type_info* res1type = 0;
-				//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type };
-				val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-				expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-				semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr (condition)
+				//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+				//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+				PREP_RES(res1, E_LVAL);
+				semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (condition)
+				VERIFY_RES(res1);
+				
 				const char* condition_result = res1.val;
 				//if then
 				emit_code("/* this skips untrue if's */");
@@ -639,13 +658,13 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 				emit_code("LABEL %s", if_elseif);
 				//( expr )
-				//push_expr(new_lval());//push_expr("NODISCARD");
-
-				//const char* res2 = 0; struct type_info* res2type = 0;
-				//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &res2, .res_out_type = &res2type };
-				val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-				expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-				semantic_expr_analyze(ast_get_child(node, 1), stg2); //expr (condition)
+				
+				//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
+				//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+				PREP_RES(res2, E_LVAL);
+				semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (condition)
+				VERIFY_RES(res2);
+				
 				const char* condition_result = res2.val;
 				//const char* condition_result = pop_expr(); assert_temp_val(condition_result);
 				//then
@@ -697,11 +716,13 @@ void semantic_analyze_while_loop(ast_node *node){
 		emit_code("SYMBOL %s LABEL",label1);
 		emit_code("SYMBOL %s LABEL",label2);
 		emit_code("LABEL %s",label1);
-		//const char* res1 = 0; struct type_info* res1type = 0;
-		//expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type }; 
-		val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-		expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-		semantic_expr_analyze(ast_get_child(node,0), stg1); //expr (condition)
+		
+		//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
+		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+		PREP_RES(res1, E_LVAL);
+		semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (condition)
+		VERIFY_RES(res1);
+		
 		emit_code("JE 0 %s %s",res1, label2);
 		emit_code("/* do */");
 		push_symbol_table();
@@ -748,11 +769,13 @@ void semantic_analyze_for_loop(ast_node *node){
 		//LOOP CONDITION
 		emit_code("LABEL %s",loopCondition);
 		emit_code("/* %s */",removeComments(get_source_text2(pos2)));//get_source_text(pos2.start,pos2.end,pos2.filename));
-		//const char* res1 = 0; struct type_info* res1type = 0;
-		//expr_settings stg1 = { .res_type = E_LVAL, .res_out = &res1, .res_out_type = &res1type }; 
-		val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-		expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-		semantic_expr_analyze(ast_get_child(node,1), stg1); //expr (i < 10;)
+		
+		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
+		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+		PREP_RES(res1, E_LVAL);
+		semantic_expr_analyze(ast_get_child(node,1), res1stg); //expr (i < 10;)
+		VERIFY_RES(res1);
+		
 		const char* condition = res1.val;
 		emit_code("JE 0 %s %s",condition,loopExit);
 		emit_code("/* loop body */");
