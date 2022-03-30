@@ -3,3 +3,6 @@
 Debug/
 Build/
 x86/
+*.exe
+*.pdb
+data_out/
