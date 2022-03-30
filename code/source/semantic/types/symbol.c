@@ -104,7 +104,7 @@ struct symbol *lookup_symbol_helper(const char *name, struct symbol_table *T){
 		struct symbol *S;
 		//S = vector_get_reference(&T->symbols, i);
 		S = m(T->symbols,get,i);
-		if(!strcmp(S->username,name)){
+		if(S->username && !strcmp(S->username,name)){
 			printf("found symbol '%s'->'%s'\n",name,T->name);
 			return S;
 		}

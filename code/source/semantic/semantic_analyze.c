@@ -30,21 +30,60 @@ const char* emit_push_label(const char* lbl) {
 	return lbl2;
 }
 
-void output_res(expr_settings stg, const char* res_val, struct type_name *T) {
-	if (stg.res_type == E_ERROR) {error("internal semantic error: expr_settings null");}
-	if (stg.res_type == E_DISCARD) {
-		if (stg.res_out) { *(stg.res_out) = 0; }
-		if (stg.res_out_type) {*(stg.res_out_type) = 0;}
+void output_res(expr_settings stg, val_handle src, int do_emit) {
+	if (stg.dest.rv_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
+	if (stg.dest.rv_type = E_DISCARD) {
+		if (stg.actual) {*(stg.actual) = (val_handle){ .val = 0 };}
 		return;
 	}
-	if (!stg.res_out) {error("internal semantic error: res_out null");}
-	if (!stg.res_out_type) {error("internal semantic error: res_out_type null");}
-	
-	*(stg.res_out) = res_val;
-	*(stg.res_out_type) = T;
-	//we also need to check if it's rval/lval
-	//and also if we need to emit anything or not.
+	if (stg.actual) { *(stg.actual) = src; }
+
+	if (do_emit) {
+		if (!stg.dest.val) {
+			stg.dest.val = IR_next_name(namespace_semantic, "temp");
+		}
+		if (stg.dest.rv_type == E_RVAL) {	
+			if (src.rv_type == E_RVAL) { // temp_'arr[5]' = arr + 5;
+				emit_code("MOV %s, %s", stg.dest.val, src.val);
+			}
+			if (src.rv_type == E_LVAL) { // *x = y;
+				emit_code("MOV *%s, %s", stg.dest.val, src.val);
+			}
+		}
+		if (stg.dest.rv_type == E_LVAL) { 
+			if (src.rv_type == E_RVAL) { // x = *y;
+				emit_code("MOV %s, *%s", stg.dest.val, src.val);
+			}
+			if (src.rv_type == E_LVAL) { // temp_'1+1' = 1 + 1;	
+				emit_code("MOV %s, %s", stg.dest.val, src.val);
+			}
+		}
+	}
 }
+
+//void output_res_old(expr_settings stg, const char* res_val, struct type_name* T) {
+//	if (stg.res_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
+//	if (stg.res_type == E_DISCARD) {
+//		if (stg.res_out) { *(stg.res_out) = 0; }
+//		if (stg.res_out_type) { *(stg.res_out_type) = 0; }
+//		return;
+//	}
+//	if (!stg.res_out) { error("internal semantic error: res_out null"); }
+//	if (!stg.res_out_type) { error("internal semantic error: res_out_type null"); }
+//
+//	*(stg.res_out) = res_val;
+//	*(stg.res_out_type) = T;
+//	//we also need to check if it's rval/lval
+//	//and also if we need to emit anything or not.
+//}
+
+//void output_res(expr_settings stg, const char* res_val, struct type_name *T) {
+//	output_res_helper(stg, res_val, T, 0);
+//}
+//
+//void output_res_and_emit(expr_settings stg, const char* res_val, struct type_name* T) {
+//	output_res_helper(stg, res_val, T, 1);
+//}
 
 void semantic_analyze_decl_stmt_list(ast_node *node){
 	//decl_stmt_list:	decl_stmt_list_ne | ;
@@ -318,37 +357,20 @@ void semantic_analyze_var_decl(ast_node *node){
 }
 
 void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
-
-	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
 	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	//production | typename ID '=' expr
 	//yacc refs	 |    $1    $2  $3  $4
 	//children   |    (0)   (1)     (2)
 	struct ast_node *node_typename = ast_get_child(node,0);
-	//struct ast_node *node_id = ast_get_child(node,1);
 	struct ast_node *node_expr = ast_get_child(node,2);
 	
 	struct symbol *S;
 	if(semantic_decl){
-		//printf("got var_decl\n");
-		struct type_name *T = parseTypename(node_typename);//ast_get_child(node,0));//semantic_get_type(ast_get_child(node,0)->token.value);
+		struct type_name *T = parseTypename(node_typename);
 		const char *name = node->token.value;
-		S = symbol_new0();//new_symbol();
+		S = symbol_new0();
 		S->username = name;
-		/* if(semantic_flatten){
-			S->IR_name = IR_next_name(namespace_semantic,name);
-		}else{
-			S->IR_name = name;
-		}
-		if(semantic_context == SEMANTIC_PARAM){
-			S->type = SYMBOL_PARAM;
-			S->symparameter.type = T;
-			S->symparameter.pos = currentSymbolTable->symbols.size;
-		}else{
-			S->type = SYMBOL_VARIABLE;
-			S->symvariable.type = T;
-		} */
 		if(semantic_flatten){
 			S->IR_name = IR_next_name(namespace_semantic,name);
 		}else{
@@ -357,8 +379,6 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 		S->symvariable.type = T;
 		if(semantic_context == SEMANTIC_PARAM){
 			S->type = SYMBOL_PARAM;
-			//S->symparameter.pos = currentSymbolTable->symbols.size;
-			//S->symvariable.pos = getNumParameters();
 			S->store_adr = getNumParameters();
 			S->symvariable.size = getTypeSize(T);
 			S->symvariable.array = 0;
@@ -372,7 +392,6 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			S->storage = STORE_DATA_MEMBER;*/
 		}else{
 			S->type = SYMBOL_VARIABLE;
-			//S->symvariable.pos = getNumVariables();
 			S->store_adr = getNumVariables();
 			S->symvariable.size = getTypeSize(T);
 			S->symvariable.array = 0;
@@ -387,22 +406,25 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 	}else{
 		if(semantic_context != SEMANTIC_MEMBER){
 			S = lookup_symbol(node->token.value);
-			const char *result1 = S->IR_name; struct type_name* result1type = S->symvariable.type;
+			//const char *result1 = S->IR_name; struct type_name* result1type = S->symvariable.type;
+			val_handle res1 = { .val = S->IR_name, .T = S->symvariable.type };
+
 			push_code_segment();
 			if(!currentSymbolTable->parent){
 				currentCodeSegment = init_CS;
 			}
-			//emit_code("INITIALIZER %s BEGIN",result1);
-			//push_expr(new_lval()); //only L-values can be written down //push_expr("NODISCARD");
-			const char* result2 = 0; struct type_name* result2type = 0;
-			expr_settings stg2 = { .res_type = E_LVAL, .res_out = &result2, .res_out_type = &result2type };
+			
+			//const char* result2 = 0; struct type_name* result2type = 0;
+			val_handle res2;
+			val_handle res2dest = { .rv_type = E_LVAL };
+			//expr_settings stg2 = { .res_type = E_LVAL, .res_out = &result2, .res_out_type = &result2type };
+			expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
 			semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
-			//const char *result2 = pop_expr();
-			emit_code("MOV %s %s", result1, result2);
-			//emit_code("INITIALIZER %s END",result1);
-			//if (!discardResult) { push_expr(result1); }
-			if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
-			output_res(stg, result1, result1type);
+			
+			//emit_code("MOV %s %s", result1, result2);
+			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
+			//output_res(stg, result1, result1type);
+			output_res(stg, res2, YES_EMIT);
 			pop_code_segment();
 		}
 	}
@@ -434,7 +456,6 @@ void semantic_analyze_imp_stmt(ast_node *node){
 	//| for_loop
 	//;
 
-	//if(semantic_decl){goto semantic_exit;}
 	////imperative pass: 
 	//some things are now both declarative and imperative, oddly.
 	switch(node->token.production){
@@ -445,32 +466,22 @@ void semantic_analyze_imp_stmt(ast_node *node){
 			semantic_general_analyze(ast_get_child(node,0)); //while_loop
 			break;
 		case(2)://expr
-			if(semantic_decl){return;}//{goto semantic_exit;} //this one still imp-only though
+			if(semantic_decl){return;}//this one still imp-only though
 			emit_code("/* %s */",
-				/*get_source_text(node->token.pos.start,
-								node->token.pos.end,
-								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
 			push_expr("DISCARD");
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
-			if(semantic_decl){return;}//{goto semantic_exit;}
+			if(semantic_decl){return;}
 			emit_code("/* %s */",
-				/*get_source_text(node->token.pos.start,
-								node->token.pos.end,
-								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
 			emit_code("RET");
 			break;
 		case(4)://return expr
-			if(semantic_decl){return;}//{goto semantic_exit;}
+			if(semantic_decl){return;}
 			emit_code("/* %s */",
-				/*get_source_text(node->token.pos.start,
-								node->token.pos.end,
-								node->token.pos.filename)*/
 				removeComments(get_source_text2(node->token.pos)));
-			//push_expr(new_lval());//push_expr("NODISCARD");
 			const char* res1 = 0; struct type_info* res1type = 0;
 			expr_settings stg1 = { .res_type = E_RVAL, .res_out = &res1, .res_out_type = &res1type };
 			semantic_expr_analyze(ast_get_child(node,0), stg1); //expr (what to return)
@@ -495,13 +506,13 @@ void semantic_analyze_if_block(ast_node *node){
 		switch(node->token.production){
 			case(0)://if_then END
 			{
-				if_settings stg1 = { .exit_label = if_exit, .else_label = if_else };
+				if_settings stg1 = { .exit_label = 0, .else_label = 0 };
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				break;
 			}
 			case(1)://if_then ELSE stmt_list END
 			{
-				if_settings stg1 = { .exit_label = if_exit, .else_label = if_else };
+				if_settings stg1 = { .exit_label = 0, .else_label =0 };
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				new_symbol_table(ast_get_child(node, 1));
 				analyze_scope(ast_get_child(node, 1), 0, 0, &currentSymbolTable, 0, 1);
@@ -521,7 +532,12 @@ void semantic_analyze_if_block(ast_node *node){
 			{
 				if_exit = emit_push_label("lbl_if_exit");
 				//push_expr("NOELSE");
-				if_settings stg1 = { .exit_label = if_exit, .else_label = 0, .out_exit_label = &if_exit, .out_else_label = &if_else };
+				if_settings stg1 = { 
+					.exit_label = if_exit, 
+					//.else_label = 0, 
+					//.out_exit_label = &if_exit, 
+					//.out_else_label = &if_else 
+				};
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				//if_else = pop_expr(); assert_is_if_else(if_else);
 				//if_exit = pop_expr(); assert_is_if_exit(if_exit);
@@ -534,7 +550,12 @@ void semantic_analyze_if_block(ast_node *node){
 				if_exit = emit_push_label("lbl_if_exit");
 				if_else = emit_push_label("lbl_if_else");
 
-				if_settings stg1 = { .exit_label = if_exit, .else_label = 0, .out_exit_label = &if_exit, .out_else_label = &if_else };
+				if_settings stg1 = { 
+					.exit_label = if_exit, 
+					.else_label = if_else, 
+					//.out_exit_label = &if_exit, 
+					//.out_else_label = &if_else 
+				};
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				emit_code("/* else */");
 				emit_code("LABEL %s", if_else);

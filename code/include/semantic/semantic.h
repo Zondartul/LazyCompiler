@@ -47,16 +47,27 @@ struct symbol_class{
 
  //this section aims to remove all push_expr and such
 typedef enum expr_type {
-	E_ERROR, E_DISCARD, E_RVAL, E_LVAL
+	E_ERROR = 0, E_DISCARD, E_RVAL, E_LVAL
 } expr_type;
 
+typedef struct val_handle {
+	const char* val;
+	expr_type rv_type;
+	struct type_name* T;
+	struct symbol* sym_this;
+} val_handle;
+
 typedef struct expr_settings {
-	expr_type res_type;   //this tells the analyzer if node should output an rvalue or lvalue or nothing
-	const char* res_dest; //if given, result should be put into this existing IR-val
-	const char** res_out; //out-ptr for actual value of result
-	struct type_name** res_out_type; //out-ptr for actual var type of result
-	struct symbol* sym_this; //symbol (struct) from which to look up symbols
+	//expr_type res_type;   //this tells the analyzer if node should output an rvalue or lvalue or nothing
+	//const char* res_dest; //if given, result should be put into this existing IR-val
+	//const char** res_out; //out-ptr for actual value of result
+	//struct type_name** res_out_type; //out-ptr for actual var type of result
+	//struct symbol* sym_this; //symbol (struct) from which to look up symbols
+
+	val_handle dest;	//what value we want filled
+	val_handle *actual;	//what was it actually filled with
 } expr_settings;
+
 #define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})
 
 
@@ -68,7 +79,10 @@ typedef struct if_settings {
 } if_settings;
 #define IF_SETTINGS_NULL ((if_settings){0,0,0,0})
 
-void output_res(expr_settings stg, const char* res_val, struct type_name* T);
+//void output_res(expr_settings stg, const char* res_val, struct type_name* T);
+#define YES_EMIT 1
+#define NO_EMIT 0
+void output_res(expr_settings stg, val_handle src, int do_emit);
 //types
 
 //generated

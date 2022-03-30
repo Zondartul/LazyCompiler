@@ -191,7 +191,7 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 		S->storage = STORE_DATA_STATIC;
 		S->symconst.type = CONST_STRING;
 		S->symconst.data_string = stralloc(node->token.value);
-		S->username = "str";
+		S->username = 0;// "";//"str"; //constants shouldn't have a username
 		S->IR_name = str_name;
 		push_symbol(S);
 
@@ -480,13 +480,16 @@ void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 0), stg1); //expr
 	//const char* arg = pop_expr();
 	const char* result = IR_next_name(namespace_semantic, "temp");
-	emit_code("MOV %s *%s", result, res1);
+	//emit_code("MOV %s *%s", result, res1);
+	//emit_code("MOV %s, %s", result, res1); //output the value as temp because 'res' may already be dereferenced
+	//or maybe we could check if we need to do this
+	
 	//if (!discardResult) {
 	//	push_expr(result);
 	//}
 	//fprintf(stderr, "warning: deref should change expr pointerlevel, it doesn't atm\n");
 #pragma message("warning: deref pointerlevel")
-	output_res(stg, result, res1type);
+	output_res_and_emit(stg, result, res1type);
 }
 
 void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
