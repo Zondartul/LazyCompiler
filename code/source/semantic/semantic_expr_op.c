@@ -297,9 +297,9 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	//const char* res_val = stralloc(vstr.data);
 	
 	//output_res(stg, res_val, T2);
-	val_handle result = { .val = resultExpr, .rv_type = E_RVAL, .T = T2 };
+	val_handle result = { .val = resultExpr, .rv_type = E_PTR, .T = T2 };
 	//return;//you piece of shit, you didn't output the result
-	output_res(stg, result, NO_EMIT);
+	output_res(stg, result, YES_EMIT);
 
 }
 
@@ -503,12 +503,18 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	PREP_RES(res1, E_RVAL);
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
 	VERIFY_RES(res1);
-
 	struct type* T = res1.T;
 	struct type* T2 = reffed_type(T);
-	val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = T2 };
-	emit_code("/* ref %s */", sanitize_string(result.val));
-	output_res(stg, result, YES_EMIT);
+	emit_code("/* ref %s */", sanitize_string(res1.val));
+	
+	const char* temp = IR_next_name(namespace_semantic, "temp");
+	emit_code("MOV %s &%s",
+		sanitize_string(temp),
+		sanitize_string(res1.val));
+
+	val_handle result = { .val = temp, .rv_type = E_LVAL, .T = T2 };
+
+	output_res(stg, result, NO_EMIT);
 }
 
 

@@ -24,16 +24,24 @@ void semantic_analyze_program(ast_node *node){
 }
 
 //verifies that a string is an actual printable ascii-string
-const char *sanitize_string(const char* str) {
+int is_sanitary(const char* str) {
 	int len = strlen(str);
 	const char* p = str;
 	while (*p) {
 		char c = *p++;
 		if (!isprint(c)) {
-			error("internal error: unclean string");
+			return 0;
 		}
 	}
-	return str;
+	return 1;
+}
+
+const char *sanitize_string(const char* str) {
+	if (is_sanitary(str)) {
+		return str;
+	}else {
+		error("internal error: unclean string");
+	}
 }
 
 const char* emit_push_label(const char* lbl) {
@@ -134,7 +142,7 @@ void semantic_analyze_decl_stmt_list(ast_node *node){
 
 void semantic_analyze_decl_stmt(ast_node *node){
 	//decl_stmt:		class_def | func_def | var_decl ';' ;
-	push_expr("DISCARD");
+	//push_expr("DISCARD");
 	semantic_general_analyze(ast_get_child(node,0)); //class_def | func_def | var_decl
 }
 
@@ -292,13 +300,9 @@ void semantic_analyze_var_decl_list(ast_node *node){
 }
 
 void semantic_analyze_var_decl(ast_node *node){
-
-	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
-	//int discardResult = (strcmp(res, "DISCARD") == 0);
-
-	//var_decl:	typename ID
-	//| typename ID '[' expr ']'
-	//| typename ID '=' expr
+	//var_decl:	typename ID			<<< this one
+	//| typename ID '[' expr ']'    <<< or this one
+	//| typename ID '=' expr		x	not this one
 	//;
 
 	if(!semantic_decl){return;}//goto semantic_exit;}
@@ -315,11 +319,9 @@ void semantic_analyze_var_decl(ast_node *node){
 		}
 		arraysize = atoi(Nsize->token.value);
 	}
-	struct symbol *S;// = lookup_symbol_here(name);
-	// if(S){
-		// error("semantic error: S is already defined");
-	// }
-	S = symbol_new0();//new_symbol();
+	struct symbol *S;
+
+	S = symbol_new0();
 	S->username = name;
 	if(semantic_flatten){
 		S->IR_name = IR_next_name(namespace_semantic,name);
@@ -423,7 +425,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			semantic_expr_analyze(node_expr, res2stg);
 			VERIFY_RES(res2);
 
-			//emit_code("MOV %s %s", result1, result2);
+			emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
 			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
 			//output_res(stg, result1, result1type);
 			output_res(stg, res2, YES_EMIT);
@@ -469,14 +471,9 @@ void semantic_analyze_imp_stmt(ast_node *node){
 			break;
 		case(2)://expr
 			if(semantic_decl){return;}//this one still imp-only though
-			emit_code("/* %s */",
-				sanitize_string(
-					removeComments(
-						get_source_text2(node->token.pos)
-								  )
-				               )
-					 );
-			push_expr("DISCARD");
+			const char *str = removeComments(get_source_text2(node->token.pos));
+			if (!is_sanitary(str)) {str = "expression";}
+			emit_code("/* %s */", str);
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
@@ -795,7 +792,9 @@ void semantic_analyze_for_loop(ast_node *node){
 		//1.2 emit symbol declarations
 		 struct code_segment* CSinsert;
 		 analyze_scope(node_init, 0, &CSinsert, &currentSymbolTable, 0, 1);
+		 semantic_decl = 1; //only capture declarations, not commands
 		 analyze_scope(node_body, 0, &CSinsert, &currentSymbolTable, 0, 1);
+		 semantic_decl = 0;
 		 emit_code_segment(CSinsert);
 
 		//2. process the initializer statement
