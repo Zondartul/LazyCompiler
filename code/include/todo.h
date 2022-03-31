@@ -44,11 +44,12 @@
 	|	\[FIXED note] can't print symbol table at this time because of buffer overflow in getSourceText2(). Stack fuckery?
 	[note] was actually because function delay() was already defined elsewhere so we fetched an older symtable.
 * [todo 12] make all declarations look check if symbol is already declared and throw an error if so.
-* [bug 13] this doesn't work:
+* [FIXED bug 13] this doesn't work:
 	|	int End = 0;
 	|	while(!End)
 	|	... loop doesn't execute at all.
 	[note] this doesn't work either: if(!num)
+	 \[note] turns out, "not" isn't an asm op but "lneg" is.
 * [bug 14] *buff++ = 0; doesn't work, but buff[0] = 0; buff++; does.
 *  \[note] *buff = 0; also doesn't work.
 * [FIXED BUUUG 15] if-then is completely fucked. psuedocode:
@@ -57,7 +58,7 @@
 		>>test(0): end
 		if-else will either do both or none, not A or B. this is stupid.
 		\[note] check if fixed - altered which if_settings are passed in if_then
-* [bug 16] expr_neg result is discarded, wrong result goes to function arg. see:
+* [FIXED bug 16] expr_neg result is discarded, wrong result goes to function arg. see:
 		//[ NEG 123 123]                                                               // @ codegen_gen_command:924 I
 		//discarding 1 from R2                                                         // @ allocRegister:415 I
 		//load 123 into R2                                                             // @ loadLValue:649 I
@@ -95,9 +96,11 @@
 * [FIXED Todo 30] memory safety - replace all sprintfs with snprintfs or other safety things.
 *  \[note] replaced s(n)printf with vec_printf
 * [Todo 31] memory safety - remove all manually managed buffers, replace with vec.
-* [BUG 32] somehow this causes a segfault in vector2_ptr_char_internal_resize. 
+* [FIXED BUG 32] somehow this causes a segfault in vector2_ptr_char_internal_resize. 
 	printf("hi%dm\nye\n\\n\\\\",1);
-* [issue 33] lazy2.txt printf can't see \ slashes, maybe because of internally unescaped strings?
+	\[note] that was because of unsanitized user input for format.
+* [FIXED issue 33] lazy2.txt printf can't see \ slashes, maybe because of internally unescaped strings?
+*  \[note] turns out HL-ZASM erases \\, so we replace it with db 92.
 * [issue 34] gst2 overshoot report happens a lot, what's that do?
 * [zCPU bug 35] hlzasm tokenizer can't handle \\ (skips it) or \xnnn,
 *            so only way to insert \\ into string is as a number 92.

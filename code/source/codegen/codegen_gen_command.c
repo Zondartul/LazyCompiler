@@ -396,7 +396,7 @@ void gen_command_not(){
 		const char *arg1 = loadLValue(strtok(0," "));
 		printTrace();
 		printindent();
-		asm_println("not %s",arg1);
+		asm_println("lneg %s",arg1);
 		storeValue(result,arg1);
 	}
 	return;

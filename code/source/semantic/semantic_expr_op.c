@@ -569,7 +569,7 @@ void semantic_analyze_expr_not(ast_node* node, expr_settings stg) {
 	VERIFY_RES(res1);
 
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("NOT %s %s", exprResult, res1);
+	emit_code("NOT %s %s", sanitize_string(exprResult), sanitize_string(res1.val));
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = res1.T };
 	output_res(stg, result, NO_EMIT);
 }
