@@ -103,5 +103,6 @@
 *            so only way to insert \\ into string is as a number 92.
 * [FIXED bug 36] pointOutError eats the last character of the line
 * [Todo 37] make a restart mechanism for the compiler, though we need to reset some globals...
-* 
+* [issue 38] Codegen shows wrong line when error reporting
+* [issue 39] codegen doesn't show IR line that caused an error
 */

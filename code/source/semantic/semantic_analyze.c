@@ -32,6 +32,7 @@ const char *sanitize_string(const char* str) {
 		if (!isprint(c)) {
 			error("internal error: unclean string");
 		}
+	}
 	return str;
 }
 
@@ -732,7 +733,9 @@ void semantic_analyze_while_loop(ast_node *node){
 		semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (condition)
 		VERIFY_RES(res1);
 		
-		emit_code("JE 0 %s %s", sanitize_string(res1), sanitize_string(label2));
+		emit_code("JE 0 %s %s", 
+			sanitize_string(res1.val), 
+			sanitize_string(label2));
 		emit_code("/* do */");
 		push_symbol_table();
 		currentSymbolTable = find_symbol_table_by_node(node);
@@ -748,61 +751,89 @@ void semantic_analyze_while_loop(ast_node *node){
 
 void semantic_analyze_for_loop(ast_node *node){
 	//for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END ;
-
+	ast_node* node_init = ast_get_child(node, 0);
+	ast_node* node_cond = ast_get_child(node, 1);
+	ast_node* node_post = ast_get_child(node, 2);
+	ast_node* node_body = ast_get_child(node, 3);
 	if(semantic_decl){
 		push_symbol_table();
-		new_symbol_table(node);
-		semantic_general_analyze(ast_get_child(node,0)); //stmt (first)
-		semantic_general_analyze(ast_get_child(node,3)); //stmt_list
-		//analyze_scope(ast_get_child(node,3),0,0,&currentSymbolTable,0);
+		 new_symbol_table(node);
+		 semantic_general_analyze(node_init);//(ast_get_child(node,0)); //stmt (first)
+		 semantic_general_analyze(node_body);//(ast_get_child(node,3)); //stmt_list
+		 analyze_scope(node_body,0,0,&currentSymbolTable,0,1);
 		pop_symbol_table();
 	}else{
-		YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
-		YYLTYPE pos2 = ast_get_child(node,1)->token.pos;
-		YYLTYPE pos3 = ast_get_child(node,2)->token.pos;
+		YYLTYPE pos1 = node_init->token.pos; //ast_get_child(node,0)->token.pos;
+		YYLTYPE pos2 = node_cond->token.pos; //ast_get_child(node, 1)->token.pos;
+		YYLTYPE pos3 = node_post->token.pos; //ast_get_child(node, 2)->token.pos;
 		YYLTYPE pos4 = pos1;
 		pos4.last_line = pos3.last_line;
 		pos4.last_column = pos3.last_column;
-		emit_code("/* for(%s) */",sanitize_string(get_source_text2(pos4)));//get_source_text(pos1.start,pos3.end,pos1.filename));
+
+		//comment that this is a for-loop
+		emit_code("/* for(%s) */", sanitize_string(get_source_text2(pos4)));
+
+		//1. enter the scope of the for-loop
+		//1.1 get the symbol table
 		push_symbol_table();
-		currentSymbolTable = find_symbol_table_by_node(node);
-		push_code_segment();
-		new_code_segment();
-		//emit_code("FRAME ENTER"); -- nope
-		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos1))));//get_source_text(pos1.start,pos1.end,pos1.filename));
-		semantic_general_analyze(ast_get_child(node,0)); //stmt (int i = 0;)
-		const char *loopCondition = IR_next_name(namespace_semantic,"lbl_for");
-		const char *loopExit = IR_next_name(namespace_semantic,"lbl_for_exit");
-		emit_code("SYMBOL %s LABEL", sanitize_string(loopCondition));
-		emit_code("SYMBOL %s LABEL", sanitize_string(loopExit));
-		//LOOP CONDITION
-		emit_code("LABEL %s", sanitize_string(loopCondition));
-		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos2))));//get_source_text(pos2.start,pos2.end,pos2.filename));
+		 currentSymbolTable = find_symbol_table_by_node(node);
+		//1.2 emit symbol declarations
+		 struct code_segment* CSinsert;
+		 analyze_scope(node_init, 0, &CSinsert, &currentSymbolTable, 0, 1);
+		 analyze_scope(node_body, 0, &CSinsert, &currentSymbolTable, 0, 1);
+		 emit_code_segment(CSinsert);
+
+		//2. process the initializer statement
+		//2.1 comment that this is an initializer (stmt/expr 1)
+		 emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos1))));
+		//2.2 emit the statement code 
+		 semantic_general_analyze(node_init);
+
+		//3. declare the jump labels that we will later use
+		 const char *loopCondition = IR_next_name(namespace_semantic,"lbl_for");
+		 const char *loopExit = IR_next_name(namespace_semantic,"lbl_for_exit");
+		 emit_code("SYMBOL %s LABEL", sanitize_string(loopCondition));
+		 emit_code("SYMBOL %s LABEL", sanitize_string(loopExit));
 		
-		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
-		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-		PREP_RES(res1, E_LVAL);
-		semantic_expr_analyze(ast_get_child(node,1), res1stg); //expr (i < 10;)
-		VERIFY_RES(res1);
-		
-		const char* condition = res1.val;
-		emit_code("JE 0 %s %s",
+		//4. process the condition expression
+		//4.1 emit the label that the loop will jump to, to begin each iteration.
+		 emit_code("LABEL %s", sanitize_string(loopCondition));
+		//4.2 comment that this is a condition (expr 2)
+		 emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos2))));
+		//4.3 emit the code to calculate the condition value
+		 PREP_RES(res1, E_LVAL);
+		 semantic_expr_analyze(node_cond, res1stg); //expr (i < 10;)
+		 VERIFY_RES(res1);
+		 const char* condition = res1.val;
+		//4.4 emit the code to skip the loop if the condition is not met
+		 emit_code("JE 0 %s %s",
 			sanitize_string(condition),
 			sanitize_string(loopExit));
-		emit_code("/* loop body */");
-		//LOOP BODY
-		semantic_general_analyze(ast_get_child(node,3)); //stmt_list
-		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos3))));
-		//push_expr("DISCARD");
-		semantic_general_analyze(ast_get_child(node,2)); //expr (i++)
-		emit_code("JMP %s", sanitize_string(loopCondition));
-		emit_code("LABEL %s", sanitize_string(loopExit));
-		emit_all_deinitializers();
-		//emit_code("FRAME LEAVE");
-		emit_code("/* end for */");
-		ptr_code_segment CS = currentCodeSegment;
-		pop_code_segment();
-		emit_code_segment(CS);
+
+		//5. process the loop body
+		//5.1 comment that this is the loop body
+		 emit_code("/* loop body */");
+		//5.2 emit the code of the loop body statements
+		 semantic_general_analyze(node_body); //stmt_list
+
+		//6. process the post-loop expression
+		//6.1 comment that this is the post-expression
+		 emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos3))));
+		//6.2 emit the code to execute the post-expression
+		 semantic_general_analyze(ast_get_child(node,2)); //expr (i++)
+		
+		//7. jump back to condition to begin the next iteration
+		 emit_code("JMP %s", sanitize_string(loopCondition));
+
+		//8. emit the loop exit label
+		 emit_code("LABEL %s", sanitize_string(loopExit));
+		
+		//9. clean up
+		 emit_all_deinitializers();
+		
+		//comment that we are done
+		 emit_code("/* end for */");
+		
 		pop_symbol_table();
 	}
 }

@@ -1,4 +1,20 @@
 
+// int main(float num)
+	// int res = 0;
+	// for(int i = 0; i < 10; i++)
+		// int d;
+		// res = d;
+	// end
+	// while(1)
+		// int d;
+		// res = d;
+	// end
+	// if(1)
+		// int d;
+		// res = d;
+	// end
+// end
+
 #include "data_in/big/consolescreen.txt"
 #include "data_in/big/printy.txt"
 
@@ -73,12 +89,3 @@ int test_deref()
 	*p = 456;
 	printf("x = %d, &x = %d, *(&x) = %d\n", x, p, *p);
 end
-
-
-
-
-
-
-
-
-

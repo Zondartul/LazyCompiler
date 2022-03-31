@@ -386,11 +386,25 @@ void emit_all_decl_helper(){
 		}
 		if(S->type == SYMBOL_PARAM || S->type == SYMBOL_VARIABLE){
 			if(S->symvariable.array){
-				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG ARRAY %d", sanitize_string(S->IR_name), S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
-				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR ARRAY %d", sanitize_string(S->IR_name), S->symvariable.arraysize);}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_PARAM){
+					emit_code("SYMBOL %s ARG ARRAY %d", 
+						sanitize_string(S->IR_name), 
+						S->symvariable.arraysize);
+				}
+				if(S->type == SYMBOL_VARIABLE){
+					emit_code("SYMBOL %s VAR ARRAY %d", 
+						sanitize_string(S->IR_name), 
+						S->symvariable.arraysize);
+				}
 			}else{
-				if(S->type == SYMBOL_PARAM){emit_code("SYMBOL %s ARG", sanitize_string(S->IR_name));}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
-				if(S->type == SYMBOL_VARIABLE){emit_code("SYMBOL %s VAR", sanitize_string(S->IR_name));}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_PARAM){
+					emit_code("SYMBOL %s ARG", 
+						sanitize_string(S->IR_name));
+				}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+				if(S->type == SYMBOL_VARIABLE){
+					emit_code("SYMBOL %s VAR", 
+						sanitize_string(S->IR_name));
+				}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
 			}
 		}else{
 			//if(S->type == SYMBOL_FUNCTION){emit_code("SYMBOL %s FUNC",S->IR_name);} nah, they're both define-anywhere
@@ -440,7 +454,8 @@ void emit_initializer(struct symbol *S){
 	}
 	*/
 	if(T->symclass){
-		emit_code("/* initialize %s */", sanitize_string(S->username));
+		emit_code("/* initialize %s */", 
+			sanitize_string(S->username));
 		//emit_code("/* construct %s */",S->username);
 		struct symbol *S2 = T->symclass;
 		push_symbol_table();
@@ -448,7 +463,10 @@ void emit_initializer(struct symbol *S){
 		struct symbol *S3 = lookup_symbol("constructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
 		//emit_code("CALL %s %s %s",exprResult,S3->IR_name,S->IR_name);
-		emit_code("CALL %s %s %s", sanitize_string(exprResult), sanitize_string(S3->IR_name), sanitize_string(S->IR_name));
+		emit_code("CALL %s %s %s", 
+			sanitize_string(exprResult), 
+			sanitize_string(S3->IR_name), 
+			sanitize_string(S->IR_name));
 		pop_symbol_table();
 	}else{
 		//primitive type
@@ -469,13 +487,17 @@ void emit_all_deinitializers(){
 void emit_deinitializer(struct symbol *S){
 	struct type_name *T = S->symvariable.type;
 	if(T->symclass){
-		emit_code("/* destroy %s */", sanitize_string(S->username));
+		emit_code("/* destroy %s */", 
+			sanitize_string(S->username));
 		struct symbol *S2 = T->symclass;
 		push_symbol_table();
 		currentSymbolTable = S2->symclass.scope;
 		struct symbol *S3 = lookup_symbol("destructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
-		emit_code("CALL %s %s %s", sanitize_string(exprResult), sanitize_string(S3->IR_name), sanitize_string(S->IR_name));
+		emit_code("CALL %s %s %s", 
+			sanitize_string(exprResult), 
+			sanitize_string(S3->IR_name), 
+			sanitize_string(S->IR_name));
 		pop_symbol_table();
 	}else{
 		//primitive type
@@ -625,21 +647,6 @@ struct type_name *parseTypename(struct ast_node *N){
 	struct ast_node *ptr_stars = m(N->children,get,1); //22.03.2022 ptr_stars were not being detected
 	T->pointerlevel = ptr_stars->children.size;
 	return T;
-	/*
-	switch(ptr_stars->token.production){
-		case(0):
-			ptr_stars_ne = ast_get_node(m(ptr_stars->children,get,0));
-			T->pointerlevel = countStars(ptr_stars_ne);
-			return T;
-			break;
-		case(1):
-			return T;
-			break;
-		default:
-			error("unknown production\n");
-			break;
-	};
-	*/
 }
 
 struct type_name *semantic_get_type(const char *str){
@@ -792,25 +799,11 @@ void semantic_init(){
 	CS_list = vector2_ptr_code_segment_here();
 	ST_stack = vector2_ptr_symbol_table_here();
 	ST_list = vector2_ptr_symbol_table_here();
-	//IR_names = vector2_ptr_char_here();
-	//IR_namecounts = vector2_int_here();
 	semantic_context_stack = vector2_ptr_semantic_context_kind_here();
-	//vector_constructor(&expr_stack, sizeof(char*));
-	//vector_constructor(&CS_stack, sizeof(struct code_segment));
-	//vector_constructor(&ST_stack, sizeof(struct symbol_table));
-	//vector_constructor(&IR_names, sizeof(char *));
-	//vector_constructor(&IR_namecounts, sizeof(int*));
-	//currentCodeSegment = 0;
-	//currentSymbolTable = 0;
 }
 
 
 void print_semantic(){
-	//print_code_segment(m(CS_list,get,0));
-	//printf("\n===========================\nSymbol table:\n");
-	//print_symbol_table(m(ST_list,get,0));
-
-
 	print_code_segment(m(CS_list,get,0));
 	printf("\n===========================\n");
 
@@ -823,7 +816,6 @@ void print_semantic(){
 	//for(i = 0; i < CS_list.size; i++){
 	//	print_code_segment(m(CS_list,get,i));
 	//}
-	
 }
 
 int getNumParameters(){
@@ -894,17 +886,7 @@ int getTypeSize(ptr_type_name T){
 extern int compiler_restart_enabled;
 
 void newerror(const char *file, int line, const char *func, const char *fmt, ...){
-	//va_list ap;
-	//va_start(ap, fmt);
-	//char *buff;
-	//int len = vsnprintf(buff,0,fmt,ap);
-	//buff = malloc(sizeof(char)*(len+1));
-	//va_end(ap);
-	//va_start(ap, fmt);
-	//vsnprintf(buff,len,fmt,ap);
-	//va_end(ap);
 	flushAllFiles();
-	//fprintf(stderr, "\n");
 	va_list ap;
 	va_start(ap, fmt);
 	fprintf(stderr, "%s", KRED);
@@ -912,10 +894,6 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 	fprintf(stderr, "%s", KNRM);
 	err("\n@ file \"%s\", line %d, func \"%s\"\n",file,line,func);
 	va_end(ap);
-	////err("error: printing allocations:\n");
-	//printmemory(stderr);
-	/////printallocs(stderr);
-	//err("error: activating self-destruct\n");
 	
 	fprintf(stdout, "\n");
 	va_start(ap, fmt);
