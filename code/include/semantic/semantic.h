@@ -47,7 +47,7 @@ struct symbol_class{
 
  //this section aims to remove all push_expr and such
 typedef enum expr_type {
-	E_ERROR = 0, E_DISCARD, E_RVAL, E_LVAL
+	E_ERROR = 0, E_DISCARD, E_RVAL, E_LVAL, E_PTR
 } expr_type;
 
 typedef struct val_handle {

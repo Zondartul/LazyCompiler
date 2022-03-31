@@ -56,28 +56,43 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 	}
 	printf("output_res (%s)\n", src.val);
 
-	if (stg.actual) { *(stg.actual) = src; }
+	const char* resVal = stg.dest.val;
+	if (!resVal) {resVal = src.val;}
 
 	if (do_emit) {
 		if (!stg.dest.val) {
-			stg.dest.val = IR_next_name(namespace_semantic, "temp");
+			resVal = IR_next_name(namespace_semantic, "temp");
 		}
 		if (stg.dest.rv_type == E_RVAL) {	
-			if (src.rv_type == E_RVAL) { // temp_'arr[5]' = arr + 5;
-				emit_code("MOV %s, %s //output(R<R)", sanitize_string(stg.dest.val), sanitize_string(src.val));
+			if (src.rv_type == E_RVAL) { // x = y
+				emit_code("MOV %s %s //output(R<R)", sanitize_string(resVal), sanitize_string(src.val));
 			}
 			if (src.rv_type == E_LVAL) { // *x = y;
-				emit_code("MOV *%s, %s //output(R<L)", sanitize_string(stg.dest.val), sanitize_string(src.val));
+				emit_code("MOV *%s %s //output(R<L)", sanitize_string(resVal), sanitize_string(src.val));
+			}
+			if (src.rv_type == E_PTR) { //temp_ptr = arr + 5;
+				emit_code("MOV %s %s //output(R<P)", sanitize_string(resVal), sanitize_string(src.val));
+
+				vector2_char vstr = vector2_char_here();
+				vec_printf(&vstr, "*%s", resVal);
+				resVal = stralloc(vstr.data);
 			}
 		}
 		if (stg.dest.rv_type == E_LVAL) { 
-			if (src.rv_type == E_RVAL) { // x = *y;
-				emit_code("MOV %s, *%s //output(L<R)", sanitize_string(stg.dest.val), sanitize_string(src.val));
+			if (src.rv_type == E_RVAL) { // temp_val = 1 + x;
+				emit_code("MOV %s *%s //output(L<R)", sanitize_string(resVal), sanitize_string(src.val));
 			}
-			if (src.rv_type == E_LVAL) { // temp_'1+1' = 1 + 1;	
-				emit_code("MOV %s, %s //output(L<L)", sanitize_string(stg.dest.val), sanitize_string(src.val));
+			if (src.rv_type == E_LVAL) { // temp_val = 1 + 1;	
+				emit_code("MOV %s %s //output(L<L)", sanitize_string(resVal), sanitize_string(src.val));
+			}
+			if (src.rv_type == E_PTR) { // x = *y
+				emit_code("MOV %s *%s //output(L<P)", sanitize_string(resVal), sanitize_string(src.val));
 			}
 		}
+	}
+	if (stg.actual) { 
+		*(stg.actual) = src;
+		stg.actual->val = resVal;
 	}
 }
 
