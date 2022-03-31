@@ -22,7 +22,12 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	VERIFY_RES(res2);
 
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("%s %s %s %s", OP, exprResult, res1.val, res2.val);
+	emit_code("%s %s %s %s", 
+		sanitize_string(OP), 
+		sanitize_string(exprResult), 
+		sanitize_string(res1.val), 
+		sanitize_string(res2.val)
+			);
 	
 	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = res1.rv_type };
 	output_res(stg, result, NO_EMIT);
@@ -103,7 +108,10 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 		//char buff[80];
 
 		if (S->type == SYMBOL_VARIABLE) {
-			emit_code("ADD %s %s &%s /*id:this.var*/", S_full, semantic_this, S->IR_name);
+			emit_code("ADD %s %s &%s /*id:this.var*/", 
+				sanitize_string(S_full), 
+				sanitize_string(semantic_this), 
+				sanitize_string(S->IR_name));
 			val_handle result = { .val = S_full, .rv_type = E_RVAL, .T = T };
 			output_res(stg, result, NO_EMIT);
 		}
@@ -193,7 +201,10 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 
 		push_code_segment();
 		currentCodeSegment = init_CS;
-		emit_code("SYMBOL %s STRING %s", str_name, escape_string(node->token.value));
+		emit_code("SYMBOL %s STRING %s", 
+			sanitize_string(str_name), 
+			sanitize_string(escape_string(node->token.value))
+		);
 		pop_code_segment();
 		
 		//output_res(stg, str_name, T);
@@ -276,7 +287,10 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
 
-	emit_code("ADD %s %s %s", resultExpr, index, ptr);
+	emit_code("ADD %s %s %s", 
+		sanitize_string(resultExpr), 
+		sanitize_string(index), 
+		sanitize_string(ptr));
 	
 	//vector2_char vstr = vector2_char_here();
 	//vec_printf(&vstr, "*%s", result);
@@ -328,7 +342,10 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 		vec_printf(&vstr, " %s", expr);
 	}
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("CALL %s %s%s", exprResult, name, vstr.data);//buff);
+	emit_code("CALL %s %s%s", 
+		sanitize_string(exprResult), 
+		sanitize_string(name), 
+		sanitize_string(vstr.data));//buff);
 
 	//output_res(stg, exprResult, T);
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = resT };
@@ -387,15 +404,15 @@ void semantic_analyze_expr_increment(ast_node* node, expr_settings stg) {
 	if (node->token.production == 0) {
 		//post-increment
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-		emit_code("MOV %s %s", resultExpr, res1.val);
-		emit_code("ADD %s %s 1", res1.val, res1.val);
+		emit_code("MOV %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
+		emit_code("ADD %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, result, res1type);
 		val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T };
 		output_res(stg, result, NO_EMIT);
 	}
 	else {
 		//pre-increment
-		emit_code("ADD %s %s 1", res1.val, res1.val);
+		emit_code("ADD %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, res1, res1type);
 		val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T };
 		output_res(stg, result, NO_EMIT);
@@ -415,15 +432,15 @@ void semantic_analyze_expr_decrement(ast_node* node, expr_settings stg) {
 	if (node->token.production == 0) {
 		//post-decrement
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-		emit_code("MOV %s %s", resultExpr, res1.val);
-		emit_code("SUB %s %s 1", res1.val, res1.val);
+		emit_code("MOV %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
+		emit_code("SUB %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, result, res1type);
 		val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T };
 		output_res(stg, result, NO_EMIT);
 	}
 	else {
 		//pre-decrement
-		emit_code("SUB %s %s 1", res1.val, res1.val);
+		emit_code("SUB %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, res1, res1type);
 		val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T };
 		output_res(stg, result, NO_EMIT);
@@ -443,7 +460,7 @@ void semantic_analyze_expr_neg(ast_node* node, expr_settings stg) {
 	VERIFY_RES(res1);
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-	emit_code("NEG %s %s", resultExpr, res1.val);
+	emit_code("NEG %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
 	
 	//output_res(stg, result, res1type);
 	val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T };
@@ -511,7 +528,7 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
 	VERIFY_RES(res2);
 
-	emit_code("MOV %s %s //=", res1.val, res2.val);
+	emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.

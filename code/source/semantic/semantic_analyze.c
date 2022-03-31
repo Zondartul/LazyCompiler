@@ -32,7 +32,7 @@ const char *sanitize_string(const char* str) {
 		if (!isprint(c)) {
 			error("internal error: unclean string");
 		}
-	}
+	return str;
 }
 
 const char* emit_push_label(const char* lbl) {
@@ -241,7 +241,7 @@ void semantic_analyze_func_def(ast_node *node){
 		currentSymbolTable = S->symfunction.scope;
 		//the analyze_scope will handle symbols (they are inside a frame anyway)
 	
-		emit_code("FUNCTION %s BEGIN",S->IR_name);			
+		emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));			
 		push_semantic_context();
 		
 		pop_symbol_table();
@@ -257,7 +257,7 @@ void semantic_analyze_func_def(ast_node *node){
 		emit_code_segment(S->symfunction.code);
 		emit_code("RET");
 		emit_all_undeclarations();
-		emit_code("FUNCTION %s END",S->IR_name);
+		emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
 		emit_code("/* end */");
 		printf("semantic_analyze (imperative) of func %s done\n",name);
 	}
@@ -454,25 +454,30 @@ void semantic_analyze_imp_stmt(ast_node *node){
 		case(2)://expr
 			if(semantic_decl){return;}//this one still imp-only though
 			emit_code("/* %s */",
-				removeComments(get_source_text2(node->token.pos)));
+				sanitize_string(
+					removeComments(
+						get_source_text2(node->token.pos)
+								  )
+				               )
+					 );
 			push_expr("DISCARD");
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
 			if(semantic_decl){return;}
 			emit_code("/* %s */",
-				removeComments(get_source_text2(node->token.pos)));
+				sanitize_string(removeComments(get_source_text2(node->token.pos))));
 			emit_code("RET");
 			break;
 		case(4)://return expr
 			if(semantic_decl){return;}
 			emit_code("/* %s */",
-				removeComments(get_source_text2(node->token.pos)));
+				sanitize_string(removeComments(get_source_text2(node->token.pos))));
 			PREP_RES(res1, E_RVAL);
 			semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (what to return)
 			VERIFY_RES(res1);
 
-			emit_code("RET %s",res1.val);
+			emit_code("RET %s", sanitize_string(res1.val));
 			break;
 		case(5)://for_loop
 			semantic_general_analyze(ast_get_child(node,0)); //for_loop
@@ -528,7 +533,7 @@ void semantic_analyze_if_block(ast_node *node){
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				//if_else = pop_expr(); assert_is_if_else(if_else);
 				//if_exit = pop_expr(); assert_is_if_exit(if_exit);
-				emit_code("LABEL %s", if_exit);
+				emit_code("LABEL %s", sanitize_string(if_exit));
 				emit_code("/* end if */");
 				break;
 			}
@@ -545,14 +550,14 @@ void semantic_analyze_if_block(ast_node *node){
 				};
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				emit_code("/* else */");
-				emit_code("LABEL %s", if_else);
+				emit_code("LABEL %s", sanitize_string(if_else));
 				struct code_segment* CSinsert;
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 1));
 				analyze_scope(ast_get_child(node, 1), 0, &CSinsert, &currentSymbolTable, 0, 1);
 				emit_code_segment(CSinsert);
 				//if_else = pop_expr();	assert_is_if_else(if_else);
 				//if_exit = pop_expr();	assert_is_if_exit(if_exit);
-				emit_code("LABEL %s", if_exit);
+				emit_code("LABEL %s", sanitize_string(if_exit));
 				emit_code("/* end if */");
 				break;
 			}
@@ -612,7 +617,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//IF ( expr ) stmt_list
 				//(expr)
 				pos = ast_get_child(node, 0)->token.pos;
-				emit_code("/* if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+				emit_code("/* if(%s) */", sanitize_string(get_source_text2(pos)));//get_source_text(pos.start,pos.end,pos.filename));
 				
 				//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
 				//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
@@ -623,7 +628,9 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				const char* condition_result = res1.val;
 				//if then
 				emit_code("/* this skips untrue if's */");
-				emit_code("JE 0 %s %s", condition_result, nextLabel);
+				emit_code("JE 0 %s %s", 
+					sanitize_string(condition_result), 
+					sanitize_string(nextLabel));
 				emit_code("/* 'if' is true: */");
 
 				//stmt_list
@@ -634,7 +641,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//if_exit = IR_next_name(namespace_semantic,"lbl_if_exit");
 				//emit_code("SYMBOL %s LABEL",if_exit);
 				if (nextLabel != if_exit) {  
-					emit_code("JMP %s", if_exit);
+					emit_code("JMP %s", sanitize_string(if_exit));
 				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
 				//push_expr(if_exit);
 				//end
@@ -655,8 +662,8 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//assert_is_if_exit(pop_expr()); 
 				//else if
 				YYLTYPE pos = ast_get_child(node, 1)->token.pos;
-				emit_code("/* else if(%s) */", get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-				emit_code("LABEL %s", if_elseif);
+				emit_code("/* else if(%s) */", sanitize_string(get_source_text2(pos)));//get_source_text(pos.start,pos.end,pos.filename));
+				emit_code("LABEL %s", sanitize_string(if_elseif));
 				//( expr )
 				
 				//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
@@ -672,7 +679,9 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//emit_code("SYMBOL %s LABEL",label1);
 				//emit_code("JE 0 %s %s", pop_expr(), label1);
 				emit_code("/* this skips untrue if's */");
-				emit_code("JE 0 %s %s", condition_result, nextLabel);
+				emit_code("JE 0 %s %s", 
+					sanitize_string(condition_result), 
+					sanitize_string(nextLabel));
 				emit_code("/* then */");
 				//stmt_list
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 2));
@@ -681,7 +690,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				emit_code_segment(CSinsert);
 				//if_exit = pop_expr(); //using existing exit
 				if (nextLabel != if_exit) {
-					emit_code("JMP %s", if_exit);
+					emit_code("JMP %s", sanitize_string(if_exit));
 				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
 				//push_expr(if_exit);
 				//emit_code("LABEL %s", label1);
@@ -710,12 +719,12 @@ void semantic_analyze_while_loop(ast_node *node){
 		pop_symbol_table();
 	}else{
 		YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
-		emit_code("/* while(%s) */",get_source_text2(pos1));//get_source_text(pos1.start,pos1.end,pos1.filename));
+		emit_code("/* while(%s) */",sanitize_string(get_source_text2(pos1)));
 		const char *label1 = IR_next_name(namespace_semantic,"lbl_while_do");
 		const char *label2 = IR_next_name(namespace_semantic,"lbl_while_exit");
-		emit_code("SYMBOL %s LABEL",label1);
-		emit_code("SYMBOL %s LABEL",label2);
-		emit_code("LABEL %s",label1);
+		emit_code("SYMBOL %s LABEL", sanitize_string(label1));
+		emit_code("SYMBOL %s LABEL", sanitize_string(label2));
+		emit_code("LABEL %s",sanitize_string(label1));
 		
 		//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
@@ -723,15 +732,15 @@ void semantic_analyze_while_loop(ast_node *node){
 		semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (condition)
 		VERIFY_RES(res1);
 		
-		emit_code("JE 0 %s %s",res1, label2);
+		emit_code("JE 0 %s %s", sanitize_string(res1), sanitize_string(label2));
 		emit_code("/* do */");
 		push_symbol_table();
 		currentSymbolTable = find_symbol_table_by_node(node);
 		struct code_segment *CSinsert;
 		analyze_scope(ast_get_child(node,1),0,&CSinsert,&currentSymbolTable,0,1);
 		emit_code_segment(CSinsert);
-		emit_code("JMP %s",label1);
-		emit_code("LABEL %s",label2);
+		emit_code("JMP %s", sanitize_string(label1));
+		emit_code("LABEL %s",sanitize_string(label2));
 		emit_code("/* end while*/");
 		pop_symbol_table();
 	}
@@ -754,21 +763,21 @@ void semantic_analyze_for_loop(ast_node *node){
 		YYLTYPE pos4 = pos1;
 		pos4.last_line = pos3.last_line;
 		pos4.last_column = pos3.last_column;
-		emit_code("/* for(%s) */",get_source_text2(pos4));//get_source_text(pos1.start,pos3.end,pos1.filename));
+		emit_code("/* for(%s) */",sanitize_string(get_source_text2(pos4)));//get_source_text(pos1.start,pos3.end,pos1.filename));
 		push_symbol_table();
 		currentSymbolTable = find_symbol_table_by_node(node);
 		push_code_segment();
 		new_code_segment();
 		//emit_code("FRAME ENTER"); -- nope
-		emit_code("/* %s */",removeComments(get_source_text2(pos1)));//get_source_text(pos1.start,pos1.end,pos1.filename));
+		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos1))));//get_source_text(pos1.start,pos1.end,pos1.filename));
 		semantic_general_analyze(ast_get_child(node,0)); //stmt (int i = 0;)
 		const char *loopCondition = IR_next_name(namespace_semantic,"lbl_for");
 		const char *loopExit = IR_next_name(namespace_semantic,"lbl_for_exit");
-		emit_code("SYMBOL %s LABEL",loopCondition);
-		emit_code("SYMBOL %s LABEL",loopExit);
+		emit_code("SYMBOL %s LABEL", sanitize_string(loopCondition));
+		emit_code("SYMBOL %s LABEL", sanitize_string(loopExit));
 		//LOOP CONDITION
-		emit_code("LABEL %s",loopCondition);
-		emit_code("/* %s */",removeComments(get_source_text2(pos2)));//get_source_text(pos2.start,pos2.end,pos2.filename));
+		emit_code("LABEL %s", sanitize_string(loopCondition));
+		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos2))));//get_source_text(pos2.start,pos2.end,pos2.filename));
 		
 		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
 		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
@@ -777,15 +786,17 @@ void semantic_analyze_for_loop(ast_node *node){
 		VERIFY_RES(res1);
 		
 		const char* condition = res1.val;
-		emit_code("JE 0 %s %s",condition,loopExit);
+		emit_code("JE 0 %s %s",
+			sanitize_string(condition),
+			sanitize_string(loopExit));
 		emit_code("/* loop body */");
 		//LOOP BODY
 		semantic_general_analyze(ast_get_child(node,3)); //stmt_list
-		emit_code("/* %s */",removeComments(get_source_text2(pos3)));//get_source_text(pos3.start,pos3.end,pos3.filename));
+		emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos3))));
 		//push_expr("DISCARD");
 		semantic_general_analyze(ast_get_child(node,2)); //expr (i++)
-		emit_code("JMP %s",loopCondition);
-		emit_code("LABEL %s",loopExit);
+		emit_code("JMP %s", sanitize_string(loopCondition));
+		emit_code("LABEL %s", sanitize_string(loopExit));
 		emit_all_deinitializers();
 		//emit_code("FRAME LEAVE");
 		emit_code("/* end for */");
