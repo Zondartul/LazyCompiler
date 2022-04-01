@@ -66,16 +66,20 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 
 	const char* resVal = stg.dest.val;
 	if (!resVal) {resVal = src.val;}
-
+	int resValTemp = 0;
 	if (do_emit) {
 		if (!stg.dest.val) {
 			resVal = IR_next_name(namespace_semantic, "temp");
+			resValTemp = 1;
 		}
 		if (stg.dest.rv_type == E_RVAL) {	
 			if (src.rv_type == E_RVAL) { // x = y
 				emit_code("MOV %s %s //output(R<R)", sanitize_string(resVal), sanitize_string(src.val));
 			}
 			if (src.rv_type == E_LVAL) { // *x = y;
+				if (resValTemp) {
+					error("can't output(R<L) to a temporary value, provide a destination!");
+				}
 				emit_code("MOV *%s %s //output(R<L)", sanitize_string(resVal), sanitize_string(src.val));
 			}
 			if (src.rv_type == E_PTR) { //temp_ptr = arr + 5;
@@ -95,6 +99,17 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 			}
 			if (src.rv_type == E_PTR) { // x = *y
 				emit_code("MOV %s *%s //output(L<P)", sanitize_string(resVal), sanitize_string(src.val));
+			}
+		}
+		if (stg.dest.rv_type == E_PTR) {
+			if (src.rv_type == E_RVAL) {
+				emit_code("MOV %s &%s //output(P<R)", sanitize_string(resVal), sanitize_string(src.val));
+			}
+			if (src.rv_type == E_LVAL) {
+				error("can't take address of a literal");
+			}
+			if (src.rv_type == E_PTR) { // temp_ptr = temp_ptr
+				emit_code("MOV %s %s //output(P<P)", sanitize_string(resVal), sanitize_string(src.val));
 			}
 		}
 	}

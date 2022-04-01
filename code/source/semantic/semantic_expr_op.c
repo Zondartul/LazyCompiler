@@ -69,30 +69,72 @@ void semantic_analyze_expr_list(ast_node* node) {
 	}
 }
 
+
+int is_member_access(expr_settings stg) {return (stg.sem_this.rv_type != E_ERROR);}
+
+struct symbol* get_member_symbol(val_handle sem_this, const char* name) {
+	if (sem_this.rv_type == E_ERROR) {error("internal semantic error: null sem_this");}
+	if (!sem_this.T->symclass) {error("internal semantic error: can't get member of a non-class");}
+
+	struct symbol_table* ST = sem_this.T->symclass->symclass.scope;
+	struct symbol *S = try_lookup_symbol_local(name, ST);
+	if (!S) {
+		error("semantic error: symbol [%s] not found in object [%s] of class [%s]", name, sem_this.val, sem_this.T->name);
+	}
+	return S;
+}
+
+struct symbol* get_symbol_in_this(const char* name, struct symbol* S_this) {
+	
+	if (S_this) {
+		//if (!S_this->symclass) {error("internal semantic error: 'this' is not of class type");}
+		struct symbol* S = try_lookup_symbol_local(name, S_this->symclass.scope);
+		return S;
+	}
+	return 0;
+}
+
 void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	//expr	:	ID	
 
-	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
-
-	//printf("got expr_id = [%s]\n",node->token.value);
 	char* name = stralloc(node->token.value);
-	struct symbol* S = lookup_symbol(name);
+	
+	//1. figure out which symbol the ID refers to
+	struct symbol* S = 0;
+	struct symbol* S_this = 0;
+	const char* this_val = 0;
+	if (is_member_access(stg)) {
+		S = get_member_symbol(stg.sem_this, name);
+		this_val = stg.sem_this.val;
+	}
+	else {
+		S_this = try_lookup_symbol("this");
+		if (S_this) {
+			S = get_symbol_in_this(name, S_this);
+			if (S) {
+				this_val = S_this->IR_name;
+			}else {
+				S = lookup_symbol(name);
+			}
+		}
+		else {
+			S = lookup_symbol(name);
+		}
+	}
+	const char *S_val = S->IR_name;
+	
+	//2. make sure it's not a type-name.
 	if ((S->type != SYMBOL_VARIABLE) && (S->type != SYMBOL_PARAM) && (S->type != SYMBOL_MEMBER) && (S->type != SYMBOL_FUNCTION)) {
 		error("semantic: '%s' is not a variable, parameter or function name\n", name);
 	}
+
+	//3. figure out the type of the symbol.
+	const char* accessor = "";
 	struct type_name* T = 0;
-	if (S->type == SYMBOL_VARIABLE) {
-		T = S->symvariable.type;
-	}
-	else if (S->type == SYMBOL_PARAM) {
-		T = S->symvariable.type;
-	}
-	else if (S->type == SYMBOL_MEMBER) {
-		T = S->symvariable.type;
-	}
-	else if (S->type == SYMBOL_FUNCTION) {
-		T = S->symfunction.signature;
-	}
+	if (S->type == SYMBOL_VARIABLE) { T = S->symvariable.type; accessor = "&"; }
+	else if (S->type == SYMBOL_PARAM) { T = S->symvariable.type; accessor = "&"; }
+	else if (S->type == SYMBOL_MEMBER) { T = S->symvariable.type; accessor = "&"; }
+	else if (S->type == SYMBOL_FUNCTION) { T = S->symfunction.signature; accessor = ""; }
 	else {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
@@ -100,36 +142,46 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	}
 	assert(T);
 	printf("found variable '%s' of type '%s'\n", name, T->name);
-	//exprResult = name;
-	const char* S_full = IR_next_name(namespace_semantic, "temp");//to_rval_name(S->IR_name);
+	
+	const char* exprResult = S_val;
+	//4. if we are doing member access, add the object address
+	if(this_val){
+		emit_code("/* this.id */");
+		exprResult = IR_next_name(namespace_semantic, "temp");
+		emit_code("ADD %s %s %s%s",
+			sanitize_string(exprResult),
+			sanitize_string(this_val),
+			sanitize_string(accessor),
+			sanitize_string(S_val));
 
-	if(stg.dest.sym_this){//if (semantic_this) {
-		const char* semantic_this = stg.dest.sym_this->IR_name;
-		//char buff[80];
-
-		if (S->type == SYMBOL_VARIABLE) {
-			emit_code("ADD %s %s &%s /*id:this.var*/", 
-				sanitize_string(S_full), 
-				sanitize_string(semantic_this), 
-				sanitize_string(S->IR_name));
-			val_handle result = { .val = S_full, .rv_type = E_RVAL, .T = T };
-			output_res(stg, result, NO_EMIT);
-		}
-		else if (S->type == SYMBOL_FUNCTION) {
-			emit_code("/*id:this.func*/");
-			val_handle result = { .val = S->IR_name, .rv_type = E_LVAL, .T = T };
-			output_res(stg, result, NO_EMIT);
-		}
-		else {
-			error("[SEMANTIC] Unknown symbol type ");
-		}
+		//if (S->type == SYMBOL_VARIABLE) {
+		//	emit_code("ADD %s %s &%s /*id:this.var*/", 
+		//		sanitize_string(S_full), 
+		//		sanitize_string(sem_this), 
+		//		sanitize_string(S->IR_name));
+		//	val_handle result = { .val = S_full, .rv_type = E_RVAL, .T = T };
+		//	output_res(stg, result, NO_EMIT);
+		//}
+		//else if (S->type == SYMBOL_FUNCTION) {
+		//	emit_code("/*id:this.func*/");
+		//	val_handle result = { .val = S->IR_name, .rv_type = E_LVAL, .T = T };
+		//	output_res(stg, result, NO_EMIT);
+		//}
+		//else if (S->type == SYMBOL_PARAM) {
+		//	emit_code("/*id:this/param*/");
+		//	val_handle result = { .val = S->IR_name, .rv_type = E_LVAL, .T = T };
+		//	output_res(stg, result, NO_EMIT);
+		//}
+		//else {
+		//	error("[SEMANTIC] Unknown symbol type ");
+		//}
 	}
 	else {
-		emit_code("/*id:global*/");
-#pragma message("warning: id always global");
-		val_handle result = { .val = S->IR_name, .rv_type = E_RVAL, .T = T };
-		output_res(stg, result, NO_EMIT);
+		emit_code("/* global id */");
 	}
+	//5. phone home
+	val_handle result = { .val = exprResult, .rv_type = E_RVAL, .T = T };
+	output_res(stg, result, YES_EMIT);
 }
 
 void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
@@ -306,48 +358,60 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
 
-	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
+	struct symbol* sym_args_this = try_lookup_symbol("this");
+
+	//1. get a reference for the function itself
+	//1.1 read the function expression
 	PREP_RES(res1, E_RVAL);
+	res1stg.sem_this = stg.sem_this;
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (function name or reference expression)
 	VERIFY_RES(res1);
 	const char* name = res1.val;
-	
-	struct type_name* T = res1.T;//pop_exprtype();//S->symfunction.returntype;
+
+	//1.2 make sure it's actually a function
+	struct type_name* T = res1.T;
 	if (!T->args) {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 		error("semantic error: attempt to call '%s', which is not a function in this scope\n", name);
 	}
-
 	struct type_name* resT = m(*(T->args), get, 0);
 
+	//2.push the arguments of the function
 	ast_node* list = ast_get_child(node, 1);
 	int i;
-	vector2_ptr_char ministack = vector2_ptr_char_here();
-	for (i = 0; i < list->children.size; i++) {
-
-		//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-		//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-		PREP_RES(res2, E_LVAL);
-		semantic_expr_analyze(ast_get_child(list, i), res2stg); //expr? one of func args?
-		VERIFY_RES(res2);
-		const char* expr = res2.val;
-		m(ministack, push_back, expr);
-	}
-	vector2_char vstr = vector2_char_here();
-	if (list->children.size == 0) { vec_printf(&vstr, ""); } //{ buff = ""; }
-	for (i = 0; i < list->children.size; i++) {
-		const char* expr = m(ministack, pop_front);
+	 //2.1 collect the values that we need to push
+	 vector2_ptr_char ministack = vector2_ptr_char_here();
+	  //2.1.1 if the function is called as a method, push the 'this'.
+		if (stg.sem_this.rv_type != E_ERROR) {
+			vector2_char vstr = vector2_char_here();
+			vec_printf(&vstr, "&%s", stg.sem_this.val);
+			const char* this_ref = stralloc(vstr.data);
+			m(ministack, push_back, this_ref);
+		}
+	  //2.1.2 add the arguments actually given
+		for (i = 0; i < list->children.size; i++) {
+			PREP_RES(res2, E_LVAL);
+			semantic_expr_analyze(ast_get_child(list, i), res2stg); //expr? one of func args?
+			VERIFY_RES(res2);
+			const char* expr = res2.val;
+			m(ministack, push_back, expr);
+		}
+	 //2.2 format them as a string
+	 vector2_char vstr = vector2_char_here();
+	 if (list->children.size == 0) { vec_printf(&vstr, ""); }
+	 while(ministack.size){//for (i = 0; i < list->children.size; i++) {
+ 		const char* expr = m(ministack, pop_front);
 		vec_printf(&vstr, " %s", expr);
-	}
+	 }
+	//3. actually emit the call
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("CALL %s %s%s", 
 		sanitize_string(exprResult), 
 		sanitize_string(name), 
 		sanitize_string(vstr.data));//buff);
 
-	//output_res(stg, exprResult, T);
+	//4. phone home
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = resT };
 	output_res(stg, result, NO_EMIT);
 }
@@ -357,36 +421,32 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 
 	if (semantic_decl) { return; }
 	
-	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
-	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	PREP_RES(res1, E_RVAL);
+	PREP_RES(res1, E_PTR);
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (first one)
 	VERIFY_RES(res1);
-	//what if $0 isn't an ID? need to figure out
-	//expression type... also instance... fuck, just redo this.
-	struct type_name* T = res1.T;//pop_exprtype();
+
+	struct type_name* T = res1.T;
 	if (!T->symclass) {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 		error("semantic error: member access (x.y) impossible because x is a primitive (%s)\n", T->name);
 	}
-	push_symbol_table();
-	currentSymbolTable = T->symclass->symclass.scope;
-	semantic_this = res1.val;//pop_expr();
-	
-	//val_handle res2; val_handle res2dest = { .rv_type = E_RVAL };
-	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+	//push_symbol_table();
+	//currentSymbolTable = T->symclass->symclass.scope;
+	//no, we don't want to switch symbol table
+	//because in A.foo(x), x should not be shadowed
+	//by A.x.
+
 	PREP_RES(res2, E_RVAL);
+	res2stg.sem_this = res1;
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (member)
 	VERIFY_RES(res2);
 	
-	semantic_this = 0;
-	pop_symbol_table();
-	
-	//output_res(stg, res1, T);
+	//semantic_this = 0;
+	//pop_symbol_table();
 	
 	//is res2 magically at offset because of semantic_this?
-	output_res(stg, res2, NO_EMIT);
+	output_res(stg, res2, YES_EMIT);
 }
 
 void semantic_analyze_expr_increment(ast_node* node, expr_settings stg) {

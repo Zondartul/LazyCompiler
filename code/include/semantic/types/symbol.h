@@ -58,8 +58,13 @@ struct symbol* symbol_new(
 //----------- functions to work with the struct
 
 //in the current symbol table, or in a symbol table accessible from it,
-//find a symbol with the given name.
+//find a symbol with the given name. Errors if symbol is not found.
 struct symbol *lookup_symbol(const char *name);
+//return the symbol or zero if it is not found.
+struct symbol* try_lookup_symbol(const char* name);
+//look for a symbol but only in the given symtable, not parents
+struct symbol* try_lookup_symbol_local(const char* name, struct symbol_table* ST);
+
 //helper function for above
 struct symbol *lookup_symbol_helper(const char *name, struct symbol_table *T);
 //in the current symbol table, or a symbol table accessible from it,

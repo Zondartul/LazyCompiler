@@ -54,7 +54,7 @@ typedef struct val_handle {
 	const char* val;
 	expr_type rv_type;
 	struct type_name* T;
-	struct symbol* sym_this;
+	//struct symbol* sym_this;
 } val_handle;
 
 typedef struct expr_settings {
@@ -66,6 +66,7 @@ typedef struct expr_settings {
 
 	val_handle dest;	//what value we want filled
 	val_handle *actual;	//what was it actually filled with
+	val_handle sem_this; //the 'this' value for a method call (but not for it's other args)
 } expr_settings;
 
 #define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})

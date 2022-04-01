@@ -68,10 +68,15 @@ struct symbol* symbol_new(
 //in the current symbol table, or in a symbol table accessible from it,
 //find a symbol with the given name.
 struct symbol* try_lookup_symbol(const char* name) {
-	if (strcmp(name, "trap") == 0) {
-		printf("trap symbol\n");
-	}
+	//if (strcmp(name, "trap") == 0) {
+	//	printf("trap symbol\n");
+	//}
 	struct symbol* S = lookup_symbol_helper(name, currentSymbolTable);
+	//debug
+	//if (S && (strcmp(name, "this")==0)) {
+	//	//another trap
+	//	S = lookup_symbol_helper(name, currentSymbolTable);
+	//}
 	return S;
 }
 
@@ -97,23 +102,27 @@ struct symbol *lookup_symbol(const char *name){
 	}	
 }
 
-//helper function for above
-struct symbol *lookup_symbol_helper(const char *name, struct symbol_table *T){
+struct symbol* try_lookup_symbol_local(const char* name, struct symbol_table* ST) {
 	int i;
-	for(i = 0; i < T->symbols.size; i++){
-		struct symbol *S;
+	for (i = 0; i < ST->symbols.size; i++) {
+		struct symbol* S;
 		//S = vector_get_reference(&T->symbols, i);
-		S = m(T->symbols,get,i);
-		if(S->username && !strcmp(S->username,name)){
-			printf("found symbol '%s'->'%s'\n",name,T->name);
+		S = m(ST->symbols, get, i);
+		if (S->username && !strcmp(S->username, name)) {
+			printf("found symbol '%s'->'%s'\n", name, ST->name);
 			return S;
 		}
 	}
-	if(T->parent){
-		return lookup_symbol_helper(name, T->parent);
-	}else{
-		return 0;
+	return 0;
+}
+
+//helper function for above
+struct symbol *lookup_symbol_helper(const char *name, struct symbol_table *ST){
+	struct symbol* S = try_lookup_symbol_local(name, ST);
+	if (!S && ST->parent) {
+		S = lookup_symbol_helper(name, ST->parent);
 	}
+	return S;
 }
 
 //in the current symbol table, or a symbol table accessible from it,

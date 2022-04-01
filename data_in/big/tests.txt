@@ -109,3 +109,18 @@ void test_if_elseif_else(int x, int port)
 	//writePort(port, 4);
 end
 
+void test_while()
+	int x = 10;
+	while(x)
+		writePort(0,x);
+		x--;
+	end
+	int y = 10;
+	int End = 0;
+	while(!End)
+		y--;
+		if(y == 0) End = 1; end
+		writePort(1, y);
+	end
+end
+

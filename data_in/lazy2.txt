@@ -1,95 +1,114 @@
 
+//#include "data_in/big/printf.txt"
+#include "data_in/big/testOutput.txt"
 
-// int main()
-	// adr_port = 65536;
-	// *adr_port = 123;
-	// *adr_scr = 'a';
-	// *(adr_scr+1) = 90;
-// end
-
-// int main(float num)
-	// int res = 0;
-	// for(int i = 0; i < 10; i++)
-		// int d;
-		// res = d;
+class Derp
+	int x = 1;
+	int y = 2;
+	int sum(int z)
+		writePort(3, x);  //should be 1 [got 199'90]
+		writePort(4, &x); //same as this (199'92) [got 199'78]
+		writePort(5, this); //should be  (199'92) [got 3]
+		int w = x+y+z;
+		//writePort(4, w);  //should be 1+2+3 = 6 [got 124 (1+arg2)]
+		//writePort(5, &w); //should be (199'81)  [got 199'78]
+		return w;
+	end
+	// int listArgs(int arg)
+		// int *args = &arg;
+		// int *p1 = this;
+		// int *p2 = &this;
+		// printf("listArgs: arg = %d, &arg = %d, this = %d, &this = %d\n",
+			// arg, args, p1, p2);
+		// for(int i = -3; i < 3; i++)
+			// printf("args[%d] = %d\n", i, args[i]);
+		// end
 	// end
-	// while(1)
-		// int d;
-		// res = d;
-	// end
-	// if(1)
-		// int d;
-		// res = d;
-	// end
-// end
-
-//#include "data_in/big/consolescreen.txt"
-//#include "data_in/big/prints.txt"
-#include "data_in/big/printf.txt"
-//#include "data_in/big/emergency_print.txt"
-
-void infloop() while(1) end end
-
-int *adr_port = 65536;
-//int *adr_scr = 65636;
-
-void writePort(int port, int val)
-	*(adr_port+port) = val;
 end
 
-void resetPorts()
-	writePort(0, 9999);
-	writePort(1, 9999);
-	writePort(2, 9999);
-	writePort(3, 9999);
-	writePort(4, 9999);
-	writePort(5, 9999);
-	writePort(6, 9999);
-	writePort(7, 9999);
+void test_class()
+	class Derp derp;
+	writePort(0, &derp); //should be (199'92) - ok
+	derp.x = 1;
+	writePort(1, derp.x);
+	writePort(2, &(derp.x));
+	derp.y = 2;
+	int r = derp.sum(3, 123, 456, 789);
+	writePort(7, r); //should be 6 [got 124]
+	//derp.listArgs(101, 202);
 end
 
-void setup()
-	//screen_set(65536+100);
-	//screen_clear();
-	//libprints_init();
-	resetPorts();
+void writeOffset(int *base, int port, int *p)
+	int offset = base-p;
+	writePort(port, offset);
 end
 
-void delay(int n) for(int i = 0; i < n; i++) end end
+void test_class2()		//pos:	//size:
+	char buff[10];
+	int pad1;			//0 	1
+	class Derp derp1;	//1 	1 (sh.b.2)
+	int pad2;			//37		1
+	class Derp derp2;	//2 	1 (shb 2)
+	int pad3;			//4 	1
+	char buff2[10];
+	//int i = 100;
+	//int j = 0;
+	//for(int *p = &pad1; p < (&pad3+1); p++)
+	//	*p = i;
+	//	i = i + 100;
+	//	writePort(j++, i);
+	//end
+	///// doesn't work, sus.
+	
+	for(int i = 0; i < 8; i++)
+		int num = 100*i;
+		buff2[10+i] = num;
+		writePort(i, num);
+	end
+	
+	setup();
+	int base = &buff-1;
+	//buff gives buff[0] which is wrong
+	
+	
+	writeOffset(base, 0, &pad1);	 //should be 199'92/0 [0]
+	writeOffset(base, 1, &derp1);	 //should be 199'91/1 [1]
+	writeOffset(base, 2, &(derp1.x));//should be 199'91/1 [37] //prolly current value of derp+offs of x=0
+	writeOffset(base, 3, &pad2);	 //should be 199'89/3 [2]
+	writeOffset(base, 4, &derp2);	 //should be 199'88/4 [3]
+	writeOffset(base, 5, &(derp2.x));//should be 199'88/4 [45]
+	writeOffset(base, 6, &pad3);	 //should be 199'87/5 [4]
+	//writeOffset(base, 7, derp1);
+end
+
+void test_class3()
+	class Derp derp3;
+	writePort(0, derp3);			//[0]		
+	writePort(1, &derp3);			//[199 92]	
+	writePort(2, derp3.x);			//[0]
+	writePort(3, &(derp3.x));		//[199 83]	[-9]
+	writePort(4, derp3.&(derp3.x)); //[199 79]	[-4]	//wtf. this shouldn't compile
+	writePort(5, derp3);
+end
 
 int main()
 	setup();
-	//Prints("Hello World!", 990);
-	//printf("Greetings.\nHumans.");
-	//printf("integer %d\n", 123);
-	//printf("strlen(\"derp\") = %d\n", strlen("derp"));
-	//printf("Hello World!\n");
+	//screen_set(65536+100);
+	//screen_clear();
+	//libprints_init();
 	
+	test_class3();
+	//test_class2();
+	//test_class();
 	
 	//test_all_ifs();
 	//test_deref();
 	//test_array();
 	//test_for();
 	//test_printf();
-	test_while();
+	//test_while();
 	
-	//printXY("done", 0, 17);
 	infloop();
-end
-
-void test_while()
-	int x = 10;
-	while(x)
-		writePort(0,x);
-		x--;
-	end
-	int y = 10;
-	int End = 0;
-	while(!End)
-		y--;
-		if(y == 0) End = 1; end
-		writePort(1, y);
-	end
 end
 
 
