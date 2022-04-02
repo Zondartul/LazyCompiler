@@ -14,6 +14,7 @@ struct frame{
 	vector2_ptr_char *namespace;
 	int stackvarsize;
 	int stackargsize;
+	int isStruct;
 };
 
 typedef struct frame *ptr_frame;

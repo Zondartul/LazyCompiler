@@ -242,6 +242,7 @@ void new_frame(){
 	F->namespace = vector2_ptr_char_new();
 	F->stackvarsize = 0;
 	F->stackargsize = 0;
+	F->isStruct = 0;
 	curframe = F;
 	m(frames,push_back,F);
 	printf("new frame, depth:%d, vs.size:%d, as.size:%d\n",F->depth,varstacks.size,argstacks.size);
@@ -594,6 +595,24 @@ const char* loadRValue(const char* val) {
 		if (ref) { error("[CODE GEN] const strings are already references "); }
 		else { return S->lbl_at; }
 	}
+	if (!strcmp(S->type, "MEMBER")) {
+		if (ref || S->arraysize) {
+			vec_printf(&vstr, "%d", S->pos);
+			return stralloc(vstr.data);//return stralloc(buff);
+		}
+		if (deref) {
+			//todo: check if some register already contains that val
+			ptr_reg R = allocRegister();
+			const char* reg = R->name;
+			R->val = stralloc(val);
+			printindent();
+			asm_println("mov %s, #%s", reg, S->lbl_at);
+			vec_printf(&vstr, "#%s", reg);
+			return stralloc(vstr.data);//return stralloc(buff);
+		}
+		vec_printf(&vstr, "#%s", S->lbl_at);
+		return stralloc(vstr.data); //return stralloc(buff);
+	}
 	if (!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) {
 		if (S->framedepth == 0) {
 			//global var
@@ -664,6 +683,15 @@ const char* loadLValue(const char* val){
 			ptr_reg reg = allocRegister();
 			int framediff = curframe->depth-S->framedepth;
 			if(comments){printindent(); asm_println("//load %s into %s (cf:%d, fd:%d)",val,reg->name,curframe->depth,S->framedepth);}
+			if (!strcmp(S->type, "MEMBER")) {
+				if (ref) { printindent(); asm_println("mov %s, %s", reg->name, S->lbl_at); }
+				else { printindent(); asm_println("mov %s, #%s", reg->name, S->lbl_at); }
+				if (deref) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
+				if (S->pointerlevel) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
+
+				reg->val = stralloc(val);
+				return reg->name;
+			}
 			if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
 				//if(adr < 0){fprintf(fasm,"*RECORD SCRATCH*\n");error("[CODE GEN] Error: unknown address for val [%s]",val);}
 				//it is negative for func arguments

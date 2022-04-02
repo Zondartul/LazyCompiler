@@ -875,6 +875,20 @@ int getTypeSize(ptr_type_name T){
 	return 1;
 }
 
+extern const char* path_out_IR;
+extern int doing_semantic;
+
+void maybePrintSemantic() {
+	if (doing_semantic) {
+		fprintf(stderr, "printing IR so far...");
+		semantic_finalize();
+		freopen(/*"aout_IR.txt"*/path_out_IR, "w", stdout);
+		setbuf(stdout, NULL);
+		print_semantic();
+		fprintf(stderr, "\tdone\n");
+	}
+}
+
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -912,6 +926,8 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 	else {
 		fprintf(stderr, "no source text\n");
 	}
+
+	maybePrintSemantic();
 
 	if (compiler_restart_enabled) {
 		exit(1);

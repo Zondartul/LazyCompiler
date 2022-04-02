@@ -96,6 +96,8 @@ int main(int argc, char** argv) {
 	}
 }
 
+int doing_semantic = 0;
+
 int main_helper(int argc, char **argv){
 	initFiles();
 	if(argc == 2){
@@ -164,12 +166,14 @@ int main_helper(int argc, char **argv){
 	ast_print_graph(/*ast_get_node(finalNode)*/finalNode,fp,"A"); //graphViz file
 	fprintf(stderr,"\t\tdone\n");
 	
+	doing_semantic = 1;
 	fprintf(stderr,"analyzing...");
 	freopen(/*"aout_semantic.txt"*/path_out_semantic,"w",stdout);
 	semantic_init();
 	semantic_general_analyze(/*ast_get_node(finalNode)*/finalNode);
 	fprintf(stderr,"\t\tdone\n");
-	
+	doing_semantic = 0;
+
 	fprintf(stderr,"printing semantic...");
 	freopen(/*"aout_IR.txt"*/path_out_IR,"w",stdout);
 	setbuf(stdout, NULL);

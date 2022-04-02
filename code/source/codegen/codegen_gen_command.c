@@ -60,6 +60,9 @@ void gen_command_symbol(){
 				pos = 0;
 				S->lbl_at = IR_inexact_name(curframe->namespace,val);
 			}else{
+				if (curframe->isStruct) {
+					type = "MEMBER";
+				}
 				pos = allocStackVar(arraysize);
 			}
 			
@@ -244,8 +247,15 @@ void gen_command_mov(){
 		const char *dest = strtok(0," ");
 		checkResult(dest);
 	}else{
-		const char *dest = strtok(0," ");
-		const char *src = loadRValue(strtok(0," "));
+		//const char *dest = strtok(0," ");
+		//const char *src = loadRValue(strtok(0," "));
+		const char* arg1 = strtok(0, " ");
+		const char* arg2 = strtok(0, " ");
+		if (strcmp(arg2, "&x") == 0) {
+			printf("debug trap");
+		}
+		const char* dest = arg1;
+		const char* src = loadRValue(arg2);
 		printTrace();
 		storeValue(dest, src);//store into value, a register
 		//printf("mov %s %s\n",arg1,loadValue(arg2));
@@ -575,6 +585,7 @@ void gen_command_struct(){
 			
 			push_frame();
 			new_frame();
+			curframe->isStruct = 1;
 			S->scope = curframe;
 			curframe->cmd_index = cmd_index;
 			curframe->lbl_from = S->lbl_from;

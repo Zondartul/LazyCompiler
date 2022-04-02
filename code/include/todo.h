@@ -24,8 +24,9 @@
 *  |   \[issue] not sure how tightly coupled the codegen is, does it need the symbol table or not?
 *  |     \[issue] does code gen even read aout_IR? Where does it get the IR?
    \[note] the first argument in a function is considered the 'second' argument
-           and 'this' is considered the first argument,
-		   but 'this' isn't pushed by IR.
+   |       and 'this' is considered the first argument,
+   |	   but 'this' isn't pushed by IR.
+  
 * --------- codegen bugs: -------------------------
 * [Issue 19] superfluous skeleton code is generated in assembly (debug info)
 * [Issue 20] too many comments in assembly 
@@ -51,9 +52,17 @@
 * [issue 38] Codegen shows wrong line when error reporting
 * [issue 39] codegen doesn't show IR line that caused an error
 * [Todo 40] IR emit comments about ID, const, func, should tell which one they are referring to
-* 
-* 
-* 
+* [bug 41] while fixing RV for structs - member &x is looked up incorrectly in code gen:
+*			foo(&x) <- EBP:#-1;		
+*			...which kind of resembles the struct being pushed whole by value onto the stack.
+*			should be:	foo(&x) <- <x.pos = 0>
+*		\[note] the idea is that a "frame is a scope" and not actual function frame,
+*				and so the frame of a method function is inside the frame (scope) of a struct,
+*				BUT this makes "frame climbing" impossible in assembly as the struct frame doesn't
+*				physically exist (unless the entire struct is pushed to stack before call and saved
+*				from struct after call)...
+*				When the IR symbol &x is looked up, there is no way to tell which scope it belongs to
+*		\[idea] just make symbols in a struct have "MEMBER" type instead of "VAR"
 * 
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators

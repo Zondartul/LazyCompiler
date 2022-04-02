@@ -55,6 +55,7 @@ typedef struct val_handle {
 	expr_type rv_type;
 	struct type_name* T;
 	//struct symbol* sym_this;
+	const char* author;  //this is to indicate the expr/node that made this
 } val_handle;
 
 typedef struct expr_settings {
@@ -88,7 +89,7 @@ void output_res(expr_settings stg, val_handle src, int do_emit);
 
 #define PREP_RES(res, type) val_handle res = { .rv_type = E_ERROR }; val_handle res##dest = { .rv_type = type }; \
 							expr_settings res##stg = { .dest = res##dest, .actual = & res };
-#define VERIFY_RES(res) if(res.rv_type == E_ERROR){error("internal semantic error: invalid expression result");}
+#define VERIFY_RES(res) if((res.rv_type == E_ERROR) || (res.val==0)){error("internal semantic error: invalid expression result");}
 
 //generated
 
@@ -165,5 +166,11 @@ char *escape_string(const char *str);
 char *unescape_string(const char *str);
 char *removeComments(const char *str);
 const char *sanitize_string(const char* str);
+
+
+const char* rename_star(const char* val);
+const char* rename_unstar(const char* val);
+const char* rename_and(const char* val);
+const char* rename_unand(const char* val);
 
 #endif

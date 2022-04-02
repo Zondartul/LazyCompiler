@@ -3,6 +3,7 @@
 #include "ctype.h"
 #include "semantic_analyze.h"
 #include "semantic_expr_op.h"
+#include <assert.h>
 
 void semantic_analyze_program(ast_node *node){
 	//program :	decl_stmt_list	;
@@ -51,12 +52,109 @@ const char* emit_push_label(const char* lbl) {
 	return lbl2;
 }
 
+const char* rename_star(const char* val) {
+	if (!val) {error("internal error");}
+	vector2_char vstr = vector2_char_here();
+	m(vstr, clear);
+	vec_printf(&vstr, "*%s", val);
+	return stralloc(vstr.data);
+}
+
+const char* rename_unstar(const char* val) {
+	if (!val) { error("internal error"); }
+	return stralloc(&(val[1]));
+}
+
+const char* rename_and(const char* val) {
+	if (!val) { error("internal error"); }
+	vector2_char vstr = vector2_char_here();
+	m(vstr, clear);
+	vec_printf(&vstr, "&%s", val);
+	return stralloc(vstr.data);
+}
+
+const char* rename_unand(const char* val) {
+	if (!val) { error("internal error"); }
+	return rename_unstar(val);
+}
+
 void output_res(expr_settings stg, val_handle src, int do_emit) {
+	/*
+	*  IR VALUE RULES
+	*   LVAL - raw typeless number, without a storage location.
+	*   PTR - a number that refers to a location in memory, where something can be stored.
+	*   RVAL - either 1) a "dereferenced pointer" expression (can't be stored in another value) (*x)
+	*	  		or 2) a "primitive rvalue" aka register or function ( _main )
+	*   --- stored values (left-side of mov-to LVAL or PTR) must not have accessors (&, *) 
+	* 
+	*  OUTPUT RES RULES
+	*   parent node analyzer requests a value of specific type,
+	*   and the current node analyzer MUST return a node of the same type.
+	*   emitting is needed to perform a conversion (promition) that copies a value to temporary.
+	* 
+	*  Conversion matrix:
+	*  dest val						IR expression syntax
+	*  |							IR_out <- IR_in
+	*  v
+	*		LVAL	RVAL			PTR		<-- src val
+	*  LVAL pass	rename.unstar	rename.unand	
+	*		x <- x	x <r- *x		x <r- &x	   (switch from adr-repr to val-repr)
+	*				(switch a2v)	rename.star-and-copy
+	*								x <c- *x <r- x (deref a pointer here)
+	*								copy
+	*								x <c- *x		(also deref)
+	* 
+	*  RVAL	ERR 	pass			copy-and-rename.star
+	*				*x <- *x		*x <r- x <c- &x
+	*								rename
+	*								*x <r- x
+	*							
+	*  PTR  pass	rename			pass
+	*		x <- x	x <r- *x		x <- x
+	*								copy
+	*								x <c- &x
+	*								copy
+	*								x <c- *x
+	* 
+	* 3x3x3 possibilities
+	* 
+	*/
+
+	//enum passType {
+	//	PASS_DEST_LVAL = 1,
+	//	PASS_DEST_RVAL = 2,
+	//	PASS_DEST_PTR = 3,
+	//	PASS_SRC_LVAL = 10,
+	//	PASS_SRC_RVAL = 20,
+	//	PASS_SRC_PTR = 30,
+	//	PASS_ACC_NONE = 100,
+	//	PASS_ACC_STAR = 200,
+	//	PASS_ACC_AND = 300 //ampersand
+	//};
+
 	if (stg.dest.rv_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
 	if (stg.dest.rv_type == E_DISCARD) {
 		if (stg.actual) {*(stg.actual) = (val_handle){ .val = 0 };}
 		return;
 	}
+	VERIFY_RES(src);
+
+	expr_type _src_type = src.rv_type;
+	expr_type _dest_type = stg.dest.rv_type;
+	const char* _src_val = src.val;
+
+	int dest_lval = (stg.dest.rv_type == E_LVAL);
+	int dest_rval = (stg.dest.rv_type == E_RVAL);
+	int dest_ptr = (stg.dest.rv_type == E_PTR);
+	int src_lval = (src.rv_type == E_LVAL);
+	int src_rval = (src.rv_type == E_RVAL);
+	int src_ptr = (src.rv_type == E_PTR);
+	int acc_star = (src.val[0] == '*');
+	int acc_and = (src.val[0] == '&');
+	int acc_none = (!acc_star) && (!acc_and);
+
+	assert(src.val);
+	assert(strlen(src.val));
 
 	//verify that the value we are outputting is initialized and stuff
 	if ((src.rv_type == E_ERROR)) {
@@ -64,59 +162,153 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 	}
 	printf("output_res (%s)\n", src.val);
 
-	const char* resVal = stg.dest.val;
-	if (!resVal) {resVal = src.val;}
-	int resValTemp = 0;
-	if (do_emit) {
-		if (!stg.dest.val) {
-			resVal = IR_next_name(namespace_semantic, "temp");
-			resValTemp = 1;
-		}
-		if (stg.dest.rv_type == E_RVAL) {	
-			if (src.rv_type == E_RVAL) { // x = y
-				emit_code("MOV %s %s //output(R<R)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-			if (src.rv_type == E_LVAL) { // *x = y;
-				if (resValTemp) {
-					error("can't output(R<L) to a temporary value, provide a destination!");
-				}
-				emit_code("MOV *%s %s //output(R<L)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-			if (src.rv_type == E_PTR) { //temp_ptr = arr + 5;
-				emit_code("MOV %s %s //output(R<P)", sanitize_string(resVal), sanitize_string(src.val));
+	//const char* resVal = stg.dest.val; //we may do a copy if the destination name is requested
+	//if (!resVal) { resVal = src.val; }
+	//int resValTemp = 0;
+	const char* resVal = 0;
+	//full emit string will be stored here
+	vector2_char vstr = vector2_char_here();
 
-				vector2_char vstr = vector2_char_here();
-				vec_printf(&vstr, "*%s", resVal);
-				resVal = stralloc(vstr.data);
-			}
-		}
-		if (stg.dest.rv_type == E_LVAL) { 
-			if (src.rv_type == E_RVAL) { // temp_val = 1 + x;
-				emit_code("MOV %s *%s //output(L<R)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-			if (src.rv_type == E_LVAL) { // temp_val = 1 + 1;	
-				emit_code("MOV %s %s //output(L<L)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-			if (src.rv_type == E_PTR) { // x = *y
-				emit_code("MOV %s *%s //output(L<P)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-		}
-		if (stg.dest.rv_type == E_PTR) {
-			if (src.rv_type == E_RVAL) {
-				emit_code("MOV %s &%s //output(P<R)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-			if (src.rv_type == E_LVAL) {
-				error("can't take address of a literal");
-			}
-			if (src.rv_type == E_PTR) { // temp_ptr = temp_ptr
-				emit_code("MOV %s %s //output(P<P)", sanitize_string(resVal), sanitize_string(src.val));
-			}
-		}
-	}
-	if (stg.actual) { 
+	const char* op_str;
+
+	if (dest_lval && src_lval && acc_none) { goto out_pass; }
+	if (dest_lval && src_rval && acc_star) { goto out_rename_unstar; }
+	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; }
+	if (dest_lval && src_ptr && acc_none) { goto out_rename_star_and_copy; }
+	if (dest_lval && src_ptr && acc_star) { goto out_copy; }
+
+	if (dest_rval && src_lval) { error("internal semantic error: can't promote lval to rval"); }
+	if (dest_rval && src_rval && acc_star) { goto out_pass; }
+	if (dest_rval && src_ptr && acc_and) { goto out_copy_and_rename_star; }
+	if (dest_rval && src_ptr && acc_none) { goto out_rename_star; }
+
+	if (dest_ptr && src_lval && acc_none) { goto out_pass; }
+	if (dest_ptr && src_rval && acc_star) { goto out_rename_unstar; }
+	if (dest_ptr && src_ptr && acc_none) { goto out_pass; }
+	if (dest_ptr && src_ptr && acc_and) { goto out_copy; }
+	if (dest_ptr && src_ptr && acc_star) { goto out_copy; }
+
+
+out_unexpected:
+	error("output_res: unexpected case");
+	return;
+
+out_pass:
+	op_str = "pass";
+	resVal = src.val;
+	goto out_finish;
+
+out_copy:
+	op_str = "copy";
+	resVal = IR_next_name(namespace_semantic, "temp");
+	vec_printf(&vstr, "MOV %s %s", sanitize_string(resVal), sanitize_string(src.val));
+	goto out_finish;
+
+out_rename_unstar:
+	op_str = "rename_unstar";
+	resVal = rename_unstar(src.val);
+	goto out_finish;
+
+out_rename_unand:
+	op_str = "rename_unand";
+	resVal = rename_unand(src.val);
+	goto out_finish;
+
+out_copy_and_rename_star:
+	op_str = "copy_and_rename_star";
+	resVal = IR_next_name(namespace_semantic, "temp");
+	vec_printf(&vstr, "MOV %s %s", sanitize_string(resVal), sanitize_string(src.val));
+	resVal = rename_star(resVal);
+	goto out_finish;
+
+out_rename_star_and_copy:
+	op_str = "rename_star_and_copy";
+	resVal = IR_next_name(namespace_semantic, "temp");
+	vec_printf(&vstr, "MOV %s *%s", sanitize_string(resVal), sanitize_string(src.val));
+	goto out_finish;
+
+out_rename_star:
+	op_str = "rename_star";
+	resVal = rename_star(src.val);
+	goto out_finish;
+
+out_finish:
+	
+	const char* dest_rv_str = 0;
+	if (dest_lval) { dest_rv_str = "L"; }
+	if (dest_rval) { dest_rv_str = "R"; }
+	if (dest_ptr)  { dest_rv_str = "P";	}
+	const char* src_rv_str = 0;
+	if (src_lval) { src_rv_str = "L"; }
+	if (src_rval) { src_rv_str = "R"; }
+	if (src_ptr)  { src_rv_str = "P"; }
+	const char* dest_val = resVal;
+	const char* src_val = src.val;
+	const char* dest_auth = stg.dest.author;
+	const char* src_auth = src.author;
+
+	vec_printf(&vstr, "   /* out(%s <- %s): %s from %s (%s) //auth: to %s from %s */", 
+		dest_rv_str, src_rv_str,
+		dest_val, src_val,
+		op_str,
+		dest_auth, src_auth
+	);
+
+	emit_code(vstr.data);
+
+	if (stg.actual) {
 		*(stg.actual) = src;
 		stg.actual->val = resVal;
+		VERIFY_RES((*(stg.actual)));
 	}
+	
+
+	//if (do_emit) {
+	//	if (!stg.dest.val) {
+	//		resVal = IR_next_name(namespace_semantic, "temp");
+	//		resValTemp = 1;
+	//	}
+	//	if (stg.dest.rv_type == E_RVAL) {	
+	//		if (src.rv_type == E_RVAL) { // x = y
+	//			emit_code("MOV %s %s //output(R<R)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//		if (src.rv_type == E_LVAL) { // *x = y;
+	//			if (resValTemp) {
+	//				error("can't output(R<L) to a temporary value, provide a destination!");
+	//			}
+	//			emit_code("MOV *%s %s //output(R<L)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//		if (src.rv_type == E_PTR) { //temp_ptr = arr + 5;
+	//			emit_code("MOV %s %s //output(R<P)", sanitize_string(resVal), sanitize_string(src.val));
+	//			vector2_char vstr = vector2_char_here();
+	//			vec_printf(&vstr, "*%s", resVal);
+	//			resVal = stralloc(vstr.data);
+	//		}
+	//	}
+	//	if (stg.dest.rv_type == E_LVAL) { 
+	//		if (src.rv_type == E_RVAL) { // temp_val = 1 + x;
+	//			emit_code("MOV %s *%s //output(L<R)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//		if (src.rv_type == E_LVAL) { // temp_val = 1 + 1;	
+	//			emit_code("MOV %s %s //output(L<L)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//		if (src.rv_type == E_PTR) { // x = *y
+	//			emit_code("MOV %s *%s //output(L<P)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//	}
+	//	if (stg.dest.rv_type == E_PTR) {
+	//		if (src.rv_type == E_RVAL) {
+	//			emit_code("MOV %s &%s //output(P<R)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//		if (src.rv_type == E_LVAL) {
+	//			error("can't take address of a literal");
+	//		}
+	//		if (src.rv_type == E_PTR) { // temp_ptr = temp_ptr
+	//			emit_code("MOV %s %s //output(P<P)", sanitize_string(resVal), sanitize_string(src.val));
+	//		}
+	//	}
+	//}
+	
 }
 
 //void output_res_old(expr_settings stg, const char* res_val, struct type_name* T) {
