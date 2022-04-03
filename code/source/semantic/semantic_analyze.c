@@ -405,6 +405,14 @@ void semantic_analyze_func_def(ast_node *node){
 		S->symfunction.returntype = T;
 		push_symbol_table();
 		new_symbol_table(node);
+
+			//fancy symtable name
+			vector2_char vstr = vector2_char_here();
+			vec_printf(&vstr, "%s_func_%s",
+				sanitize_string(currentSymbolTable->name),
+				sanitize_string(name));
+			currentSymbolTable->name = stralloc(vstr.data);
+
 		S->symfunction.scope = currentSymbolTable;
 		S->symfunction.code = 0;
 		if(symbolThis){
@@ -553,7 +561,15 @@ void semantic_analyze_var_decl(ast_node *node){
 		S->symvariable.array = 0;
 		S->storage = STORE_DATA_MEMBER;
 	*/	
-	}else{
+	}
+	else if (semantic_context == SEMANTIC_MEMBER) {
+		S->type = SYMBOL_MEMBER;
+		//S->symvariable.pos = getNumVariables();
+		S->store_adr = getNumMembers();
+		S->symvariable.size = getTypeSize(T);
+		S->storage = STORE_DATA_STACK;
+		S->symvariable.array = 0;
+	}else {
 		S->type = SYMBOL_VARIABLE;
 		//S->symvariable.pos = getNumVariables();
 		S->store_adr = getNumVariables();
@@ -601,6 +617,13 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			S->symvariable.size = getTypeSize(T);
 			S->symvariable.array = 0;
 			S->storage = STORE_DATA_MEMBER;*/
+		}
+		else if (semantic_context == SEMANTIC_MEMBER) {
+			S->type = SYMBOL_MEMBER;
+			S->store_adr = getNumMembers();
+			S->symvariable.size = getTypeSize(T);
+			S->symvariable.array = 0;
+			S->storage = STORE_DATA_MEMBER;
 		}else{
 			S->type = SYMBOL_VARIABLE;
 			S->store_adr = getNumVariables();
@@ -629,12 +652,14 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
 			//semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
 			PREP_RES(res2, E_LVAL);
+			res2stg.dest.author = "var_decl_asign expr (= ...)";
 			semantic_expr_analyze(node_expr, res2stg);
 			VERIFY_RES(res2);
 
 			emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
 			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
 			//output_res(stg, result1, result1type);
+			res2.author = "var_decl_assign";
 			output_res(stg, res2, YES_EMIT);
 			pop_code_segment();
 		}
@@ -694,6 +719,7 @@ void semantic_analyze_imp_stmt(ast_node *node){
 			emit_code("/* %s */",
 				sanitize_string(removeComments(get_source_text2(node->token.pos))));
 			PREP_RES(res1, E_RVAL);
+			res1stg.dest.author = "return expr";
 			semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (what to return)
 			VERIFY_RES(res1);
 
@@ -842,6 +868,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
 				//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 				PREP_RES(res1, E_LVAL);
+				res1stg.dest.author = "if_then condition";
 				semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (condition)
 				VERIFY_RES(res1);
 				
@@ -889,6 +916,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
 				//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
 				PREP_RES(res2, E_LVAL);
+				res2stg.dest.author = "if_then elseif condition";
 				semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (condition)
 				VERIFY_RES(res2);
 				
@@ -949,6 +977,7 @@ void semantic_analyze_while_loop(ast_node *node){
 		//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 		PREP_RES(res1, E_LVAL);
+		res1stg.dest.author = "while condition";
 		semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (condition)
 		VERIFY_RES(res1);
 		
@@ -1023,6 +1052,7 @@ void semantic_analyze_for_loop(ast_node *node){
 		 emit_code("/* %s */", sanitize_string(removeComments(get_source_text2(pos2))));
 		//4.3 emit the code to calculate the condition value
 		 PREP_RES(res1, E_LVAL);
+		 res1stg.dest.author = "for condition";
 		 semantic_expr_analyze(node_cond, res1stg); //expr (i < 10;)
 		 VERIFY_RES(res1);
 		 const char* condition = res1.val;
@@ -1084,32 +1114,45 @@ void semantic_analyze_class_def(ast_node *node){
 		S->type = SYMBOL_CLASS;
 		push_symbol_table();
 		new_symbol_table(node);
+
+		//fancy symtable name
+		vector2_char vstr = vector2_char_here();
+		vec_printf(&vstr, "%s_class_%s",
+			sanitize_string(currentSymbolTable->name),
+			sanitize_string(name));
+		currentSymbolTable->name = stralloc(vstr.data);
+
 		S->symclass.scope = currentSymbolTable;
 		push_semantic_context();
-		//semantic_context = SEMANTIC_MEMBER;
+		semantic_context = SEMANTIC_MEMBER;
+
 		symbolThis = S;
 		semantic_this = S->IR_name;
 		
-		struct symbol *T = symbol_new0();
-		T->username = stralloc("this");
-		T->IR_name = IR_next_name(namespace_semantic,"this");
-		T->type = SYMBOL_PARAM; //wait a sec, wtf is a SYMBOL_MEMBER?
-		T->storage = STORE_DATA_STACK; //no idea if this does anything
-		T->store_adr = 0;
-		T->global = 0;
-		T->symvariable.pos = 0;
-			struct type_name *Tn = malloc(sizeof(struct type_name));
-			Tn->name = S->username;
-			Tn->pointerlevel = 1;
-			Tn->symclass = S;
-			Tn->args = 0;
-		T->symvariable.type = Tn;
-		T->symvariable.array = 0;
-		T->symvariable.arraysize = 0;
-		
-		push_symbol(T);
+		//03.04.2022 - we don't need to add "symbol this" to a struct because
+		// function calls do that automatically, plus 
+		// it messes up symbol lookup from within a function.
+		//struct symbol *T = symbol_new0();
+		//T->username = stralloc("this");
+		//T->IR_name = IR_next_name(namespace_semantic,"this");
+		//T->type = SYMBOL_PARAM; //wait a sec, wtf is a SYMBOL_MEMBER?
+		//T->storage = STORE_DATA_STACK; //no idea if this does anything
+		//T->store_adr = 0;
+		//T->global = 0;
+		//T->symvariable.pos = 0;
+		//	struct type_name *Tn = malloc(sizeof(struct type_name));
+		//	Tn->name = S->username;
+		//	Tn->pointerlevel = 1;
+		//	Tn->symclass = S;
+		//	Tn->args = 0;
+		//T->symvariable.type = Tn;
+		//T->symvariable.array = 0;
+		//T->symvariable.arraysize = 0;
+		//
+		//push_symbol(T);
 		
 		semantic_general_analyze(node_dsl); //decl_stmt_list
+		
 		pop_semantic_context();
 		class_def_finalize();
 		semantic_this = 0;

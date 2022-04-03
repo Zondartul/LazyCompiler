@@ -13,7 +13,8 @@ struct IR_symbol{
 	int pointerlevel;		//number of stars in the "int *****ptr" pointer type
 	int pos;				//frame-relative stack address of the variable (if framedepth > 0)
 	int framedepth;			//number of scope-inside-scope levels for the frame that stores this var
-	int arraysize;			//capacity of the array (num copies or num bytes?)
+	int arraysize;			//capacity of the array (num copies)
+	int size;				//size of a single element
 	const char *str;		//string, if the symbol is a string literal (type = STRING).
 	struct frame *scope;	//if the symbol is a struct, this frame is it's scope.
 };

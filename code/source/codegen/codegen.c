@@ -685,9 +685,13 @@ const char* loadLValue(const char* val){
 			if(comments){printindent(); asm_println("//load %s into %s (cf:%d, fd:%d)",val,reg->name,curframe->depth,S->framedepth);}
 			if (!strcmp(S->type, "MEMBER")) {
 				if (ref) { printindent(); asm_println("mov %s, %s", reg->name, S->lbl_at); }
-				else { printindent(); asm_println("mov %s, #%s", reg->name, S->lbl_at); }
-				if (deref) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
-				if (S->pointerlevel) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
+				else {
+					error("codegen error: member var %s may only be used as '&%s'", val, val);
+				}
+				//else { printindent(); asm_println("mov %s, #%s", reg->name, S->lbl_at); }
+				//if (deref) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
+				//if (S->pointerlevel) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
+
 
 				reg->val = stralloc(val);
 				return reg->name;

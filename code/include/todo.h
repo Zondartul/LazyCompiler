@@ -1,5 +1,5 @@
 //todo:
-/* num tickets: 40
+/* num tickets: 41
 * ----------- preproc bugs: -------------------------------
 * [Bug 1] can't find an include in the same directory as source file
 * [Todo 2] implement >=
@@ -23,10 +23,18 @@
 *  | \[bug?] semantic_flatten is in effect so the STs for individual structures are missing
 *  |   \[issue] not sure how tightly coupled the codegen is, does it need the symbol table or not?
 *  |     \[issue] does code gen even read aout_IR? Where does it get the IR?
-   \[note] the first argument in a function is considered the 'second' argument
+   \[fixed note] the first argument in a function is considered the 'second' argument
    |       and 'this' is considered the first argument,
    |	   but 'this' isn't pushed by IR.
-  
+   \[note] semantic: function's symtable (ST8) is parented to the struct symtable (ST9), 
+   |		but symbol 'this' in ST8 refers to class symtable 'Derp' which is empty.
+   |		huh.
+   |		\[edit] 'this' doesn't even link to a scope, it's a param-type.
+   |			\[note] fixed lookup_symbol_this to take note of this fact and look in this.type.symclass
+   \[fixed note] now an individual struct works but we are still not accounting for its size
+   |		in either semantic or codegen.
+   \[CHECK IF FIXED]
+
 * --------- codegen bugs: -------------------------
 * [Issue 19] superfluous skeleton code is generated in assembly (debug info)
 * [Issue 20] too many comments in assembly 

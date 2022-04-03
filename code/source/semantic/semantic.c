@@ -130,7 +130,12 @@ int semantic_dispatch_if(struct ast_node* node, if_settings stg) {
 
 int semantic_dispatch_general(struct ast_node* node) {
 	val_handle res = { .rv_type = E_DISCARD };
-	expr_settings stg = { .dest = res };
+	val_handle this_handle = { .rv_type = E_ERROR };
+	//if (symbolThis) {
+	//	struct symbol* S = lookup_symbol("this");
+	//	this_handle = (val_handle){ .val = S->IR_name, .T = S->symvariable.type, .rv_type = E_PTR };
+	//}
+	expr_settings stg = { .dest = res, .sem_this = this_handle };
 
 	if (!strcmp(node->token.type, "program"))			{ semantic_analyze_program(node);			return 1; }
 	if (!strcmp(node->token.type, "decl_stmt_list"))	{ semantic_analyze_decl_stmt_list(node);	return 1; }
@@ -384,28 +389,49 @@ void emit_all_decl_helper(){
 		if(S->global){
 			currentCodeSegment = init_CS;
 		}
-		if(S->type == SYMBOL_PARAM || S->type == SYMBOL_VARIABLE){
-			if(S->symvariable.array){
-				if(S->type == SYMBOL_PARAM){
-					emit_code("SYMBOL %s ARG ARRAY %d", 
-						sanitize_string(S->IR_name), 
-						S->symvariable.arraysize);
+		if(S->type == SYMBOL_PARAM || S->type == SYMBOL_VARIABLE || S->type == SYMBOL_MEMBER){
+			vector2_char vstr = vector2_char_here();
+			const char* typestr = 0;
+			if (S->type == SYMBOL_PARAM) {typestr = "ARG";}
+			if (S->type == SYMBOL_VARIABLE) {typestr = "VAR";}
+			if (S->type == SYMBOL_MEMBER) {typestr = "MEMBER";}
+			vec_printf(&vstr, "SYMBOL %s %s",
+				sanitize_string(S->IR_name),
+				sanitize_string(typestr));
+			
+				//calc size of var
+			if ((S->type == SYMBOL_VARIABLE) || (S->type == SYMBOL_MEMBER)) {
+				int size = S->symvariable.size;
+				if (size != 1) {
+					vec_printf(&vstr, " SIZE %d", size);
 				}
-				if(S->type == SYMBOL_VARIABLE){
-					emit_code("SYMBOL %s VAR ARRAY %d", 
-						sanitize_string(S->IR_name), 
-						S->symvariable.arraysize);
-				}
-			}else{
-				if(S->type == SYMBOL_PARAM){
-					emit_code("SYMBOL %s ARG", 
-						sanitize_string(S->IR_name));
-				}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
-				if(S->type == SYMBOL_VARIABLE){
-					emit_code("SYMBOL %s VAR", 
-						sanitize_string(S->IR_name));
-				}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
 			}
+
+			if (S->symvariable.array) {
+				vec_printf(&vstr, " ARRAY %d", S->symvariable.arraysize);
+			}
+			emit_code("%s", vstr.data);
+			//if(S->symvariable.array){
+			//	if(S->type == SYMBOL_PARAM){
+			//		emit_code("SYMBOL %s ARG ARRAY %d", 
+			//			sanitize_string(S->IR_name), 
+			//			S->symvariable.arraysize);
+			//	}
+			//	if(S->type == SYMBOL_VARIABLE){
+			//		emit_code("SYMBOL %s VAR ARRAY %d", 
+			//			sanitize_string(S->IR_name), 
+			//			S->symvariable.arraysize);
+			//	}
+			//}else{
+			//	if(S->type == SYMBOL_PARAM){
+			//		emit_code("SYMBOL %s ARG", 
+			//			sanitize_string(S->IR_name));
+			//	}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+			//	if(S->type == SYMBOL_VARIABLE){
+			//		emit_code("SYMBOL %s VAR", 
+			//			sanitize_string(S->IR_name));
+			//	}//emit_code("DEBUG BEGIN VAR %s %s",S->IR_name,S->username);}
+			//}
 		}else{
 			//if(S->type == SYMBOL_FUNCTION){emit_code("SYMBOL %s FUNC",S->IR_name);} nah, they're both define-anywhere
 			//if(S->type == SYMBOL_CLASS){emit_code("SYMBOL %s STRUCT",S->IR_name);}
