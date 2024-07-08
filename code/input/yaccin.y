@@ -9,7 +9,7 @@
 	//ast_node.h not fully included yet due to shenanigans
 	typedef struct ast_node ast_node;
 	
-	ast_node *finalNode;
+	extern ast_node *finalNode;
 	int yyerror(const char *s);
 }
 %code provides{
@@ -23,6 +23,9 @@ char *get_source_text2(YYLTYPE pos);
   #include "codegen.h"
 	#include "vector2.h"
 	#include "types/ast_node.h"
+
+	ast_node *finalNode;
+
 	//		B = B C | C
 	//beceomes
 	//		B = C C C C C
@@ -195,6 +198,66 @@ char *get_source_text2(YYLTYPE pos);
 	  (Current).filename = YYRHSLOC (Rhs, 0).filename;	\
 	  */
 }
+%code {
+	
+	extern FILE *yyin;
+	FILE *yyin2;
+
+	int main(int argc, char **argv); //moved to main.c
+
+	void printPos(YYLTYPE pos){
+		printf("null: %d\n",pos.null);
+		printf("first_line: %d\n",pos.first_line);
+		printf("first_column: %d\n",pos.first_column);
+		printf("last_line: %d\n", pos.last_line);
+		printf("last_column: %d\n", pos.last_column);
+		printf("start: %d\n", pos.start);
+		printf("end: %d\n", pos.end);
+		printf("filename: [%s]\n",pos.filename);
+	}
+
+
+	void printPosErr(YYLTYPE pos){
+		fprintf(stderr,"null: %d\n",pos.null);
+		fprintf(stderr,"first_line: %d\n",pos.first_line);
+		fprintf(stderr,"first_column: %d\n",pos.first_column);
+		fprintf(stderr,"last_line: %d\n", pos.last_line);
+		fprintf(stderr,"last_column: %d\n", pos.last_column);
+		fprintf(stderr,"start: %d\n", pos.start);
+		fprintf(stderr,"end: %d\n", pos.end);
+		fprintf(stderr,"filename: [%s]\n",pos.filename);
+	}
+
+
+	int yyerror(const char *s)
+	{	
+		printf("\nyyerror()!\n");
+		int x1 = yylloc.first_column;
+		int y1 = yylloc.first_line;
+		int x2 = yylloc.last_column;
+		//int y2 = yylloc.last_line;
+		const char *f = yylloc.filename;
+		int length = x2-x1;
+		if(length == 1){length = 0;}
+		point_out_error(y1,x1,f,s,length);
+		fflush(stdout);
+		
+		error("syntax error. yytext: [%s]\n",(char*)yylval);
+		//exit(1);
+		return 1;
+	}
+
+	char *posToString(YYLTYPE pos){
+		int start = pos.first_column;
+		int end = pos.last_column;
+		int len = end-start;
+		char *buff = malloc(sizeof(char)*len);
+		fseek(yyin2, start, SEEK_SET);
+		fgets(buff, len, yyin2);
+		return buff;
+	}
+}
+
 %token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC
 /*%glr-parser*/
 %debug
@@ -740,9 +803,6 @@ expr	:	ID							{$$ = ast_node_new(ast_token_here("expr_id",	0,$1->token.value,@
 		;
 
 %%
-extern FILE *yyin;
-FILE *yyin2;
-
 /*
 
 |	expr INC	%prec POSTINC	
@@ -755,56 +815,3 @@ FILE *yyin2;
 
 */
 
-int main(int argc, char **argv); //moved to main.c
-
-void printPos(YYLTYPE pos){
-	printf("null: %d\n",pos.null);
-	printf("first_line: %d\n",pos.first_line);
-	printf("first_column: %d\n",pos.first_column);
-	printf("last_line: %d\n", pos.last_line);
-	printf("last_column: %d\n", pos.last_column);
-	printf("start: %d\n", pos.start);
-	printf("end: %d\n", pos.end);
-	printf("filename: [%s]\n",pos.filename);
-}
-
-
-void printPosErr(YYLTYPE pos){
-	fprintf(stderr,"null: %d\n",pos.null);
-	fprintf(stderr,"first_line: %d\n",pos.first_line);
-	fprintf(stderr,"first_column: %d\n",pos.first_column);
-	fprintf(stderr,"last_line: %d\n", pos.last_line);
-	fprintf(stderr,"last_column: %d\n", pos.last_column);
-	fprintf(stderr,"start: %d\n", pos.start);
-	fprintf(stderr,"end: %d\n", pos.end);
-	fprintf(stderr,"filename: [%s]\n",pos.filename);
-}
-
-
-int yyerror(const char *s)
-{	
-	printf("\nyyerror()!\n");
-	int x1 = yylloc.first_column;
-	int y1 = yylloc.first_line;
-	int x2 = yylloc.last_column;
-	//int y2 = yylloc.last_line;
-	const char *f = yylloc.filename;
-	int length = x2-x1;
-	if(length == 1){length = 0;}
-	point_out_error(y1,x1,f,s,length);
-	fflush(stdout);
-	
-	error("syntax error. yytext: [%s]\n",(char*)yylval);
-	//exit(1);
-	return 1;
-}
-
-char *posToString(YYLTYPE pos){
-	int start = pos.first_column;
-	int end = pos.last_column;
-	int len = end-start;
-	char *buff = malloc(sizeof(char)*len);
-	fseek(yyin2, start, SEEK_SET);
-	fgets(buff, len, yyin2);
-	return buff;
-}

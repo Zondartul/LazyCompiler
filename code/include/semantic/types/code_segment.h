@@ -30,8 +30,8 @@ struct code_segment* code_segment_new(
 	);
 //-------- functions to work with the struct
 extern ptr_code_segment currentCodeSegment;
-vector2_ptr_code_segment CS_stack;
-vector2_ptr_code_segment CS_list;
+extern vector2_ptr_code_segment CS_stack;
+extern vector2_ptr_code_segment CS_list;
 void push_code_segment();
 void pop_code_segment();
 

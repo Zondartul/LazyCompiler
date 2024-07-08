@@ -36,7 +36,7 @@ void gen_command_symbol() {
 	const char* type = strtok(0, " ");//words[1];
 	int sym_size = 1;
 	int arraysize = 1;
-	int wordI = 2;
+	//int wordI = 2;
 	int ptrlvl = 0;
 	int pos = 0;
 

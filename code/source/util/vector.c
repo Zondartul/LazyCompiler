@@ -21,7 +21,7 @@ void vector_destructor(vector *this, funcptr elem_destructor){
 	if(elem_destructor){
 		int i;
 		for(i = 0; i < this->size; i++){
-			elem_destructor(((size_t)this->data)+i*this->element_size);
+			elem_destructor((void*)(((size_t)this->data)+i*this->element_size));
 		}
 	}
 	free(this->data);
@@ -31,7 +31,7 @@ void vector_destructor(vector *this, funcptr elem_destructor){
 void *vector_get_reference(vector *this, int pos){
 	//printf("vector_get_reference %d\n",pos);
 	if((pos < 0) || (pos >= this->size)){error("vector error: index out of bounds (%d/%d)\n",pos,this->size);}
-	return ((size_t)this->data)+pos*this->element_size;
+	return (void*)(((size_t)this->data)+pos*this->element_size);
 }
 void vector_push_back(vector *this, void *newelem){
 	//printf("vector_push_back %d\n",this->size);

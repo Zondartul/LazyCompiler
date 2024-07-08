@@ -155,7 +155,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	}
 
 	//3. figure out the type of the symbol.
-	const char* accessor = "";
+	//const char* accessor = "";
 	struct type_name* T = 0;
 
 	expr_type rv = E_ERROR;
@@ -380,7 +380,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
 
-	struct symbol* sym_args_this = try_lookup_symbol("this");
+	//struct symbol* sym_args_this = try_lookup_symbol("this");
 
 	//1. get a reference for the function itself
 	//1.1 read the function expression
@@ -610,8 +610,8 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	PREP_RES(res1, E_PTR);//E_RVAL);
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
 	VERIFY_RES(res1);
-	struct type* T = res1.T;
-	struct type* T2 = reffed_type(T);
+	struct type_name* T = res1.T;
+	struct type_name* T2 = reffed_type(T);
 	emit_code("/* ref %s */", sanitize_string(res1.val));
 	
 	//we get ptr, we want to reinterpret it as E_LVAL 

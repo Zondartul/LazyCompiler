@@ -55,7 +55,7 @@ void parseExpect(const char *str);
 char *parseWord();
 void pushYyin();
 void popYyin();
-vector2_ptr_char includedFiles;
+extern vector2_ptr_char includedFiles;
 int contains_string(vector2_ptr_char *v, const char *str);
 void concat(char **buff,const char *str, int len);
 void string_replace(char *str, const char *def, const char *rep);

@@ -82,6 +82,23 @@ void vector2_##T##_resize(struct vector2_##T *this, int size);
 #define v2flush()	 fflush(stderr)
 #define v2crash()	 exit(*(int*)0)
 #define v2error(...) v2print(__VA_ARGS__); v2flush(); v2crash();
+
+/// -- begin "va_arg char bug"
+/// When using va_arg(args, T), and a char is passed through (...), 
+/// the char is implicitly converted to int,
+/// so we have to va_arg(args, int) instead.
+/// so lets make a preproc macro that replaces
+/// 'char' with 'int' but leaves other types
+/// unchanged.
+
+#define VA_ARG_PROMOTE_char char, int //chars turn to ints
+#define VA_ARG_PROMOTE(x) VA_ARG_PROMOTE2(VA_ARG_PROMOTE_##x, x)
+#define VA_ARG_PROMOTE2(x, y, ...) VA_ARG_PROMOTE3(x, y) 
+#define VA_ARG_PROMOTE3(x, y, ...) y
+
+/// probably could be done with DEFER and EXPAND but I can't brain them.
+/// -- end "va_arg char bug"
+
 #define implementation_vector_of(T)	\
 const char *vector2_##T##_canary = "vector2_" #T;\
 vector2_##T* vector2_##T##_new(){	\
@@ -101,7 +118,7 @@ struct vector2_##T *vector2_##T##_new_from_list(int num, ...){ \
 	va_start(args, num);	\
 	struct vector2_##T *pV = vector2_##T##_new();	\
 	for(int I = 0; I < num; I++){	\
-		T val = va_arg(args,T);			\
+		T val = va_arg(args,VA_ARG_PROMOTE(T));			\
 		vector2_##T##_push_back(pV, val);	\
 	}								\
 	return pV;						\
@@ -112,7 +129,7 @@ struct vector2_##T vector2_##T##_here_from_list(int num, ...){ \
 	va_start(args, num);	\
 	struct vector2_##T V = vector2_##T##_here();	\
 	for(int I = 0; I < num; I++){	\
-		T val = va_arg(args,T);			\
+		T val = va_arg(args,VA_ARG_PROMOTE(T));			\
 		vector2_##T##_push_back(&V, val);	\
 	}								\
 	return V;						\

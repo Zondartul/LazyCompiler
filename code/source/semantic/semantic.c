@@ -71,7 +71,7 @@ void semantic_init_analyze(struct ast_node* node) {
 	//printf("----------------------\n");
 }
 
-void semantic_fin_analyze(struct ast_node* node) {
+void semantic_fin_analyze(struct ast_node* /*node*/) {
 	//if(trigger){
 	//	trigger = 0;
 	//	printf("\n\npos after pass 8:===========\n");
@@ -109,7 +109,7 @@ int semantic_dispatch_expr_op(struct ast_node* node, expr_settings stg) {
 
 int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
 	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_list"))		{ semantic_analyze_expr_list	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_list"))		{ semantic_analyze_expr_list	(node);	return 1; }
 	if (!strcmp(node->token.type, "expr_id"))		{ semantic_analyze_expr_id		(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_const"))	{ semantic_analyze_expr_const	(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_subexpr"))	{ semantic_analyze_expr_subexpr	(node, stg);	return 1; }
@@ -126,6 +126,7 @@ int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
 
 int semantic_dispatch_if(struct ast_node* node, if_settings stg) {
 	if (!strcmp(node->token.type, "if_then")) { semantic_analyze_if_then(node, stg); return 1; }
+	return 0;
 }
 
 int semantic_dispatch_general(struct ast_node* node) {

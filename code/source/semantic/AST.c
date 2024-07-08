@@ -56,8 +56,8 @@ struct ast_node *ast_get_child(struct ast_node *N, int num){
 	return m(N->children, get, num);
 }
 //+--+ fancy!
-//++-¦ nuuu notepad broke my fancy
-//¦¦ ¦
+//++-ï¿½ nuuu notepad broke my fancy
+//ï¿½ï¿½ ï¿½
 //+--+
 char pad[80];
 int padI;
@@ -112,7 +112,7 @@ void ast_print_graph_helper(struct ast_node *N, FILE *fp, const char *str){
 	vector2_char vstr = vector2_char_here();
 	//vector Names;
 	int len = strlen(str);
-	int namelen = len+5;
+	//int namelen = len+5;
 	//char *namebuff = (char *)malloc(namelen);
 	//strcpy(namebuff, str);
 	//char *suffix = namebuff+len;

@@ -26,7 +26,7 @@ void semantic_analyze_program(ast_node *node){
 
 //verifies that a string is an actual printable ascii-string
 int is_sanitary(const char* str) {
-	int len = strlen(str);
+	//int len = strlen(str);
 	const char* p = str;
 	while (*p) {
 		char c = *p++;
@@ -43,6 +43,7 @@ const char *sanitize_string(const char* str) {
 	}else {
 		error("internal error: unclean string");
 	}
+	return 0;
 }
 
 const char* emit_push_label(const char* lbl) {
@@ -78,7 +79,7 @@ const char* rename_unand(const char* val) {
 	return rename_unstar(val);
 }
 
-void output_res(expr_settings stg, val_handle src, int do_emit) {
+void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	/*
 	*  IR VALUE RULES
 	*   LVAL - raw typeless number, without a storage location.
@@ -139,9 +140,9 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 	}
 	VERIFY_RES(src);
 
-	expr_type _src_type = src.rv_type;
-	expr_type _dest_type = stg.dest.rv_type;
-	const char* _src_val = src.val;
+	//expr_type _src_type = src.rv_type;
+	//expr_type _dest_type = stg.dest.rv_type;
+	//const char* _src_val = src.val;
 
 	int dest_lval = (stg.dest.rv_type == E_LVAL);
 	int dest_rval = (stg.dest.rv_type == E_RVAL);
@@ -188,7 +189,7 @@ void output_res(expr_settings stg, val_handle src, int do_emit) {
 	if (dest_ptr && src_ptr && acc_and) { goto out_copy; }
 	if (dest_ptr && src_ptr && acc_star) { goto out_copy; }
 
-
+	goto out_unexpected;
 out_unexpected:
 	error("output_res: unexpected case");
 	return;
@@ -951,7 +952,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 		//push_expr(if_exit);
 		//push_expr(if_else);
 		//fprintf(stderr, "warning: if_then should probably output some stg stuff\n");
-#pragma message("warning: if_then should output stg stuff\n");
+#pragma message("warning: if_then should output stg stuff\n")
 
 		pop_symbol_table();
 	}

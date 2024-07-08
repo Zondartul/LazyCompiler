@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "preprocess.h"
-#include "ast.h"
+#include "AST.h"
 #include "semantic.h"
 #include "codegen.h"
 #include "yaccin.tab.h"
@@ -58,15 +58,17 @@ char** argv_stored = 0;
 
 int compiler_restart_enabled = 0;
 
+int main_helper(int argc, char **argv);
+
 void restart_handler() {
-	atexit(0); //reset the callback in case we die before we set everything up
+	//atexit: this pushes a new value onto stack rather than replaces it so 0 doesn't work//atexit(0); //reset the callback in case we die before we set everything up
 	freopen(0, "w", stdout); //reset the stdout to terminal
 	printf("Restart?");
 	int repl = 0;
 	int isY, isN, isRepl;
 	do {
 		printf("Y/n\n");
-		repl = getch();
+		repl = getchar();//getch();
 		isY = ((repl == 'y') || (repl == 'Y'));
 		isN = ((repl == 'n') || (repl == 'N'));
 		isRepl = isY || isN;
@@ -88,7 +90,7 @@ int main(int argc, char** argv) {
 		argv_stored = argv;
 		atexit(restart_handler);
 		main_helper(argc, argv);
-		atexit(0);
+		//atexit(0);
 		return 0;
 	}
 	else {

@@ -85,7 +85,7 @@ void asm_println2(const char* postfix, const char* fmt, ...) {
 	len = vstr.size - 1;
 	for (int I = 0; I < len; I++) {
 		if ((vstr.data[I] == '\n') || (vstr.data[I] == '\r')) {
-			vstr.data[I] == ' ';
+			vstr.data[I] = ' ';
 		}
 	}
 	vec_printf(&vstr, "\n");
