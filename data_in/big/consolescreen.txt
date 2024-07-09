@@ -8,7 +8,10 @@ void printCharXY(int X, int Y, char C, int col)
 	P[0] = col;
 end
 
-void screen_set(char *scr) AdrScreen = scr; end
+void screen_set(char *scr) 
+	writePort(5, scr);
+	AdrScreen = scr; 
+end
 void screen_clear() AdrScreen[2041] = 1; end
 void screen_cursor_enable() AdrScreen[2046] = 1; end
 void screen_cursor_disable() AdrScreen[2046] = 0; end

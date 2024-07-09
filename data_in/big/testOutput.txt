@@ -24,4 +24,9 @@ void setup()
 	resetPorts();
 end
 
+void crash()
+	int x = 1;
+	x = x/0;
+end
+
 void delay(int n) for(int i = 0; i < n; i++) end end

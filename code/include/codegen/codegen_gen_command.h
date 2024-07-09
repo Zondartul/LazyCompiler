@@ -30,6 +30,7 @@ void gen_command_using();
 void gen_command_insert();
 void gen_command_frame();
 void gen_command_debug();
+void gen_command_comment();
 
 
 #endif

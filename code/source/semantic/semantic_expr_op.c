@@ -377,6 +377,12 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 }
 
+struct type_name* shallow_copy(struct type_name* src){
+	struct type_name *res = (struct type_name *)malloc(sizeof(struct type_name));
+	*res = *src;
+	return res;
+}
+
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
 
@@ -393,13 +399,21 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 
 	//1.2 make sure it's actually a function
 	struct type_name* T = res1.T;
-	if (!T->args) {
-		YYLTYPE pos = node->token.pos;
-		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-		error("semantic error: attempt to call '%s', which is not a function in this scope\n", name);
+	/// 9 July 2024: allow us to call a pointer, result is deref type
+	struct type_name* resT = 0;
+	if(T->args){
+		resT = m(*(T->args), get, 0);
+	}else{
+		if(T->pointerlevel){
+			resT = shallow_copy(T);
+			resT->pointerlevel--;
+		}else{
+			YYLTYPE pos = node->token.pos;
+			err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+			error("semantic error: attempt to call '%s', which is not a function in this scope\n", name);
+		}
 	}
-	struct type_name* resT = m(*(T->args), get, 0);
-
+	
 	//2.push the arguments of the function
 	ast_node* list = ast_get_child(node, 1);
 	int i;

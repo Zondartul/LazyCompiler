@@ -561,12 +561,15 @@ int allocStackArg(int size){
 	curframe->stackargsize += size;
 	return 2+cursize;
 }
-
+#define DEBUG_CHECK(x) if(strcmp(val, x) == 0)
 //some register = value
 //returns something you can put into "mov eax, X"
 const char* loadRValue(const char* val) {
 	if (!val) { error("[CODE GEN] trying to load null value "); }
 	if (isnumber(val)) { return val; }
+	DEBUG_CHECK("&derp"){
+		printf("debug breakpoint");
+	}
 	int deref = 0;
 	int ref = 0;
 	//char buff[80];
@@ -617,8 +620,10 @@ const char* loadRValue(const char* val) {
 		if (S->framedepth == 0) {
 			//global var
 			if (ref || S->arraysize) {
-				vec_printf(&vstr, "%d", S->pos);
-				return stralloc(vstr.data);//return stralloc(buff);
+				//vec_printf(&vstr, "%d", S->pos);
+				//return stralloc(vstr.data);//return stralloc(buff);
+				/// hold on, if the var is global, then we should just plop down the label?
+				return stralloc(S->lbl_at);
 			}
 			if (deref) {
 				//todo: check if some register already contains that val
@@ -915,7 +920,11 @@ void bufferizeWithoutComments(char *buff, const char *str, int num){
 				inComment = 1;
 				C = C2;
 				C2 = *str++;
-			}else{
+			}else if((C == '/') && (C2 == '/')){
+				// we're done, everything else is a comment
+				break;
+			}else	
+			{
 				//normal char, put into buffer
 				*buff++ = C;
 				num--;
@@ -1036,6 +1045,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"INSERT")==0)		{gen_command_insert();		return;}
 		if(strcmp(codegen_tok,"FRAME")==0)		{gen_command_frame();		return;}
 		if(strcmp(codegen_tok,"DEBUG")==0)		{gen_command_debug();		return;}
+		if(strcmp(codegen_tok,"COMMENT")==0)	{gen_command_comment();		return;}
 		asm_println("*RECORD SCRATCH*\n");
 		error("[CODE GEN] Error: unsupported command [%s] (line %d)",codegen_tok,CurCMD+1);
 		/*

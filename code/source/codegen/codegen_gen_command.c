@@ -840,5 +840,23 @@ void gen_command_debug() {
 	*/
 }
 
+//char *gen_read_quoted_string(){
+//	
+//}
+
+void gen_command_comment(){
+	if (codegen_decl) {
+	}
+	else {
+		#define TOK_IS(x) (strcmp(codegen_tok, x) == 0)
+		codegen_tok = strtok(0, " ");
+		if (!codegen_tok) { error("[CODE GEN] bad command"); }
+		if (TOK_IS("GENERAL") || TOK_IS("SOURCE") || TOK_IS("LINE")) {
+			const char *str = strtok(0,"\"");
+			asm_println("// %s", str);
+			return;
+		}else error("[CODE GEN] bad command");
+	}
+}
 
 

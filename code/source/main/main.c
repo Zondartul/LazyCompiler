@@ -4,6 +4,7 @@
 #include "semantic.h"
 #include "codegen.h"
 #include "yaccin.tab.h"
+#include "main.h"
 extern FILE *yyin;
 extern FILE *yyin2;
 
@@ -99,18 +100,73 @@ int main(int argc, char** argv) {
 }
 
 int doing_semantic = 0;
+const char *out_file = 0;
+
+
+
+T_cli_options cli_options = {"ERROR", "ERROR", 1, 1};
+extern int comments;   // codegen.c
+extern int trace_gens; // codegen.c
 
 int main_helper(int argc, char **argv){
 	initFiles();
-	if(argc == 2){
-		yyin = fopen(argv[1],"r");
-		yyin2 = fopen(argv[1],"r");
-	}else{
-		printf("usage: %s inputfile\n",argv[0]);
-		return 0;
+
+	//if(argc >= 2){
+	//	yyin = fopen(argv[1],"r");
+	//	yyin2 = fopen(argv[1],"r");
+	//}else{
+	//	printf("usage: %s inputfile\n",argv[0]);
+	//	return 0;
+	//}
+	
+	/// argc == 0 - never
+	/// argc == 1 - this = [~/lazycomp]
+	/// argc == 2+ - [~/lazycomp] [infile] ...
+	
+	/// ---- CLI command line options parser -------
+
+	#define OPT_IS(x) strcmp(opt, x) == 0
+	#define PARSE_OPT(x)	if(OPT_IS(x))
+	#define PARSE_OPT_W_ARG(x)	\
+		PARSE_OPT(x) for((arg = argv[I++]) && (once=1); once; once=0)
+		// funky syntax hax yar har har ;)
+
+	if(argc < 2){goto bad_args;}
+	int I = 1;
+	int once = 0;
+	while(I < argc){
+		const char *opt = argv[I++];
+		const char *arg = 0;
+		PARSE_OPT("-h"){printf("I'm helping!");}
+		else PARSE_OPT_W_ARG("-i"){
+			cli_options.in_file = arg;
+		}
+		else PARSE_OPT_W_ARG("-o"){
+			cli_options.out_file = arg;
+		}else PARSE_OPT("--no-asm-comments"){
+			cli_options.b_asm_comments = 0;
+		}else PARSE_OPT("--no-asm-trace"){
+			cli_options.b_asm_trace = 0;
+		}
+		else goto bad_args;
 	}
+	goto good_args;
+
+	/// ------------ end CLI --------
+bad_args:
+	printf("usage: lazycomp [-i input_file][-o output_file]\n");
+	return 0;
+good_args:
+	fprintf(stderr, "final cli_options:\n{\n\tin_file: [%s]\n\tout_file: [%s]\n}\n", cli_options.in_file, cli_options.out_file);
+
+	yyin  = fopen(cli_options.in_file,"r");
+	yyin2 = fopen(cli_options.in_file,"r");
+
+	/// set some options
+	comments = cli_options.b_asm_comments;
+	trace_gens = cli_options.b_asm_trace;
 	fprintf(stderr, "THIS:\t\t\t%s\n", argv[0]);
-	fprintf(stderr,"INPUT:\t\t\t%s\n",argv[1]);
+	fprintf(stderr,"INPUT:\t\t\t%s\n",cli_options.in_file);
 	fprintf(stderr,"PREPROC:\t\t%s\n",path_out_preproc);
 	fprintf(stderr,"TOK/SYNTAX:\t\t%s\n",path_out_parse);
 	fprintf(stderr,"SEMANTIC:\t\t%s\n",path_out_semantic);
@@ -142,7 +198,7 @@ int main_helper(int argc, char **argv){
 	
 	fprintf(stderr,"preprocessing...");
 	freopen(/*"aout_preproc.txt"*/path_out_preproc,"w",stdout);
-	preprocess(argv[1]);
+	preprocess(cli_options.in_file);
 	fprintf(stderr,"\tdone\n");
 	
 	fprintf(stderr,"parsing...");
@@ -189,6 +245,7 @@ int main_helper(int argc, char **argv){
 
 	flushAllFiles();
 	//copy the result over to gmod folder
+	/*
 	int isOnLaptop = (strcmp(argv[0], "E:\\projects\\LazyComp\\bin\\LazyComp.exe") == 0);
 
 	const char* cmd_str = 0;
@@ -203,14 +260,22 @@ int main_helper(int argc, char **argv){
 			"\"E:/PROGRA~2/Steam/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/aout_assembly.txt\" "
 			;
 	}
+	*/
+	if(cli_options.out_file){
+		/// copy the output file
+		char cmd_str[200];
+		snprintf(cmd_str, 200, "cp ./data_out/aout_assembly.txt %s", cli_options.out_file);
 
-	int res = system(cmd_str);
-	if (res) { 
-		fprintf(stderr, "%s\n", cmd_str);
-		fprintf(stderr, "copy failed: %d\n", res); 
+		int res = system(cmd_str);
+		if (res) { 
+			fprintf(stderr, "%s\n", cmd_str);
+			fprintf(stderr, "copy failed: %d\n", res); 
+		}
+		else {
+			//fprintf(stderr, "file copied to garrysmod/data/cpuchip\n");
+			printf("file copied to %s", cli_options.out_file);
+		}
 	}
-	else {fprintf(stderr, "file copied to garrysmod/data/cpuchip\n");}
-
 	printstamp();
 	
 	

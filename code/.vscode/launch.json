@@ -9,7 +9,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/bin/lazycomp",
-            "args": ["data_in/lazy2.txt"],
+            "args": [
+                "-i", "data_in/lazy2.txt",
+                "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
+                //"--no-asm-comments"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}/..", //"${fileDirname}",
             "environment": [],
@@ -27,6 +31,30 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "Run",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/bin/lazycomp",
+            "args": [
+                "-i", "data_in/lazy2.txt",
+                "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/..",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

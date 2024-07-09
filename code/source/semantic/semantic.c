@@ -262,7 +262,7 @@ void semantic_finalize(){
 }
 
 void class_constructor_emit(struct symbol *S){
-	emit_code("/* default class constructor */");
+	emit_code("/* default class constructor */ // semantic.c:265 ");
 	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
 	push_symbol_table();
 	new_symbol_table(0);
@@ -281,11 +281,11 @@ void class_constructor_emit(struct symbol *S){
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);
 	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
-	emit_code("/* end */");
+	emit_code("/* end */ // semantic.c:284 ");
 }
 
 void class_destructor_emit(struct symbol *S){
-	emit_code("/* default class destructor */");
+	emit_code("/* default class destructor */ // semantic.c:288 ");
 	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
 	push_symbol_table();
 	new_symbol_table(0);
@@ -304,7 +304,7 @@ void class_destructor_emit(struct symbol *S){
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);	
 	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
-	emit_code("/* end */");
+	emit_code("/* end */ // semantic.c:307 ");
 }
 
 void class_emit_start(){
