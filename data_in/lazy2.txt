@@ -1,6 +1,6 @@
-//#include "data_in/big/printf.txt"
-//#include "data_in/big/unit_tests.txt"
-//#include "data_in/big/testOutput.txt"
+#include "data_in/big/unit_tests.txt"
+#include "data_in/big/testOutput.txt"
+#include "data_in/big/printf.txt"
 
 //class Derp
 //	int x = 1;
@@ -11,64 +11,29 @@
 //	end
 //end
 
-//void test_class4()
-//	class Derp derp1;
-//	derp1.x = 1;
-//	derp1.y = 2;
-//	writePort(0, &(derp1.x));
-//	writePort(1, &(derp1.y));
-//	writePort(6, derp1.sum(0));
-//end
-//int addr_bus[4];
-int derp = 123;
+int addr_bus[4];
 
 int main()
-	//setup();
-	//addr_bus[0] = 65536;
-	//addr_bus[1] = addr_bus[0] + 20000;
-	//addr_bus[2] = addr_bus[1] + 20000;
-	//addr_bus[3] = addr_bus[2] + 20000;
-	//screen_set(addr_bus[2]);
-
-	/// [BUG] - can't assign to char* AdrScreen. it stays 0.
-	///			its address also seems zero.
-	//writePort(4, derp);
+	setup();
 	
-	int *port = 65536;
-	port[0] = 9999;
-	port[1] = 9999;
-	port[2] = 9999;
-	port[3] = 9999;
-	port[4] = 9999;
-	port[5] = 9999;
-	port[6] = 9999;
-	port[7] = 9999;
-
-	port[0] = derp;
-
-	derp = 1;
+	unit_test_ignore_global_address = 0;
+	unit_test_ignore_stack_address = 0;
+	unit_test_adaptive_stack = 1;
+	run_all_tests();
 	
-	port[1] = derp;
-	//writePort(5, derp);
-	//writePort(6, &derp);
+	addr_bus[0] = 65536;
+	addr_bus[1] = addr_bus[0] + 20000;
+	addr_bus[2] = addr_bus[1] + 20000;
+	addr_bus[3] = addr_bus[2] + 20000;
+	screen_set(addr_bus[2]);
 
-	//init_tests();
-	//int test_res = run_tests();
-	//writePort(0, test_res); /// -1 means all green, anything else means test failed.
-	//if(test_res != CODE_OK)
-	//	writePort(1, subtest_number);
-	//	writePort(2, subtest_got);
-	//	writePort(3, subtest_expected);
-	//	crash(); 
-	//end
-	//AdrScreen = addr_bus[2];
-	//screen_clear();
-	
+	screen_clear();
+	printf("hello world!");
 	//int col = 999;
 	//char C = 'A';
 	//printCharXY(0, 0, 'H', col);
 	//printCharXY(1, 0, 'i', col);
 	
 	
-//	infloop();
+	infloop();
 end

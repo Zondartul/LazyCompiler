@@ -1,93 +1,160 @@
 /// Unit test for LazyTongue 
-/// Usage:
-///   init_tests(); /// initialize the test suite
-///   int res = run_tests(); /// check how it goes
-///   if(res != CODE_OK) 
-///		print("test %d, part %d failed\n", res, subtest_number);
-///   end;
-
-int tests[10];
+/// PS: because pointers are hard-coded, this should be the first include file in main.lz
+//int tests[10];
 int CODE_OK = -1;
+int TYPE_BASIC = 1;
+int TYPE_STACK = 2;
+int TYPE_GLOBAL = 3;
+int unit_test_ignore_global_address = 0;
+int unit_test_ignore_stack_address = 0;
+int unit_test_adaptive_stack = 1;
+int unit_test_stack_offset = 0;
+/// tests:
+/// 1 - plain arguments
+/// 2 - global vars
+/// 3 - pointer (val, &val, *val)
+/// 4 - funcptr
+/// 5 - auto unit test
 
-int subtest_number = CODE_OK;
-int subtest_expected = CODE_OK;
-int subtest_got = CODE_OK;
-
-void init_tests()
-	tests[0] = test_1_funcptr;
-	tests[1] = test_2_arithmetic;
+void test_1_args_plain(int testnum)
+	test_1_args_plain_helper(testnum, 1, 2, 3);	
 end
 
-int run_tests()
-	int can_run_tests = test_1_funcptr();
-	if(can_run_tests != CODE_OK) return -2; end
-	
-	int i = 0;
-	while(tests[i])
-		subtest_number = CODE_OK;
-		int* func = tests[i];
-		int res = func();
-		if(res != CODE_OK)
-			return i; 
-		end
-		i++;
+void test_1_args_plain_helper(int testnum, int x, int y, int z)
+	writePort(0, testnum);
+	if((x == 1) && (y == 2) && (z == 3))
+		return;
 	end
-   return CODE_OK;
+	crash();
 end
 
-int buffs_equal(int* buff1, int* buff2, int size)
-	subtest_number = CODE_OK;
-	subtest_expected = CODE_OK;
-	subtest_got = CODE_OK;
-	for(int i = 0; i < size; i++)
-    	if(buff1[i] != buff2[i]) 
-			subtest_number = i;
-			subtest_expected = buff2[i];
-			subtest_got = buff1[i];
-			return i; 
-		end
-  	end
-  return CODE_OK;
+int test_2_var = 123;
+void test_2_global_vars(int testnum)
+	expect(testnum,1,test_2_var, 123, TYPE_BASIC);
+	test_2_var = 234;
+	expect(testnum,2,test_2_var, 234, TYPE_BASIC);
+	test_2_var = 123;
 end
 
-/// --- function pointers - this verifies that we are able to run tests at all...
-int test_1_var = 0;
-int test_1_helper() // hello()
-	test_1_var = 1;
+void test_3_pointer(int testnum)
+	test_3_local_pointer(testnum);
+	test_3_global_pointer(testnum);
+	test_3_array_pointer(testnum);
+end
+
+void test_3_local_pointer(int testnum)
+	int derp = 6;
+	expect(testnum, 1, derp,      6, TYPE_BASIC);
+	expect(testnum, 2, &derp,   -19, TYPE_STACK);
+	int *p = derp; /// *derp is forbidden by compiler
+	expect(testnum, 3, p,         6, TYPE_BASIC); 
+	expect(testnum, 4, *p,       14, TYPE_GLOBAL);
+end
+
+int test3_var = 7;
+void test_3_global_pointer(int testnum)
+	expect(testnum, 5, test3_var,      7, TYPE_BASIC);
+	expect(testnum, 6, &test3_var, 12402, TYPE_GLOBAL);
+	int *p = test3_var; /// *test3_var is forbidden by compiler
+	expect(testnum, 7, *p, 25, TYPE_GLOBAL);
+end
+
+void test_3_array_pointer(int testnum)
+	int arr[4];
+	arr[0] = 10;
+	arr[1] = 11;
+	arr[2] = 12;
+	arr[3] = 13;
+	expect(testnum, 8, arr,   -22, TYPE_STACK);
+	expect(testnum, 9, arr[0], 10, TYPE_BASIC);
+	int d = arr[1];
+	expect(testnum, 10, d, 11);
+	test_3_array_arg(testnum, arr);
+end
+
+void test_3_array_arg(int testnum, int* arg)
+	expect(testnum, 11, arg,     -22, TYPE_STACK);
+	expect(testnum, 12, &arg,    -41, TYPE_STACK);
+	expect(testnum, 13, arg[2],   12, TYPE_BASIC);
+	expect(testnum, 14, *arg,     10, TYPE_BASIC);
+	expect(testnum, 15, *(arg+1), 11, TYPE_BASIC);
+end
+
+int test_4_var = 0;
+int test_4_helper()
+	test_4_var = 1;
 	return 10;
 end
 
-int test_1_funcptr()
-	int res[7]; int ref[7];
-	res[0] = test_1_helper;		ref[0] = 461; /// hardcoded function pointer may drift if we change above code
-	res[1] = &test_1_helper;	ref[1] = 461;
-	res[2] = *test_1_helper;	ref[2] = 461;
-	int *p1 = test_1_helper;
-	int p2 = test_1_helper;
-	res[3] = p1;				ref[3] = 461;
-	res[4] = p2;				ref[4] = 461; /// ps: missing semicolon here is reported as "unexpected <next token>"
-	int res = test_1_helper();
-	res[5] = res;				ref[5] = 10;
-	res[6] = test_1_var;		ref[6] = 1;  ///ps: missing semicolon here is reported as "no source text"
-	
-	return buffs_equal(res, ref, 7);
+int test_4_funcptr(int testnum)
+	expect(testnum, 1, test_4_helper,  1098, TYPE_GLOBAL);
+	expect(testnum, 2, &test_4_helper, 1098, TYPE_GLOBAL);
+	int *p1 = test_4_helper;
+	int p2 = test_4_helper;
+	expect(testnum, 3, p1,             1098, TYPE_GLOBAL);
+	expect(testnum, 4, p2,             1098, TYPE_GLOBAL);
+	int res = p1();
+	expect(testnum, 5, res,             10, TYPE_BASIC);
+	expect(testnum, 6, test_4_var,       1, TYPE_BASIC); ///ps: missing semicolon here is reported as "no source text"
+	return CODE_OK;
 end
 
-int test_2_arithmetic()
+int test_5_arithmetic(int testnum)
+	test_5_arithmetic_integer(testnum);
+end
+
+int test_5_arithmetic_integer(int testnum)
 	int x = 10;
 	int y = 20;
-	int res[8]; int ref[8];
-	res[0] = x+y; ref[0] = 30;
-	res[1] = x-y; ref[1] = -10;
-	res[2] = x*y; ref[2] = 200;
-	res[3] = x/y; ref[3] = 0;
-	res[4] = y/x; ref[4] = 2;
-	res[5] = x>y; ref[5] = 0;
-	res[6] = x<y; ref[6] = 1;
-	res[7] = x == y; ref[7] = 0;
+
+	expect(testnum,  1, x+y, 30,  TYPE_BASIC);
+	expect(testnum,  2, x-y, -10, TYPE_BASIC);
+	expect(testnum,  3, x*y, 200, TYPE_BASIC);
+	expect(testnum,  4, x/y, 0,   TYPE_BASIC);
+	expect(testnum,  5, y/x, 2,   TYPE_BASIC);
+	expect(testnum,  6, x>y, 0,   TYPE_BASIC);
+	expect(testnum,  7, x<y, 1,   TYPE_BASIC);
+	expect(testnum,  8, y<x, 0,   TYPE_BASIC);
+	expect(testnum,  9, y>x, 1,   TYPE_BASIC);
+	expect(testnum, 10, x==y, 0,  TYPE_BASIC);
+	expect(testnum, 11, x!=y, 1,  TYPE_BASIC);
+	expect(testnum, 12, x&y, 1,   TYPE_BASIC);
+	expect(testnum, 13, x|y, 1,   TYPE_BASIC);
+	expect(testnum, 14, !x, 0,    TYPE_BASIC);
+	expect(testnum, 15, !!x, 1,   TYPE_BASIC);
 	
-	return buffs_equal(res, ref, 8);
+	return CODE_OK;
 end
 
+
+void expect(int test_num, int subtest_num, int val, int ref, int type)
+	if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end
+	if ((type == TYPE_GLOBAL) & unit_test_ignore_global_address) return; end
+	writePort(0, test_num);
+	writePort(1, subtest_num);
+	if (type == TYPE_STACK && unit_test_adaptive_stack) val = val - unit_test_stack_offset; end
+	writePort(2, val);
+	writePort(3, ref);
+	if(val != ref) crash(); end
+end
+
+void report_all_ok()
+	writePort(0, -1);
+	writePort(1, -1);
+	writePort(2, -1);
+	writePort(3, -1);	
+end
+
+void run_all_tests()
+	int base = 0;
+	unit_test_stack_offset = &base;
+
+	test_1_args_plain(1);
+	test_2_global_vars(2);
+	test_3_pointer(3);
+	test_4_funcptr(4);
+	test_5_arithmetic(5);
+	report_all_ok();
+end
 
 

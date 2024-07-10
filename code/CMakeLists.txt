@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(lazycomp)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_C_FLAGS 
-"-g -fmax-errors=1 -std=c11 -Wall -Wextra -Werror")
+"-g -fmax-errors=1 -std=c11 -Wall -Wextra -Werror -fno-stack-protector")
 set(CMAKE_EXE_LINKER_FLAGS "")
 #======================
 #variables

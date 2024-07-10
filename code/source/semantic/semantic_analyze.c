@@ -123,6 +123,10 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	* 
 	*/
 
+	if((strcmp(src.val, "&p1") == 0) && (strcmp(stg.dest.author, "expr_call funcname")==0)){
+		printf("debug breakpoint");
+	}
+
 	//enum passType {
 	//	PASS_DEST_LVAL = 1,
 	//	PASS_DEST_RVAL = 2,
@@ -175,10 +179,10 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	const char* op_str;
 
 	if (dest_lval && src_lval && acc_none) { goto out_pass; }
-	if (dest_lval && src_rval && acc_star) { goto out_rename_unstar; }
-	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; }
-	if (dest_lval && src_ptr && acc_none) { goto out_pass;}//out_rename_star_and_copy; }
-	if (dest_lval && src_ptr && acc_star) { goto out_copy; }
+	if (dest_lval && src_rval && acc_star) { goto out_pass; } // what happens when we put int *p; *p in an arg?//{ goto out_rename_unstar; }
+	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; } // and this is the (*ptr)() situtation
+	if (dest_lval && src_ptr && acc_none) { goto out_rename_star_and_copy; } // out_pass (idk, need star to read from arrays)
+	if (dest_lval && src_ptr && acc_star) { goto out_copy; } 
 #pragma message("something with casting an Lvalue to Rvalue")
 	if (dest_rval && src_lval) {goto out_pass;}//{ error("internal semantic error: can't promote lval to rval"); }
 	if (dest_rval && src_rval && acc_star) { goto out_pass; }
@@ -188,7 +192,8 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_ptr && src_lval && acc_none) { goto out_pass; }
 	if (dest_ptr && src_rval && acc_star) { goto out_rename_unstar; }
 	if (dest_ptr && src_ptr && acc_none) { goto out_pass; }
-	if (dest_ptr && src_ptr && acc_and) { goto out_rename_unand;}//out_copy; }
+	if (dest_ptr && src_ptr && acc_and) { goto out_copy; } // out_rename_unand - idk, need out_copy to print(&local_var)
+														   // but rename_unand for calling a function pointer... the expr_call not give us a &?
 	if (dest_ptr && src_ptr && acc_star) { goto out_copy; }
 
 	goto out_unexpected;
@@ -224,11 +229,11 @@ out_copy_and_rename_star:
 	resVal = rename_star(resVal);
 	goto out_finish;
 
-//out_rename_star_and_copy:
-//	op_str = "rename_star_and_copy";
-//	resVal = IR_next_name(namespace_semantic, "temp");
-//	vec_printf(&vstr, "MOV %s *%s", sanitize_string(resVal), sanitize_string(src.val));
-//	goto out_finish;
+out_rename_star_and_copy:
+	op_str = "rename_star_and_copy";
+	resVal = IR_next_name(namespace_semantic, "temp");
+	vec_printf(&vstr, "MOV %s *%s", sanitize_string(resVal), sanitize_string(src.val));
+	goto out_finish;
 
 out_rename_star:
 	op_str = "rename_star";

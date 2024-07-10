@@ -600,6 +600,8 @@ void gen_command_less() {
 		asm_println("fsgn %s, %s", arg1, arg1);
 		printindent();
 		asm_println("min %s, 0", arg1);
+		printindent();
+		asm_println("neg %s", arg1);
 		storeValue(result, arg1);
 	}
 	return;
@@ -859,4 +861,18 @@ void gen_command_comment(){
 	}
 }
 
+void gen_command_floor(){
+	if(codegen_decl){
+		//do nothing
+		const char* result = strtok(0, " ");
+		checkResult(result); /// "declare" the result temporary
+	}else{
+		const char* result = strtok(0, " ");
+		const char* arg1 = loadLValue(strtok(0, " "));
+		printTrace();
+		printindent();
+		asm_println("fint %s", arg1);
+		storeValue(result, arg1);
+	}
+}
 

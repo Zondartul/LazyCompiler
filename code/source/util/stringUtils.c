@@ -288,6 +288,7 @@ void printindent(){
 
 int isnumber(const char *str){
 	char C = *str++;
+	if(C == '-'){C = *str++;}
 	while(C){
 		if(!isdigit(C)){return 0;}
 		C = *str++;

@@ -1,7 +1,8 @@
 #include "semantic_expr_op.h"
 #include "yaccin.tab.h" //for get_source_text2()
 #include <assert.h>
-//#include "ctype.h"
+#include <stdint.h> // for uint64_t
+#include <inttypes.h> // for PRIu64 for printf
 
 void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings stg) {
 	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
@@ -34,7 +35,34 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 		sanitize_string(res2.val)
 			);
 	
+	// integer arithmetic check
+	if(res2.T && res2.T->name //type is known
+		&& (res2.T->pointerlevel == 0)) // not a pointer but a primitive
+	{
+		int is_int = (strcmp(res2.T->name, "int") == 0);
+		int is_char = (strcmp(res2.T->name, "char") == 0);
+		int is_some_integer = is_int || is_char;
+		//uint64_t max_limit = 0;
+		int64_t min_limit = 0;
+		int64_t total_limit = 0;
+		if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1L<<32;} // int always  sint32_t
+		if(is_char){min_limit = 0; /*max_limit = 255;*/ total_limit = 256;}				 // char always uint8_t
 
+		if(is_some_integer){
+			/// we need to floor and clamp the number
+			/// num = ((floor(num) - min_limit) % total_limit) + min_limit
+			const char* temp1 = IR_next_name(namespace_semantic, "temp");
+			const char* temp2 = IR_next_name(namespace_semantic, "temp");
+			const char* temp3 = IR_next_name(namespace_semantic, "temp");
+			const char* temp4 = IR_next_name(namespace_semantic, "temp");
+			emit_code("COMMENT GENERAL \"(integer conversion to %s)\" // semantic_expr_op.c:58", res2.T->name);
+			emit_code("FLOOR %s %s", temp1, exprResult);
+			emit_code("SUB %s %s %" PRId64, temp2, temp1, min_limit); ///
+			emit_code("MOD %s %s %" PRId64, temp3, temp2, total_limit);
+			emit_code("ADD %s %s %" PRId64, temp4, temp3, min_limit);
+			exprResult = temp4;
+		}	
+	}
 	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL };
 	output_res(stg, result, NO_EMIT);
 }
@@ -163,7 +191,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	if (S->type == SYMBOL_VARIABLE)			{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
 	else if (S->type == SYMBOL_PARAM)		{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
 	else if (S->type == SYMBOL_MEMBER)		{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
-	else if (S->type == SYMBOL_FUNCTION)	{ T = S->symfunction.signature;	 							rv = E_PTR;}
+	else if (S->type == SYMBOL_FUNCTION)	{ T = S->symfunction.signature;	 							rv = E_LVAL;}//rv = E_PTR;}
 	else {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
@@ -390,7 +418,7 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 
 	//1. get a reference for the function itself
 	//1.1 read the function expression
-	PREP_RES(res1, E_PTR);//E_RVAL);
+	PREP_RES(res1, E_LVAL);//so we can call funcptrs  E_PTR);//E_RVAL);
 	res1stg.sem_this = stg.sem_this;
 	res1stg.dest.author = "expr_call funcname";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (function name or reference expression)

@@ -1,8 +1,648 @@
 #file "data_in/lazy2.txt"
 #line 1
-//#include "data_in/big/printf.txt"
-//#include "data_in/big/unit_tests.txt"
-//#include "data_in/big/testOutput.txt"
+#file "data_in/big/unit_tests.txt"
+#line 1
+/// Unit test for LazyTongue 
+/// PS: because pointers are hard-coded, this should be the first include file in main.lz
+//int tests[10];
+int CODE_OK = -1;
+int TYPE_BASIC = 1;
+int TYPE_STACK = 2;
+int TYPE_GLOBAL = 3;
+int unit_test_ignore_global_address = 0;
+int unit_test_ignore_stack_address = 0;
+int unit_test_adaptive_stack = 1;
+int unit_test_stack_offset = 0;
+/// tests:
+/// 1 - plain arguments
+/// 2 - global vars
+/// 3 - pointer (val, &val, *val)
+/// 4 - funcptr
+/// 5 - auto unit test
+
+void test_1_args_plain(int testnum)
+	test_1_args_plain_helper(testnum, 1, 2, 3);	
+end
+
+void test_1_args_plain_helper(int testnum, int x, int y, int z)
+	writePort(0, testnum);
+	if((x == 1) && (y == 2) && (z == 3))
+		return;
+	end
+	crash();
+end
+
+int test_2_var = 123;
+void test_2_global_vars(int testnum)
+	expect(testnum,1,test_2_var, 123, TYPE_BASIC);
+	test_2_var = 234;
+	expect(testnum,2,test_2_var, 234, TYPE_BASIC);
+	test_2_var = 123;
+end
+
+void test_3_pointer(int testnum)
+	test_3_local_pointer(testnum);
+	test_3_global_pointer(testnum);
+	test_3_array_pointer(testnum);
+end
+
+void test_3_local_pointer(int testnum)
+	int derp = 6;
+	expect(testnum, 1, derp,      6, TYPE_BASIC);
+	expect(testnum, 2, &derp,   -19, TYPE_STACK);
+	int *p = derp; /// *derp is forbidden by compiler
+	expect(testnum, 3, p,         6, TYPE_BASIC); 
+	expect(testnum, 4, *p,       14, TYPE_GLOBAL);
+end
+
+int test3_var = 7;
+void test_3_global_pointer(int testnum)
+	expect(testnum, 5, test3_var,      7, TYPE_BASIC);
+	expect(testnum, 6, &test3_var, 12402, TYPE_GLOBAL);
+	int *p = test3_var; /// *test3_var is forbidden by compiler
+	expect(testnum, 7, *p, 25, TYPE_GLOBAL);
+end
+
+void test_3_array_pointer(int testnum)
+	int arr[4];
+	arr[0] = 10;
+	arr[1] = 11;
+	arr[2] = 12;
+	arr[3] = 13;
+	expect(testnum, 8, arr,   -22, TYPE_STACK);
+	expect(testnum, 9, arr[0], 10, TYPE_BASIC);
+	int d = arr[1];
+	expect(testnum, 10, d, 11);
+	test_3_array_arg(testnum, arr);
+end
+
+void test_3_array_arg(int testnum, int* arg)
+	expect(testnum, 11, arg,     -22, TYPE_STACK);
+	expect(testnum, 12, &arg,    -41, TYPE_STACK);
+	expect(testnum, 13, arg[2],   12, TYPE_BASIC);
+	expect(testnum, 14, *arg,     10, TYPE_BASIC);
+	expect(testnum, 15, *(arg+1), 11, TYPE_BASIC);
+end
+
+int test_4_var = 0;
+int test_4_helper()
+	test_4_var = 1;
+	return 10;
+end
+
+int test_4_funcptr(int testnum)
+	expect(testnum, 1, test_4_helper,  1098, TYPE_GLOBAL);
+	expect(testnum, 2, &test_4_helper, 1098, TYPE_GLOBAL);
+	int *p1 = test_4_helper;
+	int p2 = test_4_helper;
+	expect(testnum, 3, p1,             1098, TYPE_GLOBAL);
+	expect(testnum, 4, p2,             1098, TYPE_GLOBAL);
+	int res = p1();
+	expect(testnum, 5, res,             10, TYPE_BASIC);
+	expect(testnum, 6, test_4_var,       1, TYPE_BASIC); ///ps: missing semicolon here is reported as "no source text"
+	return CODE_OK;
+end
+
+int test_5_arithmetic(int testnum)
+	test_5_arithmetic_integer(testnum);
+end
+
+int test_5_arithmetic_integer(int testnum)
+	int x = 10;
+	int y = 20;
+
+	expect(testnum,  1, x+y, 30,  TYPE_BASIC);
+	expect(testnum,  2, x-y, -10, TYPE_BASIC);
+	expect(testnum,  3, x*y, 200, TYPE_BASIC);
+	expect(testnum,  4, x/y, 0,   TYPE_BASIC);
+	expect(testnum,  5, y/x, 2,   TYPE_BASIC);
+	expect(testnum,  6, x>y, 0,   TYPE_BASIC);
+	expect(testnum,  7, x<y, 1,   TYPE_BASIC);
+	expect(testnum,  8, y<x, 0,   TYPE_BASIC);
+	expect(testnum,  9, y>x, 1,   TYPE_BASIC);
+	expect(testnum, 10, x==y, 0,  TYPE_BASIC);
+	expect(testnum, 11, x!=y, 1,  TYPE_BASIC);
+	expect(testnum, 12, x&y, 1,   TYPE_BASIC);
+	expect(testnum, 13, x|y, 1,   TYPE_BASIC);
+	expect(testnum, 14, !x, 0,    TYPE_BASIC);
+	expect(testnum, 15, !!x, 1,   TYPE_BASIC);
+	
+	return CODE_OK;
+end
+
+
+void expect(int test_num, int subtest_num, int val, int ref, int type)
+	if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end
+	if ((type == TYPE_GLOBAL) & unit_test_ignore_global_address) return; end
+	writePort(0, test_num);
+	writePort(1, subtest_num);
+	if (type == TYPE_STACK && unit_test_adaptive_stack) val = val - unit_test_stack_offset; end
+	writePort(2, val);
+	writePort(3, ref);
+	if(val != ref) crash(); end
+end
+
+void report_all_ok()
+	writePort(0, -1);
+	writePort(1, -1);
+	writePort(2, -1);
+	writePort(3, -1);	
+end
+
+void run_all_tests()
+	int base = 0;
+	unit_test_stack_offset = &base;
+
+	test_1_args_plain(1);
+	test_2_global_vars(2);
+	test_3_pointer(3);
+	test_4_funcptr(4);
+	test_5_arithmetic(5);
+	report_all_ok();
+end
+
+
+#file "data_in/lazy2.txt"
+#line 2
+#file "data_in/big/testOutput.txt"
+#line 1
+void infloop() while(1) end end
+
+int *adr_port = 65536;
+
+void writePort(int port, int val)
+	*(adr_port+port) = val;
+end
+
+void resetPorts()
+	writePort(0, 9999);
+	writePort(1, 9999);
+	writePort(2, 9999);
+	writePort(3, 9999);
+	writePort(4, 9999);
+	writePort(5, 9999);
+	writePort(6, 9999);
+	writePort(7, 9999);
+end
+
+void setup()
+	//screen_set(65536+100);
+	//screen_clear();
+	//libprints_init();
+	resetPorts();
+end
+
+void crash()
+	int x = 1;
+	x = x/0;
+end
+
+void delay(int n) for(int i = 0; i < n; i++) end end
+#file "data_in/lazy2.txt"
+#line 3
+#file "data_in/big/printf.txt"
+#line 1
+//hello, am printf
+#file "data_in/big/prints.txt"
+#line 1
+#file "data_in/big/consolescreen.txt"
+#line 1
+char *AdrScreen = 0;
+
+void printCharXY(int X, int Y, char C, int col)
+	int offs = 2*(X+Y*30);
+	char *P = AdrScreen + offs;
+	P[0] = C;
+	P++;
+	P[0] = col;
+end
+
+void screen_set(char *scr) 
+	writePort(5, scr);
+	AdrScreen = scr; 
+end
+void screen_clear() AdrScreen[2041] = 1; end
+void screen_cursor_enable() AdrScreen[2046] = 1; end
+void screen_cursor_disable() AdrScreen[2046] = 0; end
+void screen_set_cursor_pos(int pos) AdrScreen[2045] = 2*pos; end
+void screen_set_cursor_pos_xy(int x, int y) AdrScreen[2045] = 2*(30*y+x); end
+void screen_force_refresh() AdrScreen[2020] = 1; delay(1); end
+void screen_set_shift_box_x1(int n) AdrScreen[2031] = n; end
+void screen_set_shift_box_x2(int n) AdrScreen[2032] = n; end
+void screen_set_shift_box_y1(int n) AdrScreen[2033] = n; end
+void screen_set_shift_box_y2(int n) AdrScreen[2034] = n; end
+
+void screen_set_shift_box(int x1, int x2, int y1, int y2)
+	AdrScreen[2031] = x1;
+	AdrScreen[2032] = x2;
+	AdrScreen[2033] = y1;
+	AdrScreen[2034] = y2;
+end
+
+void screen_shift_vertical(int n) AdrScreen[2038] = n; end
+void screen_shift_horizontal(int n) AdrScreen[2037] = n; end
+
+
+
+//void delay(int n) end
+#file "data_in/big/prints.txt"
+#line 2
+#file "data_in/big/number.txt"
+#line 1
+#file "data_in/big/string.txt"
+#line 1
+int strlen(char *str)
+	int i = 0;
+	while(*str++) i++; end
+	return i;
+end
+
+void string_reverse(char *str)
+	int len = strlen(str);
+	for(int i = 0; i < len/2; i++)
+		int opposite = len-1-i;
+		char d = str[i];
+		str[i] = str[opposite];
+		str[opposite] = d;
+	end	
+end
+
+void memmove(char *dest, char *src, int size)
+	if(dest > src)
+		//print(".moveback.");
+		for(int i = size-1; i > -1; i--)
+			dest[i] = src[i];
+		end
+	end
+	if(dest < src)
+		for(int i = 0; i < size; i++)
+			dest[i] = src[i];
+		end
+	end
+end
+
+void strmove(char *dest, char *src)
+	int len = strlen(src);
+	memmove(dest, src, len+1); //includes terminating zero
+end
+
+
+//if the string is shorter than padlen, pads in with padchar
+void strPadBegin(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		strmove(str+diff, str);
+		for(int i = 0; i < diff; i++)
+			str[i] = padchar;
+		end
+	end
+end
+
+void strPadEnd(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		for(int i = 0; i < diff; i++)
+			str[len+i] = padchar;
+		end
+		str[padlen] = 0;
+	end
+end
+#file "data_in/big/number.txt"
+#line 2
+
+//returns the (floored) log10 of a number, i.e. number of digits in floor(num).
+//assumes num is positive
+int ilog10(float num)
+	for(int i = 0; i < 10; i++)
+		if(num < 10) return i; end
+		num = num / 10;
+	end
+end
+
+//returns 10^num
+int ipow10(int num)
+	int x = 1;
+	for(int i = 0; i < num; i++)
+		x = x*10;
+	end
+	return x;
+end
+
+int numDigits(float num) return ilog10(num)+1; end
+
+int getNdigit(float num, int dig)
+	//1. remove the lower parts
+	num = num / ipow10(dig);
+	//2. get the lowest remaining digit
+	num = num % 10;
+	return num;
+end
+
+int floor(float num)
+	int res = 0;
+	int n = numDigits(num);
+	for(int i = 0; i < n; i++)
+		int d = getNdigit(num, i);
+		res = res + d * ipow10(i);
+	end
+	return res;
+end
+
+int floorPrec(float num, float prec)
+	//printf("floorPrec(%d):\n", num);
+	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
+	num = num * k; 			//printf(" num*k = %d\n", num);
+	num = floor(num);		//printf(" floor(num) = %d\n", num);
+	num = num / k;			//printf(" num/k = %d\n", num);
+	return num;
+end
+
+float frac(float num)
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	float f = num - floor(num);
+	if(isNeg) f = -f; end
+	return f;
+end
+
+
+
+void int2str(float num, char *buff)
+	char *buffInit = buff;
+//	if(num == 0)
+//		buff[0] = '0';//*buff++ = '0';
+//		buff++;
+//		buff[0] = 1;//*buff = 0;
+//	end
+	int isNeg = 0;
+	if(num < 0) isNeg = 1; num = -num; end
+	int End = 0;
+	while(End==0)
+		int d = num % 10;	
+		buff[0] = '0'+d;
+		buff++;
+		num = num / 10;
+		
+		if(num<1) //if(num == 0)
+			if(isNeg) buff[0] = '-'; buff++; end
+			buff[0] = 0;
+			End = 1;
+		end
+	end
+	string_reverse(buffInit);
+end
+
+
+
+
+void float2str(float num, int prec, char *buff)
+	char *buffInit = buff;
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	int num_fl = floor(num);
+	float num_fr = frac(num);
+	float num_frpr = floorPrec(num_fr, prec);
+	//printf("float2str(%d, %d):\n",num, prec);
+	//printf("  num_fl = %d\n", num_fl);
+	//printf("  num_fr*1000 = %d\n", num_fr*1000);
+	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
+	//if(isNeg) *buff++ = '-'; end
+	if(isNeg) buff[0] = '-'; buff++; end
+	int2str(num_fl, buff);
+	buff = buff + strlen(buff);
+	//if(num_fr)
+		//*buff++ = '.';
+		buff[0] = '.';
+		buff++;
+		int k = ipow10(prec);
+		float num_final = floor(num_frpr*k);
+		//printf("  num_final = %d\n", num_final);
+		int2str(num_final, buff);
+		strPadBegin(buff, prec, '0');
+	//end
+end
+#file "data_in/big/prints.txt"
+#line 3
+
+int screen_print_x_min = 0;
+int screen_print_y_min = 0;
+int screen_print_x_max = 30;
+int screen_print_y_max = 19;
+
+int cs_last_x = 29;
+int cs_last_y = 17;
+int printScrX = 0;
+int printScrY = 0;
+
+void libprints_init()
+	cs_last_x = 29;
+	cs_last_y = 17;
+	printScrX = 0;
+	printScrY = 0;
+end
+
+void setPrintCursor(int x, int y) printScrX = x; printScrY = y; end
+
+
+//idea: functor as 'character inserter'. can check bounds, do /dev/null, etc.
+//so basically stream?
+int charcode_NL = 10; //same as enter
+int charcode_BACK = 13; //same as backspace
+int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
+int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+int charcode_BELL = 16; //make a beep or something
+//sequences: 
+//NL -> print pointer is at the beginning of the next line
+//FILL -> line filled with spaces; print pointer at the end of this line
+//CR -> print pointer at the beginning of this line
+//CR FILL CR -> the line is blank and you are at the beginning
+//BACK CR -> go to beginning of prev line
+//hello BACK z -> hellz
+
+
+
+
+void PrintChar(char C, int col)
+	//dbgprint("printchar ", C, C);
+	if(C == charcode_NL) newline(); end
+	if(C == charcode_BACK) prevcol(); end
+	if(C == charcode_CR) printScrX = 0; end
+	if(C == charcode_FILL)
+		for(int i = printScrX; i < cs_last_x; i++)
+			printCharXY(i, printScrY, ' ', col);
+		end
+		printScrX = cs_last_x;
+	end
+	if(C == charcode_BELL) beep(); end
+	if(C > 31)
+		printCharXY(printScrX, printScrY, C, col);
+		newcol();
+	end
+end
+
+
+void Prints(char *str2, int col) //maybe str conflicts with the str in print?
+//	int dbgNum = 0;
+	while(*str2)
+//		char c = *str2;
+//		print("prints: i=");
+//		printnum2(dbgNum);
+//		print(",c=");
+//		printc(c);
+//		printnl();
+//		dbgNum++;
+//		print("x");
+		PrintChar(*str2++, col);
+	end
+end
+
+void Printn(int num, int col)
+	char buff[20];
+	int2str(num, buff);
+	Prints(buff, col);
+end
+
+void newline()
+	printScrX = 0;
+	printScrY++;
+	if(printScrY > cs_last_y-1)
+		ConsoleShiftUp();
+	end
+end
+
+void prevline()
+	printScrX = cs_last_x;
+	printScrY--;
+	if(printScrY < 0)
+		ConsoleShiftDown();
+	end
+end
+
+void newcol()
+	printScrX++;
+	if(printScrX > cs_last_x)
+		newline();
+	end
+end
+
+void prevcol()
+	printScrX--;
+	if(printScrX < 0)
+		prevline();
+	end
+end
+
+void beep() end
+
+void ConsoleShiftUp()
+	if(printScrY > cs_last_y-1)
+		screen_shift_vertical(1);
+		printScrY--;
+	end
+end
+
+void ConsoleShiftDown()
+	if(printScrY < 0)
+		screen_shift_vertical(-1);
+		printScrY++;
+	end
+end
+
+void screen_set_print_box(int x1, int y1, int x2, int y2)
+	screen_print_x_min = x1;
+	screen_print_y_min = y1;
+	screen_print_x_max = x2;
+	screen_print_y_max = y2;
+end
+#file "data_in/big/printf.txt"
+#line 3
+
+char *lorem_ipsum(int I)
+   int sw = I % 10;
+   if(sw == 0) return "Lorem ipsum dolor sit amet, "; end
+   if(sw == 1) return "consectetur adipiscing elit. "; end
+   if(sw == 2) return "Nam auctor lorem in massa tempor bibendum. "; end
+   if(sw == 3) return "Nulla in metus in nunc ornare "; end
+   if(sw == 4) return "porta ullamcorper non enim. "; end
+   if(sw == 5) return "Donec tincidunt magna "; end
+   if(sw == 6) return "non tellus blandit faucibus. "; end
+   if(sw == 7) return "Nullam ac sem vitae lectus gravida vulputate. "; end
+   if(sw == 8) return "Quisque quis lacinia risus, "; end
+   if(sw == 9) return "non rutrum turpis. "; end
+   return "(oops)";
+end
+
+int sprintf(char *buff, char *fmt, int *parg)
+	int printed = 0;
+	while(*fmt)
+		char c = *fmt;
+		if(c == '%')
+			fmt++;
+			char c2 = *fmt;
+			fmt++;
+			if(c2 == 'd') int2str(*parg, buff); parg++; end
+			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
+			if(c2 == 's') strmove(buff, *parg); parg++; end
+			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
+			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
+			int inc = strlen(buff);
+			printed = printed + inc;
+			buff = buff + inc;
+		end
+		if(c != '%')
+			if(c == '\')
+				fmt++;
+				char c2 = *fmt;
+				fmt++;
+				if(c2 == 'n') buff[0] = charcode_NL; buff[1] = 0; end
+				if(c2 == 'r') buff[0] = charcode_CR; buff[1] = 0; end
+				if(c2 == 'f') buff[0] = charcode_FILL; buff[1] = 0; end
+				if(c2 == 'b') buff[0] = charcode_BACK; buff[1] = 0; end
+				if(c2 == 'e') buff[0] = charcode_BELL; buff[1] = 0; end
+				if(c2 == '\') buff[0] = '\'; buff[1] = 0; end
+				int inc = strlen(buff);
+				printed = printed + inc;
+				buff = buff+inc;
+			end
+			if(c != '\')
+				buff[0] = c;
+				buff[1] = 0;
+				printed++;
+				buff++;
+				fmt++;
+			end
+		end
+	end
+	return printed;
+end
+
+int printf(char *fmt, float args)
+	int printed = 0;
+	char buff[80];
+	int *parg = &args;
+	printed = sprintf(buff, fmt, parg);
+	Prints(buff, 999);
+	return printed;
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#file "data_in/lazy2.txt"
+#line 4
 
 //class Derp
 //	int x = 1;
@@ -13,64 +653,29 @@
 //	end
 //end
 
-//void test_class4()
-//	class Derp derp1;
-//	derp1.x = 1;
-//	derp1.y = 2;
-//	writePort(0, &(derp1.x));
-//	writePort(1, &(derp1.y));
-//	writePort(6, derp1.sum(0));
-//end
-//int addr_bus[4];
-int derp = 123;
+int addr_bus[4];
 
 int main()
-	//setup();
-	//addr_bus[0] = 65536;
-	//addr_bus[1] = addr_bus[0] + 20000;
-	//addr_bus[2] = addr_bus[1] + 20000;
-	//addr_bus[3] = addr_bus[2] + 20000;
-	//screen_set(addr_bus[2]);
-
-	/// [BUG] - can't assign to char* AdrScreen. it stays 0.
-	///			its address also seems zero.
-	//writePort(4, derp);
+	setup();
 	
-	int *port = 65536;
-	port[0] = 9999;
-	port[1] = 9999;
-	port[2] = 9999;
-	port[3] = 9999;
-	port[4] = 9999;
-	port[5] = 9999;
-	port[6] = 9999;
-	port[7] = 9999;
-
-	port[0] = derp;
-
-	derp = 1;
+	unit_test_ignore_global_address = 0;
+	unit_test_ignore_stack_address = 0;
+	unit_test_adaptive_stack = 1;
+	run_all_tests();
 	
-	port[1] = derp;
-	//writePort(5, derp);
-	//writePort(6, &derp);
+	addr_bus[0] = 65536;
+	addr_bus[1] = addr_bus[0] + 20000;
+	addr_bus[2] = addr_bus[1] + 20000;
+	addr_bus[3] = addr_bus[2] + 20000;
+	screen_set(addr_bus[2]);
 
-	//init_tests();
-	//int test_res = run_tests();
-	//writePort(0, test_res); /// -1 means all green, anything else means test failed.
-	//if(test_res != CODE_OK)
-	//	writePort(1, subtest_number);
-	//	writePort(2, subtest_got);
-	//	writePort(3, subtest_expected);
-	//	crash(); 
-	//end
-	//AdrScreen = addr_bus[2];
-	//screen_clear();
-	
+	screen_clear();
+	printf("hello world!");
 	//int col = 999;
 	//char C = 'A';
 	//printCharXY(0, 0, 'H', col);
 	//printCharXY(1, 0, 'i', col);
 	
 	
-//	infloop();
+	infloop();
 end
