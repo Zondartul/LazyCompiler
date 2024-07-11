@@ -133,7 +133,9 @@ void class_finalize();
 void class_def_finalize();
 void class_emit_start();
 void class_emit_end();
-void emit_all_declarations();
+void emit_all_declarations(int use_this);
+#define USE_THIS 1
+#define DONT_USE_THIS 0
 void emit_all_undeclarations();
 void emit_all_initializers();
 void emit_initializer(struct symbol *S);

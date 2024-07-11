@@ -10,6 +10,7 @@
 enum symboltype {SYMBOL_ERROR, SYMBOL_VARIABLE, SYMBOL_PARAM, SYMBOL_MEMBER, SYMBOL_FUNCTION, SYMBOL_CLASS, SYMBOL_LABEL, SYMBOL_CONST};
 enum symbolstorage {STORE_ERROR, STORE_CODE, STORE_DATA_DYNAMIC, STORE_DATA_POINTER, STORE_DATA_STATIC, STORE_DATA_STACK, STORE_DATA_MEMBER};
 	
+struct ast_node;
 
 struct symbol{
 	enum symboltype type;
@@ -19,7 +20,8 @@ struct symbol{
 	int global;
 	const char *username; //name in source code
 	const char *IR_name; //name in IR code
-	
+	struct ast_node *init_expr;
+
 	union{
 		struct symbol_variable symvariable; //also for param
 		struct symbol_const symconst;

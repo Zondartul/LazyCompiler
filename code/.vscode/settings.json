@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "types.h": "c",
-        "vector2.h": "c"
+        "vector2.h": "c",
+        "symbol.h": "c"
     }
 }

@@ -123,9 +123,9 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	* 
 	*/
 
-	if((strcmp(src.val, "&p1") == 0) && (strcmp(stg.dest.author, "expr_call funcname")==0)){
-		printf("debug breakpoint");
-	}
+	//if((strcmp(src.val, "&p1") == 0) && (strcmp(stg.dest.author, "expr_call funcname")==0)){
+	//	printf("debug breakpoint");
+	//}
 
 	//enum passType {
 	//	PASS_DEST_LVAL = 1,
@@ -578,6 +578,7 @@ void semantic_analyze_var_decl(ast_node *node){
 		S->symvariable.size = getTypeSize(T);
 		S->storage = STORE_DATA_STACK;
 		S->symvariable.array = 0;
+		S->init_expr = 0;
 	}else {
 		S->type = SYMBOL_VARIABLE;
 		//S->symvariable.pos = getNumVariables();
@@ -633,6 +634,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			S->symvariable.size = getTypeSize(T);
 			S->symvariable.array = 0;
 			S->storage = STORE_DATA_MEMBER;
+			S->init_expr = node_expr;
 		}else{
 			S->type = SYMBOL_VARIABLE;
 			S->store_adr = getNumVariables();
@@ -692,6 +694,73 @@ void semantic_analyze_stmt(ast_node *node){
 	semantic_general_analyze(ast_get_child(node,0)); // imp_stmt | decl_stmt
 }
 
+
+void sanitize_force(char *buff){
+	int L = strlen(buff);
+	for(int i = 0; i < L; i++){
+		if(!isprint(buff[i])){
+			buff[i] = '~';
+		}
+	}
+}
+/// use this as backup if source text lookup is broken
+const char *reconstruct_node_string(ast_node *node){
+	int rem = 80; // remaining space for chars
+	char *buff = (char*)malloc(rem);
+	const char *prefix = 0;
+	const char *postfix = 0;
+	const char *infix = node->token.value;
+
+	if(node->children.size){
+		if(node->children.size == 1){
+			postfix = reconstruct_node_string(ast_get_child(node,0));
+			if(infix && strcmp(infix, postfix) == 0){infix = 0;}
+			if(infix){
+				snprintf(buff, rem, "[%s:%s]", infix, postfix);
+			}else{
+				snprintf(buff, rem, "%s", postfix);
+			}
+			sanitize_force(buff);
+			return buff;
+		}
+		else if(node->children.size == 2){
+			prefix  = reconstruct_node_string(ast_get_child(node, 0));
+			postfix = reconstruct_node_string(ast_get_child(node, 1));
+			if(infix){
+				snprintf(buff, rem, "{%s_%s_%s}", prefix, infix, postfix);
+			}else{
+				snprintf(buff, rem, "%s(%s)", prefix, postfix);
+			}
+			sanitize_force(buff);
+			return buff;
+		}else{
+			/// many children, probably a function call
+			int rem2 = rem;
+			char *postfix2 = (char*)malloc(rem2);
+			for(int i = 0; i < node->children.size; i++){
+				const char *buff2 = reconstruct_node_string(ast_get_child(node, i));
+				//strncat(postfix, buff2, rem2);
+				snprintf(postfix2+strlen(postfix2), rem2, (i == 0)? "%s" : ", %s", buff2);
+				int L = strlen(buff2);
+				rem2 = (rem2 > L)? rem2-L : 0;
+			}
+			if(infix){
+				snprintf(buff, rem, "(%s:%s)", infix, postfix2);
+			}else{
+				snprintf(buff, rem, "%s", postfix2);
+			}
+			sanitize_force(buff);
+			return buff;
+		}
+	}else{
+		if(infix){
+			snprintf(buff,rem, "%s",infix);
+		}
+		sanitize_force(buff);
+		return buff;
+	}
+}
+
 void semantic_analyze_imp_stmt(ast_node *node){
 	//imp_stmt:		if_block
 	//| while_loop
@@ -713,9 +782,17 @@ void semantic_analyze_imp_stmt(ast_node *node){
 		case(2)://expr
 			if(semantic_decl){return;}//this one still imp-only though
 			const char *str = removeComments(get_source_text2(node->token.pos));
-			if (!is_sanitary(str)) {str = "expression";}
-			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:711 ",//"/* %s */", 
-				str);
+			const char *warning = "";
+			if (!is_sanitary(str)) {
+				str = reconstruct_node_string(node);
+				warning = "expression (no source text): ";
+				if(!is_sanitary(str)){
+					str = "expression";
+					warning = "error: double failure while printing: ";
+				}
+			}//"expression";}
+			emit_code("COMMENT SOURCE \"%s%s\" // semantic_analyze.c:711 ",//"/* %s */", 
+				warning, str);
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
@@ -1177,11 +1254,13 @@ void semantic_analyze_class_def(ast_node *node){
 		pop_symbol_table();
 	}else{
 		symbolThis = lookup_symbol(node->token.value);
+		semantic_this = symbolThis->IR_name;
 		class_emit_start();
 		
 		push_symbol_table();
 		currentSymbolTable = symbolThis->symclass.scope; 
 		
+		semantic_this = 0; /// idk why but having semantic_this messes up plain methods
 		semantic_context = SEMANTIC_MEMBER;
 		semantic_general_analyze(node_dsl);//this adds functions that were actually defined in code
 		semantic_context = SEMANTIC_NORMAL;
@@ -1189,7 +1268,7 @@ void semantic_analyze_class_def(ast_node *node){
 		pop_symbol_table();
 		class_emit_end();
 		symbolThis = 0;
-		
+		//semantic_this = 0;
 	}
 }
 

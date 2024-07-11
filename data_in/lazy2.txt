@@ -13,14 +13,7 @@
 
 int addr_bus[4];
 
-int main()
-	setup();
-	
-	unit_test_ignore_global_address = 0;
-	unit_test_ignore_stack_address = 0;
-	unit_test_adaptive_stack = 1;
-	run_all_tests();
-	
+void init_printf()
 	addr_bus[0] = 65536;
 	addr_bus[1] = addr_bus[0] + 20000;
 	addr_bus[2] = addr_bus[1] + 20000;
@@ -28,12 +21,31 @@ int main()
 	screen_set(addr_bus[2]);
 
 	screen_clear();
-	printf("hello world!");
-	//int col = 999;
-	//char C = 'A';
-	//printCharXY(0, 0, 'H', col);
-	//printCharXY(1, 0, 'i', col);
+	printf("hello world!\n");
+	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
+	/// oh hey, it turns out our printf or num2str doesn't flip the digits oops
+	//printf("123[%d],45[%d],1[%d],10[%d],0.1[%d]\n",123,45,1,10,1/10);
+	// bluuuuh, nothing but %d works on printf and even that crappily backwards
+	printf("s test: %s\n","abra_cadabra_karabas_barabas");
+	char *str = "[my string]";
+	printf(str);
+	printf("\n");
+	printf("before: %s\n",str);
+	string_reverse(str);
+	printf("after : %s\n",str);
+	printf(str);
+	printf("\n");
+end
+
+int main()
+	setup();
 	
+	init_printf();
+
+	unit_test_ignore_global_address = 1;
+	unit_test_ignore_stack_address = 0;
+	unit_test_adaptive_stack = 1;
+	run_all_tests();
 	
 	infloop();
 end

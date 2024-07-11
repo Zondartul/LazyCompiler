@@ -12,6 +12,9 @@
 
 #include "yaccin.tab.h" //for get_source_text2()
 #include "semantic_analyze.h"
+
+#include "assert.h"
+#include "ast_token.h" // to generate code for constructors
 //defines
 
 //generated
@@ -108,19 +111,32 @@ int semantic_dispatch_expr_op(struct ast_node* node, expr_settings stg) {
 }
 
 int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
-	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_list"))		{ semantic_analyze_expr_list	(node);	return 1; }
-	if (!strcmp(node->token.type, "expr_id"))		{ semantic_analyze_expr_id		(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_const"))	{ semantic_analyze_expr_const	(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_subexpr"))	{ semantic_analyze_expr_subexpr	(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_index"))	{ semantic_analyze_expr_index	(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_call"))		{ semantic_analyze_expr_call	(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_."))		{ semantic_analyze_expr_dot		(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_neg"))		{ semantic_analyze_expr_neg		(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_deref"))	{ semantic_analyze_expr_deref	(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_ref"))		{ semantic_analyze_expr_ref		(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "expr_="))		{ semantic_analyze_expr_assign	(node, stg);	return 1; }
-	if (semantic_dispatch_expr_op(node, stg)) { return 1; }
+	if (!strcmp(node->token.type, "var_decl_assign"))	{ 
+		semantic_analyze_var_decl_assign(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_list"))		{ 
+		semantic_analyze_expr_list	(node);	return 1; }
+	if (!strcmp(node->token.type, "expr_id"))		{ 
+		semantic_analyze_expr_id		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_const"))	{ 
+		semantic_analyze_expr_const	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_subexpr"))	{ 
+		semantic_analyze_expr_subexpr	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_index"))	{ 
+		semantic_analyze_expr_index	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_call"))		{ 
+		semantic_analyze_expr_call	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_."))		{ 
+		semantic_analyze_expr_dot		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_neg"))		{ 
+		semantic_analyze_expr_neg		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_deref"))	{ 
+		semantic_analyze_expr_deref	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_ref"))		{ 
+		semantic_analyze_expr_ref		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_="))		{ 
+		semantic_analyze_expr_assign	(node, stg);	return 1; }
+	if (semantic_dispatch_expr_op(node, stg)) { 
+		return 1; }
 	return 0;
 }
 
@@ -138,23 +154,38 @@ int semantic_dispatch_general(struct ast_node* node) {
 	//}
 	expr_settings stg = { .dest = res, .sem_this = this_handle };
 
-	if (!strcmp(node->token.type, "program"))			{ semantic_analyze_program(node);			return 1; }
-	if (!strcmp(node->token.type, "decl_stmt_list"))	{ semantic_analyze_decl_stmt_list(node);	return 1; }
-	if (!strcmp(node->token.type, "decl_stmt"))			{ semantic_analyze_decl_stmt(node);			return 1; }
-	if (!strcmp(node->token.type, "func_def"))			{ semantic_analyze_func_def(node);			return 1; }
-	if (!strcmp(node->token.type, "var_decl_list"))		{ semantic_analyze_var_decl_list(node);		return 1; }
-	if (!strcmp(node->token.type, "var_decl"))			{ semantic_analyze_var_decl(node);			return 1; }
-	if (!strcmp(node->token.type, "var_decl_assign"))	{ semantic_analyze_var_decl_assign(node, stg);	return 1; }
-	if (!strcmp(node->token.type, "stmt_list"))			{ semantic_analyze_stmt_list(node);			return 1; }
-	if (!strcmp(node->token.type, "stmt"))				{ semantic_analyze_stmt(node);				return 1; }
-	if (!strcmp(node->token.type, "imp_stmt"))			{ semantic_analyze_imp_stmt(node);			return 1; }
-	if (!strcmp(node->token.type, "if_block"))			{ semantic_analyze_if_block(node);			return 1; }
-	if (!strcmp(node->token.type, "while_loop"))		{ semantic_analyze_while_loop(node);		return 1; }
-	if (!strcmp(node->token.type, "for_loop"))			{ semantic_analyze_for_loop(node);			return 1; }
-	if (!strcmp(node->token.type, "class_def"))		{ semantic_analyze_class_def(node);			return 1; }
+	if (!strcmp(node->token.type, "program"))			{ 
+		semantic_analyze_program(node);			return 1; }
+	if (!strcmp(node->token.type, "decl_stmt_list"))	{ 
+		semantic_analyze_decl_stmt_list(node);	return 1; }
+	if (!strcmp(node->token.type, "decl_stmt"))			{ 
+		semantic_analyze_decl_stmt(node);			return 1; }
+	if (!strcmp(node->token.type, "func_def"))			{ 
+		semantic_analyze_func_def(node);			return 1; }
+	if (!strcmp(node->token.type, "var_decl_list"))		{ 
+		semantic_analyze_var_decl_list(node);		return 1; }
+	if (!strcmp(node->token.type, "var_decl"))			{ 
+		semantic_analyze_var_decl(node);			return 1; }
+	if (!strcmp(node->token.type, "var_decl_assign"))	{ 
+		semantic_analyze_var_decl_assign(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "stmt_list"))			{ 
+		semantic_analyze_stmt_list(node);			return 1; }
+	if (!strcmp(node->token.type, "stmt"))				{ 
+		semantic_analyze_stmt(node);				return 1; }
+	if (!strcmp(node->token.type, "imp_stmt"))			{ 
+		semantic_analyze_imp_stmt(node);			return 1; }
+	if (!strcmp(node->token.type, "if_block"))			{ 
+		semantic_analyze_if_block(node);			return 1; }
+	if (!strcmp(node->token.type, "while_loop"))		{ 
+		semantic_analyze_while_loop(node);		return 1; }
+	if (!strcmp(node->token.type, "for_loop"))			{ 
+		semantic_analyze_for_loop(node);			return 1; }
+	if (!strcmp(node->token.type, "class_def"))		{ 
+		semantic_analyze_class_def(node);			return 1; }
 	//it could be an expression (imperative statement)
 	//where we ignore the result.
-	if (semantic_dispatch_expr(node, stg)) {return 1;}
+	if (semantic_dispatch_expr(node, stg)) {
+		return 1;}
 	return 0;
 }
 
@@ -261,21 +292,64 @@ void semantic_finalize(){
 	}
 }
 
+void add_symbol_this(){
+	assert(symbolThis);
+	//add param: this;
+	struct type_name *T = semantic_get_type(symbolThis->username);
+	T->pointerlevel = 1;
+	char *name = "this";
+	struct symbol *S;
+	S = symbol_new0();
+	S->username = name;
+	if(semantic_flatten){
+		S->IR_name = IR_next_name(namespace_semantic,name);
+	}else{
+		S->IR_name = name;
+	}
+	S->type = SYMBOL_PARAM;
+	S->symvariable.type = T;
+	S->symvariable.array = 0;
+	S->symvariable.arraysize = 0;
+	S->store_adr = 0;
+	S->symvariable.size = getTypeSize(T);
+	S->storage = STORE_DATA_STACK;
+	push_symbol(S);
+}
+
+void emit_member_initializers(struct symbol_table *table){
+	int i = 0;
+	for(i = 0; i < table->symbols.size; i++){
+		struct symbol *S = m(table->symbols,get,i);
+		if(S->type == SYMBOL_VARIABLE){
+			emit_initializer(S);
+		}
+		else if(S->type == SYMBOL_MEMBER){
+			emit_initializer(S);
+		}
+	}
+}
+
 void class_constructor_emit(struct symbol *S){
+	assert(semantic_this);
 	emit_code("/* default class constructor */ // semantic.c:265 ");
 	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
 	push_symbol_table();
+	struct symbol_table* class_symtable = currentSymbolTable;
 	new_symbol_table(0);
+	add_symbol_this();
+	
 	push_code_segment();
 	new_code_segment();
 	S->symfunction.code = currentCodeSegment;
 	S->symfunction.scope = currentSymbolTable;
 		emit_code("FRAME ENTER");
-		emit_all_declarations();
+		
 		//emit_code("LABEL %s",S->IR_name);
-		emit_all_initializers();
+		//emit_all_initializers();
+		emit_all_declarations(DONT_USE_THIS); // need to declare "this"
+		emit_member_initializers(class_symtable);
 		emit_code("RET");
-		emit_all_undeclarations();
+		//emit_all_undeclarations();
 		emit_code("FRAME LEAVE");
 	pop_code_segment();
 	pop_symbol_table();
@@ -294,7 +368,7 @@ void class_destructor_emit(struct symbol *S){
 	S->symfunction.code = currentCodeSegment;
 	S->symfunction.scope = currentSymbolTable;
 		emit_code("FRAME ENTER");
-		emit_all_declarations();
+		emit_all_declarations(DONT_USE_THIS);
 		//emit_code("LABEL %s",S->IR_name);
 		emit_all_deinitializers();
 		emit_code("RET");
@@ -310,17 +384,16 @@ void class_destructor_emit(struct symbol *S){
 void class_emit_start(){
 	//emit struct code so member addresses are available
 	emit_code("STRUCT %s BEGIN", sanitize_string(symbolThis->IR_name));
-	//for(i = 0; i < currentSymbolTable->symbols.size; i++){}
-	const char *smt = semantic_this;
-	semantic_this = 0;
+	//const char *smt = semantic_this;
+	//semantic_this = 0;					// do not declare "this" among class members
 	push_symbol_table();
 	currentSymbolTable = symbolThis->symclass.scope;
-	emit_all_declarations();
-	pop_symbol_table();
-	semantic_this = smt;
+	emit_all_declarations(DONT_USE_THIS);
+	//pop_symbol_table();
+	//semantic_this = smt;
 	if(symbolThis->symclass.defaultConstructor){class_constructor_emit(symbolThis->symclass.defaultConstructor);}
-	if(symbolThis->symclass.defaultDestructor){class_constructor_emit(symbolThis->symclass.defaultDestructor);}
-	//emit_code("STRUCT %s END", symbolThis->IR_name);
+	if(symbolThis->symclass.defaultDestructor){class_destructor_emit(symbolThis->symclass.defaultDestructor);}
+	pop_symbol_table();
 }
 
 void class_emit_end(){
@@ -441,9 +514,9 @@ void emit_all_decl_helper(){
 	}
 }
 
-void emit_all_declarations(){
+void emit_all_declarations(int use_this){
 	emit_all_decl_helper();
-	if(semantic_this){
+	if(use_this){//if(semantic_this){
 		//emit_code("semantic_this = \'%s\' tho",semantic_this);
 		push_symbol_table();
 		currentSymbolTable = lookup_symbol("this")->symvariable.type->symclass->symclass.scope;
@@ -469,8 +542,34 @@ void emit_all_initializers(){
 	int i = 0;
 	for(i = 0; i < currentSymbolTable->symbols.size; i++){
 		struct symbol *S = m(currentSymbolTable->symbols,get,i);
-		if(S->type == SYMBOL_VARIABLE){emit_initializer(S);}
+		if(S->type == SYMBOL_VARIABLE){
+			emit_initializer(S);
+		}
+		else if(S->type == SYMBOL_MEMBER){
+			emit_initializer(S);
+		}
 	}
+}
+
+struct ast_node *make_ast_ID(const char* name){
+	struct ast_node *node = ast_node_new( // x...
+		ast_token_here("expr_id",	0,name,nullPos()), 
+		vector2_ptr_ast_node_here_from_list(1, 
+			ast_token_here("ID", 0, name,nullPos())
+		)
+	);
+	return node;
+}
+
+struct ast_node *make_ast_op(const char* name, struct ast_node *arg1, struct ast_node *arg2){
+	struct ast_node *node = ast_node_new(
+		ast_token_here(name, 0,NULL,nullPos()), 
+		vector2_ptr_ast_node_here_from_list(2, 
+			arg1, 
+			arg2
+		)
+	);
+	return node;
 }
 
 void emit_initializer(struct symbol *S){
@@ -500,6 +599,29 @@ void emit_initializer(struct symbol *S){
 		//emit_code("%s = 0",S->IR_name);
 		//emit_code("MOV %s 999",S->IR_name); //magic number to tell when a var is initialized
 		//do not initialize primivites
+		if(semantic_this && (S->type == SYMBOL_MEMBER)){
+			if(S->init_expr){
+				// Generate the member initialization code like x = y;
+				emit_code("COMMENT SOURCE \"this.%s = member initializer;\" // semantic.c:543", S->username);
+				
+				//struct ast_node *id_this = make_ast_ID("this");
+				struct ast_node *lhs = make_ast_ID(S->username);
+				//struct ast_node *dot = make_ast_op("expr_.", id_this, lhs);
+				struct ast_node *rhs = S->init_expr;
+				//struct ast_node *assignment = make_ast_op("expr_=", dot, rhs);
+				struct ast_node *assignment = make_ast_op("expr_=", lhs, rhs);
+				
+				semantic_general_analyze(assignment);
+							
+				//val_handle res = { .rv_type = E_DISCARD };
+				//val_handle this_handle = symbolThis; //{ .rv_type = E_ERROR };
+				//expr_settings stg = { .dest = res, .sem_this = this_handle };
+				/// so apparrently sem_this appears only when .dot expression is analyzed,
+				/// and therein x.y sets sem_this to x once output_res emits X.
+				/// ... it's easier to just use this.x in AST rather than monkey wrench
+				/// the existing behavior
+			}
+		}
 	}
 }
 
@@ -570,7 +692,7 @@ void analyze_scope(struct ast_node *N,
 		printf("analyzing (imp) scope %s / %s\n",currentSymbolTable->name,currentCodeSegment->name);
 		printf("symbol table so far:\n");
 		print_symbol_table(currentSymbolTable);	
-		emit_all_declarations();
+		emit_all_declarations((semantic_this != 0));
 		emit_all_initializers();
 		semantic_general_analyze(N);
 		emit_all_deinitializers();
@@ -926,7 +1048,14 @@ void maybePrintSemantic() {
 #define KWHT  "\x1B[37m"
 extern int compiler_restart_enabled;
 
+int processing_error = 0;
+
 void newerror(const char *file, int line, const char *func, const char *fmt, ...){
+	if(processing_error){
+		/// SUPER CRASH RIGHT NOW
+		exit(*(int*)0);
+	}
+	processing_error = 1;
 	flushAllFiles();
 	va_list ap;
 	va_start(ap, fmt);
@@ -956,6 +1085,7 @@ void newerror(const char *file, int line, const char *func, const char *fmt, ...
 
 	maybePrintSemantic();
 
+	processing_error = 0;
 	if (compiler_restart_enabled) {
 		exit(1);
 	}
