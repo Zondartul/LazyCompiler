@@ -16,6 +16,14 @@ char *lorem_ipsum(int I)
    return "(oops)";
 end
 
+void debug_s_arg(char *arg)
+	printf("{s %d}:[",arg);
+	while(*arg)
+		printf("%c",*arg++);	
+	end
+	printf("]");
+end
+
 int sprintf(char *buff, char *fmt, int *parg)
 	int printed = 0;
 	while(*fmt)
@@ -26,7 +34,7 @@ int sprintf(char *buff, char *fmt, int *parg)
 			fmt++;
 			if(c2 == 'd') int2str(*parg, buff); parg++; end
 			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
-			if(c2 == 's') strmove(buff, *parg); parg++; end
+			if(c2 == 's') debug_s_arg(*parg); strmove(buff, *parg); parg++; end
 			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
 			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
 			int inc = strlen(buff);

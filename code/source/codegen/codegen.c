@@ -706,7 +706,7 @@ const char* loadLValue(const char* val){
 				//it is negative for func arguments
 				if(S->framedepth == 0){
 					//global
-					if(ref)				{printindent(); asm_println("mov %s, %s",reg->name,S->lbl_at);}
+					if(ref || S->arraysize)	{printindent(); asm_println("mov %s, %s",reg->name,S->lbl_at);}
 					else				{printindent(); asm_println("mov %s, #%s",reg->name,S->lbl_at);}
 					if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 					if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
@@ -714,7 +714,7 @@ const char* loadLValue(const char* val){
 					//local
 					if(framediff < 0){asm_println("*RECORD SCRATCH*");error("[CODE GEN] Error: attempt to access val [%s] in a deeper frame (%d) than current (%d)",val,S->framedepth,curframe);}
 					if(framediff == 0){
-						if(ref)				{printindent(); asm_println("mov %s, EBP:%d", reg->name, adr);} //reg = ESP+adr
+						if(ref || S->arraysize)				{printindent(); asm_println("mov %s, EBP:%d", reg->name, adr);} //reg = ESP+adr
 						else				{printindent(); asm_println("rstack %s, EBP:%d", reg->name, adr);}
 						if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 						if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
@@ -727,7 +727,7 @@ const char* loadLValue(const char* val){
 							printindent(); asm_println("mov %s, #%s", reg->name,reg->name);
 						}
 						printindent(); asm_println("mov %s, %s:%d", reg->name, reg->name, adr);
-						if(!ref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);} //reg = ESP+adr
+						if(!(ref || S->arraysize))	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);} //reg = ESP+adr
 						if(deref)			{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 						if(S->pointerlevel)	{printindent(); asm_println("mov %s, #%s",reg->name,reg->name);}
 					}

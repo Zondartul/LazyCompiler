@@ -108,7 +108,7 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	*								x <c- *x		(also deref)
 	* 
 	*  RVAL	?   	pass			copy-and-rename.star
-	*				*x <- *x		*x <r- x <c- &x
+	*				*x <- *x		*x <r- x <c- &x //no, rename unand x <r- &x
 	*								rename
 	*								*x <r- x
 	*							
@@ -122,6 +122,46 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	* 3x3x3 possibilities
 	* 
 	*/
+
+	/// i forgot what all of this does so new idea:
+	/// R=read, L=write, Ptr = &L
+	///	also assume that we want unadorned value at output (no *&)
+	/// Rvalue - on right side ->
+	//		rvalue - you can read it
+	//		rvalue - you can do arithmetic (get rvalue)
+	//		rvalue - you can deref (*this) - get lvalue
+	//			r  <-  r(x) // pass
+	//			l   x  r(x) // forbidden
+	//			p  <-  r(x) // pass
+	//			 	x  r(*x)//nope, that's L
+	//			    x  r(&x)//nope, that's P
+	//  Lvalue - <- on the left side
+	//		lvalue - you can read it (x = this)
+	//		lvalue - you can write it (this = x)
+	//		lvalue - you can take it's address (&this) - result is ptr
+	//		lvalue - you can deref (*this) - get lvalue
+	//			r	<-	l(x)  //pass
+	//			r	<c-	l(*x)
+	//			l	<-	l(x)  //pass
+	//			l	<-	l(*x) //pass (have to output *)
+	//			l		l(&x) //nope, that's P
+	//			p  <r&-	l(x)  //rename-and
+	//			p  <r-*	l(*x) //rename-unstar
+	//
+	//					l(&x) //nope, that's P
+	//			
+	//  Ptr - you need to add * to get Lvalue
+	//		ptr - you can do arithmetic to get another ptr
+	//		ptr - you can deref (*this) - get lvalue
+	//
+	//		r	<r*-	p(x)  //rename-star
+	//		r	<c-		p(&x) //copy
+	//		l	<r*-	p(x)  //rename-star
+	//		l	<r-&-	p(&x)	//un-and
+	//		p	<-	p(x)	//pass
+	//		p	<c-	p(&x)	//copy
+	//
+	//		 		p(*x) //nope, that's L
 
 	//if((strcmp(src.val, "&p1") == 0) && (strcmp(stg.dest.author, "expr_call funcname")==0)){
 	//	printf("debug breakpoint");
@@ -160,6 +200,15 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	int acc_and = (src.val[0] == '&');
 	int acc_none = (!acc_star) && (!acc_and);
 
+	const char* dest_rv_str = 0;
+	if (dest_lval) { dest_rv_str = "L"; }
+	if (dest_rval) { dest_rv_str = "R"; }
+	if (dest_ptr)  { dest_rv_str = "P";	}
+	const char* src_rv_str = 0;
+	if (src_lval) { src_rv_str = "L"; }
+	if (src_rval) { src_rv_str = "R"; }
+	if (src_ptr)  { src_rv_str = "P"; }
+
 	assert(src.val);
 	assert(strlen(src.val));
 
@@ -178,28 +227,83 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 
 	const char* op_str;
 
-	if (dest_lval && src_lval && acc_none) { goto out_pass; }
+	/// RVAL LVAL conversion
+	/// ---------- from RVAL
+	///     to RVAL <-
+	if (dest_rval && src_rval && acc_none)	{goto out_pass;}
+	if (dest_rval && src_rval && acc_star)	{goto out_nope_is_L;}
+	if (dest_rval && src_rval && acc_and)	{goto out_nope_is_P;}
+	///		to LVAL <-
+	if (dest_lval && src_rval && acc_none)	{goto out_forbidden;}
+	if (dest_lval && src_rval && acc_star)	{goto out_nope_is_L;;}
+	if (dest_lval && src_rval && acc_and)	{goto out_nope_is_P;}
+	///		to PTR  <-
+	if (dest_ptr  && src_rval && acc_none)	{goto out_pass;}
+	if (dest_ptr  && src_rval && acc_star)	{goto out_nope_is_L;}
+	if (dest_ptr  && src_rval && acc_and)	{goto out_nope_is_P;}
+	/// ---------- from LVAL
+	///     to RVAL <-
+	if (dest_rval && src_lval && acc_none)	{goto out_pass;}
+	if (dest_rval && src_lval && acc_star)	{goto out_copy;}
+	if (dest_rval && src_lval && acc_and)	{goto out_nope_is_P;}
+	///		to LVAL <-
+	if (dest_lval && src_lval && acc_none)	{goto out_pass;}
+	if (dest_lval && src_lval && acc_star)	{goto out_pass;} // *x is L, and we have to keep it that way to get another L
+	if (dest_lval && src_lval && acc_and)	{goto out_nope_is_P;}
+	///		to PTR  <-
+	if (dest_ptr  && src_lval && acc_none)	{goto out_rename_and;}
+	if (dest_ptr  && src_lval && acc_star)	{goto out_rename_unand;}
+	if (dest_ptr  && src_lval && acc_and)	{goto out_nope_is_P;}
+	/// ---------- from PTR
+	///     to RVAL <-
+	if (dest_rval && src_ptr  && acc_none)	{goto out_rename_star;}
+	if (dest_rval && src_ptr  && acc_star)	{goto out_nope_is_L;}
+	if (dest_rval && src_ptr  && acc_and)	{goto out_copy;}
+	///		to LVAL <-
+	if (dest_lval && src_ptr  && acc_none)	{goto out_rename_star;}
+	if (dest_lval && src_ptr  && acc_star)	{goto out_nope_is_L;}
+	if (dest_lval && src_ptr  && acc_and)	{goto out_rename_unand;}
+	///		to PTR  <-
+	if (dest_ptr  && src_ptr  && acc_none)	{goto out_pass;}
+	if (dest_ptr  && src_ptr  && acc_star)	{goto out_nope_is_L;}
+	if (dest_ptr  && src_ptr  && acc_and)	{goto out_copy;}
+
+	/*
 	if (dest_lval && src_rval && acc_star) { goto out_pass; } // what happens when we put int *p; *p in an arg?//{ goto out_rename_unstar; }
-	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; } // and this is the (*ptr)() situtation
-	if (dest_lval && src_ptr && acc_none) { goto out_rename_star_and_copy; } // out_pass (idk, need star to read from arrays)
-	if (dest_lval && src_ptr && acc_star) { goto out_copy; } 
-#pragma message("something with casting an Lvalue to Rvalue")
-	if (dest_rval && src_lval) {goto out_pass;}//{ error("internal semantic error: can't promote lval to rval"); }
+	if (dest_lval && src_rval && acc_none) { goto out_pass; } 
 	if (dest_rval && src_rval && acc_star) { goto out_pass; }
-	if (dest_rval && src_ptr && acc_and) { goto out_copy_and_rename_star; }
-	if (dest_rval && src_ptr && acc_none) { goto out_rename_star; }
+	if (dest_ptr && src_rval && acc_star) { goto out_rename_unstar; }
+	
+	if (dest_lval && src_lval && acc_none) { goto out_pass; }
+	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; } // and this is the (*ptr)() situtation
+	if (dest_lval && src_ptr && acc_none) { goto out_rename_star;}//{ goto out_rename_star_and_copy; } // out_pass (idk, need star to read from arrays)
+	if (dest_lval && src_ptr && acc_star) { goto out_copy; } 
+	if (dest_rval && src_lval) {goto out_pass;}//{ error("internal semantic error: can't promote lval to rval"); }
+	if (dest_rval && src_ptr && acc_and) { goto out_rename_unand;}//out_copy_and_rename_star; }
+	if (dest_rval && src_ptr && acc_none) { goto out_pass; } // so we can call plain functions //{ goto out_rename_star; }
 
 	if (dest_ptr && src_lval && acc_none) { goto out_pass; }
-	if (dest_ptr && src_rval && acc_star) { goto out_rename_unstar; }
 	if (dest_ptr && src_ptr && acc_none) { goto out_pass; }
 	if (dest_ptr && src_ptr && acc_and) { goto out_copy; } // out_rename_unand - idk, need out_copy to print(&local_var)
 														   // but rename_unand for calling a function pointer... the expr_call not give us a &?
 	if (dest_ptr && src_ptr && acc_star) { goto out_copy; }
+	*/
 
 	goto out_unexpected;
 out_unexpected:
 	error("output_res: unexpected case");
 	return;
+
+out_forbidden:
+	error("output_res: conversion %s <- %s is forbidden",dest_rv_str, src_rv_str);
+	return;
+
+out_nope_is_L:
+	error("output_res: value %s is not a %s but an LVALUE (L=write)",src.val,src_rv_str);
+	return;
+
+out_nope_is_P:
+	error("output_res: value %s is not a %s but an PTR (need *)",src.val,src_rv_str);
 
 out_pass:
 	op_str = "pass";
@@ -212,48 +316,54 @@ out_copy:
 	vec_printf(&vstr, "MOV %s %s", sanitize_string(resVal), sanitize_string(src.val));
 	goto out_finish;
 
+/*
 out_rename_unstar:
 	op_str = "rename_unstar";
 	resVal = rename_unstar(src.val);
 	goto out_finish;
+*/
 
 out_rename_unand:
 	op_str = "rename_unand";
 	resVal = rename_unand(src.val);
 	goto out_finish;
 
+out_rename_and:
+	op_str = "rename_and";
+	resVal = rename_and(src.val);
+	goto out_finish;
+
+/*
 out_copy_and_rename_star:
 	op_str = "copy_and_rename_star";
 	resVal = IR_next_name(namespace_semantic, "temp");
 	vec_printf(&vstr, "MOV %s %s", sanitize_string(resVal), sanitize_string(src.val));
 	resVal = rename_star(resVal);
 	goto out_finish;
+*/
 
+/*
 out_rename_star_and_copy:
 	op_str = "rename_star_and_copy";
 	resVal = IR_next_name(namespace_semantic, "temp");
 	vec_printf(&vstr, "MOV %s *%s", sanitize_string(resVal), sanitize_string(src.val));
 	goto out_finish;
+*/
 
 out_rename_star:
 	op_str = "rename_star";
 	resVal = rename_star(src.val);
 	goto out_finish;
 
+
 out_finish:
 	
-	const char* dest_rv_str = 0;
-	if (dest_lval) { dest_rv_str = "L"; }
-	if (dest_rval) { dest_rv_str = "R"; }
-	if (dest_ptr)  { dest_rv_str = "P";	}
-	const char* src_rv_str = 0;
-	if (src_lval) { src_rv_str = "L"; }
-	if (src_rval) { src_rv_str = "R"; }
-	if (src_ptr)  { src_rv_str = "P"; }
 	const char* dest_val = resVal;
 	const char* src_val = src.val;
 	const char* dest_auth = stg.dest.author;
 	const char* src_auth = src.author;
+	assert(dest_auth);
+	assert(src_auth);
 
 	vec_printf(&vstr, "   /* out(%s <- %s): %s from %s (%s) //auth: to %s from %s */", 
 		dest_rv_str, src_rv_str,
@@ -270,78 +380,8 @@ out_finish:
 		VERIFY_RES((*(stg.actual)));
 	}
 	
-
-	//if (do_emit) {
-	//	if (!stg.dest.val) {
-	//		resVal = IR_next_name(namespace_semantic, "temp");
-	//		resValTemp = 1;
-	//	}
-	//	if (stg.dest.rv_type == E_RVAL) {	
-	//		if (src.rv_type == E_RVAL) { // x = y
-	//			emit_code("MOV %s %s //output(R<R)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//		if (src.rv_type == E_LVAL) { // *x = y;
-	//			if (resValTemp) {
-	//				error("can't output(R<L) to a temporary value, provide a destination!");
-	//			}
-	//			emit_code("MOV *%s %s //output(R<L)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//		if (src.rv_type == E_PTR) { //temp_ptr = arr + 5;
-	//			emit_code("MOV %s %s //output(R<P)", sanitize_string(resVal), sanitize_string(src.val));
-	//			vector2_char vstr = vector2_char_here();
-	//			vec_printf(&vstr, "*%s", resVal);
-	//			resVal = stralloc(vstr.data);
-	//		}
-	//	}
-	//	if (stg.dest.rv_type == E_LVAL) { 
-	//		if (src.rv_type == E_RVAL) { // temp_val = 1 + x;
-	//			emit_code("MOV %s *%s //output(L<R)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//		if (src.rv_type == E_LVAL) { // temp_val = 1 + 1;	
-	//			emit_code("MOV %s %s //output(L<L)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//		if (src.rv_type == E_PTR) { // x = *y
-	//			emit_code("MOV %s *%s //output(L<P)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//	}
-	//	if (stg.dest.rv_type == E_PTR) {
-	//		if (src.rv_type == E_RVAL) {
-	//			emit_code("MOV %s &%s //output(P<R)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//		if (src.rv_type == E_LVAL) {
-	//			error("can't take address of a literal");
-	//		}
-	//		if (src.rv_type == E_PTR) { // temp_ptr = temp_ptr
-	//			emit_code("MOV %s %s //output(P<P)", sanitize_string(resVal), sanitize_string(src.val));
-	//		}
-	//	}
-	//}
-	
 }
 
-//void output_res_old(expr_settings stg, const char* res_val, struct type_name* T) {
-//	if (stg.res_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
-//	if (stg.res_type == E_DISCARD) {
-//		if (stg.res_out) { *(stg.res_out) = 0; }
-//		if (stg.res_out_type) { *(stg.res_out_type) = 0; }
-//		return;
-//	}
-//	if (!stg.res_out) { error("internal semantic error: res_out null"); }
-//	if (!stg.res_out_type) { error("internal semantic error: res_out_type null"); }
-//
-//	*(stg.res_out) = res_val;
-//	*(stg.res_out_type) = T;
-//	//we also need to check if it's rval/lval
-//	//and also if we need to emit anything or not.
-//}
-
-//void output_res(expr_settings stg, const char* res_val, struct type_name *T) {
-//	output_res_helper(stg, res_val, T, 0);
-//}
-//
-//void output_res_and_emit(expr_settings stg, const char* res_val, struct type_name* T) {
-//	output_res_helper(stg, res_val, T, 1);
-//}
 
 void semantic_analyze_decl_stmt_list(ast_node *node){
 	//decl_stmt_list:	decl_stmt_list_ne | ;
@@ -662,7 +702,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
 			//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
 			//semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
-			PREP_RES(res2, E_LVAL);
+			PREP_RES(res2, E_RVAL); // R=read, L=write //E_LVAL);
 			res2stg.dest.author = "var_decl_asign expr (= ...)";
 			semantic_expr_analyze(node_expr, res2stg);
 			VERIFY_RES(res2);

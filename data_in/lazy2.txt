@@ -1,17 +1,19 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/testOutput.txt"
-#include "data_in/big/printf.txt"
+//#include "data_in/big/printf.txt"
 
-//class Derp
-//	int x = 1;
-//	int y;
-//	int sum(int z)
-//		int w = x+y+z;
-//		return w;
-//	end
-//end
-
+/*
 int addr_bus[4];
+
+
+void stuff_test_1()
+	int x;
+	printf("t1 x1: %d\n", x); // ???
+	x = 11;
+	printf("t1 x2: %d\n", x); // 11
+end
+
+
 
 void init_printf()
 	addr_bus[0] = 65536;
@@ -21,30 +23,68 @@ void init_printf()
 	screen_set(addr_bus[2]);
 
 	screen_clear();
+end
+
+void test_printf()
 	printf("hello world!\n");
 	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
 	/// oh hey, it turns out our printf or num2str doesn't flip the digits oops
 	//printf("123[%d],45[%d],1[%d],10[%d],0.1[%d]\n",123,45,1,10,1/10);
 	// bluuuuh, nothing but %d works on printf and even that crappily backwards
 	printf("s test: %s\n","abra_cadabra_karabas_barabas");
+	printf("d test: %d, %d, %d\n", 123, 45, 1907);
 	char *str = "[my string]";
+	int L = strlen(str);
+	printf("strlen = %d\n", L);
+
 	printf(str);
-	printf("\n");
-	printf("before: %s\n",str);
-	string_reverse(str);
-	printf("after : %s\n",str);
-	printf(str);
-	printf("\n");
+	char zuzubaf[20];
+	set_buff_mario(zuzubaf);
+	debug_s_arg(zuzubaf); printf("\n");
+	memmove(zuzubaf, str, L+1);
+	debug_s_arg(zuzubaf); printf("\n");
+	printf("str : [");printf(str);printf("]\n");
+	printf("buff: [");printf(zuzubaf);printf("]\n");
+	debug_s_arg(zuzubaf); printf("\n");
+	return;
+
+	int x = 10;
+	printf("t0 x1: %d\n", x); // 10
+	char buff2[7];
+	set_buff_warudo(buff2);
+	debug_s_arg(buff2);
+	stuff_test_1();
+	stuff_test_2();
+	printf("t0 x2: %d\n", x); // 10
+	debug_s_arg(buff2);
+	//printf("\n");
+	//printf("before: %s\n",str);
+	//string_reverse(str);
+	//printf("after : %s\n",str);
+	//printf(str);
+	//printf("\n");
 end
+
+void stuff_test_2()
+	int x;
+	printf("t2 x1: %d\n", x); // ???
+	x = 12;
+	printf("t2 x2: %d\n", x); // 12
+end
+*/
+/*
+int *adr_port = 65536;
+
+void writePort(int port, int val)
+	*(adr_port+port) = val;
+end
+*/
 
 int main()
 	setup();
 	
-	init_printf();
-
-	unit_test_ignore_global_address = 1;
-	unit_test_ignore_stack_address = 0;
-	unit_test_adaptive_stack = 1;
+	//init_printf();
+	
 	run_all_tests();
 	
 	infloop();

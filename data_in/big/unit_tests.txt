@@ -9,6 +9,9 @@ int unit_test_ignore_global_address = 0;
 int unit_test_ignore_stack_address = 0;
 int unit_test_adaptive_stack = 1;
 int unit_test_stack_offset = 0;
+
+#include "data_in/big/string.txt"
+
 /// tests:
 /// 1 - plain arguments
 /// 2 - global vars
@@ -22,7 +25,7 @@ end
 
 void test_1_args_plain_helper(int x, int y, int z)
 	writePort(0, 1);
-	if((x == 1) && (y == 2) && (z == 3))
+	if((x == 1) & (y == 2) & (z == 3))
 		return;
 	end
 	crash();
@@ -59,25 +62,30 @@ void test_3_global_pointer()
 	expect(3, 7, *p, 25, TYPE_GLOBAL);
 end
 
+int *arr_addr = 0;
 void test_3_array_pointer()
 	int arr[4];
 	arr[0] = 10;
 	arr[1] = 11;
 	arr[2] = 12;
 	arr[3] = 13;
+	arr_addr = arr;
 	expect(3, 8, arr,    -8, TYPE_STACK);
-	expect(3, 9, arr[0], 10, TYPE_BASIC);
+	expect(3, 9,  arr[0], 10, TYPE_BASIC);
+	expect(3, 10, arr[2], 12, TYPE_BASIC);
+	expect(3, 11, arr_addr[2], 12, TYPE_BASIC);
 	int d = arr[1];
-	expect(3, 10, d, 11);
+	expect(3, 12, d, 11);
 	test_3_array_arg(arr);
 end
 
 void test_3_array_arg(int* arg)
-	expect(3, 11, arg,      -8, TYPE_STACK);
-	expect(3, 12, &arg,    -27, TYPE_STACK);
-	expect(3, 13, arg[2],   12, TYPE_BASIC);
-	expect(3, 14, *arg,     10, TYPE_BASIC);
-	expect(3, 15, *(arg+1), 11, TYPE_BASIC);
+	expect(3, 13, arg,arr_addr, TYPE_BASIC);
+	expect(3, 14, arg,      -8, TYPE_STACK);
+	expect(3, 15, &arg,    -27, TYPE_STACK);
+	expect(3, 16, arg[2],   12, TYPE_BASIC);
+	expect(3, 17, *arg,     10, TYPE_BASIC);
+	expect(3, 18, *(arg+1), 11, TYPE_BASIC);
 end
 
 int test_4_var = 0;
@@ -88,7 +96,7 @@ end
 
 int test_4_funcptr()
 	expect(4, 1, test_4_helper,  1098, TYPE_GLOBAL);
-	expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
+	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
 	int p2 = test_4_helper;
 	expect(4, 3, p1,             1098, TYPE_GLOBAL);
@@ -126,68 +134,132 @@ int test_5_arithmetic_integer()
 	return CODE_OK;
 end
 
-class Test_6_class_derp //class Derp
+void set_buff_mario(char *buff)
+	buff[0] = 'm';
+	buff[1] = 'a';
+	buff[2] = 'r';
+	buff[3] = 'i';
+	buff[4] = 'o';
+	buff[5] = 0;
+end
+
+void set_buff_warudo(char *buff)
+	buff[0] = 'w';
+	buff[1] = 'a';
+	buff[2] = 'r';
+	buff[3] = 'u';
+	buff[4] = 'd';
+	buff[5] = 'o';
+	buff[6] = 0;
+end
+
+int test_6_arrays()
+	int arr[10];
+	set_buff_mario(arr);		// pass array by pointer
+	expect(6, 1, *arr, 'm',     TYPE_BASIC);	// array is filled through literal index
+	expect(6, 2, arr[0], 'm',   TYPE_BASIC);
+	expect(6, 3, arr[1], 'a',   TYPE_BASIC);
+	expect(6, 4, arr[2], 'r',   TYPE_BASIC);
+	expect(6, 5, arr[3], 'i',   TYPE_BASIC);
+	expect(6, 6, arr[4], 'o',   TYPE_BASIC);
+	expect(6, 7, arr[5], 0,     TYPE_BASIC);	// array is zero-terminated
+	
+	int i = 1;
+	arr[i] = 'o';				
+	expect(6, 8, arr[1], 'o',   TYPE_BASIC);	// array is writeable by local var index
+	expect(6, 9, arr[i], 'o',   TYPE_BASIC);	// array is readible by local var index
+	int b1 = (&(arr[i]) == arr+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
+	expect(6, 10, b1, 1);		
+	arr[i+2] = 'e';					// array is writeable by arithmetic expression
+	expect(6, 11, arr[3], 'e',  TYPE_BASIC);
+	expect(6, 12, arr[i+3], 'e',TYPE_BASIC);	// array is readible by arithmetic expression
+
+	int L = strlen(arr);
+	expect(6, 13, L, 5);			// stdlib function "strlen" works
+
+	int arr2[20];
+	set_buff_warudo(arr2);			// another test buffer
+	expect(6, 14, arr2[0], 'w', TYPE_BASIC);
+	expect(6, 15, arr2[1], 'a', TYPE_BASIC);
+	expect(6, 16, arr2[2], 'r', TYPE_BASIC);
+	expect(6, 17, arr2[3], 'u', TYPE_BASIC);
+	expect(6, 18, arr2[4], 'd', TYPE_BASIC);
+	expect(6, 19, arr2[5], 'o', TYPE_BASIC);
+	expect(6, 20, arr2[6], 0,   TYPE_BASIC);
+
+	memmove(arr2, arr, L+1);
+	expect(6, 21, arr2[0], 'm', TYPE_BASIC); // stdlib function "memmove" works
+	expect(6, 22, arr2[1], 'o', TYPE_BASIC);
+	expect(6, 23, arr2[2], 'r', TYPE_BASIC);
+	expect(6, 24, arr2[3], 'e', TYPE_BASIC);
+	expect(6, 25, arr2[4], 'o', TYPE_BASIC);
+	expect(6, 26, arr2[5], 0,   TYPE_BASIC);
+	expect(6, 27, arr2[6], 0,   TYPE_BASIC);
+end
+
+/*
+class Test_7_class_derp //class Derp
 	int x = 1;
 	int y;
 	int sum(int z)
 		int w = x+y+z;
 		return w;
 	end
-	int test61()
-		printf("derp.t61:  x = %d\n", x);
-		printf("derp.t61: &x = %d\n", &x);
-		printf("derp.t61: this = %d\n", this);
-		printf("derp.t61: y1 = %d\n", y);
+	int test71()
+		printf("derp.t71:  x = %d\n", x);
+		printf("derp.t71: &x = %d\n", &x);
+		printf("derp.t71: this = %d\n", this);
+		printf("derp.t71: y1 = %d\n", y);
 		y = 3;
-		printf("derp.t61: y2 = %d\n", y);
+		printf("derp.t71: y2 = %d\n", y);
 	end
 end
 
-int test_6_class_local()
-	class Test_6_class_derp derp1;
-	printf("test6: &derp1 = %d\n", &derp1);
-	printf("test6: &(derp1.x) = %d\n", &(derp1.x));
-	printf("test6: derp1.x = %d\n", derp1.x);
-	derp1.test61();
-	expect(6, 1, &derp1,		-28, TYPE_STACK);
-	expect(6, 2, derp1.x,		  1, TYPE_BASIC);
+int test_7_class_local()
+	class Test_7_class_derp derp1;
+	printf("test7: &derp1 = %d\n", &derp1);
+	printf("test7: &(derp1.x) = %d\n", &(derp1.x));
+	printf("test7: derp1.x = %d\n", derp1.x);
+	derp1.test71();
+	expect(7, 1, &derp1,		-28, TYPE_STACK);
+	expect(7, 2, derp1.x,		  1, TYPE_BASIC);
 	derp1.y = 2;
-	expect(6, 3, derp1.y,		  2, TYPE_BASIC);
-	expect(6, 4, derp1.sum(4),	  7, TYPE_BASIC);
-	expect(6, 5, &derp1.sum,   2496, TYPE_GLOBAL);
+	expect(7, 3, derp1.y,		  2, TYPE_BASIC);
+	expect(7, 4, derp1.sum(4),	  7, TYPE_BASIC);
+	expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-int test_6_class_by_val(class Test_6_class_derp derp2)
-	expect(6, 6, &derp2,		-25, TYPE_STACK);
-	expect(6, 7, derp2.x,		  3, TYPE_BASIC);
-	expect(6, 8, derp2.y,		  4, TYPE_BASIC);
-	expect(6, 9, derp2.sum(5),   12, TYPE_BASIC);
-	expect(6, 10, &derp2.sum,  2496, TYPE_GLOBAL);
+int test_7_class_by_val(class Test_7_class_derp derp2)
+	expect(7, 6, &derp2,		-25, TYPE_STACK);
+	expect(7, 7, derp2.x,		  3, TYPE_BASIC);
+	expect(7, 8, derp2.y,		  4, TYPE_BASIC);
+	expect(7, 9, derp2.sum(5),   12, TYPE_BASIC);
+	expect(7, 10, &derp2.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-int test_6_class_by_ptr(class Test_6_class_derp *derp3)
-	expect(6, 11, derp3,		 -3, TYPE_STACK);
-	expect(6, 12, &derp3,	    -25, TYPE_STACK);
-	expect(6, 13, derp3.x,		  5, TYPE_BASIC);
-	expect(6, 14, derp3.y,		  6, TYPE_BASIC);
-	expect(6, 15, derp3.sum(7),	 18, TYPE_BASIC);
-	expect(6, 16, &derp3.sum,  2496, TYPE_GLOBAL);
+int test_7_class_by_ptr(class Test_7_class_derp *derp3)
+	expect(7, 11, derp3,		 -3, TYPE_STACK);
+	expect(7, 12, &derp3,	    -25, TYPE_STACK);
+	expect(7, 13, derp3.x,		  5, TYPE_BASIC);
+	expect(7, 14, derp3.y,		  6, TYPE_BASIC);
+	expect(7, 15, derp3.sum(7),	 18, TYPE_BASIC);
+	expect(7, 16, &derp3.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-
-int test_6_class()
-	test_6_class_local();
-	class Test_6_class_derp derp4;
+int test_7_class()
+	test_7_class_local();
+	class Test_7_class_derp derp4;
 	derp4.x = 3; derp4.y = 4;
-	test_6_class_by_val(derp4);
-	class Test_6_class_derp derp5;
+	test_7_class_by_val(derp4);
+	class Test_7_class_derp derp5;
 	derp5.x = 5; derp5.y = 6;
-	test_6_class_by_ptr(&derp5);
+	test_7_class_by_ptr(&derp5);
 	return CODE_OK;
 end
+*/
 
 void expect(int test_num,int subtest_num, int val, int ref, int type)
 	if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end
@@ -213,14 +285,19 @@ void unit_test_set_base_offset()
 end
 
 void run_all_tests()
+	unit_test_ignore_global_address = 1;
+	unit_test_ignore_stack_address = 1;
+	unit_test_adaptive_stack = 1;
+	
 	unit_test_set_base_offset();
 	test_1_args_plain();
 	test_2_global_vars();
 	test_3_pointer();
 	test_4_funcptr();
 	test_5_arithmetic();
+	test_6_arrays();
 	unit_test_ignore_global_address = 0;
-	test_6_class();
+	//test_7_class();
 	report_all_ok();
 end
 

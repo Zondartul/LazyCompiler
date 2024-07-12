@@ -4,6 +4,9 @@
 #include <stdint.h> // for uint64_t
 #include <inttypes.h> // for PRIu64 for printf
 
+int do_integer_coersion = 1;
+int relax_integer_coersion = 1;
+
 void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings stg) {
 	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
 	if (semantic_decl) { return; }
@@ -16,13 +19,13 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 
 	vector2_char vstr = vector2_char_here();
 
-	PREP_RES(res1, E_LVAL);
+	PREP_RES(res1, E_RVAL);//E_LVAL); 12 july 2024 - idk where left and right are but I think the inputs to a + are both from right->
 	m(vstr, clear);  vec_printf(&vstr, "op %s arg1", OP); res1stg.dest.author = vstr.data;
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg);
 	VERIFY_RES(res1);
 	//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
 	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	PREP_RES(res2, E_LVAL);
+	PREP_RES(res2, E_RVAL);//E_LVAL);
 	m(vstr, clear);  vec_printf(&vstr, "op %s arg2", OP); res2stg.dest.author = vstr.data;
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg);
 	VERIFY_RES(res2);
@@ -36,34 +39,44 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 			);
 	
 	// integer arithmetic check
-	if(res2.T && res2.T->name //type is known
-		&& (res2.T->pointerlevel == 0)) // not a pointer but a primitive
-	{
-		int is_int = (strcmp(res2.T->name, "int") == 0);
-		int is_char = (strcmp(res2.T->name, "char") == 0);
-		int is_some_integer = is_int || is_char;
-		//uint64_t max_limit = 0;
-		int64_t min_limit = 0;
-		int64_t total_limit = 0;
-		if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1L<<32;} // int always  sint32_t
-		if(is_char){min_limit = 0; /*max_limit = 255;*/ total_limit = 256;}				 // char always uint8_t
+	if(do_integer_coersion){
+		if(res2.T && res2.T->name //type is known
+			&& (res2.T->pointerlevel == 0)) // not a pointer but a primitive
+		{
+			if(relax_integer_coersion){
+				if(strcmp(OP, "DIV") == 0){
+					const char* temp1 = IR_next_name(namespace_semantic, "temp");
+					emit_code("FLOOR %s %s", temp1, exprResult);
+					exprResult = temp1;
+				}
+			}else{
+				int is_int = (strcmp(res2.T->name, "int") == 0);
+				int is_char = (strcmp(res2.T->name, "char") == 0);
+				int is_some_integer = is_int || is_char;
+				//uint64_t max_limit = 0;
+				int64_t min_limit = 0;
+				int64_t total_limit = 0;
+				if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1L<<32;} // int always  sint32_t
+				if(is_char){min_limit = 0; /*max_limit = 255;*/ total_limit = 256;}				 // char always uint8_t
 
-		if(is_some_integer){
-			/// we need to floor and clamp the number
-			/// num = ((floor(num) - min_limit) % total_limit) + min_limit
-			const char* temp1 = IR_next_name(namespace_semantic, "temp");
-			const char* temp2 = IR_next_name(namespace_semantic, "temp");
-			const char* temp3 = IR_next_name(namespace_semantic, "temp");
-			const char* temp4 = IR_next_name(namespace_semantic, "temp");
-			emit_code("COMMENT GENERAL \"(integer conversion to %s)\" // semantic_expr_op.c:58", res2.T->name);
-			emit_code("FLOOR %s %s", temp1, exprResult);
-			emit_code("SUB %s %s %" PRId64, temp2, temp1, min_limit); ///
-			emit_code("MOD %s %s %" PRId64, temp3, temp2, total_limit);
-			emit_code("ADD %s %s %" PRId64, temp4, temp3, min_limit);
-			exprResult = temp4;
-		}	
+				if(is_some_integer){
+					/// we need to floor and clamp the number
+					/// num = ((floor(num) - min_limit) % total_limit) + min_limit
+					const char* temp1 = IR_next_name(namespace_semantic, "temp");
+					const char* temp2 = IR_next_name(namespace_semantic, "temp");
+					const char* temp3 = IR_next_name(namespace_semantic, "temp");
+					const char* temp4 = IR_next_name(namespace_semantic, "temp");
+					emit_code("COMMENT GENERAL \"(integer conversion to %s)\" // semantic_expr_op.c:58", res2.T->name);
+					emit_code("FLOOR %s %s", temp1, exprResult);
+					emit_code("SUB %s %s %" PRId64, temp2, temp1, min_limit); ///
+					emit_code("MOD %s %s %" PRId64, temp3, temp2, total_limit);
+					emit_code("ADD %s %s %" PRId64, temp4, temp3, min_limit);
+					exprResult = temp4;
+				}
+			}
+		}
 	}
-	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL };
+	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL, .author = "expr_op_ifx"};
 	output_res(stg, result, NO_EMIT);
 }
 
@@ -133,14 +146,47 @@ struct symbol* get_symbol_in_this(const char* name, struct symbol* S_this) {
 	return 0;
 }
 
+struct sae_id_result{
+	struct type_name *T;
+	const char* S_val;
+	expr_type rv;	
+};
+
+/// helps figure out the IR name, data type and rlvalue type
+struct sae_id_result sae_id_helper(struct symbol *S, ast_node* node, const char *name){
+	struct sae_id_result res;
+	switch(S->type){
+		case SYMBOL_VARIABLE:	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
+		case SYMBOL_PARAM:		res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
+		case SYMBOL_MEMBER: 	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
+		case SYMBOL_FUNCTION:	res = (struct sae_id_result){S->symfunction.signature, S->IR_name, E_RVAL}; break;
+		default:
+		{
+			YYLTYPE pos = node->token.pos;
+			err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+			error("semantic: '%' is not an expression\n", name);
+		}
+	};
+	assert(res.T);
+	//if((S->type == SYMBOL_VARIABLE) && S->symvariable.array){
+	//	res.S_val = rename_and(res.S_val);
+	//	res.rv = E_PTR;
+	//}
+	//if((S->type == SYMBOL_FUNCTION)){
+	//	res.S_val = rename_and(res.S_val);
+	//}
+	//if((res.rv == E_PTR) && (res.T->pointerlevel == 0)){res.S_val = rename_and(res.S_val);}
+	return res;
+}
+
 void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	//expr	:	ID	
 
 	char* name = stralloc(node->token.value);
 	
-	if (!(strcmp(name, "x"))) {
-		printf("debug trap");
-	}
+	//if (!(strcmp(name, "x"))) {
+	//	printf("debug trap");
+	//}
 
 	vector2_char vstr = vector2_char_here();
 	const char* str_access_type = 0;
@@ -175,7 +221,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 			}
 		}
 	}
-	const char *S_val = S->IR_name;
+	const char *S_val = 0;//S->IR_name;
 	
 	//2. make sure it's not a type-name.
 	if ((S->type != SYMBOL_VARIABLE) && (S->type != SYMBOL_PARAM) && (S->type != SYMBOL_MEMBER) && (S->type != SYMBOL_FUNCTION)) {
@@ -188,15 +234,18 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 
 	expr_type rv = E_ERROR;
 
-	if (S->type == SYMBOL_VARIABLE)			{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
-	else if (S->type == SYMBOL_PARAM)		{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
-	else if (S->type == SYMBOL_MEMBER)		{ T = S->symvariable.type;		 S_val = rename_and(S_val); rv = E_PTR;}
-	else if (S->type == SYMBOL_FUNCTION)	{ T = S->symfunction.signature;	 							rv = E_LVAL;}//rv = E_PTR;}
-	else {
-		YYLTYPE pos = node->token.pos;
-		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-		error("semantic: '%' is not an expression\n", name);
-	}
+	//if (S->type == SYMBOL_VARIABLE)			{ T = S->symvariable.type;		S_val = rename_and(S_val); res.rv = E_PTR;}
+	//else if (S->type == SYMBOL_PARAM)		{ T = S->symvariable.type;		S_val = rename_and(S_val); 		rv = E_PTR;}
+	//else if (S->type == SYMBOL_MEMBER)		{ T = S->symvariable.type;		S_val = rename_and(S_val);		rv = E_PTR;}
+	//else if (S->type == SYMBOL_FUNCTION)	{ T = S->symfunction.signature;	 								rv = E_LVAL;}//rv = E_PTR;}
+	//else {
+	//	YYLTYPE pos = node->token.pos;
+	//	err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+	//	error("semantic: '%' is not an expression\n", name);
+	//}
+	struct sae_id_result res = sae_id_helper(S, node, name);
+	T = res.T; S_val = res.S_val; rv = res.rv;
+
 	assert(T);
 	printf("found variable '%s' of type '%s'\n", name, T->name);
 	
@@ -355,9 +404,9 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	PREP_RES(res1, E_PTR);
+	PREP_RES(res1, E_LVAL);
 	res1stg.dest.author = "expr_index array (arr[])";
-	semantic_expr_analyze(ast_get_child(node, 1), res1stg); //expr (array)
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (array)
 	VERIFY_RES(res1);
 
 	const char* index = res1.val;
@@ -365,16 +414,16 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
 	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-	PREP_RES(res2, E_LVAL);
+	PREP_RES(res2, E_RVAL);//E_LVAL);
 	res2stg.dest.author = "expr_index index ([idx])";
-	semantic_expr_analyze(ast_get_child(node, 0), res2stg); //expr (index)
+	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (index)
 	VERIFY_RES(res2);
 	const char* ptr = res2.val;
 
 	//okay first of all, expr isn't necessarily a symtable symbol but
 	//it could just be an rvalue expression (i.e. temporary value)
 
-	struct type_name* T = res2.T;//pop_exprtype();
+	struct type_name* T = res1.T;//res2.T;//pop_exprtype();
 	//if (T->pointerlevel == 0) {
 	//	//error("Semantic error: array access into %s, which has non-pointer type %s\n",S->username,T->name);
 	//	const char* expr1_text = 0; //how do
@@ -418,7 +467,12 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 
 	//1. get a reference for the function itself
 	//1.1 read the function expression
-	PREP_RES(res1, E_LVAL);//so we can call funcptrs  E_PTR);//E_RVAL);
+
+	// plain func (E_PTR) or   void *ptr; ptr (E_RVAL)
+	//			        \     /
+	// 			        E_RVAL
+
+	PREP_RES(res1, E_RVAL);//E_LVAL);//so we can call funcptrs  E_PTR);//E_RVAL);
 	res1stg.sem_this = stg.sem_this;
 	res1stg.dest.author = "expr_call funcname";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (function name or reference expression)
@@ -456,7 +510,7 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 		}
 	  //2.1.2 add the arguments actually given
 		for (i = 0; i < list->children.size; i++) {
-			PREP_RES(res2, E_LVAL);
+			PREP_RES(res2, E_RVAL); //R for read, L for write //E_LVAL);
 			res2stg.dest.author = "expr_call args";
 			semantic_expr_analyze(ast_get_child(list, i), res2stg); //expr? one of func args?
 			VERIFY_RES(res2);
@@ -630,7 +684,7 @@ void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
 
 	//reinterpret
 	const char* exprResult = rename_star(res1.val);
-	val_handle result = { .val = exprResult, .rv_type = E_RVAL, .T = T2, .author = author };
+	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = T2, .author = author };
 
 	
 
@@ -649,16 +703,23 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 
 	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	PREP_RES(res1, E_PTR);//E_RVAL);
+	PREP_RES(res1, E_PTR);
+	res1stg.dest.author = "expr_ref(&) expr";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
 	VERIFY_RES(res1);
 	struct type_name* T = res1.T;
+	if(T->args){
+		/// this has args, it's a function.
+		/// do not dereference functions.
+		error("semantic error: a function is already an address");
+		return;
+	}
 	struct type_name* T2 = reffed_type(T);
 	emit_code("/* ref %s */", sanitize_string(res1.val));
 	
-	//we get ptr, we want to reinterpret it as E_LVAL 
+	//we get ptr, we want to reinterpret it as E_LVAL // huh, why?
 
-	val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = T2, .author = author };
+	val_handle result = { .val = res1.val, .rv_type = E_PTR, .T = T2, .author = author };
 
 	output_res(stg, result, NO_EMIT);
 }
@@ -677,13 +738,14 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 
 	if (semantic_decl) { return; }
 
-	PREP_RES(res1, E_RVAL);
+	PREP_RES(res1, E_LVAL); //R=read, L=write //E_RVAL);
 	res1stg.dest.author = "expr_assign arg1 (... =)";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
 	VERIFY_RES(res1);
-	assert(res1.val && (res1.val[0] == '*'));
+	//assert(res1.val && (res1.val[0] == '*'));
+	assert(res1.val);
 
-	PREP_RES(res2, E_LVAL);
+	PREP_RES(res2, E_RVAL);//E_LVAL);
 	res2stg.dest.author = "expr_assign arg2 (= ...)";
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
 	VERIFY_RES(res2);

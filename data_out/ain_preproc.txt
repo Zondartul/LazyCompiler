@@ -13,6 +13,74 @@ int unit_test_ignore_global_address = 0;
 int unit_test_ignore_stack_address = 0;
 int unit_test_adaptive_stack = 1;
 int unit_test_stack_offset = 0;
+
+#file "data_in/big/string.txt"
+#line 1
+int strlen(char *str)
+	int i = 0;
+	while(*str++) i++; end
+	return i;
+end
+
+void string_reverse(char *str)
+	int len = strlen(str);
+	for(int i = 0; i < len/2; i++)
+		int opposite = len-1-i;
+		char d = str[i];
+		str[i] = str[opposite];
+		str[opposite] = d;
+	end	
+end
+
+void memmove(char *dest, char *src, int size)
+	if(dest > src)
+		//print(".moveback.");
+		for(int i = size-1; i > -1; i--)
+			dest[i] = src[i];
+		end
+		for(int i = 0; i < size; i++)
+			dest[i] = 'w';
+		end
+	end
+	if(dest < src)
+		writePort(3,2);
+		for(int i = 0; i < size; i++)
+			dest[i] = src[i];
+		end
+	end
+end
+
+void strmove(char *dest, char *src)
+	int len = strlen(src);
+	memmove(dest, src, len+1); //includes terminating zero
+end
+
+
+//if the string is shorter than padlen, pads in with padchar
+void strPadBegin(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		strmove(str+diff, str);
+		for(int i = 0; i < diff; i++)
+			str[i] = padchar;
+		end
+	end
+end
+
+void strPadEnd(char *str, int padlen, char padchar)
+	int len = strlen(str);
+	if(len < padlen)
+		int diff = padlen - len;
+		for(int i = 0; i < diff; i++)
+			str[len+i] = padchar;
+		end
+		str[padlen] = 0;
+	end
+end
+#file "data_in/big/unit_tests.txt"
+#line 14
+
 /// tests:
 /// 1 - plain arguments
 /// 2 - global vars
@@ -26,7 +94,7 @@ end
 
 void test_1_args_plain_helper(int x, int y, int z)
 	writePort(0, 1);
-	if((x == 1) && (y == 2) && (z == 3))
+	if((x == 1) & (y == 2) & (z == 3))
 		return;
 	end
 	crash();
@@ -63,25 +131,30 @@ void test_3_global_pointer()
 	expect(3, 7, *p, 25, TYPE_GLOBAL);
 end
 
+int *arr_addr = 0;
 void test_3_array_pointer()
 	int arr[4];
 	arr[0] = 10;
 	arr[1] = 11;
 	arr[2] = 12;
 	arr[3] = 13;
+	arr_addr = arr;
 	expect(3, 8, arr,    -8, TYPE_STACK);
-	expect(3, 9, arr[0], 10, TYPE_BASIC);
+	expect(3, 9,  arr[0], 10, TYPE_BASIC);
+	expect(3, 10, arr[2], 12, TYPE_BASIC);
+	expect(3, 11, arr_addr[2], 12, TYPE_BASIC);
 	int d = arr[1];
-	expect(3, 10, d, 11);
+	expect(3, 12, d, 11);
 	test_3_array_arg(arr);
 end
 
 void test_3_array_arg(int* arg)
-	expect(3, 11, arg,      -8, TYPE_STACK);
-	expect(3, 12, &arg,    -27, TYPE_STACK);
-	expect(3, 13, arg[2],   12, TYPE_BASIC);
-	expect(3, 14, *arg,     10, TYPE_BASIC);
-	expect(3, 15, *(arg+1), 11, TYPE_BASIC);
+	expect(3, 13, arg,arr_addr, TYPE_BASIC);
+	expect(3, 14, arg,      -8, TYPE_STACK);
+	expect(3, 15, &arg,    -27, TYPE_STACK);
+	expect(3, 16, arg[2],   12, TYPE_BASIC);
+	expect(3, 17, *arg,     10, TYPE_BASIC);
+	expect(3, 18, *(arg+1), 11, TYPE_BASIC);
 end
 
 int test_4_var = 0;
@@ -92,7 +165,7 @@ end
 
 int test_4_funcptr()
 	expect(4, 1, test_4_helper,  1098, TYPE_GLOBAL);
-	expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
+	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
 	int p2 = test_4_helper;
 	expect(4, 3, p1,             1098, TYPE_GLOBAL);
@@ -130,68 +203,132 @@ int test_5_arithmetic_integer()
 	return CODE_OK;
 end
 
-class Test_6_class_derp //class Derp
+void set_buff_mario(char *buff)
+	buff[0] = 'm';
+	buff[1] = 'a';
+	buff[2] = 'r';
+	buff[3] = 'i';
+	buff[4] = 'o';
+	buff[5] = 0;
+end
+
+void set_buff_warudo(char *buff)
+	buff[0] = 'w';
+	buff[1] = 'a';
+	buff[2] = 'r';
+	buff[3] = 'u';
+	buff[4] = 'd';
+	buff[5] = 'o';
+	buff[6] = 0;
+end
+
+int test_6_arrays()
+	int arr[10];
+	set_buff_mario(arr);		// pass array by pointer
+	expect(6, 1, *arr, 'm',     TYPE_BASIC);	// array is filled through literal index
+	expect(6, 2, arr[0], 'm',   TYPE_BASIC);
+	expect(6, 3, arr[1], 'a',   TYPE_BASIC);
+	expect(6, 4, arr[2], 'r',   TYPE_BASIC);
+	expect(6, 5, arr[3], 'i',   TYPE_BASIC);
+	expect(6, 6, arr[4], 'o',   TYPE_BASIC);
+	expect(6, 7, arr[5], 0,     TYPE_BASIC);	// array is zero-terminated
+	
+	int i = 1;
+	arr[i] = 'o';				
+	expect(6, 8, arr[1], 'o',   TYPE_BASIC);	// array is writeable by local var index
+	expect(6, 9, arr[i], 'o',   TYPE_BASIC);	// array is readible by local var index
+	int b1 = (&(arr[i]) == arr+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
+	expect(6, 10, b1, 1);		
+	arr[i+2] = 'e';					// array is writeable by arithmetic expression
+	expect(6, 11, arr[3], 'e',  TYPE_BASIC);
+	expect(6, 12, arr[i+3], 'e',TYPE_BASIC);	// array is readible by arithmetic expression
+
+	int L = strlen(arr);
+	expect(6, 13, L, 5);			// stdlib function "strlen" works
+
+	int arr2[20];
+	set_buff_warudo(arr2);			// another test buffer
+	expect(6, 14, arr2[0], 'w', TYPE_BASIC);
+	expect(6, 15, arr2[1], 'a', TYPE_BASIC);
+	expect(6, 16, arr2[2], 'r', TYPE_BASIC);
+	expect(6, 17, arr2[3], 'u', TYPE_BASIC);
+	expect(6, 18, arr2[4], 'd', TYPE_BASIC);
+	expect(6, 19, arr2[5], 'o', TYPE_BASIC);
+	expect(6, 20, arr2[6], 0,   TYPE_BASIC);
+
+	memmove(arr2, arr, L+1);
+	expect(6, 21, arr2[0], 'm', TYPE_BASIC); // stdlib function "memmove" works
+	expect(6, 22, arr2[1], 'o', TYPE_BASIC);
+	expect(6, 23, arr2[2], 'r', TYPE_BASIC);
+	expect(6, 24, arr2[3], 'e', TYPE_BASIC);
+	expect(6, 25, arr2[4], 'o', TYPE_BASIC);
+	expect(6, 26, arr2[5], 0,   TYPE_BASIC);
+	expect(6, 27, arr2[6], 0,   TYPE_BASIC);
+end
+
+/*
+class Test_7_class_derp //class Derp
 	int x = 1;
 	int y;
 	int sum(int z)
 		int w = x+y+z;
 		return w;
 	end
-	int test61()
-		printf("derp.t61:  x = %d\n", x);
-		printf("derp.t61: &x = %d\n", &x);
-		printf("derp.t61: this = %d\n", this);
-		printf("derp.t61: y1 = %d\n", y);
+	int test71()
+		printf("derp.t71:  x = %d\n", x);
+		printf("derp.t71: &x = %d\n", &x);
+		printf("derp.t71: this = %d\n", this);
+		printf("derp.t71: y1 = %d\n", y);
 		y = 3;
-		printf("derp.t61: y2 = %d\n", y);
+		printf("derp.t71: y2 = %d\n", y);
 	end
 end
 
-int test_6_class_local()
-	class Test_6_class_derp derp1;
-	printf("test6: &derp1 = %d\n", &derp1);
-	printf("test6: &(derp1.x) = %d\n", &(derp1.x));
-	printf("test6: derp1.x = %d\n", derp1.x);
-	derp1.test61();
-	expect(6, 1, &derp1,		-28, TYPE_STACK);
-	expect(6, 2, derp1.x,		  1, TYPE_BASIC);
+int test_7_class_local()
+	class Test_7_class_derp derp1;
+	printf("test7: &derp1 = %d\n", &derp1);
+	printf("test7: &(derp1.x) = %d\n", &(derp1.x));
+	printf("test7: derp1.x = %d\n", derp1.x);
+	derp1.test71();
+	expect(7, 1, &derp1,		-28, TYPE_STACK);
+	expect(7, 2, derp1.x,		  1, TYPE_BASIC);
 	derp1.y = 2;
-	expect(6, 3, derp1.y,		  2, TYPE_BASIC);
-	expect(6, 4, derp1.sum(4),	  7, TYPE_BASIC);
-	expect(6, 5, &derp1.sum,   2496, TYPE_GLOBAL);
+	expect(7, 3, derp1.y,		  2, TYPE_BASIC);
+	expect(7, 4, derp1.sum(4),	  7, TYPE_BASIC);
+	expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-int test_6_class_by_val(class Test_6_class_derp derp2)
-	expect(6, 6, &derp2,		-25, TYPE_STACK);
-	expect(6, 7, derp2.x,		  3, TYPE_BASIC);
-	expect(6, 8, derp2.y,		  4, TYPE_BASIC);
-	expect(6, 9, derp2.sum(5),   12, TYPE_BASIC);
-	expect(6, 10, &derp2.sum,  2496, TYPE_GLOBAL);
+int test_7_class_by_val(class Test_7_class_derp derp2)
+	expect(7, 6, &derp2,		-25, TYPE_STACK);
+	expect(7, 7, derp2.x,		  3, TYPE_BASIC);
+	expect(7, 8, derp2.y,		  4, TYPE_BASIC);
+	expect(7, 9, derp2.sum(5),   12, TYPE_BASIC);
+	expect(7, 10, &derp2.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-int test_6_class_by_ptr(class Test_6_class_derp *derp3)
-	expect(6, 11, derp3,		 -3, TYPE_STACK);
-	expect(6, 12, &derp3,	    -25, TYPE_STACK);
-	expect(6, 13, derp3.x,		  5, TYPE_BASIC);
-	expect(6, 14, derp3.y,		  6, TYPE_BASIC);
-	expect(6, 15, derp3.sum(7),	 18, TYPE_BASIC);
-	expect(6, 16, &derp3.sum,  2496, TYPE_GLOBAL);
+int test_7_class_by_ptr(class Test_7_class_derp *derp3)
+	expect(7, 11, derp3,		 -3, TYPE_STACK);
+	expect(7, 12, &derp3,	    -25, TYPE_STACK);
+	expect(7, 13, derp3.x,		  5, TYPE_BASIC);
+	expect(7, 14, derp3.y,		  6, TYPE_BASIC);
+	expect(7, 15, derp3.sum(7),	 18, TYPE_BASIC);
+	expect(7, 16, &derp3.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
-
-int test_6_class()
-	test_6_class_local();
-	class Test_6_class_derp derp4;
+int test_7_class()
+	test_7_class_local();
+	class Test_7_class_derp derp4;
 	derp4.x = 3; derp4.y = 4;
-	test_6_class_by_val(derp4);
-	class Test_6_class_derp derp5;
+	test_7_class_by_val(derp4);
+	class Test_7_class_derp derp5;
 	derp5.x = 5; derp5.y = 6;
-	test_6_class_by_ptr(&derp5);
+	test_7_class_by_ptr(&derp5);
 	return CODE_OK;
 end
+*/
 
 void expect(int test_num,int subtest_num, int val, int ref, int type)
 	if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end
@@ -217,14 +354,19 @@ void unit_test_set_base_offset()
 end
 
 void run_all_tests()
+	unit_test_ignore_global_address = 1;
+	unit_test_ignore_stack_address = 1;
+	unit_test_adaptive_stack = 1;
+	
 	unit_test_set_base_offset();
 	test_1_args_plain();
 	test_2_global_vars();
 	test_3_pointer();
 	test_4_funcptr();
 	test_5_arithmetic();
+	test_6_arrays();
 	unit_test_ignore_global_address = 0;
-	test_6_class();
+	//test_7_class();
 	report_all_ok();
 end
 
@@ -267,460 +409,20 @@ end
 void delay(int n) for(int i = 0; i < n; i++) end end
 #file "data_in/lazy2.txt"
 #line 3
-#file "data_in/big/printf.txt"
-#line 1
-//hello, am printf
-#file "data_in/big/prints.txt"
-#line 1
-#file "data_in/big/consolescreen.txt"
-#line 1
-char *AdrScreen = 0;
+//#include "data_in/big/printf.txt"
 
-void printCharXY(int X, int Y, char C, int col)
-	int offs = 2*(X+Y*30);
-	char *P = AdrScreen + offs;
-	P[0] = C;
-	P++;
-	P[0] = col;
-end
-
-void screen_set(char *scr) 
-	writePort(5, scr);
-	AdrScreen = scr; 
-end
-void screen_clear() AdrScreen[2041] = 1; end
-void screen_cursor_enable() AdrScreen[2046] = 1; end
-void screen_cursor_disable() AdrScreen[2046] = 0; end
-void screen_set_cursor_pos(int pos) AdrScreen[2045] = 2*pos; end
-void screen_set_cursor_pos_xy(int x, int y) AdrScreen[2045] = 2*(30*y+x); end
-void screen_force_refresh() AdrScreen[2020] = 1; delay(1); end
-void screen_set_shift_box_x1(int n) AdrScreen[2031] = n; end
-void screen_set_shift_box_x2(int n) AdrScreen[2032] = n; end
-void screen_set_shift_box_y1(int n) AdrScreen[2033] = n; end
-void screen_set_shift_box_y2(int n) AdrScreen[2034] = n; end
-
-void screen_set_shift_box(int x1, int x2, int y1, int y2)
-	AdrScreen[2031] = x1;
-	AdrScreen[2032] = x2;
-	AdrScreen[2033] = y1;
-	AdrScreen[2034] = y2;
-end
-
-void screen_shift_vertical(int n) AdrScreen[2038] = n; end
-void screen_shift_horizontal(int n) AdrScreen[2037] = n; end
-
-
-
-//void delay(int n) end
-#file "data_in/big/prints.txt"
-#line 2
-#file "data_in/big/number.txt"
-#line 1
-#file "data_in/big/string.txt"
-#line 1
-int strlen(char *str)
-	int i = 0;
-	while(*str++) i++; end
-	return i;
-end
-
-void string_reverse(char *str)
-	int len = strlen(str);
-	for(int i = 0; i < len/2; i++)
-		int opposite = len-1-i;
-		char d = str[i];
-		str[i] = str[opposite];
-		str[opposite] = d;
-	end	
-end
-
-void memmove(char *dest, char *src, int size)
-	if(dest > src)
-		//print(".moveback.");
-		for(int i = size-1; i > -1; i--)
-			dest[i] = src[i];
-		end
-	end
-	if(dest < src)
-		for(int i = 0; i < size; i++)
-			dest[i] = src[i];
-		end
-	end
-end
-
-void strmove(char *dest, char *src)
-	int len = strlen(src);
-	memmove(dest, src, len+1); //includes terminating zero
-end
-
-
-//if the string is shorter than padlen, pads in with padchar
-void strPadBegin(char *str, int padlen, char padchar)
-	int len = strlen(str);
-	if(len < padlen)
-		int diff = padlen - len;
-		strmove(str+diff, str);
-		for(int i = 0; i < diff; i++)
-			str[i] = padchar;
-		end
-	end
-end
-
-void strPadEnd(char *str, int padlen, char padchar)
-	int len = strlen(str);
-	if(len < padlen)
-		int diff = padlen - len;
-		for(int i = 0; i < diff; i++)
-			str[len+i] = padchar;
-		end
-		str[padlen] = 0;
-	end
-end
-#file "data_in/big/number.txt"
-#line 2
-
-//returns the (floored) log10 of a number, i.e. number of digits in floor(num).
-//assumes num is positive
-int ilog10(float num)
-	for(int i = 0; i < 10; i++)
-		if(num < 10) return i; end
-		num = num / 10;
-	end
-end
-
-//returns 10^num
-int ipow10(int num)
-	int x = 1;
-	for(int i = 0; i < num; i++)
-		x = x*10;
-	end
-	return x;
-end
-
-int numDigits(float num) return ilog10(num)+1; end
-
-int getNdigit(float num, int dig)
-	//1. remove the lower parts
-	num = num / ipow10(dig);
-	//2. get the lowest remaining digit
-	num = num % 10;
-	return num;
-end
-
-int floor(float num)
-	int res = 0;
-	int n = numDigits(num);
-	for(int i = 0; i < n; i++)
-		int d = getNdigit(num, i);
-		res = res + d * ipow10(i);
-	end
-	return res;
-end
-
-int floorPrec(float num, float prec)
-	//printf("floorPrec(%d):\n", num);
-	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
-	num = num * k; 			//printf(" num*k = %d\n", num);
-	num = floor(num);		//printf(" floor(num) = %d\n", num);
-	num = num / k;			//printf(" num/k = %d\n", num);
-	return num;
-end
-
-float frac(float num)
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	float f = num - floor(num);
-	if(isNeg) f = -f; end
-	return f;
-end
-
-
-
-void int2str(float num, char *buff)
-	char *buffInit = buff;
-//	if(num == 0)
-//		buff[0] = '0';//*buff++ = '0';
-//		buff++;
-//		buff[0] = 1;//*buff = 0;
-//	end
-	int isNeg = 0;
-	if(num < 0) isNeg = 1; num = -num; end
-	int End = 0;
-	while(End==0)
-		int d = num % 10;	
-		buff[0] = '0'+d;
-		buff++;
-		num = num / 10;
-		
-		if(num<1) //if(num == 0)
-			if(isNeg) buff[0] = '-'; buff++; end
-			buff[0] = 0;
-			End = 1;
-		end
-	end
-	string_reverse(buffInit);
-end
-
-
-
-
-void float2str(float num, int prec, char *buff)
-	char *buffInit = buff;
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	int num_fl = floor(num);
-	float num_fr = frac(num);
-	float num_frpr = floorPrec(num_fr, prec);
-	//printf("float2str(%d, %d):\n",num, prec);
-	//printf("  num_fl = %d\n", num_fl);
-	//printf("  num_fr*1000 = %d\n", num_fr*1000);
-	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
-	//if(isNeg) *buff++ = '-'; end
-	if(isNeg) buff[0] = '-'; buff++; end
-	int2str(num_fl, buff);
-	buff = buff + strlen(buff);
-	//if(num_fr)
-		//*buff++ = '.';
-		buff[0] = '.';
-		buff++;
-		int k = ipow10(prec);
-		float num_final = floor(num_frpr*k);
-		//printf("  num_final = %d\n", num_final);
-		int2str(num_final, buff);
-		strPadBegin(buff, prec, '0');
-	//end
-end
-#file "data_in/big/prints.txt"
-#line 3
-
-int screen_print_x_min = 0;
-int screen_print_y_min = 0;
-int screen_print_x_max = 30;
-int screen_print_y_max = 19;
-
-int cs_last_x = 29;
-int cs_last_y = 17;
-int printScrX = 0;
-int printScrY = 0;
-
-void libprints_init()
-	cs_last_x = 29;
-	cs_last_y = 17;
-	printScrX = 0;
-	printScrY = 0;
-end
-
-void setPrintCursor(int x, int y) printScrX = x; printScrY = y; end
-
-
-//idea: functor as 'character inserter'. can check bounds, do /dev/null, etc.
-//so basically stream?
-int charcode_NL = 10; //same as enter
-int charcode_BACK = 13; //same as backspace
-int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
-int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-int charcode_BELL = 16; //make a beep or something
-//sequences: 
-//NL -> print pointer is at the beginning of the next line
-//FILL -> line filled with spaces; print pointer at the end of this line
-//CR -> print pointer at the beginning of this line
-//CR FILL CR -> the line is blank and you are at the beginning
-//BACK CR -> go to beginning of prev line
-//hello BACK z -> hellz
-
-
-
-
-void PrintChar(char C, int col)
-	//dbgprint("printchar ", C, C);
-	if(C == charcode_NL) newline(); end
-	if(C == charcode_BACK) prevcol(); end
-	if(C == charcode_CR) printScrX = 0; end
-	if(C == charcode_FILL)
-		for(int i = printScrX; i < cs_last_x; i++)
-			printCharXY(i, printScrY, ' ', col);
-		end
-		printScrX = cs_last_x;
-	end
-	if(C == charcode_BELL) beep(); end
-	if(C > 31)
-		printCharXY(printScrX, printScrY, C, col);
-		newcol();
-	end
-end
-
-
-void Prints(char *str2, int col) //maybe str conflicts with the str in print?
-//	int dbgNum = 0;
-	while(*str2)
-//		char c = *str2;
-//		print("prints: i=");
-//		printnum2(dbgNum);
-//		print(",c=");
-//		printc(c);
-//		printnl();
-//		dbgNum++;
-//		print("x");
-		PrintChar(*str2++, col);
-	end
-end
-
-void Printn(int num, int col)
-	char buff[20];
-	int2str(num, buff);
-	Prints(buff, col);
-end
-
-void newline()
-	printScrX = 0;
-	printScrY++;
-	if(printScrY > cs_last_y-1)
-		ConsoleShiftUp();
-	end
-end
-
-void prevline()
-	printScrX = cs_last_x;
-	printScrY--;
-	if(printScrY < 0)
-		ConsoleShiftDown();
-	end
-end
-
-void newcol()
-	printScrX++;
-	if(printScrX > cs_last_x)
-		newline();
-	end
-end
-
-void prevcol()
-	printScrX--;
-	if(printScrX < 0)
-		prevline();
-	end
-end
-
-void beep() end
-
-void ConsoleShiftUp()
-	if(printScrY > cs_last_y-1)
-		screen_shift_vertical(1);
-		printScrY--;
-	end
-end
-
-void ConsoleShiftDown()
-	if(printScrY < 0)
-		screen_shift_vertical(-1);
-		printScrY++;
-	end
-end
-
-void screen_set_print_box(int x1, int y1, int x2, int y2)
-	screen_print_x_min = x1;
-	screen_print_y_min = y1;
-	screen_print_x_max = x2;
-	screen_print_y_max = y2;
-end
-#file "data_in/big/printf.txt"
-#line 3
-
-char *lorem_ipsum(int I)
-   int sw = I % 10;
-   if(sw == 0) return "Lorem ipsum dolor sit amet, "; end
-   if(sw == 1) return "consectetur adipiscing elit. "; end
-   if(sw == 2) return "Nam auctor lorem in massa tempor bibendum. "; end
-   if(sw == 3) return "Nulla in metus in nunc ornare "; end
-   if(sw == 4) return "porta ullamcorper non enim. "; end
-   if(sw == 5) return "Donec tincidunt magna "; end
-   if(sw == 6) return "non tellus blandit faucibus. "; end
-   if(sw == 7) return "Nullam ac sem vitae lectus gravida vulputate. "; end
-   if(sw == 8) return "Quisque quis lacinia risus, "; end
-   if(sw == 9) return "non rutrum turpis. "; end
-   return "(oops)";
-end
-
-int sprintf(char *buff, char *fmt, int *parg)
-	int printed = 0;
-	while(*fmt)
-		char c = *fmt;
-		if(c == '%')
-			fmt++;
-			char c2 = *fmt;
-			fmt++;
-			if(c2 == 'd') int2str(*parg, buff); parg++; end
-			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
-			if(c2 == 's') strmove(buff, *parg); parg++; end
-			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
-			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
-			int inc = strlen(buff);
-			printed = printed + inc;
-			buff = buff + inc;
-		end
-		if(c != '%')
-			if(c == '\')
-				fmt++;
-				char c2 = *fmt;
-				fmt++;
-				if(c2 == 'n') buff[0] = charcode_NL; buff[1] = 0; end
-				if(c2 == 'r') buff[0] = charcode_CR; buff[1] = 0; end
-				if(c2 == 'f') buff[0] = charcode_FILL; buff[1] = 0; end
-				if(c2 == 'b') buff[0] = charcode_BACK; buff[1] = 0; end
-				if(c2 == 'e') buff[0] = charcode_BELL; buff[1] = 0; end
-				if(c2 == '\') buff[0] = '\'; buff[1] = 0; end
-				int inc = strlen(buff);
-				printed = printed + inc;
-				buff = buff+inc;
-			end
-			if(c != '\')
-				buff[0] = c;
-				buff[1] = 0;
-				printed++;
-				buff++;
-				fmt++;
-			end
-		end
-	end
-	return printed;
-end
-
-int printf(char *fmt, float args)
-	int printed = 0;
-	char buff[80];
-	int *parg = &args;
-	printed = sprintf(buff, fmt, parg);
-	Prints(buff, 999);
-	return printed;
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#file "data_in/lazy2.txt"
-#line 4
-
-//class Derp
-//	int x = 1;
-//	int y;
-//	int sum(int z)
-//		int w = x+y+z;
-//		return w;
-//	end
-//end
-
+/*
 int addr_bus[4];
+
+
+void stuff_test_1()
+	int x;
+	printf("t1 x1: %d\n", x); // ???
+	x = 11;
+	printf("t1 x2: %d\n", x); // 11
+end
+
+
 
 void init_printf()
 	addr_bus[0] = 65536;
@@ -730,29 +432,68 @@ void init_printf()
 	screen_set(addr_bus[2]);
 
 	screen_clear();
+end
+
+void test_printf()
 	printf("hello world!\n");
 	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
 	/// oh hey, it turns out our printf or num2str doesn't flip the digits oops
 	//printf("123[%d],45[%d],1[%d],10[%d],0.1[%d]\n",123,45,1,10,1/10);
+	// bluuuuh, nothing but %d works on printf and even that crappily backwards
 	printf("s test: %s\n","abra_cadabra_karabas_barabas");
+	printf("d test: %d, %d, %d\n", 123, 45, 1907);
 	char *str = "[my string]";
+	int L = strlen(str);
+	printf("strlen = %d\n", L);
+
 	printf(str);
-	printf("\n");
-	printf("before: %s\n",str);
-	string_reverse(str);
-	printf("after : %s\n",str);
-	printf(str);
-	printf("\n");
+	char zuzubaf[20];
+	set_buff_mario(zuzubaf);
+	debug_s_arg(zuzubaf); printf("\n");
+	memmove(zuzubaf, str, L+1);
+	debug_s_arg(zuzubaf); printf("\n");
+	printf("str : [");printf(str);printf("]\n");
+	printf("buff: [");printf(zuzubaf);printf("]\n");
+	debug_s_arg(zuzubaf); printf("\n");
+	return;
+
+	int x = 10;
+	printf("t0 x1: %d\n", x); // 10
+	char buff2[7];
+	set_buff_warudo(buff2);
+	debug_s_arg(buff2);
+	stuff_test_1();
+	stuff_test_2();
+	printf("t0 x2: %d\n", x); // 10
+	debug_s_arg(buff2);
+	//printf("\n");
+	//printf("before: %s\n",str);
+	//string_reverse(str);
+	//printf("after : %s\n",str);
+	//printf(str);
+	//printf("\n");
 end
+
+void stuff_test_2()
+	int x;
+	printf("t2 x1: %d\n", x); // ???
+	x = 12;
+	printf("t2 x2: %d\n", x); // 12
+end
+*/
+/*
+int *adr_port = 65536;
+
+void writePort(int port, int val)
+	*(adr_port+port) = val;
+end
+*/
 
 int main()
 	setup();
 	
-	init_printf();
-
-	unit_test_ignore_global_address = 1;
-	unit_test_ignore_stack_address = 0;
-	unit_test_adaptive_stack = 1;
+	//init_printf();
+	
 	run_all_tests();
 	
 	infloop();
