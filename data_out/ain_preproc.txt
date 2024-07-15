@@ -224,30 +224,35 @@ end
 
 int test_6_arrays()
 	int arr[10];
+	writePort(7, 19999);
 	set_buff_mario(arr);		// pass array by pointer
-	expect(6, 1, *arr, 'm',     TYPE_BASIC);	// array is filled through literal index
-	expect(6, 2, arr[0], 'm',   TYPE_BASIC);
+	/// arr == {mario}
+	expect(6, 1, arr[0], 'm',   TYPE_BASIC);
+	expect(6, 2, *arr, 'm',     TYPE_BASIC);	// array is filled through literal index
 	expect(6, 3, arr[1], 'a',   TYPE_BASIC);
 	expect(6, 4, arr[2], 'r',   TYPE_BASIC);
 	expect(6, 5, arr[3], 'i',   TYPE_BASIC);
 	expect(6, 6, arr[4], 'o',   TYPE_BASIC);
 	expect(6, 7, arr[5], 0,     TYPE_BASIC);	// array is zero-terminated
-	
 	int i = 1;
-	arr[i] = 'o';				
+	arr[i] = 'o';	
+	/// arr == {morio}			
 	expect(6, 8, arr[1], 'o',   TYPE_BASIC);	// array is writeable by local var index
 	expect(6, 9, arr[i], 'o',   TYPE_BASIC);	// array is readible by local var index
 	int b1 = (&(arr[i]) == arr+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
 	expect(6, 10, b1, 1);		
-	arr[i+2] = 'e';					// array is writeable by arithmetic expression
+	arr[i+2] = 'e';	// array is writeable by arithmetic expression
+	/// arr == {moreo}
 	expect(6, 11, arr[3], 'e',  TYPE_BASIC);
-	expect(6, 12, arr[i+3], 'e',TYPE_BASIC);	// array is readible by arithmetic expression
+	expect(6, 12, arr[i+3], 'o',TYPE_BASIC);	// array is readible by arithmetic expression
 
 	int L = strlen(arr);
 	expect(6, 13, L, 5);			// stdlib function "strlen" works
 
 	int arr2[20];
 	set_buff_warudo(arr2);			// another test buffer
+	/// arr  == {moreo\0}
+	/// arr2 == {warudo\0}
 	expect(6, 14, arr2[0], 'w', TYPE_BASIC);
 	expect(6, 15, arr2[1], 'a', TYPE_BASIC);
 	expect(6, 16, arr2[2], 'r', TYPE_BASIC);
@@ -257,6 +262,8 @@ int test_6_arrays()
 	expect(6, 20, arr2[6], 0,   TYPE_BASIC);
 
 	memmove(arr2, arr, L+1);
+	/// arr  == {moreo\0}
+	/// arr2 == {moreo\0\0}
 	expect(6, 21, arr2[0], 'm', TYPE_BASIC); // stdlib function "memmove" works
 	expect(6, 22, arr2[1], 'o', TYPE_BASIC);
 	expect(6, 23, arr2[2], 'r', TYPE_BASIC);

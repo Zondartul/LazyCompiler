@@ -599,10 +599,6 @@ const char* loadRValue(const char* val) {
 		else { return S->lbl_at; }
 	}
 	if (!strcmp(S->type, "MEMBER")) {
-		if (ref || S->arraysize) {
-			vec_printf(&vstr, "%d", S->pos);
-			return stralloc(vstr.data);//return stralloc(buff);
-		}
 		if (deref) {
 			//todo: check if some register already contains that val
 			ptr_reg R = allocRegister();
@@ -613,18 +609,16 @@ const char* loadRValue(const char* val) {
 			vec_printf(&vstr, "#%s", reg);
 			return stralloc(vstr.data);//return stralloc(buff);
 		}
+		if (ref || S->arraysize) {
+			vec_printf(&vstr, "%d", S->pos);
+			return stralloc(vstr.data);//return stralloc(buff);
+		}
 		vec_printf(&vstr, "#%s", S->lbl_at);
 		return stralloc(vstr.data); //return stralloc(buff);
 	}
 	if (!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) {
 		if (S->framedepth == 0) {
 			//global var
-			if (ref || S->arraysize) {
-				//vec_printf(&vstr, "%d", S->pos);
-				//return stralloc(vstr.data);//return stralloc(buff);
-				/// hold on, if the var is global, then we should just plop down the label?
-				return stralloc(S->lbl_at);
-			}
 			if (deref) {
 				//todo: check if some register already contains that val
 				ptr_reg R = allocRegister();
@@ -632,18 +626,24 @@ const char* loadRValue(const char* val) {
 				R->val = stralloc(val);
 				printindent();
 				asm_println("mov %s, #%s", reg, S->lbl_at);
-				vec_printf(&vstr, "#%s", reg);
+				if(S->arraysize){
+					vec_printf(&vstr, "%s", reg);
+				}else{
+					vec_printf(&vstr, "#%s", reg);
+				}
 				return stralloc(vstr.data);//return stralloc(buff);
+			}
+			if (ref || S->arraysize) {
+				//vec_printf(&vstr, "%d", S->pos);
+				//return stralloc(vstr.data);//return stralloc(buff);
+				/// hold on, if the var is global, then we should just plop down the label?
+				return stralloc(S->lbl_at);
 			}
 			vec_printf(&vstr, "#%s", S->lbl_at);
 			return stralloc(vstr.data); //return stralloc(buff);
 		}
 		else {
 			//local var
-			if (ref || S->arraysize) {
-				vec_printf(&vstr, "EBP:%d", S->pos);
-				return stralloc(vstr.data); //return stralloc(buff);
-			}
 			if (deref) {
 				//todo: check if some register already contains that val
 				ptr_reg R = allocRegister();
@@ -651,8 +651,16 @@ const char* loadRValue(const char* val) {
 				R->val = stralloc(val);
 				printindent();
 				asm_println("rstack %s, EBP:%d", reg, S->pos);
-				vec_printf(&vstr, "#%s", reg);
+				if(S->arraysize){
+					vec_printf(&vstr, "%s", reg);
+				}else{
+					vec_printf(&vstr, "#%s", reg);
+				}
 				return stralloc(vstr.data);//return stralloc(buff);
+			}
+			if (ref || S->arraysize) {
+				vec_printf(&vstr, "EBP:%d", S->pos);
+				return stralloc(vstr.data); //return stralloc(buff);
 			}
 			vec_printf(&vstr, "EBP:#%d", S->pos);
 			return stralloc(vstr.data);//return stralloc(buff);

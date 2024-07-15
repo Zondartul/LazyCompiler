@@ -699,14 +699,15 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	if (semantic_decl) { return; }
 
 	const char* author = "expr_ref(&)";
-	//in RVAL, out LVAL
+	//in RVAL, out PTR
 
 	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	PREP_RES(res1, E_PTR);
+	PREP_RES(res1, E_PTR); //RVAL so we get unadorned number  //E_PTR);
 	res1stg.dest.author = "expr_ref(&) expr";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
 	VERIFY_RES(res1);
+	
 	struct type_name* T = res1.T;
 	if(T->args){
 		/// this has args, it's a function.
@@ -717,9 +718,14 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	struct type_name* T2 = reffed_type(T);
 	emit_code("/* ref %s */", sanitize_string(res1.val));
 	
-	//we get ptr, we want to reinterpret it as E_LVAL // huh, why?
+	
+	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
+	emit_code("MOV %s %s", resultExpr, res1.val);
+	/// we take a value, remove adorations (ref or deref as necessary)
+	/// and then present it as a plain number (RValue=read)
 
-	val_handle result = { .val = res1.val, .rv_type = E_PTR, .T = T2, .author = author };
+	/// output as ptr of (&x) kind
+	val_handle result = { .val = /*res1.val*/resultExpr, .rv_type = E_RVAL/*E_PTR*/, .T = T2, .author = author };
 
 	output_res(stg, result, NO_EMIT);
 }

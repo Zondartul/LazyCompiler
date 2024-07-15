@@ -35,7 +35,7 @@ void gen_command_symbol() {
 	const char* val = strtok(0, " ");//words[0];
 	const char* type = strtok(0, " ");//words[1];
 	int sym_size = 1;
-	int arraysize = 1;
+	int arraysize = 0;//1;
 	//int wordI = 2;
 	int ptrlvl = 0;
 	int pos = 0;
@@ -51,7 +51,7 @@ void gen_command_symbol() {
 		word = strtok(0, " ");
 		sscanf(word, "%d", &arraysize);
 		printf("gen_command_symbol: read ARRAY %d\n", arraysize);
-		ptrlvl++;
+		//ptrlvl++;
 		word = strtok(0, " ");
 	}
 	int byte_size = sym_size;
@@ -112,7 +112,8 @@ void gen_command_symbol() {
 
 
 		S->size = sym_size;
-		if (ptrlvl) { S->arraysize = arraysize; }
+		//if (ptrlvl) { S->arraysize = arraysize; }
+		if(arraysize){S->arraysize = arraysize;}
 
 		//const char *lbl_from = IR_next_name(curframe->namespace,"lbl");
 		//asm_println("%s:",lbl_from);

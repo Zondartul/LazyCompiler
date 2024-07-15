@@ -132,7 +132,8 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	//		rvalue - you can deref (*this) - get lvalue
 	//			r  <-  r(x) // pass
 	//			l   x  r(x) // forbidden
-	//			p  <-  r(x) // pass
+	//	------------------p  <-  r(x) // pass
+	//			p  <r&- r(x) // rename-and (for &(arr+i))
 	//			 	x  r(*x)//nope, that's L
 	//			    x  r(&x)//nope, that's P
 	//  Lvalue - <- on the left side
@@ -238,7 +239,7 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_lval && src_rval && acc_star)	{goto out_nope_is_L;;}
 	if (dest_lval && src_rval && acc_and)	{goto out_nope_is_P;}
 	///		to PTR  <-
-	if (dest_ptr  && src_rval && acc_none)	{goto out_pass;}
+	if (dest_ptr  && src_rval && acc_none)	{goto out_rename_and;}//{goto out_pass;}
 	if (dest_ptr  && src_rval && acc_star)	{goto out_nope_is_L;}
 	if (dest_ptr  && src_rval && acc_and)	{goto out_nope_is_P;}
 	/// ---------- from LVAL
