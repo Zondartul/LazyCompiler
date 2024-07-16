@@ -204,7 +204,7 @@ int test_6_arrays()
 	expect(6, 27, arr2[6], 0,   TYPE_BASIC);
 end
 
-/*
+
 class Test_7_class_derp //class Derp
 	int x = 1;
 	int y;
@@ -233,7 +233,9 @@ int test_7_class_local()
 	derp1.y = 2;
 	expect(7, 3, derp1.y,		  2, TYPE_BASIC);
 	expect(7, 4, derp1.sum(4),	  7, TYPE_BASIC);
-	expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);
+	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
+	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
+	expect(7, 5, derp1.sum,   2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
@@ -242,7 +244,7 @@ int test_7_class_by_val(class Test_7_class_derp derp2)
 	expect(7, 7, derp2.x,		  3, TYPE_BASIC);
 	expect(7, 8, derp2.y,		  4, TYPE_BASIC);
 	expect(7, 9, derp2.sum(5),   12, TYPE_BASIC);
-	expect(7, 10, &derp2.sum,  2496, TYPE_GLOBAL);
+	expect(7, 10, derp2.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
@@ -252,7 +254,7 @@ int test_7_class_by_ptr(class Test_7_class_derp *derp3)
 	expect(7, 13, derp3.x,		  5, TYPE_BASIC);
 	expect(7, 14, derp3.y,		  6, TYPE_BASIC);
 	expect(7, 15, derp3.sum(7),	 18, TYPE_BASIC);
-	expect(7, 16, &derp3.sum,  2496, TYPE_GLOBAL);
+	expect(7, 16, derp3.sum,  2496, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
@@ -266,7 +268,7 @@ int test_7_class()
 	test_7_class_by_ptr(&derp5);
 	return CODE_OK;
 end
-*/
+
 
 void expect(int test_num,int subtest_num, int val, int ref, int type)
 	if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end

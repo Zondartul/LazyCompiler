@@ -1,8 +1,8 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/testOutput.txt"
-//#include "data_in/big/printf.txt"
+#include "data_in/big/printf.txt"
 
-/*
+
 int addr_bus[4];
 
 
@@ -33,7 +33,7 @@ void test_printf()
 	// bluuuuh, nothing but %d works on printf and even that crappily backwards
 	printf("s test: %s\n","abra_cadabra_karabas_barabas");
 	printf("d test: %d, %d, %d\n", 123, 45, 1907);
-	char *str = "[my string]";
+	char *str = "[my strings]";
 	int L = strlen(str);
 	printf("strlen = %d\n", L);
 
@@ -71,7 +71,7 @@ void stuff_test_2()
 	x = 12;
 	printf("t2 x2: %d\n", x); // 12
 end
-*/
+
 /*
 int *adr_port = 65536;
 
@@ -83,8 +83,10 @@ end
 int main()
 	setup();
 	
-	//init_printf();
-	
+	init_printf();
+	//test_printf();	
+	printf("Hello [%s] %d!\n", "world", 123);
+
 	run_all_tests();
 	
 	infloop();

@@ -2,6 +2,8 @@
     "files.associations": {
         "types.h": "c",
         "vector2.h": "c",
-        "symbol.h": "c"
+        "symbol.h": "c",
+        "code_segment.h": "c",
+        "semantic_context_kind.h": "c"
     }
 }

@@ -20,12 +20,12 @@ void memmove(char *dest, char *src, int size)
 		for(int i = size-1; i > -1; i--)
 			dest[i] = src[i];
 		end
-		for(int i = 0; i < size; i++)
-			dest[i] = 'w';
-		end
+		//for(int i = 0; i < size; i++)
+		//	dest[i] = 'w';
+		//end
 	end
 	if(dest < src)
-		writePort(3,2);
+		//writePort(3,2);
 		for(int i = 0; i < size; i++)
 			dest[i] = src[i];
 		end

@@ -82,45 +82,32 @@ const char* rename_unand(const char* val) {
 void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	/*
 	*  IR VALUE RULES
-	*   LVAL - raw typeless number, without a storage location.
-	*   PTR - a number that refers to a location in memory, where something can be stored.
-	*   RVAL - either 1) a "dereferenced pointer" expression (can't be stored in another value) (*x)
-	*	  		or 2) a "primitive rvalue" aka register or function ( _main )
-	*   --- stored values (left-side of mov-to LVAL or PTR) must not have accessors (&, *) 
-	* 
+	*   RVAL - "R means read" - value at the right (->) hand side of an expression, not write-able
+	*   LVAL - "L means write" - value at the left (<-) hand side of an expression, write-able and has a memory location
+	*   PTR - "pointer" - temporary value to calculate the address of something, will turn into RVAL or LVAL by the time user sees it.
+	*			automatically dereferenced when converting to RVAL or LVAL.
+	*	FPTR - "function pointer" - special type of PTR for pointers to functions. Cannot be referenced or dereferenced, only called.
+	*	ASIS - "return the source value as-is" - pass-through of the unmodified source vale, preserving rv-type.
+	*   
 	*  OUTPUT RES RULES
 	*   parent node analyzer requests a value of specific type,
 	*   and the current node analyzer MUST return a node of the same type.
-	*   emitting is needed to perform a conversion (promition) that copies a value to temporary.
-	* 
-	*  Conversion matrix:
-	*  dest val						IR expression syntax
-	*  |							IR_out <- IR_in
-	*  v
-	*		LVAL	RVAL			PTR		<-- src val
-	*  LVAL pass	rename.unstar	rename.unand	
-	*		x <- x	x <r- *x		x <r- &x	   (switch from adr-repr to val-repr)
-	*				(switch a2v)	rename.star-and-copy
-	*								x <c- *x <r- x (deref a pointer here)
-	*								actually nvm, just pass (when throwing a function into argument)
-	*								x <- x pass
-	*								copy
-	*								x <c- *x		(also deref)
-	* 
-	*  RVAL	?   	pass			copy-and-rename.star
-	*				*x <- *x		*x <r- x <c- &x //no, rename unand x <r- &x
-	*								rename
-	*								*x <r- x
-	*							
-	*  PTR  pass	rename			pass
-	*		x <- x	x <r- *x		x <- x
-	*								copy    // actually unand
-	*								x <c- &x//   x <r- &x
-	*								copy
-	*								x <c- *x
-	* 
-	* 3x3x3 possibilities
-	* 
+	*	Some expressions want values without decorators (&*), in that case, copy is used.   
+	*
+	*  HOW IT WORKS:
+	*	Semantic analyze of parent node -->calls-> semantic analyze of child node
+	*		(stg.actual = &out_res)	 \									|
+	*		    ^				 	  v									v
+	*			|	"i want to get a value of this rv-type"			locates or generates a value
+	*			|										\			 /<- "i have a value of this rv-type"
+	*		 *out_res = result							|			/		 	
+	*	"result value has 								v          v
+	*		this name and rv_type"	<-------output_res(stg.dest, src)			
+	*					  						|
+	*											v
+	*									 [maybe rename IR value (book-keeping)]
+	*									 [maybe copy IR value to temporary (code-gen)]
+	*									 [probably change rv_type (book-keeping)]
 	*/
 
 	/// i forgot what all of this does so new idea:
@@ -132,53 +119,67 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	//		rvalue - you can deref (*this) - get lvalue
 	//			r  <-  r(x) // pass
 	//			l   x  r(x) // forbidden
-	//	------------------p  <-  r(x) // pass
-	//			p  <r&- r(x) // rename-and (for &(arr+i))
-	//			 	x  r(*x)//nope, that's L
-	//			    x  r(&x)//nope, that's P
+	//			f  <-  r(x) // pass
+	//			a  <-  r(x) // pass
+	//			p  <r&- r(x) // rename-and (for &(arr+i))... but not if it's a function?
+	//			 
+	//			r(*x) //nope, that's L
+	//			r(&x) //nope, that's P
+	//  
 	//  Lvalue - <- on the left side
 	//		lvalue - you can read it (x = this)
 	//		lvalue - you can write it (this = x)
 	//		lvalue - you can take it's address (&this) - result is ptr
 	//		lvalue - you can deref (*this) - get lvalue
 	//			r	<-	l(x)  //pass
-	//			r	<c-	l(*x)
+	//			r	<c-	l(*x) //copy
 	//			l	<-	l(x)  //pass
-	//			l	<-	l(*x) //pass (have to output *)
-	//			l		l(&x) //nope, that's P
-	//			p  <r&-	l(x)  //rename-and
+	//			*l	<-	l(*x) //pass (have to output *)
+	//			&p  <r&-	l(x)  //rename-and
 	//			p  <r-*	l(*x) //rename-unstar
-	//
+	//			f   x   l(x)  //forbidden (idk, can be pass i guess)
+	//			a  <-   l(x)  //pass
+	//			&a  <-  l(&x)  //pass
 	//					l(&x) //nope, that's P
 	//			
 	//  Ptr - you need to add * to get Lvalue
 	//		ptr - you can do arithmetic to get another ptr
 	//		ptr - you can deref (*this) - get lvalue
 	//
-	//		r	<r*-	p(x)  //rename-star
-	//		r	<c-		p(&x) //copy
-	//		l	<r*-	p(x)  //rename-star
-	//		l	<r-&-	p(&x)	//un-and
-	//		p	<-	p(x)	//pass
-	//		p	<c-	p(&x)	//copy
+	//			*r	<r*-	p(x)  //rename-star
+	//			r	<c-		p(&x) //copy
+	//			*l	<r*-	p(x)  //rename-star
+	//			l	<r-&-	p(&x)	//un-and
+	//			p	<-	p(x)	//pass
+	//			p	<c-	p(&x)	//copy
+	//			f   <-  p(x)    //pass
+	//			f   <c- p(&x)	//copy
+	//			a   <-  p(x)    //pass
+	//			&a   <-  p(&x)	//pass
+	//  
+	//		 	p(*x) //nope, that's L
 	//
-	//		 		p(*x) //nope, that's L
-
-	//if((strcmp(src.val, "&p1") == 0) && (strcmp(stg.dest.author, "expr_call funcname")==0)){
-	//	printf("debug breakpoint");
-	//}
-
-	//enum passType {
-	//	PASS_DEST_LVAL = 1,
-	//	PASS_DEST_RVAL = 2,
-	//	PASS_DEST_PTR = 3,
-	//	PASS_SRC_LVAL = 10,
-	//	PASS_SRC_RVAL = 20,
-	//	PASS_SRC_PTR = 30,
-	//	PASS_ACC_NONE = 100,
-	//	PASS_ACC_STAR = 200,
-	//	PASS_ACC_AND = 300 //ampersand
-	//};
+	//  Fptr - function pointer that should not be referenced or dereferenced
+	//    	Fptr - you can call it
+	//		Fptr - you can read it (the address, no the memory)
+	//	
+	//			r	<-	f(x)	//pass
+	//			r	<c-  f(*x)	//copy
+	//			l	x	f(x)	//forbidden
+	//			p	<-  f(x)	//pass
+	//			p   <c- f(*x)	//copy
+	//			a	<-	f(x)	//pass
+	//			a	<-  f(*x)	//copy		
+	//
+	//			f(&x) //nope, that's P
+	//
+	//	Asis - preserve and pass through the rv type
+	//		Asis - destination becomes the source type
+	//		Asis - cannot be the source type
+	//			
+	//			a	<- x// asis-pass
+	//			&a	<- &x// asis-pass
+	//			*a	<- *x// asis-pass
 
 	if (stg.dest.rv_type == E_ERROR) { error("internal semantic error: expr_settings null"); }
 	if (stg.dest.rv_type == E_DISCARD) {
@@ -187,16 +188,19 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	}
 	VERIFY_RES(src);
 
-	//expr_type _src_type = src.rv_type;
-	//expr_type _dest_type = stg.dest.rv_type;
-	//const char* _src_val = src.val;
+	
+	expr_type out_rv_type = stg.dest.rv_type;
 
 	int dest_lval = (stg.dest.rv_type == E_LVAL);
 	int dest_rval = (stg.dest.rv_type == E_RVAL);
 	int dest_ptr = (stg.dest.rv_type == E_PTR);
+	int dest_fptr = (stg.dest.rv_type == E_FPTR);
+	int dest_asis = (stg.dest.rv_type == E_ASIS);
 	int src_lval = (src.rv_type == E_LVAL);
 	int src_rval = (src.rv_type == E_RVAL);
 	int src_ptr = (src.rv_type == E_PTR);
+	int src_fptr = (src.rv_type == E_FPTR);
+	int src_asis = (src.rv_type == E_ASIS);
 	int acc_star = (src.val[0] == '*');
 	int acc_and = (src.val[0] == '&');
 	int acc_none = (!acc_star) && (!acc_and);
@@ -205,10 +209,14 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_lval) { dest_rv_str = "L"; }
 	if (dest_rval) { dest_rv_str = "R"; }
 	if (dest_ptr)  { dest_rv_str = "P";	}
+	if (dest_fptr) { dest_rv_str = "F"; }
+	if (dest_asis) { dest_rv_str = "A";}
 	const char* src_rv_str = 0;
 	if (src_lval) { src_rv_str = "L"; }
 	if (src_rval) { src_rv_str = "R"; }
 	if (src_ptr)  { src_rv_str = "P"; }
+	if (src_fptr) { src_rv_str = "F"; }
+	if (src_asis) { src_rv_str = "A"; }
 
 	assert(src.val);
 	assert(strlen(src.val));
@@ -216,6 +224,12 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	//verify that the value we are outputting is initialized and stuff
 	if ((src.rv_type == E_ERROR)) {
 		error("internal semantic error: invalid source value");
+	}
+	if ((src.rv_type == E_ASIS)){
+		error("internal semantic error: source type can't be 'as-is'");
+		// only dest type can be as-is
+		// it is up to the analyzed expression that outputs a value (our caller) 
+		// to tell output_res what the source type is.
 	}
 	printf("output_res (%s)\n", src.val);
 
@@ -242,6 +256,15 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_ptr  && src_rval && acc_none)	{goto out_rename_and;}//{goto out_pass;}
 	if (dest_ptr  && src_rval && acc_star)	{goto out_nope_is_L;}
 	if (dest_ptr  && src_rval && acc_and)	{goto out_nope_is_P;}
+	//		to FPTR <-
+	if (dest_fptr  && src_rval && acc_none)	{goto out_pass;}//{goto out_pass;}
+	if (dest_fptr  && src_rval && acc_star)	{goto out_nope_is_L;}
+	if (dest_fptr  && src_rval && acc_and)	{goto out_nope_is_P;}
+	//		to ASIS <-
+	if (dest_asis  && src_rval && acc_none) {goto out_asis_pass;}
+	if (dest_asis  && src_rval && acc_star) {goto out_nope_is_L;}
+	if (dest_asis  && src_rval && acc_and)  {goto out_nope_is_P;}
+
 	/// ---------- from LVAL
 	///     to RVAL <-
 	if (dest_rval && src_lval && acc_none)	{goto out_pass;}
@@ -255,8 +278,18 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_ptr  && src_lval && acc_none)	{goto out_rename_and;}
 	if (dest_ptr  && src_lval && acc_star)	{goto out_rename_unand;}
 	if (dest_ptr  && src_lval && acc_and)	{goto out_nope_is_P;}
+		//		to FPTR <-
+	if (dest_fptr  && src_lval && acc_none)	{goto out_forbidden;}//{goto out_pass;}
+	if (dest_fptr  && src_lval && acc_star)	{goto out_forbidden;}
+	if (dest_fptr  && src_lval && acc_and)	{goto out_nope_is_P;}
+	//		to ASIS <-
+	if (dest_asis  && src_lval && acc_none) {goto out_asis_pass;}
+	if (dest_asis  && src_lval && acc_star) {goto out_asis_pass;}
+	if (dest_asis  && src_lval && acc_and)  {goto out_nope_is_P;}
+
 	/// ---------- from PTR
 	///     to RVAL <-
+	//if (dest_rval && src_ptr  && acc_none && is_func)	{goto out_pass;}
 	if (dest_rval && src_ptr  && acc_none)	{goto out_rename_star;}
 	if (dest_rval && src_ptr  && acc_star)	{goto out_nope_is_L;}
 	if (dest_rval && src_ptr  && acc_and)	{goto out_copy;}
@@ -268,27 +301,46 @@ void output_res(expr_settings stg, val_handle src, int /*do_emit*/) {
 	if (dest_ptr  && src_ptr  && acc_none)	{goto out_pass;}
 	if (dest_ptr  && src_ptr  && acc_star)	{goto out_nope_is_L;}
 	if (dest_ptr  && src_ptr  && acc_and)	{goto out_copy;}
-
-	/*
-	if (dest_lval && src_rval && acc_star) { goto out_pass; } // what happens when we put int *p; *p in an arg?//{ goto out_rename_unstar; }
-	if (dest_lval && src_rval && acc_none) { goto out_pass; } 
-	if (dest_rval && src_rval && acc_star) { goto out_pass; }
-	if (dest_ptr && src_rval && acc_star) { goto out_rename_unstar; }
+	//		to FPTR <-
+	if (dest_fptr  && src_ptr && acc_none)	{goto out_pass;}//{goto out_pass;}
+	if (dest_fptr  && src_ptr && acc_star)	{goto out_nope_is_L;}
+	if (dest_fptr  && src_ptr && acc_and)	{goto out_copy;}
+	//		to ASIS <-
+	if (dest_asis  && src_ptr && acc_none) {goto out_asis_pass;}
+	if (dest_asis  && src_ptr && acc_star) {goto out_nope_is_L;}
+	if (dest_asis  && src_ptr && acc_and)  {goto out_asis_pass;}
+	/// ---------- from FPTR
+	//		r	<-	f(x)	//pass
+	//		r	<c-  f(*x)	//copy
+	//		l	x	f(x)	//forbidden
+	//		p	<-  f(x)	//pass
+	//		p   <c- f(*x)	//copy
+	//		f   <-  f(x)	//pass
+	//		f	<c- f(*x)	//copy
+	//		a	<-	f(x)	//pass
+	//		a	<-  f(*x)	//copy	
+	//				f(&x) //nope, that's P
+	///     to RVAL <-
+	if (dest_rval && src_fptr  && acc_none)	{goto out_pass;}
+	if (dest_rval && src_fptr  && acc_star)	{goto out_copy;}
+	if (dest_rval && src_fptr  && acc_and)	{goto out_nope_is_P;}
+	///		to LVAL <-
+	if (dest_lval && src_fptr  && acc_none)	{goto out_forbidden;}
+	if (dest_lval && src_fptr  && acc_star)	{goto out_forbidden;}
+	if (dest_lval && src_fptr  && acc_and)	{goto out_nope_is_P;}
+	///		to PTR  <-
+	if (dest_ptr  && src_fptr  && acc_none)	{goto out_pass;}
+	if (dest_ptr  && src_fptr  && acc_star)	{goto out_copy;}
+	if (dest_ptr  && src_fptr  && acc_and)	{goto out_nope_is_P;}
+	//		to FPTR <-
+	if (dest_fptr  && src_fptr && acc_none)	{goto out_pass;}
+	if (dest_fptr  && src_fptr && acc_star)	{goto out_copy;}
+	if (dest_fptr  && src_fptr && acc_and)	{goto out_nope_is_P;}
+	//		to ASIS <-
+	if (dest_asis  && src_fptr && acc_none) {goto out_asis_pass;}
+	if (dest_asis  && src_fptr && acc_star) {goto out_asis_pass;}
+	if (dest_asis  && src_fptr && acc_and)  {goto out_nope_is_P;}
 	
-	if (dest_lval && src_lval && acc_none) { goto out_pass; }
-	if (dest_lval && src_ptr && acc_and) { goto out_rename_unand; } // and this is the (*ptr)() situtation
-	if (dest_lval && src_ptr && acc_none) { goto out_rename_star;}//{ goto out_rename_star_and_copy; } // out_pass (idk, need star to read from arrays)
-	if (dest_lval && src_ptr && acc_star) { goto out_copy; } 
-	if (dest_rval && src_lval) {goto out_pass;}//{ error("internal semantic error: can't promote lval to rval"); }
-	if (dest_rval && src_ptr && acc_and) { goto out_rename_unand;}//out_copy_and_rename_star; }
-	if (dest_rval && src_ptr && acc_none) { goto out_pass; } // so we can call plain functions //{ goto out_rename_star; }
-
-	if (dest_ptr && src_lval && acc_none) { goto out_pass; }
-	if (dest_ptr && src_ptr && acc_none) { goto out_pass; }
-	if (dest_ptr && src_ptr && acc_and) { goto out_copy; } // out_rename_unand - idk, need out_copy to print(&local_var)
-														   // but rename_unand for calling a function pointer... the expr_call not give us a &?
-	if (dest_ptr && src_ptr && acc_star) { goto out_copy; }
-	*/
 
 	goto out_unexpected;
 out_unexpected:
@@ -356,7 +408,12 @@ out_rename_star:
 	resVal = rename_star(src.val);
 	goto out_finish;
 
-
+out_asis_pass:
+	op_str = "as-is_pass";
+	resVal = src.val;
+	out_rv_type = src.rv_type;
+	goto out_finish;
+	
 out_finish:
 	
 	const char* dest_val = resVal;
@@ -376,7 +433,12 @@ out_finish:
 	emit_code(vstr.data);
 
 	if (stg.actual) {
+		// not sure what are we doing here. we want to tell the caller
+		// what actually was in the value we were given?
+		// or do we wanna tell it what we ended up with?
+		
 		*(stg.actual) = src;
+		stg.actual->rv_type = out_rv_type;//stg.dest.rv_type;
 		stg.actual->val = resVal;
 		VERIFY_RES((*(stg.actual)));
 	}

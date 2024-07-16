@@ -132,15 +132,15 @@ enum yysymbol_kind_t
   YYSYMBOL_30_ = 30,                       /* '^'  */
   YYSYMBOL_31_ = 31,                       /* '/'  */
   YYSYMBOL_32_ = 32,                       /* '*'  */
-  YYSYMBOL_33_ = 33,                       /* '.'  */
-  YYSYMBOL_34_ = 34,                       /* '['  */
-  YYSYMBOL_35_ = 35,                       /* '('  */
-  YYSYMBOL_PREDEREF = 36,                  /* PREDEREF  */
-  YYSYMBOL_PREREF = 37,                    /* PREREF  */
-  YYSYMBOL_38_ = 38,                       /* '!'  */
-  YYSYMBOL_PREINC = 39,                    /* PREINC  */
-  YYSYMBOL_PREDEC = 40,                    /* PREDEC  */
-  YYSYMBOL_PRENEG = 41,                    /* PRENEG  */
+  YYSYMBOL_33_ = 33,                       /* '['  */
+  YYSYMBOL_34_ = 34,                       /* '('  */
+  YYSYMBOL_PREDEREF = 35,                  /* PREDEREF  */
+  YYSYMBOL_PREREF = 36,                    /* PREREF  */
+  YYSYMBOL_37_ = 37,                       /* '!'  */
+  YYSYMBOL_PREINC = 38,                    /* PREINC  */
+  YYSYMBOL_PREDEC = 39,                    /* PREDEC  */
+  YYSYMBOL_PRENEG = 40,                    /* PRENEG  */
+  YYSYMBOL_41_ = 41,                       /* '.'  */
   YYSYMBOL_42_ = 42,                       /* ';'  */
   YYSYMBOL_43_ = 43,                       /* ')'  */
   YYSYMBOL_44_ = 44,                       /* ']'  */
@@ -366,8 +366,7 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 	FILE *yyin2;
 
 	int main(int argc, char **argv); //moved to main.c
-
-/*
+	/* /// moved to semantic/yylloc.c
 	void printPos(YYLTYPE pos){
 		printf("null: %d\n",pos.null);
 		printf("first_line: %d\n",pos.first_line);
@@ -390,7 +389,8 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 		fprintf(stderr,"end: %d\n", pos.end);
 		fprintf(stderr,"filename: [%s]\n",pos.filename);
 	}
-*/
+	*/
+
 
 	int yyerror(const char *s)
 	{	
@@ -420,7 +420,7 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 		return buff;
 	}
 
-#line 423 "generated/yaccin.tab.c"
+#line 424 "generated/yaccin.tab.c"
 
 #ifdef short
 # undef short
@@ -746,7 +746,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  16
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   543
+#define YYLAST   561
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  47
@@ -775,13 +775,13 @@ static const yytype_int8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    38,     2,     2,     2,    46,    25,     2,
-      35,    43,    32,    28,    45,    29,    33,    31,     2,     2,
+       2,     2,     2,    37,     2,     2,     2,    46,    25,     2,
+      34,    43,    32,    28,    45,    29,    41,    31,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,    42,
       26,    23,    27,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    34,     2,    44,    30,     2,     2,     2,     2,     2,
+       2,    33,     2,    44,    30,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,    24,     2,     2,     2,     2,     2,
@@ -799,22 +799,22 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    36,    37,
-      39,    40,    41
+      15,    16,    17,    18,    19,    20,    21,    22,    35,    36,
+      38,    39,    40
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   279,   279,   292,   302,   313,   324,   337,   346,   357,
-     366,   375,   386,   397,   410,   419,   430,   439,   448,   457,
-     466,   475,   486,   498,   509,   520,   530,   539,   550,   560,
-     572,   584,   594,   604,   616,   627,   637,   646,   657,   666,
-     677,   686,   705,   716,   727,   738,   751,   760,   771,   772,
-     773,   774,   775,   776,   777,   778,   779,   780,   781,   782,
-     783,   784,   785,   786,   787,   788,   789,   790,   791,   792,
-     793,   794,   795,   796,   797,   798,   799,   800,   801,   802
+       0,   281,   281,   294,   304,   315,   326,   339,   348,   359,
+     368,   377,   388,   399,   412,   421,   432,   441,   450,   459,
+     468,   477,   488,   500,   511,   522,   532,   541,   552,   562,
+     574,   586,   596,   606,   618,   629,   639,   648,   659,   668,
+     679,   688,   707,   718,   729,   740,   753,   762,   773,   774,
+     775,   776,   777,   778,   779,   780,   781,   782,   783,   784,
+     785,   786,   787,   788,   789,   790,   791,   792,   793,   794,
+     795,   796,   797,   798,   799,   800,   801,   802,   803,   804
 };
 #endif
 
@@ -834,8 +834,8 @@ static const char *const yytname[] =
   "ID", "TYPE", "END", "IF", "ELSE", "ELSEIF", "WHILE", "FOR", "INTEGER",
   "INTEGERX", "INTEGERB", "FLOATING", "CHARACTER", "STRING", "EQUAL",
   "NOTEQUAL", "INC", "DEC", "'='", "'|'", "'&'", "'<'", "'>'", "'+'",
-  "'-'", "'^'", "'/'", "'*'", "'.'", "'['", "'('", "PREDEREF", "PREREF",
-  "'!'", "PREINC", "PREDEC", "PRENEG", "';'", "')'", "']'", "','", "'%'",
+  "'-'", "'^'", "'/'", "'*'", "'['", "'('", "PREDEREF", "PREREF", "'!'",
+  "PREINC", "PREDEC", "PRENEG", "'.'", "';'", "')'", "']'", "','", "'%'",
   "$accept", "program", "stmt", "stmt_list", "stmt_list_ne", "decl_stmt",
   "decl_stmt_list", "decl_stmt_list_ne", "imp_stmt", "class_def", "STAR",
   "ptr_stars", "ptr_stars_ne", "typename", "func_def", "var_decl",
@@ -864,21 +864,21 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      76,     0,    -9,    28,  -115,  -115,    76,  -115,    49,  -115,
-      15,     2,  -115,  -115,  -115,    -9,  -115,  -115,   -13,  -115,
-      22,  -115,  -115,   133,   133,    79,  -115,  -115,  -115,  -115,
-    -115,  -115,  -115,  -115,   133,   133,   133,   133,   133,   133,
-     133,   433,   153,    71,    74,  -115,    43,    42,     4,     4,
-       4,     4,     4,   181,     4,   133,   133,  -115,  -115,   133,
-     133,   133,   133,   133,   133,   133,   133,   133,   133,   133,
-     133,   133,   133,  -115,    -9,    35,   107,    79,  -115,    68,
-      68,   456,   477,   477,    68,    68,   494,   494,   497,   497,
-     497,    31,   209,    50,    47,   433,   433,    46,    69,    70,
-      73,  -115,    99,   107,  -115,  -115,  -115,    63,  -115,  -115,
-     237,  -115,  -115,  -115,   133,  -115,   265,   133,   133,   107,
-    -115,  -115,  -115,   107,    81,  -115,   433,  -115,   293,   321,
-     133,   119,   133,   107,   107,   349,  -115,   377,  -115,   120,
-     133,   107,  -115,   405,  -115,   107,   123,  -115
+      17,     0,   -10,    10,  -115,  -115,    17,  -115,    23,  -115,
+     -13,     2,  -115,  -115,  -115,   -10,  -115,  -115,    53,  -115,
+      65,  -115,  -115,   132,   132,    48,  -115,  -115,  -115,  -115,
+    -115,  -115,  -115,  -115,   132,   132,   132,   132,   132,   132,
+     132,   431,   151,    68,    76,  -115,    41,     8,    44,    44,
+      44,    44,    44,   179,    44,   132,   132,  -115,  -115,   132,
+     132,   132,   132,   132,   132,   132,   132,   132,   132,   132,
+     132,   132,   132,  -115,   -10,    56,   107,    48,  -115,   498,
+     498,   454,   477,   477,   498,   498,   515,   515,    36,    36,
+      36,   207,    49,    52,   431,     4,   431,    46,    59,    66,
+      67,  -115,    95,   107,  -115,  -115,  -115,    89,  -115,  -115,
+     235,  -115,  -115,  -115,   132,  -115,   263,   132,   132,   107,
+    -115,  -115,  -115,   107,    69,  -115,   431,  -115,   291,   319,
+     132,    97,   132,   107,   107,   347,  -115,   375,  -115,    98,
+     132,   107,  -115,   403,  -115,   107,    99,  -115
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -893,9 +893,9 @@ static const yytype_int8 yydefact[] =
        0,    33,     0,     0,     0,    37,     0,    34,    74,    76,
       79,    77,    78,     0,    65,     0,     0,    73,    75,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    45,     0,    32,    25,    31,     6,     0,    56,    68,
+      45,     0,     0,    32,    25,    31,     6,     0,    56,    68,
       69,    72,    67,    66,    71,    70,    64,    63,    59,    60,
-      61,    58,     0,     0,    44,    47,    62,     0,     0,     0,
+      61,     0,     0,    44,    47,    58,    62,     0,     0,     0,
        0,     8,     0,     5,     4,     3,    16,     0,    17,    21,
        0,    36,    55,    57,     0,    19,     0,     0,     0,     0,
       30,     7,    38,     6,     0,    18,    46,    20,     0,     0,
@@ -904,10 +904,10 @@ static const yytype_int8 yydefact[] =
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int16 yypgoto[] =
+static const yytype_int8 yypgoto[] =
 {
-    -115,  -115,  -101,  -114,  -115,    24,   122,  -115,  -115,  -115,
-     116,   132,  -115,   -22,  -115,   -21,  -115,  -115,  -115,  -115,
+    -115,  -115,  -101,  -114,  -115,    24,   103,  -115,  -115,  -115,
+      93,   114,  -115,   -22,  -115,   -21,  -115,  -115,  -115,  -115,
     -115,  -115,  -115,  -115,   -23
 };
 
@@ -916,7 +916,7 @@ static const yytype_int8 yydefgoto[] =
 {
        0,     3,   101,   102,   103,   104,     5,     6,   105,     7,
       13,    21,    15,     8,     9,    10,    46,    47,   106,   107,
-     108,   109,    93,    94,   110
+     108,   109,    92,    93,   110
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -925,119 +925,123 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int16 yytable[] =
 {
       41,    42,   121,    44,    45,    11,     1,   -25,     2,   131,
-      23,    48,    49,    50,    51,    52,    53,    54,   130,   138,
-     139,    24,    25,    12,     4,    57,    58,   144,    16,    26,
+      16,    48,    49,    50,    51,    52,    53,    54,   130,   138,
+     139,     1,    12,     2,     4,    57,    58,   144,    18,    19,
       17,   146,    79,    80,    12,     4,    81,    82,    83,    84,
-      85,    86,    87,    88,    89,    90,    91,    92,    95,    96,
-      72,    27,    57,    58,    18,    44,   111,    19,    23,    28,
-      29,    30,    31,    32,    33,    70,    71,    34,    35,    24,
-     122,    36,   123,   124,   116,    37,    74,    72,    38,    75,
-       1,    39,     2,    43,    40,     2,    76,    77,   115,    57,
-      58,   126,   114,   113,   128,   129,    64,    65,    66,    67,
-      68,    69,    70,    71,   117,   118,   120,   135,   119,   137,
-      97,     1,    27,     2,    72,    98,   132,   143,    99,   100,
-      28,    29,    30,    31,    32,    33,   136,   142,    34,    35,
-     147,    22,    36,    20,    14,     0,    37,     0,    27,    38,
-       0,     0,    39,     0,     0,    40,    28,    29,    30,    31,
-      32,    33,     0,     0,    34,    35,     0,     0,    36,     0,
-       0,     0,    37,     0,     0,    38,     0,     0,    39,     0,
-       0,    40,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    67,    68,    69,    70,    71,     0,
-       0,     0,     0,     0,     0,     0,     0,    73,     0,    72,
+      85,    86,    87,    88,    89,    90,    91,    94,    95,    96,
+      72,    27,    43,    77,     2,    44,   111,    57,    58,    28,
+      29,    30,    31,    32,    33,    57,    58,    34,    35,    69,
+      70,    36,    26,    74,   116,    37,    23,    71,    38,    23,
+      39,    75,    72,    40,    76,    71,    24,    25,   115,    24,
+      72,   126,   113,   117,   128,   129,   122,   114,   123,   124,
+     118,   119,   120,   132,   136,   142,   147,   135,    22,   137,
+      97,     1,    27,     2,    20,    98,    14,   143,    99,   100,
+      28,    29,    30,    31,    32,    33,     0,     0,    34,    35,
+       0,     0,    36,     0,     0,     0,    37,    27,     0,    38,
+       0,    39,     0,     0,    40,    28,    29,    30,    31,    32,
+      33,     0,     0,    34,    35,     0,     0,    36,     0,     0,
+       0,    37,     0,     0,    38,     0,    39,     0,     0,    40,
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,     0,     0,     0,
-       0,     0,     0,     0,    78,     0,     0,    72,    55,    56,
+      65,    66,    67,    68,    69,    70,     0,     0,     0,     0,
+       0,     0,    71,     0,     0,    73,     0,    72,    55,    56,
       57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,    68,    69,    70,    71,     0,     0,     0,     0,     0,
-       0,     0,     0,   112,     0,    72,    55,    56,    57,    58,
+      67,    68,    69,    70,     0,     0,     0,     0,     0,     0,
+      71,     0,    78,     0,     0,    72,    55,    56,    57,    58,
       59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    71,     0,     0,     0,     0,     0,     0,   125,
+      69,    70,     0,     0,     0,     0,     0,     0,    71,     0,
+       0,   112,     0,    72,    55,    56,    57,    58,    59,    60,
+      61,    62,    63,    64,    65,    66,    67,    68,    69,    70,
+       0,     0,     0,     0,     0,     0,    71,   125,     0,     0,
+       0,    72,    55,    56,    57,    58,    59,    60,    61,    62,
+      63,    64,    65,    66,    67,    68,    69,    70,     0,     0,
+       0,     0,     0,     0,    71,   127,     0,     0,     0,    72,
+      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,    68,    69,    70,     0,     0,     0,     0,
+       0,     0,    71,     0,   133,     0,     0,    72,    55,    56,
+      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
+      67,    68,    69,    70,     0,     0,     0,     0,     0,     0,
+      71,     0,   134,     0,     0,    72,    55,    56,    57,    58,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
+      69,    70,     0,     0,     0,     0,     0,     0,    71,   140,
        0,     0,     0,    72,    55,    56,    57,    58,    59,    60,
       61,    62,    63,    64,    65,    66,    67,    68,    69,    70,
-      71,     0,     0,     0,     0,     0,     0,   127,     0,     0,
+       0,     0,     0,     0,     0,     0,    71,     0,   141,     0,
        0,    72,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    67,    68,    69,    70,    71,     0,
-       0,     0,     0,     0,     0,     0,   133,     0,     0,    72,
+      63,    64,    65,    66,    67,    68,    69,    70,     0,     0,
+       0,     0,     0,     0,    71,     0,   145,     0,     0,    72,
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,     0,     0,     0,
-       0,     0,     0,     0,   134,     0,     0,    72,    55,    56,
-      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,    68,    69,    70,    71,     0,     0,     0,     0,     0,
-       0,   140,     0,     0,     0,    72,    55,    56,    57,    58,
-      59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    71,     0,     0,     0,     0,     0,     0,     0,
-     141,     0,     0,    72,    55,    56,    57,    58,    59,    60,
-      61,    62,    63,    64,    65,    66,    67,    68,    69,    70,
-      71,     0,     0,     0,     0,     0,     0,     0,   145,     0,
-       0,    72,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    67,    68,    69,    70,    71,     0,
-       0,     0,     0,     0,     0,    55,    56,    57,    58,    72,
-      60,    61,    62,    63,    64,    65,    66,    67,    68,    69,
-      70,    71,     0,     0,     0,     0,    55,    56,    57,    58,
-       0,     0,    72,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    71,     0,     0,    57,    58,     0,    57,    58,
-       0,     0,     0,    72,    66,    67,    68,    69,    70,    71,
-      69,    70,    71,     0,     0,     0,     0,     0,     0,     0,
-      72,     0,     0,    72
+      65,    66,    67,    68,    69,    70,     0,     0,     0,     0,
+       0,     0,    71,    55,    56,    57,    58,    72,    60,    61,
+      62,    63,    64,    65,    66,    67,    68,    69,    70,     0,
+       0,     0,     0,     0,     0,    71,    55,    56,    57,    58,
+      72,     0,     0,    62,    63,    64,    65,    66,    67,    68,
+      69,    70,     0,     0,     0,     0,     0,     0,    71,    57,
+      58,     0,     0,    72,     0,     0,    64,    65,    66,    67,
+      68,    69,    70,     0,     0,     0,    57,    58,     0,    71,
+       0,     0,     0,     0,    72,    66,    67,    68,    69,    70,
+       0,     0,     0,     0,     0,     0,    71,     0,     0,     0,
+       0,    72
 };
 
 static const yytype_int16 yycheck[] =
 {
       23,    24,   103,    25,    25,     5,     4,     5,     6,   123,
-      23,    34,    35,    36,    37,    38,    39,    40,   119,   133,
-     134,    34,    35,    32,     0,    21,    22,   141,     0,     7,
+       0,    34,    35,    36,    37,    38,    39,    40,   119,   133,
+     134,     4,    32,     6,     0,    21,    22,   141,     5,    42,
        6,   145,    55,    56,    32,    11,    59,    60,    61,    62,
       63,    64,    65,    66,    67,    68,    69,    70,    71,    72,
-      46,     5,    21,    22,     5,    77,    77,    42,    23,    13,
-      14,    15,    16,    17,    18,    34,    35,    21,    22,    34,
-       7,    25,     9,    10,    97,    29,     5,    46,    32,     5,
-       4,    35,     6,     4,    38,     6,    43,    45,    42,    21,
-      22,   114,    45,    43,   117,   118,    28,    29,    30,    31,
-      32,    33,    34,    35,    35,    35,     7,   130,    35,   132,
-       3,     4,     5,     6,    46,     8,    35,   140,    11,    12,
-      13,    14,    15,    16,    17,    18,     7,     7,    21,    22,
-       7,    15,    25,    11,     2,    -1,    29,    -1,     5,    32,
-      -1,    -1,    35,    -1,    -1,    38,    13,    14,    15,    16,
-      17,    18,    -1,    -1,    21,    22,    -1,    -1,    25,    -1,
-      -1,    -1,    29,    -1,    -1,    32,    -1,    -1,    35,    -1,
-      -1,    38,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    44,    -1,    46,
+      46,     5,     4,    45,     6,    77,    77,    21,    22,    13,
+      14,    15,    16,    17,    18,    21,    22,    21,    22,    33,
+      34,    25,     7,     5,    97,    29,    23,    41,    32,    23,
+      34,     5,    46,    37,    43,    41,    33,    34,    42,    33,
+      46,   114,    43,    34,   117,   118,     7,    45,     9,    10,
+      34,    34,     7,    34,     7,     7,     7,   130,    15,   132,
+       3,     4,     5,     6,    11,     8,     2,   140,    11,    12,
+      13,    14,    15,    16,    17,    18,    -1,    -1,    21,    22,
+      -1,    -1,    25,    -1,    -1,    -1,    29,     5,    -1,    32,
+      -1,    34,    -1,    -1,    37,    13,    14,    15,    16,    17,
+      18,    -1,    -1,    21,    22,    -1,    -1,    25,    -1,    -1,
+      -1,    29,    -1,    -1,    32,    -1,    34,    -1,    -1,    37,
       19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    35,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    43,    -1,    -1,    46,    19,    20,
+      29,    30,    31,    32,    33,    34,    -1,    -1,    -1,    -1,
+      -1,    -1,    41,    -1,    -1,    44,    -1,    46,    19,    20,
       21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    44,    -1,    46,    19,    20,    21,    22,
+      31,    32,    33,    34,    -1,    -1,    -1,    -1,    -1,    -1,
+      41,    -1,    43,    -1,    -1,    46,    19,    20,    21,    22,
       23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    -1,    -1,    -1,    -1,    -1,    -1,    42,
+      33,    34,    -1,    -1,    -1,    -1,    -1,    -1,    41,    -1,
+      -1,    44,    -1,    46,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      -1,    -1,    -1,    -1,    -1,    -1,    41,    42,    -1,    -1,
+      -1,    46,    19,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    -1,    -1,
+      -1,    -1,    -1,    -1,    41,    42,    -1,    -1,    -1,    46,
+      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,    31,    32,    33,    34,    -1,    -1,    -1,    -1,
+      -1,    -1,    41,    -1,    43,    -1,    -1,    46,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,    33,    34,    -1,    -1,    -1,    -1,    -1,    -1,
+      41,    -1,    43,    -1,    -1,    46,    19,    20,    21,    22,
+      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    -1,    -1,    -1,    -1,    -1,    -1,    41,    42,
       -1,    -1,    -1,    46,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    -1,    -1,    -1,    -1,    -1,    -1,    42,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    41,    -1,    43,    -1,
       -1,    46,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    43,    -1,    -1,    46,
+      27,    28,    29,    30,    31,    32,    33,    34,    -1,    -1,
+      -1,    -1,    -1,    -1,    41,    -1,    43,    -1,    -1,    46,
       19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    35,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    43,    -1,    -1,    46,    19,    20,
-      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    -1,    -1,    -1,    -1,    -1,
-      -1,    42,    -1,    -1,    -1,    46,    19,    20,    21,    22,
-      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      43,    -1,    -1,    46,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    43,    -1,
-      -1,    46,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    -1,
-      -1,    -1,    -1,    -1,    -1,    19,    20,    21,    22,    46,
-      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    -1,    -1,    -1,    -1,    19,    20,    21,    22,
-      -1,    -1,    46,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    -1,    -1,    21,    22,    -1,    21,    22,
-      -1,    -1,    -1,    46,    30,    31,    32,    33,    34,    35,
-      33,    34,    35,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      46,    -1,    -1,    46
+      29,    30,    31,    32,    33,    34,    -1,    -1,    -1,    -1,
+      -1,    -1,    41,    19,    20,    21,    22,    46,    24,    25,
+      26,    27,    28,    29,    30,    31,    32,    33,    34,    -1,
+      -1,    -1,    -1,    -1,    -1,    41,    19,    20,    21,    22,
+      46,    -1,    -1,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    -1,    -1,    -1,    -1,    -1,    -1,    41,    21,
+      22,    -1,    -1,    46,    -1,    -1,    28,    29,    30,    31,
+      32,    33,    34,    -1,    -1,    -1,    21,    22,    -1,    41,
+      -1,    -1,    -1,    -1,    46,    30,    31,    32,    33,    34,
+      -1,    -1,    -1,    -1,    -1,    -1,    41,    -1,    -1,    -1,
+      -1,    46
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -1046,18 +1050,18 @@ static const yytype_int8 yystos[] =
 {
        0,     4,     6,    48,    52,    53,    54,    56,    60,    61,
       62,     5,    32,    57,    58,    59,     0,    52,     5,    42,
-      53,    58,    57,    23,    34,    35,     7,     5,    13,    14,
-      15,    16,    17,    18,    21,    22,    25,    29,    32,    35,
-      38,    71,    71,     4,    60,    62,    63,    64,    71,    71,
+      53,    58,    57,    23,    33,    34,     7,     5,    13,    14,
+      15,    16,    17,    18,    21,    22,    25,    29,    32,    34,
+      37,    71,    71,     4,    60,    62,    63,    64,    71,    71,
       71,    71,    71,    71,    71,    19,    20,    21,    22,    23,
       24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    46,    44,     5,     5,    43,    45,    43,    71,
+      34,    41,    46,    44,     5,     5,    43,    45,    43,    71,
       71,    71,    71,    71,    71,    71,    71,    71,    71,    71,
-      71,    71,    71,    69,    70,    71,    71,     3,     8,    11,
+      71,    71,    69,    70,    71,    71,    71,     3,     8,    11,
       12,    49,    50,    51,    52,    55,    65,    66,    67,    68,
-      71,    62,    44,    43,    45,    42,    71,    35,    35,    35,
+      71,    62,    44,    43,    45,    42,    71,    34,    34,    34,
        7,    49,     7,     9,    10,    42,    71,    42,    71,    71,
-      49,    50,    35,    43,    43,    71,     7,    71,    50,    50,
+      49,    50,    34,    43,    43,    71,     7,    71,    50,    50,
       42,    43,     7,    71,    50,    43,    50,     7
 };
 
@@ -1932,7 +1936,7 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: decl_stmt_list  */
-#line 280 "input/yaccin.y"
+#line 282 "input/yaccin.y"
                                                         {	
 								YYLTYPE pos = (yyloc);
 								ast_node *child1 = yyvsp[0];
@@ -1943,11 +1947,11 @@ yyreduce:
 								);
 								printParsed(finalNode);
 							}
-#line 1946 "generated/yaccin.tab.c"
+#line 1951 "generated/yaccin.tab.c"
     break;
 
   case 3: /* stmt: imp_stmt  */
-#line 293 "input/yaccin.y"
+#line 295 "input/yaccin.y"
                                                         {
 								ast_node **res = &(yyval);
 								*res = ast_node_new(
@@ -1957,11 +1961,11 @@ yyreduce:
 								);
 								printParsed(*res);
 							}
-#line 1960 "generated/yaccin.tab.c"
+#line 1965 "generated/yaccin.tab.c"
     break;
 
   case 4: /* stmt: decl_stmt  */
-#line 303 "input/yaccin.y"
+#line 305 "input/yaccin.y"
                                                         {
 								yyval = ast_node_new(
 									ast_token_here("stmt",1,NULL,(yyloc)),
@@ -1970,11 +1974,11 @@ yyreduce:
 								);
 								printParsed(yyval);
 							}
-#line 1973 "generated/yaccin.tab.c"
+#line 1978 "generated/yaccin.tab.c"
     break;
 
   case 5: /* stmt_list: stmt_list_ne  */
-#line 314 "input/yaccin.y"
+#line 316 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("stmt_list",0,NULL,(yyloc)),
@@ -1984,11 +1988,11 @@ yyreduce:
 									printParsed(yyval);
 									ast_unroll_lists(yyval);
 								}
-#line 1987 "generated/yaccin.tab.c"
+#line 1992 "generated/yaccin.tab.c"
     break;
 
   case 6: /* stmt_list: %empty  */
-#line 324 "input/yaccin.y"
+#line 326 "input/yaccin.y"
                                                                 {
 									YYLTYPE *pos = &((yyloc));
 									pos->null = 1;
@@ -2000,11 +2004,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2003 "generated/yaccin.tab.c"
+#line 2008 "generated/yaccin.tab.c"
     break;
 
   case 7: /* stmt_list_ne: stmt_list_ne stmt  */
-#line 338 "input/yaccin.y"
+#line 340 "input/yaccin.y"
                                                                         {
 										yyval = ast_node_new(
 											ast_token_here("stmt_list_ne",0,NULL,(yyloc)),
@@ -2013,11 +2017,11 @@ yyreduce:
 										);
 										printParsed(yyval);
 									}
-#line 2016 "generated/yaccin.tab.c"
+#line 2021 "generated/yaccin.tab.c"
     break;
 
   case 8: /* stmt_list_ne: stmt  */
-#line 347 "input/yaccin.y"
+#line 349 "input/yaccin.y"
                                                                         {
 										yyval = ast_node_new(
 											ast_token_here("stmt_list_ne",1,NULL,(yyloc)),
@@ -2026,11 +2030,11 @@ yyreduce:
 										);
 										printParsed(yyval);
 									}
-#line 2029 "generated/yaccin.tab.c"
+#line 2034 "generated/yaccin.tab.c"
     break;
 
   case 9: /* decl_stmt: class_def  */
-#line 358 "input/yaccin.y"
+#line 360 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt",0,NULL,(yyloc)),
@@ -2039,11 +2043,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2042 "generated/yaccin.tab.c"
+#line 2047 "generated/yaccin.tab.c"
     break;
 
   case 10: /* decl_stmt: func_def  */
-#line 367 "input/yaccin.y"
+#line 369 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt",1,NULL,(yyloc)),
@@ -2052,11 +2056,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2055 "generated/yaccin.tab.c"
+#line 2060 "generated/yaccin.tab.c"
     break;
 
   case 11: /* decl_stmt: var_decl ';'  */
-#line 376 "input/yaccin.y"
+#line 378 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt",2,NULL,(yyloc)),
@@ -2065,11 +2069,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2068 "generated/yaccin.tab.c"
+#line 2073 "generated/yaccin.tab.c"
     break;
 
   case 12: /* decl_stmt_list: decl_stmt_list_ne  */
-#line 387 "input/yaccin.y"
+#line 389 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt_list",0,NULL,(yyloc)),
@@ -2079,11 +2083,11 @@ yyreduce:
 									printParsed(yyval);
 									ast_unroll_lists(yyval);
 								}
-#line 2082 "generated/yaccin.tab.c"
+#line 2087 "generated/yaccin.tab.c"
     break;
 
   case 13: /* decl_stmt_list: %empty  */
-#line 397 "input/yaccin.y"
+#line 399 "input/yaccin.y"
                                                                 {
 									YYLTYPE *pos = &((yyloc));
 									pos->null = 1;
@@ -2095,11 +2099,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2098 "generated/yaccin.tab.c"
+#line 2103 "generated/yaccin.tab.c"
     break;
 
   case 14: /* decl_stmt_list_ne: decl_stmt_list_ne decl_stmt  */
-#line 411 "input/yaccin.y"
+#line 413 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt_list_ne",0,NULL,(yyloc)),
@@ -2108,11 +2112,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2111 "generated/yaccin.tab.c"
+#line 2116 "generated/yaccin.tab.c"
     break;
 
   case 15: /* decl_stmt_list_ne: decl_stmt  */
-#line 420 "input/yaccin.y"
+#line 422 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("decl_stmt_list_ne",1,NULL,(yyloc)),
@@ -2121,11 +2125,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2124 "generated/yaccin.tab.c"
+#line 2129 "generated/yaccin.tab.c"
     break;
 
   case 16: /* imp_stmt: if_block  */
-#line 431 "input/yaccin.y"
+#line 433 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",0,NULL,(yyloc)),
@@ -2134,11 +2138,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2137 "generated/yaccin.tab.c"
+#line 2142 "generated/yaccin.tab.c"
     break;
 
   case 17: /* imp_stmt: while_loop  */
-#line 440 "input/yaccin.y"
+#line 442 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",1,NULL,(yyloc)),
@@ -2147,11 +2151,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2150 "generated/yaccin.tab.c"
+#line 2155 "generated/yaccin.tab.c"
     break;
 
   case 18: /* imp_stmt: expr ';'  */
-#line 449 "input/yaccin.y"
+#line 451 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",2,NULL,(yyloc)),
@@ -2160,11 +2164,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2163 "generated/yaccin.tab.c"
+#line 2168 "generated/yaccin.tab.c"
     break;
 
   case 19: /* imp_stmt: RETURN ';'  */
-#line 458 "input/yaccin.y"
+#line 460 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",3,NULL,(yyloc)),
@@ -2173,11 +2177,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2176 "generated/yaccin.tab.c"
+#line 2181 "generated/yaccin.tab.c"
     break;
 
   case 20: /* imp_stmt: RETURN expr ';'  */
-#line 467 "input/yaccin.y"
+#line 469 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",4,NULL,(yyloc)),
@@ -2186,11 +2190,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2189 "generated/yaccin.tab.c"
+#line 2194 "generated/yaccin.tab.c"
     break;
 
   case 21: /* imp_stmt: for_loop  */
-#line 476 "input/yaccin.y"
+#line 478 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("imp_stmt",5,NULL,(yyloc)),
@@ -2199,11 +2203,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2202 "generated/yaccin.tab.c"
+#line 2207 "generated/yaccin.tab.c"
     break;
 
   case 22: /* class_def: CLASS ID decl_stmt_list END  */
-#line 487 "input/yaccin.y"
+#line 489 "input/yaccin.y"
                                                                 {
 									const char *id_str = yyvsp[-2]->token.value;
 									printf("FUNC_DEF ID = [%s]\n",id_str);//(char*)$2);
@@ -2214,11 +2218,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2217 "generated/yaccin.tab.c"
+#line 2222 "generated/yaccin.tab.c"
     break;
 
   case 23: /* STAR: '*'  */
-#line 499 "input/yaccin.y"
+#line 501 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("stars",0,"*",(yyloc)),
@@ -2227,11 +2231,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2230 "generated/yaccin.tab.c"
+#line 2235 "generated/yaccin.tab.c"
     break;
 
   case 24: /* ptr_stars: ptr_stars_ne  */
-#line 510 "input/yaccin.y"
+#line 512 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("ptr_stars",0,NULL,(yyloc)),
@@ -2241,11 +2245,11 @@ yyreduce:
 									printParsed(yyval);
 									ast_unroll_lists(yyval);
 								}
-#line 2244 "generated/yaccin.tab.c"
+#line 2249 "generated/yaccin.tab.c"
     break;
 
   case 25: /* ptr_stars: %empty  */
-#line 520 "input/yaccin.y"
+#line 522 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("ptr_stars",1,"<empty>",nullPos()),//@$),
@@ -2254,11 +2258,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2257 "generated/yaccin.tab.c"
+#line 2262 "generated/yaccin.tab.c"
     break;
 
   case 26: /* ptr_stars_ne: ptr_stars_ne STAR  */
-#line 531 "input/yaccin.y"
+#line 533 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("ptr_stars_ne",0,NULL,(yyloc)),
@@ -2267,11 +2271,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2270 "generated/yaccin.tab.c"
+#line 2275 "generated/yaccin.tab.c"
     break;
 
   case 27: /* ptr_stars_ne: STAR  */
-#line 540 "input/yaccin.y"
+#line 542 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("ptr_stars_ne",1,NULL,(yyloc)),
@@ -2280,11 +2284,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2283 "generated/yaccin.tab.c"
+#line 2288 "generated/yaccin.tab.c"
     break;
 
   case 28: /* typename: TYPE ptr_stars  */
-#line 551 "input/yaccin.y"
+#line 553 "input/yaccin.y"
                                                                 {
 									const char *type_str = yyvsp[-1]->token.value;
 									yyval = ast_node_new(
@@ -2294,11 +2298,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2297 "generated/yaccin.tab.c"
+#line 2302 "generated/yaccin.tab.c"
     break;
 
   case 29: /* typename: CLASS ID ptr_stars  */
-#line 561 "input/yaccin.y"
+#line 563 "input/yaccin.y"
                                                                 {
 									const char *type_str = yyvsp[-1]->token.value;
 									yyval = ast_node_new(
@@ -2308,11 +2312,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2311 "generated/yaccin.tab.c"
+#line 2316 "generated/yaccin.tab.c"
     break;
 
   case 30: /* func_def: typename ID '(' var_decl_list ')' stmt_list END  */
-#line 573 "input/yaccin.y"
+#line 575 "input/yaccin.y"
                                                                 {
 									const char *id_str = yyvsp[-5]->token.value;
 									printf("FUNC_DEF ID = [%s]\n", id_str);
@@ -2323,11 +2327,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2326 "generated/yaccin.tab.c"
+#line 2331 "generated/yaccin.tab.c"
     break;
 
   case 31: /* var_decl: typename ID  */
-#line 585 "input/yaccin.y"
+#line 587 "input/yaccin.y"
                                                                 {
 									const char *id_str = yyvsp[0]->token.value;
 									yyval = ast_node_new(
@@ -2337,11 +2341,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2340 "generated/yaccin.tab.c"
+#line 2345 "generated/yaccin.tab.c"
     break;
 
   case 32: /* var_decl: typename ID '[' expr ']'  */
-#line 595 "input/yaccin.y"
+#line 597 "input/yaccin.y"
                                                                 {
 									const char *id_str = yyvsp[-3]->token.value;
 									yyval = ast_node_new(
@@ -2351,11 +2355,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2354 "generated/yaccin.tab.c"
+#line 2359 "generated/yaccin.tab.c"
     break;
 
   case 33: /* var_decl: typename ID '=' expr  */
-#line 605 "input/yaccin.y"
+#line 607 "input/yaccin.y"
                                                                 {
 									const char *id_str = yyvsp[-2]->token.value;
 									yyval = ast_node_new(
@@ -2365,11 +2369,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2368 "generated/yaccin.tab.c"
+#line 2373 "generated/yaccin.tab.c"
     break;
 
   case 34: /* var_decl_list: var_decl_list_ne  */
-#line 617 "input/yaccin.y"
+#line 619 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("var_decl_list",0,NULL,(yyloc)),
@@ -2379,11 +2383,11 @@ yyreduce:
 									printParsed(yyval);
 									ast_unroll_lists(yyval);
 								}
-#line 2382 "generated/yaccin.tab.c"
+#line 2387 "generated/yaccin.tab.c"
     break;
 
   case 35: /* var_decl_list: %empty  */
-#line 627 "input/yaccin.y"
+#line 629 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("var_decl_list",1,"<empty>",nullPos()),//@$),
@@ -2392,11 +2396,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2395 "generated/yaccin.tab.c"
+#line 2400 "generated/yaccin.tab.c"
     break;
 
   case 36: /* var_decl_list_ne: var_decl_list_ne ',' var_decl  */
-#line 638 "input/yaccin.y"
+#line 640 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("var_decl_list_ne",0,NULL,(yyloc)),
@@ -2405,11 +2409,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2408 "generated/yaccin.tab.c"
+#line 2413 "generated/yaccin.tab.c"
     break;
 
   case 37: /* var_decl_list_ne: var_decl  */
-#line 647 "input/yaccin.y"
+#line 649 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("var_decl_list_ne",1,NULL,(yyloc)),
@@ -2418,11 +2422,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2421 "generated/yaccin.tab.c"
+#line 2426 "generated/yaccin.tab.c"
     break;
 
   case 38: /* if_block: if_then END  */
-#line 658 "input/yaccin.y"
+#line 660 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("if_block",0,NULL,(yyloc)),
@@ -2431,11 +2435,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2434 "generated/yaccin.tab.c"
+#line 2439 "generated/yaccin.tab.c"
     break;
 
   case 39: /* if_block: if_then ELSE stmt_list END  */
-#line 667 "input/yaccin.y"
+#line 669 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("if_block",1,NULL,(yyloc)),
@@ -2444,11 +2448,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2447 "generated/yaccin.tab.c"
+#line 2452 "generated/yaccin.tab.c"
     break;
 
   case 40: /* if_then: IF '(' expr ')' stmt_list  */
-#line 678 "input/yaccin.y"
+#line 680 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("if_then",0,NULL,(yyloc)),
@@ -2457,11 +2461,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2460 "generated/yaccin.tab.c"
+#line 2465 "generated/yaccin.tab.c"
     break;
 
   case 41: /* if_then: if_then ELSEIF '(' expr ')' stmt_list  */
-#line 687 "input/yaccin.y"
+#line 689 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("if_then",2,NULL,(yyloc)),
@@ -2470,11 +2474,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2473 "generated/yaccin.tab.c"
+#line 2478 "generated/yaccin.tab.c"
     break;
 
   case 42: /* while_loop: WHILE '(' expr ')' stmt_list END  */
-#line 706 "input/yaccin.y"
+#line 708 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("while_loop",0,NULL,(yyloc)),
@@ -2483,11 +2487,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2486 "generated/yaccin.tab.c"
+#line 2491 "generated/yaccin.tab.c"
     break;
 
   case 43: /* for_loop: FOR '(' stmt expr ';' expr ')' stmt_list END  */
-#line 717 "input/yaccin.y"
+#line 719 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("for_loop",0,NULL,(yyloc)),
@@ -2496,11 +2500,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2499 "generated/yaccin.tab.c"
+#line 2504 "generated/yaccin.tab.c"
     break;
 
   case 44: /* expr_list: expr_list_ne  */
-#line 728 "input/yaccin.y"
+#line 730 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("expr_list",0,NULL,(yyloc)),
@@ -2510,11 +2514,11 @@ yyreduce:
 									printParsed(yyval);
 									ast_unroll_lists(yyval);
 								}
-#line 2513 "generated/yaccin.tab.c"
+#line 2518 "generated/yaccin.tab.c"
     break;
 
   case 45: /* expr_list: %empty  */
-#line 738 "input/yaccin.y"
+#line 740 "input/yaccin.y"
                                                                 {
 									YYLTYPE *pos = &((yyloc));
 									pos->null = 1;
@@ -2526,11 +2530,11 @@ yyreduce:
 									);	
 									printParsed(yyval);
 								}
-#line 2529 "generated/yaccin.tab.c"
+#line 2534 "generated/yaccin.tab.c"
     break;
 
   case 46: /* expr_list_ne: expr_list_ne ',' expr  */
-#line 752 "input/yaccin.y"
+#line 754 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("expr_list_ne",0,NULL,(yyloc)),
@@ -2539,11 +2543,11 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2542 "generated/yaccin.tab.c"
+#line 2547 "generated/yaccin.tab.c"
     break;
 
   case 47: /* expr_list_ne: expr  */
-#line 761 "input/yaccin.y"
+#line 763 "input/yaccin.y"
                                                                 {
 									yyval = ast_node_new(
 										ast_token_here("expr_list_ne",1,NULL,(yyloc)),
@@ -2552,203 +2556,203 @@ yyreduce:
 									);
 									printParsed(yyval);
 								}
-#line 2555 "generated/yaccin.tab.c"
+#line 2560 "generated/yaccin.tab.c"
     break;
 
   case 48: /* expr: ID  */
-#line 771 "input/yaccin.y"
+#line 773 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_id",	0,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2561 "generated/yaccin.tab.c"
+#line 2566 "generated/yaccin.tab.c"
     break;
 
   case 49: /* expr: INTEGER  */
-#line 772 "input/yaccin.y"
+#line 774 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	0,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2567 "generated/yaccin.tab.c"
+#line 2572 "generated/yaccin.tab.c"
     break;
 
   case 50: /* expr: INTEGERX  */
-#line 773 "input/yaccin.y"
+#line 775 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	1,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2573 "generated/yaccin.tab.c"
+#line 2578 "generated/yaccin.tab.c"
     break;
 
   case 51: /* expr: INTEGERB  */
-#line 774 "input/yaccin.y"
+#line 776 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	2,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2579 "generated/yaccin.tab.c"
+#line 2584 "generated/yaccin.tab.c"
     break;
 
   case 52: /* expr: FLOATING  */
-#line 775 "input/yaccin.y"
+#line 777 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	3,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2585 "generated/yaccin.tab.c"
+#line 2590 "generated/yaccin.tab.c"
     break;
 
   case 53: /* expr: CHARACTER  */
-#line 776 "input/yaccin.y"
+#line 778 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	4,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2591 "generated/yaccin.tab.c"
+#line 2596 "generated/yaccin.tab.c"
     break;
 
   case 54: /* expr: STRING  */
-#line 777 "input/yaccin.y"
+#line 779 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_const",	5,yyvsp[0]->token.value,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed(yyval);}
-#line 2597 "generated/yaccin.tab.c"
+#line 2602 "generated/yaccin.tab.c"
     break;
 
   case 55: /* expr: expr '[' expr ']'  */
-#line 778 "input/yaccin.y"
+#line 780 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_index",	0,NULL,(yyloc)),	vector2_ptr_ast_node_here_from_list(2, yyvsp[-3],yyvsp[-1])); printParsed(yyval);}
-#line 2603 "generated/yaccin.tab.c"
+#line 2608 "generated/yaccin.tab.c"
     break;
 
   case 56: /* expr: '(' expr ')'  */
-#line 779 "input/yaccin.y"
+#line 781 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_subexpr",0,NULL,(yyloc)),vector2_ptr_ast_node_here_from_list(1, yyvsp[-1])); printParsed(yyval);}
-#line 2609 "generated/yaccin.tab.c"
+#line 2614 "generated/yaccin.tab.c"
     break;
 
   case 57: /* expr: expr '(' expr_list ')'  */
-#line 780 "input/yaccin.y"
+#line 782 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_call",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-3], yyvsp[-1])); printParsed(yyval);}
-#line 2615 "generated/yaccin.tab.c"
+#line 2620 "generated/yaccin.tab.c"
     break;
 
   case 58: /* expr: expr '.' expr  */
-#line 781 "input/yaccin.y"
+#line 783 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_.",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2621 "generated/yaccin.tab.c"
+#line 2626 "generated/yaccin.tab.c"
     break;
 
   case 59: /* expr: expr '^' expr  */
-#line 782 "input/yaccin.y"
+#line 784 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_^",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2627 "generated/yaccin.tab.c"
+#line 2632 "generated/yaccin.tab.c"
     break;
 
   case 60: /* expr: expr '/' expr  */
-#line 783 "input/yaccin.y"
+#line 785 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_/",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2633 "generated/yaccin.tab.c"
+#line 2638 "generated/yaccin.tab.c"
     break;
 
   case 61: /* expr: expr '*' expr  */
-#line 784 "input/yaccin.y"
+#line 786 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_*",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2639 "generated/yaccin.tab.c"
+#line 2644 "generated/yaccin.tab.c"
     break;
 
   case 62: /* expr: expr '%' expr  */
-#line 785 "input/yaccin.y"
+#line 787 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_%",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2645 "generated/yaccin.tab.c"
+#line 2650 "generated/yaccin.tab.c"
     break;
 
   case 63: /* expr: expr '-' expr  */
-#line 786 "input/yaccin.y"
+#line 788 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_-",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2651 "generated/yaccin.tab.c"
+#line 2656 "generated/yaccin.tab.c"
     break;
 
   case 64: /* expr: expr '+' expr  */
-#line 787 "input/yaccin.y"
+#line 789 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_+",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2657 "generated/yaccin.tab.c"
+#line 2662 "generated/yaccin.tab.c"
     break;
 
   case 65: /* expr: '!' expr  */
-#line 788 "input/yaccin.y"
+#line 790 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_not",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[0])); printParsed(yyval);}
-#line 2663 "generated/yaccin.tab.c"
+#line 2668 "generated/yaccin.tab.c"
     break;
 
   case 66: /* expr: expr '&' expr  */
-#line 789 "input/yaccin.y"
+#line 791 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_and",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2669 "generated/yaccin.tab.c"
+#line 2674 "generated/yaccin.tab.c"
     break;
 
   case 67: /* expr: expr '|' expr  */
-#line 790 "input/yaccin.y"
+#line 792 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_or",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2675 "generated/yaccin.tab.c"
+#line 2680 "generated/yaccin.tab.c"
     break;
 
   case 68: /* expr: expr EQUAL expr  */
-#line 791 "input/yaccin.y"
+#line 793 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_==",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2681 "generated/yaccin.tab.c"
+#line 2686 "generated/yaccin.tab.c"
     break;
 
   case 69: /* expr: expr NOTEQUAL expr  */
-#line 792 "input/yaccin.y"
+#line 794 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_!=",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2687 "generated/yaccin.tab.c"
+#line 2692 "generated/yaccin.tab.c"
     break;
 
   case 70: /* expr: expr '>' expr  */
-#line 793 "input/yaccin.y"
+#line 795 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_>",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2693 "generated/yaccin.tab.c"
+#line 2698 "generated/yaccin.tab.c"
     break;
 
   case 71: /* expr: expr '<' expr  */
-#line 794 "input/yaccin.y"
+#line 796 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_<",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2699 "generated/yaccin.tab.c"
+#line 2704 "generated/yaccin.tab.c"
     break;
 
   case 72: /* expr: expr '=' expr  */
-#line 795 "input/yaccin.y"
+#line 797 "input/yaccin.y"
                                                                 {yyval = ast_node_new(ast_token_here("expr_=",		0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(2, yyvsp[-2], yyvsp[0])); printParsed(yyval);}
-#line 2705 "generated/yaccin.tab.c"
+#line 2710 "generated/yaccin.tab.c"
     break;
 
   case 73: /* expr: expr INC  */
-#line 796 "input/yaccin.y"
+#line 798 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_++",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[-1])); printParsed(yyval);}
-#line 2711 "generated/yaccin.tab.c"
+#line 2716 "generated/yaccin.tab.c"
     break;
 
   case 74: /* expr: INC expr  */
-#line 797 "input/yaccin.y"
+#line 799 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_++",	1,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[-1])); printParsed(yyval);}
-#line 2717 "generated/yaccin.tab.c"
+#line 2722 "generated/yaccin.tab.c"
     break;
 
   case 75: /* expr: expr DEC  */
-#line 798 "input/yaccin.y"
+#line 800 "input/yaccin.y"
                                                                         {yyval = ast_node_new(ast_token_here("expr_--",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[-1])); printParsed(yyval);}
-#line 2723 "generated/yaccin.tab.c"
+#line 2728 "generated/yaccin.tab.c"
     break;
 
   case 76: /* expr: DEC expr  */
-#line 799 "input/yaccin.y"
+#line 801 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_--",	1,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[0])); printParsed(yyval);}
-#line 2729 "generated/yaccin.tab.c"
+#line 2734 "generated/yaccin.tab.c"
     break;
 
   case 77: /* expr: '-' expr  */
-#line 800 "input/yaccin.y"
+#line 802 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_neg",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[0])); printParsed(yyval);}
-#line 2735 "generated/yaccin.tab.c"
+#line 2740 "generated/yaccin.tab.c"
     break;
 
   case 78: /* expr: '*' expr  */
-#line 801 "input/yaccin.y"
+#line 803 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_deref",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[0])); printParsed(yyval);}
-#line 2741 "generated/yaccin.tab.c"
+#line 2746 "generated/yaccin.tab.c"
     break;
 
   case 79: /* expr: '&' expr  */
-#line 802 "input/yaccin.y"
+#line 804 "input/yaccin.y"
                                                         {yyval = ast_node_new(ast_token_here("expr_ref",	0,NULL,(yyloc)), vector2_ptr_ast_node_here_from_list(1, yyvsp[0])); printParsed(yyval);}
-#line 2747 "generated/yaccin.tab.c"
+#line 2752 "generated/yaccin.tab.c"
     break;
 
 
-#line 2751 "generated/yaccin.tab.c"
+#line 2756 "generated/yaccin.tab.c"
 
       default: break;
     }
@@ -2977,7 +2981,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 805 "input/yaccin.y"
+#line 807 "input/yaccin.y"
 
 /*
 

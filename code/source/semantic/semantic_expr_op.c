@@ -159,7 +159,7 @@ struct sae_id_result sae_id_helper(struct symbol *S, ast_node* node, const char 
 		case SYMBOL_VARIABLE:	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
 		case SYMBOL_PARAM:		res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
 		case SYMBOL_MEMBER: 	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
-		case SYMBOL_FUNCTION:	res = (struct sae_id_result){S->symfunction.signature, S->IR_name, E_RVAL}; break;
+		case SYMBOL_FUNCTION:	res = (struct sae_id_result){S->symfunction.signature, S->IR_name, E_FPTR/*E_RVAL*/}; break;
 		default:
 		{
 			YYLTYPE pos = node->token.pos;
@@ -558,8 +558,11 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	//because in A.foo(x), x should not be shadowed
 	//by A.x.
 
-	PREP_RES(res2, E_PTR);//E_RVAL);
+	PREP_RES(res2, E_ASIS);//E_PTR);//E_RVAL);
 	res2stg.sem_this = res1;
+	if(strcmp(res1.val, "&derp1")==0){
+		printf("debug breakpoint");
+	}
 	res2stg.dest.author = "expr_dot member(.m)";
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (member)
 	VERIFY_RES(res2);

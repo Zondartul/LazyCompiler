@@ -204,7 +204,7 @@ char *get_source_text2(YYLTYPE pos);
 	FILE *yyin2;
 
 	int main(int argc, char **argv); //moved to main.c
-
+	/* /// moved to semantic/yylloc.c
 	void printPos(YYLTYPE pos){
 		printf("null: %d\n",pos.null);
 		printf("first_line: %d\n",pos.first_line);
@@ -227,6 +227,7 @@ char *get_source_text2(YYLTYPE pos);
 		fprintf(stderr,"end: %d\n", pos.end);
 		fprintf(stderr,"filename: [%s]\n",pos.filename);
 	}
+	*/
 
 
 	int yyerror(const char *s)
@@ -267,12 +268,13 @@ char *get_source_text2(YYLTYPE pos);
 %left EQUAL NOTEQUAL '<' '>'
 %left '+' '-'
 %left '^' '/' '*'
-%left '.' 
+//%left '.' 
 %precedence '[' //']'
 %precedence '(' //')' 
 %precedence PREDEREF PREREF '!'
 %precedence PREINC PREDEC 
 %precedence PRENEG
+%left '.' 
 //%precedence POSTINC POSTDEC
 %%
 
