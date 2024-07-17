@@ -34,7 +34,7 @@ int sprintf(char *buff, char *fmt, int *parg)
 			fmt++;
 			if(c2 == 'd') int2str(*parg, buff); parg++; end
 			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
-			if(c2 == 's') debug_s_arg(*parg); strmove(buff, *parg); parg++; end
+			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *parg); parg++; end
 			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
 			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
 			int inc = strlen(buff);
@@ -72,8 +72,8 @@ int printf(char *fmt, float args)
 	int printed = 0;
 	char buff[80];
 	int *parg = &args;
-	printed = sprintf(buff, fmt, parg);
-	Prints(buff, 999);
+	printed = sprintf(&buff, fmt, parg);
+	Prints(&buff, 999);
 	return printed;
 end
 

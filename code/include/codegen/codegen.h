@@ -97,5 +97,6 @@ void checkResult(const char *val);
 void codegen_gen_command(/*ptr_code_segment CS, unused*/const char *str, int cmd_index);
 void codegen_gen_code_segment(ptr_code_segment CS);
 void codegen_generate();
+int get_arg_size(const char* val);
 
 #endif

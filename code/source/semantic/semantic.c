@@ -474,7 +474,9 @@ void emit_all_decl_helper(){
 				sanitize_string(typestr));
 			
 				//calc size of var
-			if ((S->type == SYMBOL_VARIABLE) || (S->type == SYMBOL_MEMBER)) {
+			if ((S->type == SYMBOL_VARIABLE) 
+			 || (S->type == SYMBOL_MEMBER)
+			 || (S->type == SYMBOL_PARAM)) {
 				int size = S->symvariable.size;
 				if (size != 1) {
 					vec_printf(&vstr, " SIZE %d", size);
@@ -589,7 +591,7 @@ void emit_initializer(struct symbol *S){
 		struct symbol *S3 = lookup_symbol("constructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
 		//emit_code("CALL %s %s %s",exprResult,S3->IR_name,S->IR_name);
-		emit_code("CALL %s %s %s", 
+		emit_code("CALL %s %s &%s", 
 			sanitize_string(exprResult), 
 			sanitize_string(S3->IR_name), 
 			sanitize_string(S->IR_name));
@@ -643,7 +645,7 @@ void emit_deinitializer(struct symbol *S){
 		currentSymbolTable = S2->symclass.scope;
 		struct symbol *S3 = lookup_symbol("destructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
-		emit_code("CALL %s %s %s", 
+		emit_code("CALL %s %s &%s", 
 			sanitize_string(exprResult), 
 			sanitize_string(S3->IR_name), 
 			sanitize_string(S->IR_name));

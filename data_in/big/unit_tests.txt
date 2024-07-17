@@ -69,14 +69,15 @@ void test_3_array_pointer()
 	arr[1] = 11;
 	arr[2] = 12;
 	arr[3] = 13;
-	arr_addr = arr;
-	expect(3, 8, arr,    -8, TYPE_STACK);
+	arr_addr = &arr;
+	expect(3, 8,  &arr,   -8, TYPE_STACK);
 	expect(3, 9,  arr[0], 10, TYPE_BASIC);
 	expect(3, 10, arr[2], 12, TYPE_BASIC);
 	expect(3, 11, arr_addr[2], 12, TYPE_BASIC);
 	int d = arr[1];
 	expect(3, 12, d, 11);
-	test_3_array_arg(arr);
+	test_3_array_arg(&arr); // array-by-ptr
+	// btw now we also need to test array-by-val
 end
 
 void test_3_array_arg(int* arg)
@@ -155,8 +156,7 @@ end
 
 int test_6_arrays()
 	int arr[10];
-	writePort(7, 19999);
-	set_buff_mario(arr);		// pass array by pointer
+	set_buff_mario(&arr);		// pass array by pointer
 	/// arr == {mario}
 	expect(6, 1, arr[0], 'm',   TYPE_BASIC);
 	expect(6, 2, *arr, 'm',     TYPE_BASIC);	// array is filled through literal index
@@ -177,11 +177,11 @@ int test_6_arrays()
 	expect(6, 11, arr[3], 'e',  TYPE_BASIC);
 	expect(6, 12, arr[i+3], 'o',TYPE_BASIC);	// array is readible by arithmetic expression
 
-	int L = strlen(arr);
+	int L = strlen(&arr);
 	expect(6, 13, L, 5);			// stdlib function "strlen" works
 
 	int arr2[20];
-	set_buff_warudo(arr2);			// another test buffer
+	set_buff_warudo(&arr2);			// another test buffer
 	/// arr  == {moreo\0}
 	/// arr2 == {warudo\0}
 	expect(6, 14, arr2[0], 'w', TYPE_BASIC);
@@ -192,7 +192,7 @@ int test_6_arrays()
 	expect(6, 19, arr2[5], 'o', TYPE_BASIC);
 	expect(6, 20, arr2[6], 0,   TYPE_BASIC);
 
-	memmove(arr2, arr, L+1);
+	memmove(&arr2, &arr, L+1);
 	/// arr  == {moreo\0}
 	/// arr2 == {moreo\0\0}
 	expect(6, 21, arr2[0], 'm', TYPE_BASIC); // stdlib function "memmove" works
@@ -220,6 +220,12 @@ class Test_7_class_derp //class Derp
 		y = 3;
 		printf("derp.t71: y2 = %d\n", y);
 	end
+	int set_y(int new_y)
+		y = new_y;
+	end
+	int report_y()
+		printf("derp.ry: y = %d\n", y);	
+	end
 end
 
 int test_7_class_local()
@@ -228,33 +234,38 @@ int test_7_class_local()
 	printf("test7: &(derp1.x) = %d\n", &(derp1.x));
 	printf("test7: derp1.x = %d\n", derp1.x);
 	derp1.test71();
-	expect(7, 1, &derp1,		-28, TYPE_STACK);
-	expect(7, 2, derp1.x,		  1, TYPE_BASIC);
-	derp1.y = 2;
-	expect(7, 3, derp1.y,		  2, TYPE_BASIC);
-	expect(7, 4, derp1.sum(4),	  7, TYPE_BASIC);
+	expect(7, 1, &derp1,		-23, TYPE_STACK);
+	derp1.y = 12;
+	expect(7, 2, derp1.y,	     12, TYPE_BASIC);
+	derp1.report_y();
+	derp1.set_y(4);
+	expect(7, 3, derp1.y,		  4, TYPE_BASIC);
+	expect(7, 4, derp1.x,		  1, TYPE_BASIC);
+	expect(7, 5, derp1.sum(4),	  9, TYPE_BASIC);
 	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
 	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
-	expect(7, 5, derp1.sum,   2496, TYPE_GLOBAL);
+	expect(7, 6, derp1.sum,    4573, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
 int test_7_class_by_val(class Test_7_class_derp derp2)
-	expect(7, 6, &derp2,		-25, TYPE_STACK);
-	expect(7, 7, derp2.x,		  3, TYPE_BASIC);
-	expect(7, 8, derp2.y,		  4, TYPE_BASIC);
-	expect(7, 9, derp2.sum(5),   12, TYPE_BASIC);
-	expect(7, 10, derp2.sum,  2496, TYPE_GLOBAL);
+	writePort(6, 199999);
+	expect(7, 7, &derp2,		 -21, TYPE_STACK);
+	expect(7, 8, derp2.x,		  3, TYPE_BASIC);
+	expect(7, 9, derp2.y,		  4, TYPE_BASIC);
+	expect(7, 10, derp2.sum(5),  12, TYPE_BASIC);
+	expect(7, 11, derp2.sum,   4573, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
 int test_7_class_by_ptr(class Test_7_class_derp *derp3)
-	expect(7, 11, derp3,		 -3, TYPE_STACK);
-	expect(7, 12, &derp3,	    -25, TYPE_STACK);
-	expect(7, 13, derp3.x,		  5, TYPE_BASIC);
-	expect(7, 14, derp3.y,		  6, TYPE_BASIC);
-	expect(7, 15, derp3.sum(7),	 18, TYPE_BASIC);
-	expect(7, 16, derp3.sum,  2496, TYPE_GLOBAL);
+	expect(7, 12, derp3,		 -3, TYPE_STACK);
+	expect(7, 13, &derp3,	     -20, TYPE_STACK);
+	expect(7, 14, (*derp3).x,	  5, TYPE_BASIC);
+	expect(7, 15, derp3.x,		  5, TYPE_BASIC);
+	expect(7, 16, derp3.y,		  6, TYPE_BASIC);
+	expect(7, 17, derp3.sum(7),	 18, TYPE_BASIC);
+	expect(7, 18, derp3.sum,   4573, TYPE_GLOBAL);
 	return CODE_OK;
 end
 
@@ -291,6 +302,7 @@ end
 void unit_test_set_base_offset()
 	int base = 0;
 	unit_test_stack_offset = &base;
+	writePort(7, unit_test_stack_offset);
 end
 
 void run_all_tests()
@@ -306,7 +318,8 @@ void run_all_tests()
 	test_5_arithmetic();
 	test_6_arrays();
 	unit_test_ignore_global_address = 0;
-	//test_7_class();
+	unit_test_ignore_stack_address = 0;
+	test_7_class();
 	report_all_ok();
 end
 

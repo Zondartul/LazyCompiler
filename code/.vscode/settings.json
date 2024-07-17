@@ -4,6 +4,7 @@
         "vector2.h": "c",
         "symbol.h": "c",
         "code_segment.h": "c",
-        "semantic_context_kind.h": "c"
+        "semantic_context_kind.h": "c",
+        "codegen_gen_command.h": "c"
     }
 }

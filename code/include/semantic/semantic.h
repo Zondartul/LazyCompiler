@@ -68,6 +68,7 @@ typedef struct expr_settings {
 	val_handle dest;	//what value we want filled
 	val_handle *actual;	//what was it actually filled with
 	val_handle sem_this; //the 'this' value for a method call (but not for it's other args)
+	val_handle *out_sem_this; // fill out with 'this' value if discovered by expr_dot
 } expr_settings;
 
 #define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})

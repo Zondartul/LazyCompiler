@@ -158,7 +158,7 @@ struct sae_id_result sae_id_helper(struct symbol *S, ast_node* node, const char 
 	switch(S->type){
 		case SYMBOL_VARIABLE:	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
 		case SYMBOL_PARAM:		res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
-		case SYMBOL_MEMBER: 	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_LVAL}; break;
+		case SYMBOL_MEMBER: 	res = (struct sae_id_result){S->symvariable.type, S->IR_name, E_PTR/*E_LVAL*/}; break;
 		case SYMBOL_FUNCTION:	res = (struct sae_id_result){S->symfunction.signature, S->IR_name, E_FPTR/*E_RVAL*/}; break;
 		default:
 		{
@@ -475,9 +475,18 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	PREP_RES(res1, E_RVAL);//E_LVAL);//so we can call funcptrs  E_PTR);//E_RVAL);
 	res1stg.sem_this = stg.sem_this;
 	res1stg.dest.author = "expr_call funcname";
+	val_handle arg_this; arg_this.rv_type = E_ERROR;
+	if(stg.sem_this.rv_type != E_ERROR){
+		arg_this = stg.sem_this;
+	}
+	res1stg.out_sem_this = &arg_this;
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (function name or reference expression)
 	VERIFY_RES(res1);
 	const char* name = res1.val;
+	
+	//if(strcmp(name, "_test71") == 0){
+	//	printf("debug breakpoint");
+	//}
 
 	//1.2 make sure it's actually a function
 	struct type_name* T = res1.T;
@@ -502,9 +511,9 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	 //2.1 collect the values that we need to push
 	 vector2_ptr_char ministack = vector2_ptr_char_here();
 	  //2.1.1 if the function is called as a method, push the 'this'.
-		if (stg.sem_this.rv_type != E_ERROR) {
+		if (arg_this.rv_type != E_ERROR) {
 			vector2_char vstr = vector2_char_here();
-			vec_printf(&vstr, "%s", stg.sem_this.val); //should already be a pointer, e.g. &derp
+			vec_printf(&vstr, "%s", arg_this.val);//stg.sem_this.val); //should already be a pointer, e.g. &derp
 			const char* this_ref = stralloc(vstr.data);
 			m(ministack, push_back, this_ref);
 		}
@@ -545,6 +554,7 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	res1stg.dest.author = "expr_dot object(o.)";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (first one)
 	VERIFY_RES(res1);
+	if(stg.out_sem_this){*stg.out_sem_this = res1;}
 
 	struct type_name* T = res1.T;
 	if (!T->symclass) {
@@ -560,9 +570,10 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 
 	PREP_RES(res2, E_ASIS);//E_PTR);//E_RVAL);
 	res2stg.sem_this = res1;
-	if(strcmp(res1.val, "&derp1")==0){
-		printf("debug breakpoint");
-	}
+
+	//if(strcmp(res1.val, "&derp1")==0){
+	//	printf("debug breakpoint");
+	//}
 	res2stg.dest.author = "expr_dot member(.m)";
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (member)
 	VERIFY_RES(res2);

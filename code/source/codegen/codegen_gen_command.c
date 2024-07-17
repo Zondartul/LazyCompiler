@@ -253,6 +253,15 @@ void gen_command_je() {
 	return;
 }
 
+const char* get_referenced_name(const char* val){
+	if(val[0] == '*'){val++; return val;}
+	else{
+		vector2_char vstr = vector2_char_here();
+		vec_printf(&vstr, "&%s", val);
+		return stralloc(vstr.data);
+	}
+}
+
 void gen_command_call() {
 	if (codegen_decl) {
 		//do nothing
@@ -266,6 +275,7 @@ void gen_command_call() {
 		//codegen_tok = strtok(0," ");
 		const char* arr[20];
 		int nargs = 0;
+		int n_arg_bytes = 0;
 		for (int i = 0; i < 20; i++) {
 			arr[i] = strtok(0, " ");
 			if (arr[i]) { nargs++; }
@@ -273,15 +283,40 @@ void gen_command_call() {
 		for (int i = 0; i < nargs; i++) {
 			const char* codegen_tok = arr[nargs - 1 - i];
 			if (!codegen_tok) { continue; }
-			const char* arg = loadRValue(codegen_tok);
-			printindent();
-			asm_println("push %s", arg);
+			int arg_size = get_arg_size(codegen_tok);
+			if((arg_size < 0) || (arg_size > 100)){
+				int try_again = get_arg_size(codegen_tok);
+				printf("debug val: %d", try_again);
+				error("[CODE GEN] call: couldn't calculate argument size");
+			}
+			n_arg_bytes += arg_size;
+			if(arg_size <= 1){
+				const char* arg = loadRValue(codegen_tok);
+				printindent(); asm_println("push %s", arg);
+			}else{
+				/// we need to copy the value byte-by-byte
+				/// while preserving byte order
+				/// void *ptr = (&obj+sizeof(obj))
+				///	for i = 0, sizeof(obj):
+				///		push(*ptr--);
+				/// end
+				if(comments){printindent(); asm_println("// load the %d-byte argument %s", arg_size, codegen_tok);}
+				indent++;
+				const char* obj_ptr = get_referenced_name(codegen_tok);
+				const char* arg = loadLValue(obj_ptr);
+				printindent(); asm_println("add %s, %d", arg, arg_size-1);
+				for(int j = 0; j < arg_size; j++){
+					printindent(); asm_println("push #%s", arg);
+					printindent(); asm_println("dec %s", arg);
+				}
+				indent--;
+				//ptr_reg R = allocRegister();
+				//printindent(); asm_println("mov %s, ")
+			}
 			codegen_tok = strtok(0, " ");
 		}
-		printindent();
-		asm_println("call %s", func);
-		printindent();
-		asm_println("add esp, %d", nargs);
+		printindent(); asm_println("call %s", func);
+		printindent(); asm_println("add esp, %d", n_arg_bytes);
 		storeValue(result, "eax");
 		//printf("mov %s eax\n",result);
 	}

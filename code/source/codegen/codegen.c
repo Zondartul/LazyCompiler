@@ -5,7 +5,6 @@
 #include "stdio.h"
 #include "codegen_gen_command.h"
 #include "assert.h"
-
 // todo:
 // make it so each function has only one frame
 // no need to look at parent frame for any reason
@@ -623,7 +622,7 @@ const char* loadRValue(const char* val) {
 	if(is_member){
 		if(acc_deref)				{goto out_member_deref;}// mov t, #lbl; '#t'
 		if(acc_ref || is_array)		{goto out_pos;}			// '123'
-		if(acc_none && not_array)	{goto out_lbl_at;}		//'lbl'
+		if(acc_none && not_array)	{goto out_pos;}//out_lbl_at;}	//'lbl'
 	}
 	if(is_var_arg && store_global){
 		if(acc_deref)				{goto out_global_deref;}// mov t, #lbl; 't'/'#t'
@@ -818,7 +817,7 @@ void load_lbl_and_deref_n_times(const char* reg_name, const char *src, int deref
 
 void load_stack_and_deref_n_times(const char* reg_name, int pos, int derefs_requested){
 	#define FIRST_LOAD_S  printindent(); asm_println("mov %s, EBP:%d",reg_name,pos);	// 1st load
-	#define FIRST_DEREF_S printindent(); asm_println("rstack %s, EBP:#%d",reg_name,pos);	// 1st deref
+	#define FIRST_DEREF_S printindent(); asm_println("rstack %s, EBP:%d",reg_name,pos);	// 1st deref
 	#define NTH_DEREF_S   printindent(); asm_println("mov %s, #%s",reg_name,reg_name); //2nd...n'th deref
 	switch(derefs_requested){
 		case 0:	FIRST_LOAD_S;  break;
@@ -887,7 +886,7 @@ const char* loadLValue(const char* val){
 
 
 	if(is_member){
-		if( acc_ref)		{goto out_load_lbl_at;}
+		if( acc_ref)		{goto out_load_pos;}
 		if(!acc_ref)		{goto err_member_ref;}
 	}
 	if(is_var_arg){
@@ -915,16 +914,16 @@ out_load_val:
 	CHECK_STR(val);
 	CHECK_STR(reg->name);
 	reg->val = stralloc(val);
-	if(comments){printindent(); asm_println2("//load %s into %s",val, reg->name);}
+	if(comments){printindent(); asm_println("//load %s into %s",val, reg->name);}
 	printindent(); asm_println("mov %s, %s",reg->name,val);
 	return stralloc(reg->name);
 
-out_load_lbl_at:
-	CHECK_STR(reg->name);
-	CHECK_STR(S->lbl_at);
-	printindent(); asm_println("mov %s, %s",reg->name, S->lbl_at);
-	// reg and reg->val are premade
-	return stralloc(reg->name);
+//out_load_lbl_at:
+//	CHECK_STR(reg->name);
+//	CHECK_STR(S->lbl_at);
+//	printindent(); asm_println("mov %s, %s",reg->name, S->lbl_at);
+//	// reg and reg->val are premade
+//	return stralloc(reg->name);
 
 out_load_lbl_at_with_derefs:
 	CHECK_STR(reg->name);
@@ -959,12 +958,18 @@ out_load_val_with_derefs:
 	// reg and reg->val are premade
 	return stralloc(reg->name);
 
+out_load_pos:
+	CHECK_STR(reg->name);
+	printindent(); asm_println("mov %s, %d", reg->name, S->pos);
+	// reg and reg->val are premade
+	return stralloc(reg->name);
+
 
 /*
 	if(isnumber(val)){
 		//immediate value
 		reg = allocRegister();
-		if(comments){printindent(); asm_println2("//load %s into %s",val, reg->name);}
+		if(comments){printindent(); asm_println("//load %s into %s",val, reg->name);}
 		reg->val = stralloc(val);
 		printindent();
 		asm_println("mov %s, %s",reg->name,val);
@@ -1185,6 +1190,35 @@ void storeValue(const char *val, const char *reg){
 	}
 }
 
+int max(int a, int b){return (a>b? a : b);}
+int min(int a, int b){return (a<b? a : b);}
+
+int get_arg_size(const char* val) {
+	//int acc_ref = 0;
+	//int acc_deref = 0;
+	//int acc_none = 0;
+
+	if (!val) { goto err_null_val; }
+	if (isnumber(val)) { return 1; }
+	
+	if (val[0] == '*') { /*acc_deref = 1;*/ val++; }
+	if (val[0] == '&') { return 1; }
+	//if (acc_ref && acc_deref) {goto err_ref_deref;} //error("[CODE GEN] can't reference AND dereference");}
+	//acc_none = (!acc_deref) && (!acc_ref);
+
+	ptr_IR_symbol S = find_IR_symbol(val);
+	if (!S) { goto err_undefined; }
+
+	if(S->pointerlevel)  {return 1;}
+	else if(S->arraysize){return max(S->size * S->arraysize, 1);}
+	else				 {return max(S->size, 1);}
+
+	err_null_val: error("[CODE GEN] get_arg_size: argument is null");
+	err_undefined: error("[CODE GEN] get_arg_size: symbol %s is undefined", val);
+	//err_ref_deref: error("[CODE GEN] get_arg_size: can't ref AND deref");
+	assert(!"unreachable");
+	return 0;
+}
 void checkResult(const char *val){
 	ptr_IR_symbol S = find_IR_symbol(val);
 	if(S){return;}
@@ -1193,6 +1227,8 @@ void checkResult(const char *val){
 	S->type = stralloc("VAR");
 	S->pos = allocStackVar(1);
 	S->temp = 1;
+	S->size = 1;
+	S->arraysize = 0;
 	S->framedepth = curframe->depth;
 	if(!S->framedepth){S->lbl_at = IR_inexact_name(curframe->namespace,S->IR_name);}
 	S->pointerlevel = 0;
