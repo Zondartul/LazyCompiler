@@ -554,14 +554,29 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	res1stg.dest.author = "expr_dot object(o.)";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (first one)
 	VERIFY_RES(res1);
-	if(stg.out_sem_this){*stg.out_sem_this = res1;}
-
-	struct type_name* T = res1.T;
+	
+	struct type_name *T = malloc(sizeof(struct type_name));
+	*T = *res1.T;
 	if (!T->symclass) {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 		error("semantic error: member access (x.y) impossible because x is a primitive (%s)\n", T->name);
 	}
+	
+	if(T->pointerlevel){ /// so that "ptr.x" is equivalent to "(*ptr).x"
+		if(res1.val[0] == '&'){
+			res1.val++;
+		}else{
+			const char* deref_obj = IR_next_name(namespace_semantic, "temp");
+			emit_code("MOV %s *%s", sanitize_string(deref_obj), sanitize_string(res1.val));
+			res1.val = deref_obj;
+		}
+		T->pointerlevel--;
+	}
+	res1.T = T;
+	if(stg.out_sem_this){*stg.out_sem_this = res1;}
+	
+
 	//push_symbol_table();
 	//currentSymbolTable = T->symclass->symclass.scope;
 	//no, we don't want to switch symbol table
