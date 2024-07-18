@@ -426,7 +426,16 @@ void class_def_finalize(){
 		S->storage = STORE_CODE;
 		S->username = name;
 		S->IR_name = IR_name;
-		S->symfunction.returntype = semantic_get_type("void");
+		struct type_name *T = semantic_get_type("void");
+		S->symfunction.returntype = T;
+		/// make a signature
+			struct type_name *signature = malloc(sizeof(struct type_name));
+			signature->name = 0;
+			signature->symclass = 0;
+			signature->args = vector2_ptr_type_name_new();
+			m((*(signature->args)), push_back, T);
+		S->symfunction.signature = signature;
+
 		S->symfunction.code = 0;
 		S->symfunction.scope = 0;
 		symbolThis->symclass.defaultConstructor = S;
@@ -445,7 +454,16 @@ void class_def_finalize(){
 		S->storage = STORE_CODE;
 		S->username = name;
 		S->IR_name = IR_name;
-		S->symfunction.returntype = semantic_get_type("void");
+		struct type_name *T = semantic_get_type("void");
+		S->symfunction.returntype = T;
+		/// make a signature
+			struct type_name *signature = malloc(sizeof(struct type_name));
+			signature->name = 0;
+			signature->symclass = 0;
+			signature->args = vector2_ptr_type_name_new();
+			m((*(signature->args)), push_back, T); // first argument of a signature is the return type
+		S->symfunction.signature = signature;
+		
 		S->symfunction.code = 0;
 		S->symfunction.scope = 0;
 		symbolThis->symclass.defaultDestructor = S;
@@ -742,7 +760,8 @@ char *escape_string(const char *str){
 		(C == '\n')||
 		(C == '\t')||
 		(C == '\"')||
-		(C == '\'')
+		(C == '\'')||
+		(C == '\\')
 		)
 		{len += 2; continue;}
 		len++;
@@ -760,6 +779,7 @@ char *escape_string(const char *str){
 		if(C == '\''){buff[buffi++] = '\\'; buff[buffi++] = '\''; continue;}
 		if(C == '\\'){buff[buffi++] = '\\'; buff[buffi++] = '\\'; continue;}
 		buff[buffi++] = C;
+		assert(buffi < (len+1));
 	}
 	buff[buffi] = 0;
 	printf("string [%s] escaped to [%s]\n",str,buff);
@@ -769,7 +789,8 @@ char *escape_string(const char *str){
 char *unescape_string(const char *str){
 	int i = 0;
 	//int len = 0; //unused
-	char *buff = malloc(strlen(str));
+	int len = strlen(str);
+	char *buff = malloc(len+1);
 	int buffi = 0;
 	char C = 0;
 	char C2 = 0;
@@ -785,8 +806,10 @@ char *unescape_string(const char *str){
 			if(C2 == '\\'){buff[buffi++] = '\\'; continue;}
 			error("error: unescape_string: unrecognized escape sequence \'%c%c\' ",C,C2);
 		}
+		assert(buffi < (len+1));
 		buff[buffi++] = C;
 	}
+	assert(buffi < (len+1));
 	buff[buffi] = 0;
 	printf("string [%s] unescaped to [%s]\n",str,buff);
 	return buff;

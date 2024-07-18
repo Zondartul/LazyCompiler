@@ -164,8 +164,8 @@ void print_skeleton_start(){
 
 	asm_println("code_segment_start:");
 	asm_println("#define DEBUG");
-	asm_println("mov ebp, 20000");
-	asm_println("mov esp, 19999");
+	asm_println("mov ebp, 60000");//20000");
+	asm_println("mov esp, 59999");//19999");
 	asm_println("mov #%d, debug_info", debugMem+20);
 	
 	//CurEBP = 20000;
@@ -1209,6 +1209,8 @@ int get_arg_size(const char* val) {
 	ptr_IR_symbol S = find_IR_symbol(val);
 	if (!S) { goto err_undefined; }
 
+	if(strcmp(S->type, "FUNC") == 0){return 1;}
+
 	if(S->pointerlevel)  {return 1;}
 	else if(S->arraysize){return max(S->size * S->arraysize, 1);}
 	else				 {return max(S->size, 1);}
@@ -1245,6 +1247,7 @@ void bufferizeWithoutComments(char *buff, const char *str, int num){
 	int inComment = 0;
 	char C, C2;
 	C = *str++;
+	num--; // so we can put down the final zero
 	if(C){C2 = *str++;}
 	while(C && num){
 		if(!inComment){

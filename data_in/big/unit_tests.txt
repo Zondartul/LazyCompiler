@@ -269,6 +269,27 @@ int test_7_class_by_ptr(class Test_7_class_derp *derp3)
 	return CODE_OK;
 end
 
+class Test_7_class_derp derp4;
+
+int test_7_class_global()
+	expect(7, 19, &derp4,	  999, TYPE_GLOBAL);
+	void *p1 = &derp4;
+	expect(7, 20, p1,		  999, TYPE_GLOBAL);
+	void *px = &(derp4.x);
+	void *py = &(derp4.y);
+	int b1 = (p1 == px);
+	int b2 = ((p1 + 1) == py);
+	expect(7, 21, b1, 			1, TYPE_BASIC);
+	expect(7, 22, b2,			1, TYPE_BASIC);
+	expect(7, 23, *px,			1, TYPE_BASIC);
+	expect(7, 24, derp4.x,		1, TYPE_BASIC);
+	derp4.y = 4;
+	expect(7, 25, *py,			4, TYPE_BASIC);
+	expect(7, 26, derp4.y,		4, TYPE_BASIC);
+	expect(7, 27, derp4.sum(10),15,TYPE_BASIC);
+	return CODE_OK;
+end
+
 int test_7_class()
 	test_7_class_local();
 	class Test_7_class_derp derp4;
@@ -277,6 +298,7 @@ int test_7_class()
 	class Test_7_class_derp derp5;
 	derp5.x = 5; derp5.y = 6;
 	test_7_class_by_ptr(&derp5);
+	test_7_class_global();
 	return CODE_OK;
 end
 
@@ -317,8 +339,8 @@ void run_all_tests()
 	test_4_funcptr();
 	test_5_arithmetic();
 	test_6_arrays();
-	unit_test_ignore_global_address = 0;
-	unit_test_ignore_stack_address = 0;
+	//unit_test_ignore_global_address = 0;
+	//unit_test_ignore_stack_address = 0;
 	test_7_class();
 	report_all_ok();
 end

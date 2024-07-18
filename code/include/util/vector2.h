@@ -98,7 +98,7 @@ void vector2_##T##_resize(struct vector2_##T *this, int size);
 
 /// probably could be done with DEFER and EXPAND but I can't brain them.
 /// -- end "va_arg char bug"
-
+void debug_breakpoint();
 #define implementation_vector_of(T)	\
 const char *vector2_##T##_canary = "vector2_" #T;\
 vector2_##T* vector2_##T##_new(){	\
@@ -230,7 +230,8 @@ void vector2_##T##_insert(struct vector2_##T *this, T element, int pos){	\
 	vector2_##T##__basic_check(this); \
 	if((pos < 0) || (pos > this->size)){v2error("index out of bounds (%d out of max %d)\n",pos, this->size);}	\
 	if(this->size >= this->capacity){	\
-		vector2_##T##_internal_resize(this, (this->capacity+1)*1.5);	\
+		/*vector2_##T##_internal_resize(this, (this->capacity+1)*1.5);*/	\
+		vector2_##T##_internal_resize(this, (this->size+1)*1.5);	\
 	}	\
 	if(this->size > 0){	\
 	memmove(vector2_##T##_internal_get(this, pos+1), vector2_##T##_internal_get(this,pos), (this->size-pos)*sizeof(T));	\
@@ -242,7 +243,22 @@ void vector2_##T##_insert(struct vector2_##T *this, T element, int pos){	\
 void vector2_##T##_erase(struct vector2_##T *this, int pos){	\
 	vector2_##T##__basic_check(this); \
 	if((pos < 0) || (pos >= this->size)){v2error("index out of bounds (%d out of max %d)\n",pos, this->size);}	\
-	if(pos < (this->size-1)){memmove(vector2_##T##_internal_get(this, pos), vector2_##T##_internal_get(this, pos+1), (this->size-pos)*sizeof(T));}	\
+	if(pos < (this->size-1)){memmove(vector2_##T##_internal_get(this, pos), vector2_##T##_internal_get(this, pos+1), (this->size-1-pos)*sizeof(T));}	\
+	/*  - was debugging ASAN out-of-bounds read during memcpy - memcpy size was 1 element too big (since we are removing one)
+	if(pos < (this->size-1)){									\
+		void* dest = vector2_##T##_internal_get(this, pos);		\
+		void* src = vector2_##T##_internal_get(this, pos+1);	\
+		size_t size = (this->size-1 - pos)*sizeof(T);				\
+		if((src == (void*)0x603000060100) || 					\
+			(src == (void*)0x603000060118) ||					\
+			(dest== (void*)0x603000060100) || 					\
+			(dest == (void*)0x603000060118))					\
+		{														\
+			debug_breakpoint();									\
+																\
+		}														\
+		memmove(dest, src, size);								\
+	}*/															\
 	this->size--;	\
 }	\
 	\

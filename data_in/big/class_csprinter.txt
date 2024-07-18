@@ -1,0 +1,157 @@
+// class CSPrinter - handles screen extents and scrolling logic
+#include "data_in/big/class_screen.txt"
+
+class CSPrinter
+	class CScreen *scr = 0;
+	
+	int box_x_min = 0;
+	int box_y_min = 0;
+	int box_x_max = 30;
+	int box_y_max = 19;
+
+	int last_x = 29;
+	int last_y = 17;
+	int cur_x = 0;
+	int cur_y = 0;
+
+	//void libprints_init()
+	//	last_x = 29;
+	//	last_y = 17;
+	//	cur_x = 0;
+	//	cur_y = 0;
+	//end
+
+	void init()
+		printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
+		scr = 0;
+		box_x_min = 0;
+		box_y_min = 0;
+		box_x_max = 30;
+		box_y_max = 19;
+		last_x = 29;
+		last_y = 17;
+		cur_x = 0;
+		cur_y = 0;
+		printf("cur_x after: %d\n", cur_x);
+	end
+
+	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
+
+	int charcode_NL = 10; //same as enter
+	int charcode_BACK = 13; //same as backspace
+	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
+	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+	int charcode_BELL = 16; //make a beep or something
+	//sequences: 
+	//NL -> print pointer is at the beginning of the next line
+	//FILL -> line filled with spaces; print pointer at the end of this line
+	//CR -> print pointer at the beginning of this line
+	//CR FILL CR -> the line is blank and you are at the beginning
+	//BACK CR -> go to beginning of prev line
+	//hello BACK z -> hellz
+
+	void putch(char C)		print_char(C, scr.col);		end
+	void puts(char *str)	cs_prints(str, scr.col);	end
+
+	void print_char(char C, int col)
+		printf("621.");
+		if(C == charcode_NL)	cs_newline();	end
+		printf("622.");
+		if(C == charcode_BACK)	cs_prevcol();	end
+		printf("623.");
+		if(C == charcode_CR)	cur_x = 0;		end
+		printf("624.");
+		if(C == charcode_FILL)
+		printf("625.");
+			for(int i = cur_x; i < last_x; i++)
+		printf("626.");
+				scr.putchXY(' ', i, cur_y);
+		printf("627.");
+			end
+		printf("628.");
+			cur_x = last_x;
+		printf("629.");
+		end
+		printf("62A.");
+		if(C == charcode_BELL)	cs_beep();		end
+		printf("62B.");
+		if(C > 31)
+		printf("62C.");
+			scr.putchXY(C, cur_x, cur_y);
+		printf("62D.");
+			cs_newcol();
+		printf("62E.");
+		end
+		printf("62F.");
+	end
+
+	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
+		printf("61.");
+		while(*str2)
+			printf("62.");
+			print_char(*str2++, col);
+			printf("63.");	
+		end
+		printf("63.");
+	end
+
+	void cs_printn(int num, int col)
+		char buff[20];
+		int2str(num, buff);
+		cs_prints(buff, col);
+	end
+
+	void cs_newline()
+		cur_x = 0;
+		cur_y++;
+		if(cur_y > last_y-1)
+			shift_up();
+		end
+	end
+
+	void cs_prevline()
+		cur_x = last_x;
+		cur_y--;
+		if(cur_y < 0)
+			shift_down();
+		end
+	end
+
+	void cs_newcol()
+		cur_x++;
+		if(cur_x > last_x)
+			newline();
+		end
+	end
+
+	void cs_prevcol()
+		cur_x--;
+		if(cur_x < 0)
+			prevline();
+		end
+	end
+
+	void cs_beep() end
+
+	void shift_up()
+		if(cur_y > last_y-1)
+			scr.shift_vertical(1);
+			cur_y--;
+		end
+	end
+
+	void shift_down()
+		if(cur_y < 0)
+			scr.shift_vertical(-1);
+			cur_y++;
+		end
+	end
+
+	void set_print_box(int x1, int y1, int x2, int y2)
+		box_x_min = x1;
+		box_y_min = y1;
+		box_x_max = x2;
+		box_y_max = y2;
+	end
+end
+

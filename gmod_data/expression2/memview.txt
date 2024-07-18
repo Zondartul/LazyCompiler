@@ -1,0 +1,39 @@
+@name memview
+@inputs Mem:wirelink Scr:wirelink Offs
+@outputs 
+@persist I
+@trigger 
+@strict
+
+if(first()){
+    I = 0
+    PrevX = 0
+    PrevY = 0
+}
+
+#runOnTick(1)
+#interval(50)
+interval(100) # a bit slower
+
+Val = Mem[I+Offs]
+S = "" + (I+Offs) + ": " + Val 
+if(inrange(Val, 0, 255)){
+    S = S + " (" + toChar(Val) + ")   "
+}else{
+    S = S + "   "
+}
+
+if(I < 17){
+    X = 0
+    Y = I
+    Scr:writeString(S, X, Y)
+    Scr:writeString("**********", X, Y+1)
+}else{
+    X = 16
+    Y = I-17
+    Scr:writeString(S, X, Y)
+    Scr:writeString("**********", X, Y+1)
+}
+I++
+if(I > 33){I = 0}
+

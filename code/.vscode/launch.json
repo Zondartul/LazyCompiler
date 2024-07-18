@@ -12,7 +12,7 @@
             "args": [
                 "-i", "data_in/lazy2.txt",
                 "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
-                //"--no-asm-comments"
+               // "--no-asm-comments"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}/..", //"${fileDirname}",
@@ -39,12 +39,13 @@
             "program": "${workspaceRoot}/bin/lazycomp",
             "args": [
                 "-i", "data_in/lazy2.txt",
-                "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm"
+                "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
+                "--no-asm-comments"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}/..",
-            "environment": [],
-            "externalConsole": true,
+            "environment": [{"name":"LSAN_OPTIONS", "value":"verbosity=1:log_threads=1"}],
+            //"externalConsole": true,
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
@@ -54,7 +55,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "internalConsoleOptions": "neverOpen"
+            //"internalConsoleOptions": "neverOpen"
         }
     ]
 }

@@ -1,17 +1,13 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/testOutput.txt"
 #include "data_in/big/printf.txt"
-
+#include "data_in/big/class_csprinter.txt"
 
 int addr_bus[4];
 
-
-void stuff_test_1()
-	int x;
-	printf("t1 x1: %d\n", x); // ???
-	x = 11;
-	printf("t1 x2: %d\n", x); // 11
-end
+// todo:
+//   - array literals {a, b, c}
+//   - 
 
 
 
@@ -25,71 +21,97 @@ void init_printf()
 	screen_clear();
 end
 
-void test_printf()
-	printf("hello world!\n");
-	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
-	/// oh hey, it turns out our printf or num2str doesn't flip the digits oops
-	//printf("123[%d],45[%d],1[%d],10[%d],0.1[%d]\n",123,45,1,10,1/10);
-	// bluuuuh, nothing but %d works on printf and even that crappily backwards
-	printf("s test: %s\n","abra_cadabra_karabas_barabas");
-	printf("d test: %d, %d, %d\n", 123, 45, 1907);
-	char *str = "[my strings]";
-	int L = strlen(str);
-	printf("strlen = %d\n", L);
-
-	printf(str);
-	char zuzubaf[20];
-	set_buff_mario(zuzubaf);
-	debug_s_arg(zuzubaf); printf("\n");
-	memmove(zuzubaf, str, L+1);
-	debug_s_arg(zuzubaf); printf("\n");
-	printf("str : [");printf(str);printf("]\n");
-	printf("buff: [");printf(zuzubaf);printf("]\n");
-	debug_s_arg(zuzubaf); printf("\n");
-	return;
-
-	int x = 10;
-	printf("t0 x1: %d\n", x); // 10
-	char buff2[7];
-	set_buff_warudo(buff2);
-	debug_s_arg(buff2);
-	stuff_test_1();
-	stuff_test_2();
-	printf("t0 x2: %d\n", x); // 10
-	debug_s_arg(buff2);
-	//printf("\n");
-	//printf("before: %s\n",str);
-	//string_reverse(str);
-	//printf("after : %s\n",str);
-	//printf(str);
-	//printf("\n");
-end
-
-void stuff_test_2()
-	int x;
-	printf("t2 x1: %d\n", x); // ???
-	x = 12;
-	printf("t2 x2: %d\n", x); // 12
-end
-
-/*
-int *adr_port = 65536;
-
-void writePort(int port, int val)
-	*(adr_port+port) = val;
-end
-*/
-/*
-int string_pass_test(char* str1, char* str2)
-	writePort(0, str1);
-	writePort(1, str1[0]);
-	writePort(2, str2);
-	writePort(3, str2[0]);
-end
-*/
 //btw you can pass arrays by value now,
 // but there is no argument type checking.
 // oops....
+
+class Const_colors 
+	int black = 0;
+	int white = 999;
+	int gray = 444;
+	int red = 900;
+	int green = 90;
+	int blue = 9;
+	int yellow = 990;
+	int orange = 940;
+	int cyan = 99;
+	int purple = 909;
+	int violet = 404;
+	
+	int bg_black = 0;
+	int bg_white = 999000;
+	int bg_gray = 444000;
+	int bg_red = 900000;
+	int bg_green = 90000;
+	int bg_blue = 9000;
+	int bg_yellow = 990000;
+	int bg_orange = 940000;
+	int bg_cyan = 99000;
+	int bg_purple = 909000;
+	int bg_violet = 404000;
+end
+
+class Const_colors Color;
+
+class Dev_address_bus
+	int addr[4];
+	void constructor(int base_offset, int size1, int size2, int size3)
+		addr[0] = base_offset;
+		addr[1] = addr[0] + size1;
+		addr[2] = addr[1] + size2;
+		addr[3] = addr[2] + size3;
+		//printf("Dev_address_bus constructed with addr:\n%d, %d, %d, %d\n", addr[0], addr[1], addr[2], addr[3]);
+	end
+	void write(int dev_num, int* offset, int byte)
+		int *ptr = addr[dev_num] + offset;
+		//printf("write(*%d) <- %d\n", ptr, byte);
+		*ptr = byte;
+	end
+	int read(int dev_num, int* offset) /// variable was shadowed (addr)
+		int *ptr = addr[dev_num] + offset;
+		int byte = *ptr;
+		//printf("read(*%d) -> %d\n", ptr, byte); 
+		return *ptr;
+	end
+end
+
+
+class test_derpy1
+	int x = 10;
+	int y = 20;
+	void test_d1()
+		printf("d1 -------\nthis = %d\n&y   = %d\nx    = %d\n", this, &y, y);
+	end
+end
+
+class test_derpy2
+	int z = 30;
+	void test_d1()
+		printf("i am derpy dtwo\n");
+	end
+end
+
+void test_class_multiple_and_ptr()
+	class test_derpy1 D1;
+	printf("&D1 = %d\n", &D1);
+	D1.test_d1();
+	class test_derpy1 *ptr_D1 = &D1;
+	printf("(ptr_)");	
+	ptr_D1.test_d1();
+
+	class test_derpy2 D2;
+	D2.test_d1();
+end
+
+// -- [CLOSED] bug: can't have same-named method in multiple classes? 
+// -- [CLOSED] bug: 'this' passed differently for pointer and real object?
+//				nope, works fine, see test_class_multiple_and_ptr
+
+// -- also, zASM fuckery: labels are not case-sensitive
+// -- [bug] - IR_next_name needs case-insensitive collision to match zASM
+// -- [bug] 'void *ptr = class' is allowed but it's a bug!
+//				need need NEEED type checks on assign!
+// -- [bug] - number of arguments is not checked, which can fuck with 'this'
 
 int main()
 	setup();
@@ -97,9 +119,53 @@ int main()
 	init_printf();
 	//test_printf();
 	
-	printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello [%s] %d!\n", "world", 123);
+	printf("Running LazyComp unit tests\n");
+	//run_all_tests();
+	//printf("&Color = %d\n", &Color);
+	//printf("Color.green = %d\n",Color.green);
+	//printf("Color.blue = %d\n", Color.blue);
+	//class Const_colors Color2;
+	//printf("&Color2 = %d, green = %d\n", &Color2, Color2.green);
+	Prints("All tests green",90); 	
+	screen_clear(); setPrintCursor(0,0);
+	printf("hello world!\n");
+	
 
-	run_all_tests();
+
+
+
+
+	class Dev_address_bus addr_bus;//(65536, 20000, 20000, 20000);
+	class CScreen scr;
+	class CSPrinter printer;
+	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
+	printf("step 0.");
+	addr_bus.constructor(65536, 20000, 20000, 20000);
+	printf("1.");
+	//printf("addr_bus @ %d, arr @ %d:\n%d %d %d %d\n", 
+	//	   &addr_bus, &(addr_bus.addr), 
+	//	   addr_bus.addr[0], addr_bus.addr[1], addr_bus.addr[2], addr_bus.addr[3]);
+	//int C1 = addr_bus.read(2, 0);
+	//int C2 = addr_bus.read(2, 1);
+	//printf("C1 %d (%c), C2 %d (%c)\n", C1, C1, C2, C2);
+
+	scr.constructor();
+	printf("2.");
+	scr.set(addr_bus.addr[2]);
+	printf("... scr.memscr = %d\n", scr.mem_scr);
+	printf("3.");
+	printer.init();
+	printf("4.");
+	printer.scr = &scr;
+	printf("... printer.scr = %d\n", printer.scr);
+	printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
+	printf("... scr.memscr = %d\n", scr.mem_scr);
+	printf("5.");
+	printer.puts("Hello from CSPrinter!\n");
+	printf("z.");
+	
+	
 	
 	infloop();
 end
