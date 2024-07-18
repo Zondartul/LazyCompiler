@@ -56,7 +56,7 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 				//uint64_t max_limit = 0;
 				int64_t min_limit = 0;
 				int64_t total_limit = 0;
-				if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1L<<32;} // int always  sint32_t
+				if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1ULL<<32;} // int always  sint32_t
 				if(is_char){min_limit = 0; /*max_limit = 255;*/ total_limit = 256;}				 // char always uint8_t
 
 				if(is_some_integer){

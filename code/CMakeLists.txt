@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(lazycomp)
+IF(WIN32)
+	project(lazycomp.exe)
+ELSE()
+	project(lazycomp)
+ENDIF()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_C_FLAGS 
 "-g -fmax-errors=1 -std=c11 -Wall -Wextra -Werror -fno-stack-protector")

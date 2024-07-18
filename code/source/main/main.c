@@ -11,14 +11,18 @@ extern FILE *yyin2;
 //yaccin.tab.h has "int yyparse (void);"
 //void yyparse();
 
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+
 void printstamp(){
-	fprintf(stderr,"\n"
+	fprintf(stderr,"\n" KGRN
 		"===============================\n"
 		"=    #                        =\n"
 		"= # #   Compiled Successfully =\n"
 		"=  #                          =\n"
 		"===============================\n"
-		);
+		KNRM );
 }
 
 const char *path_out_preproc = "data_out/aout_preproc.txt";
@@ -101,7 +105,7 @@ int main(int argc, char** argv) {
 
 int doing_semantic = 0;
 const char *out_file = 0;
-
+extern int yynerrs;
 
 
 T_cli_options cli_options = {"ERROR", "ERROR", 1, 1};
@@ -210,7 +214,11 @@ good_args:
 	if(!yyin){error("can't fopen ");}
 	yyin2 = fopen(/*"ain_preproc.txt"*/path_in_preproc,"r");
 	if(!yyin2){error("can't freopen ");}
-	yyparse();
+	int res = yyparse();
+	if((res == 1) || (yynerrs != 0)){
+		fprintf(stderr,"%sFailed to parse source code due to syntax error.\n%s", KRED, KNRM);
+		return 1;
+	}
 	fprintf(stderr,"\t\tdone\n");
 	
 	

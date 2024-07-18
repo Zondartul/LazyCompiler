@@ -836,10 +836,11 @@ end
 
 
 void init_printf()
-	addr_bus[0] = 65536;
-	addr_bus[1] = addr_bus[0] + 20000;
-	addr_bus[2] = addr_bus[1] + 20000;
-	addr_bus[3] = addr_bus[2] + 20000;
+	addr_bus = {65536, 65536+20000, 65536+20000*2, 65536+20000*3};
+	//addr_bus[0] = 65536;
+	//addr_bus[1] = addr_bus[0] + 20000;
+	//addr_bus[2] = addr_bus[1] + 20000;
+	//addr_bus[3] = addr_bus[2] + 20000;
 	screen_set(addr_bus[2]);
 
 	screen_clear();
@@ -857,6 +858,8 @@ void test_printf()
 	int L = strlen(str);
 	printf("strlen = %d\n", L);
 
+	printf("char C = %c\n", (char)97);
+
 	printf(str);
 	char zuzubaf[20];
 	set_buff_mario(zuzubaf);
@@ -868,7 +871,7 @@ void test_printf()
 	debug_s_arg(zuzubaf); printf("\n");
 	return;
 
-	int x = 10;
+	int x = 10
 	printf("t0 x1: %d\n", x); // 10
 	char buff2[7];
 	set_buff_warudo(buff2);

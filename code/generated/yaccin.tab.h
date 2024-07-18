@@ -55,7 +55,7 @@ extern int yydebug;
 	typedef struct ast_node ast_node;
 	
 	extern ast_node *finalNode;
-	int yyerror(const char *s);
+	void /*int*/ yyerror(const char *s);
 
 #line 61 "generated/yaccin.tab.h"
 

@@ -16,7 +16,14 @@ int lextokenend;
 int lexlinestart;
 int lexnumtabs;
 int lexnewline = 0;
+
+YYLTYPE prev2_yylloc;
+YYLTYPE prev_yylloc;
+
 void updatelloc(){
+	prev2_yylloc = prev_yylloc;
+	prev_yylloc = yylloc;
+
 	yylloc.null = 0;
 	yylloc.first_line = yylloc.last_line;
     yylloc.first_column = yylloc.last_column;	
