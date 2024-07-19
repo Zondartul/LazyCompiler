@@ -60,7 +60,7 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 	//if(err){perror("fseek: "); error("gst2: fseek: err = %d",err);}
 	//line = pos.first_line;
 	line = pos.first_line;
-	int report = 1; 
+	//int report = 1; 
 	//C = fgetc(fp);
 	while((line < pos.last_line)&&(C!=EOF)){
 		//we should be at the start-line,
@@ -82,28 +82,11 @@ char *get_source_text2(YYLTYPE pos){ //this is still stupid-broken
 	while((col < pos.last_column)&&(C != EOF)){
 		//write down characters until we reach the column
 		if(C == '\n'){
-			//*strP++ = 0;
-			if(report){
-				//fprintf(stderr,"\nWARNING: gst2: overshoot2: report\n");
-				//fprintf(stderr,"node ==================\n");
-				//const char *snode = 0;
-				////if(curNode){snode = get_source_text2(curNode->token.pos);} //this sometimes causes a stack overflow
-				//fprintf(stderr,"%s\n",snode);
-				//fprintf(stderr,"semantic ============\n");
-				//fprintf(stderr,"decl = %d, nodesDecl = %d, nodesImp = %d\n",
-				//		semantic_decl, nodeCountDecl, nodeCountImp);
-				//fprintf(stderr,"str =================\n"
-				//			   "%s\n"
-				//			   "=====================\n",str);
-				//fprintf(stderr,"pos:\n");
-				//fprintf(stderr,"=====================\n");
-				//printPosErr(pos);
-			}
 			//the requested column further than the length of the line
-			//error("gst2: overshot2 ");
 			break;
 		}else{ 
 			*strP++ = C; C = fgetc(fp); col++;
+			if(strP >= strWatermark){break;}
 		}
 	}
 	

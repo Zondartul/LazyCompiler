@@ -7,9 +7,11 @@ ELSE()
 	project(lazycomp)
 ENDIF()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
-set(CMAKE_C_FLAGS 
-"-g -fmax-errors=1 -std=c11 -Wall -Wextra -Werror -fno-stack-protector")
+set(CMAKE_C_FLAGS "-g -fmax-errors=1 -std=c11 -Wall -Wextra -Werror")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fno-stack-protector")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
 set(CMAKE_EXE_LINKER_FLAGS "")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lasan")
 #======================
 #variables
 #important:

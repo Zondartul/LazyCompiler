@@ -71,7 +71,23 @@
 *				from struct after call)...
 *				When the IR symbol &x is looked up, there is no way to tell which scope it belongs to
 *		\[idea] just make symbols in a struct have "MEMBER" type instead of "VAR"
-* 
+* [bug 42] class object in global scope is not initialized
+*			- added unit test: test_7_class_global
+* [bug 43] class: can't call user constructor:
+*		"class Dev_address_bus addr_bus(65536, 20000,20000,20000)"
+*										^ unexpected INTEGER, expecting ')'
+* [todo 44] "adr? you mean addr?" - text distance on "undefined symbol" hit
+* [todo 45] (int*) type conversion
+* [todo 46] {1,2,3} list initializer
+* [todo 47] type checking (e.g. class vs int)
+*			47.1 : argument type checking
+*			47.2 : assignment type checking
+* [todo 48] warning when a variable is shadowed
+* [todo 49] add setting to decide where the stack lives (codegen.c: print_skeleton_start)
+* [bug 44] IR_next_name needs to be case-insensitive because stupid zASM has case-insensitive labels
+* [bug 45] 'void *ptr = class' is allowed but it's a bug! need need NEED type checks on assign!
+* [bug 46] number of arguments in a function is not checked (can this break 'this'?)
+*
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators
 * [FIXED Todo 9] display the source code location during semantic errors
@@ -134,10 +150,26 @@
 * [FIXED issue 33] lazy2.txt printf can't see \ slashes, maybe because of internally unescaped strings?
 *  \[note] turns out HL-ZASM erases \\, so we replace it with db 92.
 * [FIXED bug 36] pointOutError eats the last character of the line
+
 *
-* 
-* 
-* 
-* 
-* 
+* Note 17 July 2024:
+* 	we finally have classes working! most obvious stuff is now handled by
+*   89 unit tests that run on zCPU (unit_tests.txt)
+*   Next we wanna package this version as "LazyCompiler base"
+*	though it's more like "raw". No new language features in this version.
+*	New features only after this is usable in day-to-day.
+*	Stuff that's missing before "base" is product-like:
+*   - Running without VScode (probably already works)
+*	- asm command to embed assembly (with $ replacement or some way to interact with vars and functions)
+*	- Debug IDE features:
+*	--- step-through-code (maybe instrumentation breakpoints)
+*	--- call stack trace
+*	--- view local variables
+*	 (should IDE be in zCPU, gmod wire, gmod derma, or stand-alone?)
+*	- simulation?
+*	--- IR sim?
+*	--- zCPU emulator? 
+*	- assembler?
+*	- optimizer? or is it a feature? idk. Maybe good for LazyCompiler base v1.1
+*
 */

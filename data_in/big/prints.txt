@@ -59,16 +59,7 @@ end
 
 
 void Prints(char *str2, int col) //maybe str conflicts with the str in print?
-//	int dbgNum = 0;
 	while(*str2)
-//		char c = *str2;
-//		print("prints: i=");
-//		printnum2(dbgNum);
-//		print(",c=");
-//		printc(c);
-//		printnl();
-//		dbgNum++;
-//		print("x");
 		PrintChar(*str2++, col);
 	end
 end

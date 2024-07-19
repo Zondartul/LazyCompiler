@@ -839,18 +839,22 @@ const char *reconstruct_node_string(ast_node *node){
 		}else{
 			/// many children, probably a function call
 			int rem2 = rem;
-			char *postfix2 = (char*)malloc(rem2);
-			for(int i = 0; i < node->children.size; i++){
-				const char *buff2 = reconstruct_node_string(ast_get_child(node, i));
-				//strncat(postfix, buff2, rem2);
-				snprintf(postfix2+strlen(postfix2), rem2, (i == 0)? "%s" : ", %s", buff2);
-				int L = strlen(buff2);
-				rem2 = (rem2 > L)? rem2-L : 0;
-			}
-			if(infix){
-				snprintf(buff, rem, "(%s:%s)", infix, postfix2);
-			}else{
-				snprintf(buff, rem, "%s", postfix2);
+			if(rem2){
+				char *postfix2 = (char*)malloc(rem2);
+				postfix2[0] = 0;
+
+				for(int i = 0; i < node->children.size; i++){
+					const char *buff2 = reconstruct_node_string(ast_get_child(node, i));
+					//strncat(postfix, buff2, rem2);
+					snprintf(postfix2+strlen(postfix2), rem2, (i == 0)? "%s" : ", %s", buff2);
+					int L = strlen(buff2);
+					rem2 = (rem2 > L)? rem2-L : 0;
+				}
+				if(infix){
+					snprintf(buff, rem, "(%s:%s)", infix, postfix2);
+				}else{
+					snprintf(buff, rem, "%s", postfix2);
+				}
 			}
 			sanitize_force(buff);
 			return buff;
@@ -1140,11 +1144,6 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				error("semantic error: unknown switch case");
 				break;
 		};
-		//push_expr(if_exit);
-		//push_expr(if_else);
-		//fprintf(stderr, "warning: if_then should probably output some stg stuff\n");
-#pragma message("warning: if_then should output stg stuff\n")
-
 		pop_symbol_table();
 	}
 }

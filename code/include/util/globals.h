@@ -18,6 +18,7 @@ void newfclose(FILE *fp);
 
 #define error(...) newerror(__FILE__,__LINE__,__func__,__VA_ARGS__)
 void newerror(const char* file, int line, const char* func, const char *fmt, ...);
+void debug_breakpoint();
 #define err(...) fprintf(stderr, __VA_ARGS__)
 //uncomment this line to use the built-in allocation instrumentation
 //#define OVERRIDE_MALLOC

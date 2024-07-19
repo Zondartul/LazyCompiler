@@ -1,0 +1,36 @@
+@name voice_const
+@inputs 
+@outputs Out
+@persist S:string Vs:array N N1 N2 Op:string Res
+@trigger 
+@strict
+
+
+if(first()){
+    hint("voice_const: say /c <number> to change constant", 5)
+    runOnChat(1)
+}
+
+if(chatClk(owner())){
+    S = lastSaid()
+    Vs = S:explode(" ")
+    if(Vs:count() == 2){
+        if(Vs[1, string] == "/c"){
+            N = Vs[2, string]:toNumber(10)
+            hint("voice_const: "+toString(N), 3)
+            Out = N
+        }
+    }
+    if(Vs:count() == 4){
+        if(Vs[1, string] == "/c"){
+            N1 = Vs[2, string]:toNumber(10)
+            N2 = Vs[4, string]:toNumber(10)
+            Op = Vs[3, string]
+            Res = 0
+            if(Op == "+"){Res = N1 + N2}
+            if(Op == "-"){Res = N1 - N2}
+            hint("voice_const: "+toString(Res), 3)
+            Out = Res
+        }
+    }
+}

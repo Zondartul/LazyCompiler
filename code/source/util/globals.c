@@ -1,5 +1,9 @@
 #include "globals.h"
 
+void debug_breakpoint(){
+    printf("debug breakpoint");
+}
+
 /*
 
 typedef struct YYLTYPE

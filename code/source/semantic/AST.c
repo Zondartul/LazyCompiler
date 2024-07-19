@@ -64,6 +64,7 @@ int padI;
 void ast_print_helper(struct ast_node *N, const char *value, FILE *fp, int num, int hasnext){
 	printf("printing ast %p, %p, %d",N,fp,num);
 	//char oldP = pad[padI-1]; //unused
+	if(padI == 0){padI = 1;}
 	if(hasnext){
 		pad[padI-1] = '+';
 		fprintf(fp,"%s",pad);
@@ -99,7 +100,7 @@ void ast_print_helper(struct ast_node *N, const char *value, FILE *fp, int num, 
 			fprintf(fp, "<no data>\n");
 		}
 	}
-	padI--;
+	if(padI){padI--;}
 	pad[padI] = 0;
 }
 void ast_print(struct ast_node *N, FILE *fp){
