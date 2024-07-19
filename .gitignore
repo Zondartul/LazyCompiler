@@ -1,3 +1,12 @@
+# here's how to ignore files with no extension:
+# ignore all
+*
+#unignore all with extensions
+!*.*
+#unignore all dirs
+!*/
+# done.
+
 #visual studio stuff
 .vs
 Debug/
@@ -5,4 +14,13 @@ Build/
 x86/
 *.exe
 *.pdb
-data_out/aout*
+#data_out/aout*
+data_out/*
+
+# don't track the build folder
+build/*
+
+# don't track binaries
+bin/*
+code/bin/*
+
