@@ -912,7 +912,7 @@ expr	:	ID							{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_index",	0,NULL,@$),	vector2_ptr_ast_node_here_from_list(2, $1,$3)); printParsed($$);}
 		|	'(' expr ')'	%prec SUBEXPR			{$$ = production("expr_subexpr",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_subexpr",0,NULL,@$),vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'{' expr_list '}'	%prec BRACELIST		{$$ = production("expr_braced_list",0,NULL,@$,$1,$3,0,0);}
+		|	'{' expr_list '}'	%prec BRACELIST		{$$ = production("expr_braced_list",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_braced_list",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}	
 		|	expr '(' expr_list ')'	%prec CALL	{$$ = production("expr_call",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_call",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
@@ -936,7 +936,7 @@ expr	:	ID							{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_not",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
 		|	expr '&' expr	%prec LOGIC			{$$ = production("expr_and",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_and",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '|' expr	%prec LOGIC		{$$ = production("expr_|",0,NULL,@$,$1,$3,0,0);}
+		|	expr '|' expr	%prec LOGIC		{$$ = production("expr_or",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_or",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
 		|	expr EQUAL expr	%prec COMPARE			{$$ = production("expr_==",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_==",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}

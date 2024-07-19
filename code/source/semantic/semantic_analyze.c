@@ -780,6 +780,96 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 	}
 }
 
+struct ast_node *ast_gen_id(const char *name){return ast_node_new(ast_token_here("expr_id",0,stralloc(name),nullPos()), vector2_ptr_ast_node_here_from_list(0));}
+
+struct ast_node *ast_gen_dot(struct ast_node *base, struct ast_node *member){
+	return ast_node_new(ast_token_here("expr_.",0,NULL,nullPos()), 
+		vector2_ptr_ast_node_here_from_list(2, base, member));
+}
+
+struct ast_node *ast_gen_call(struct ast_node *func, struct ast_node *args){
+	return ast_node_new(ast_token_here("expr_call",0,NULL,nullPos()), 
+		vector2_ptr_ast_node_here_from_list(2, func, args));
+}
+
+struct ast_node *ast_gen_constructor_call(const char *name, struct ast_node *arg_list){
+	return ast_gen_call(
+		ast_gen_dot(
+			ast_gen_id(name),
+			ast_gen_id("constructor")
+		),
+		arg_list
+	);
+}	
+	
+void semantic_analyze_var_decl_constructor(ast_node *node){//, expr_settings stg){
+	//int discardResult = (strcmp(res, "DISCARD") == 0);
+
+	//production | typename ID '(' expr_list ')'
+	//yacc refs	 |    $1    $2  $3  $4
+	//children   |    (0)   (1)     (2)
+	struct ast_node *node_typename = ast_get_child(node,0);
+	struct ast_node *node_expr_list = ast_get_child(node,2);
+	
+	struct symbol *S;
+	if(semantic_decl){
+		struct type_name *T = parseTypename(node_typename);
+		const char *name = node->token.value;
+		S = symbol_new0();
+		S->username = name;
+		if(semantic_flatten){
+			S->IR_name = IR_next_name(namespace_semantic,name);
+		}else{
+			S->IR_name = name;
+		}
+		S->symvariable.type = T;
+		if(semantic_context == SEMANTIC_PARAM){error("Semantic error: can't use constructors in function parameter declarations");}
+
+		else if (semantic_context == SEMANTIC_MEMBER) { /// i wonder what would happen if you tried to put a constructor call in the declaration of a class member
+			S->type = SYMBOL_MEMBER;
+			S->store_adr = getNumMembers();
+			S->symvariable.size = getTypeSize(T);
+			S->symvariable.array = 0;
+			S->storage = STORE_DATA_MEMBER;
+			S->init_expr = ast_gen_constructor_call(name, node_expr_list);
+		}else{
+			S->type = SYMBOL_VARIABLE;
+			S->store_adr = getNumVariables();
+			S->symvariable.size = getTypeSize(T);
+			S->symvariable.array = 0;
+			S->storage = STORE_DATA_STACK;
+			S->init_expr = ast_gen_constructor_call(name, node_expr_list);
+		}
+		if(!currentSymbolTable->parent){S->global = 1;}
+		push_symbol(S);
+		//put into symbol table
+		//will deal with assignment later; ignore for now.
+		//semantic_analyze(ast_get_child(node,1)); //expr (assignment)
+		//put expression as "initial value"?
+	}else{
+		if(semantic_context != SEMANTIC_MEMBER){
+			S = lookup_symbol(node->token.value);
+			//const char *result1 = S->IR_name; struct type_name* result1type = S->symvariable.type;
+			//val_handle res1 = { .val = S->IR_name, .T = S->symvariable.type };
+
+			push_code_segment();
+			if(!currentSymbolTable->parent){
+				currentCodeSegment = init_CS;
+			}
+			
+			PREP_RES(res2, E_DISCARD); // R=read, L=write //E_LVAL);
+			res2stg.dest.author = "var_decl_constructor call obj.c(...)";
+			semantic_expr_analyze(S->init_expr, res2stg);
+			VERIFY_RES(res2);
+
+			//emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
+			//res2.author = "var_decl_assign";
+			//output_res(stg, res2, YES_EMIT);
+			pop_code_segment();
+		}
+	}
+}
+
 void semantic_analyze_stmt_list(ast_node *node){
 	//stmt_list: stmt_list_ne | ;
 	//stmt_list_ne: stmt_list_ne stmt | stmt;

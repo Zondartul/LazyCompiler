@@ -58,17 +58,19 @@ typedef struct val_handle {
 	const char* author;  //this is to indicate the expr/node that made this
 } val_handle;
 
+definition_vector_of(val_handle);
+
 typedef struct expr_settings {
 	//expr_type res_type;   //this tells the analyzer if node should output an rvalue or lvalue or nothing
 	//const char* res_dest; //if given, result should be put into this existing IR-val
 	//const char** res_out; //out-ptr for actual value of result
 	//struct type_name** res_out_type; //out-ptr for actual var type of result
 	//struct symbol* sym_this; //symbol (struct) from which to look up symbols
-
 	val_handle dest;	//what value we want filled
 	val_handle *actual;	//what was it actually filled with
 	val_handle sem_this; //the 'this' value for a method call (but not for it's other args)
 	val_handle *out_sem_this; // fill out with 'this' value if discovered by expr_dot
+	vector2_val_handle *out_list;
 } expr_settings;
 
 #define EXPR_SETTINGS_NULL ((expr_settings){E_ERROR,0,0,0,0})
@@ -88,8 +90,11 @@ typedef struct if_settings {
 void output_res(expr_settings stg, val_handle src, int do_emit);
 //types
 
-#define PREP_RES(res, type) val_handle res = { .rv_type = E_ERROR }; val_handle res##dest = { .rv_type = type }; \
-							expr_settings res##stg = { .dest = res##dest, .actual = & res };
+#define PREP_RES(res, type) \
+	val_handle res = { .rv_type = E_ERROR }; \
+	val_handle res##dest = { .rv_type = type }; \
+	vector2_val_handle res##_list = vector2_val_handle_here(); \
+	expr_settings res##stg = { .dest = res##dest, .actual = & res, .out_list = &res##_list };
 #define VERIFY_RES(res) if((res.rv_type == E_ERROR) || (res.val==0)){error("internal semantic error: invalid expression result");}
 
 //generated

@@ -19,6 +19,7 @@
 
 //generated
 //definition_vector_of(ptr_file);
+implementation_vector_of(val_handle);
 
 //variables
 int semantic_decl = 0;
@@ -114,13 +115,15 @@ int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
 	if (!strcmp(node->token.type, "var_decl_assign"))	{ 
 		semantic_analyze_var_decl_assign(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_list"))		{ 
-		semantic_analyze_expr_list	(node);	return 1; }
+		semantic_analyze_expr_list	(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_id"))		{ 
 		semantic_analyze_expr_id		(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_const"))	{ 
 		semantic_analyze_expr_const	(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_subexpr"))	{ 
 		semantic_analyze_expr_subexpr	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_braced_list")){
+		semantic_analyze_expr_braced_list(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_index"))	{ 
 		semantic_analyze_expr_index	(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_call"))		{ 
@@ -166,6 +169,8 @@ int semantic_dispatch_general(struct ast_node* node) {
 		semantic_analyze_var_decl_list(node);		return 1; }
 	if (!strcmp(node->token.type, "var_decl"))			{ 
 		semantic_analyze_var_decl(node);			return 1; }
+	if (!strcmp(node->token.type, "var_decl_constructor")){ 
+		semantic_analyze_var_decl_constructor(node);return 1; }
 	if (!strcmp(node->token.type, "var_decl_assign"))	{ 
 		semantic_analyze_var_decl_assign(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "stmt_list"))			{ 

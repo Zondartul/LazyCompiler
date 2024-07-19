@@ -1095,16 +1095,19 @@ int addr_bus[4];
 
 
 void init_printf()
-	addr_bus[0] = 65536;
-	addr_bus[1] = addr_bus[0] + 20000;
-	addr_bus[2] = addr_bus[1] + 20000;
-	addr_bus[3] = addr_bus[2] + 20000;
+	addr_bus = {65536, 65536+20000, 65536+20000*2, 65536+20000*3};
+	//addr_bus[0] = 65536;
+	//addr_bus[1] = addr_bus[0] + 20000;
+	//addr_bus[2] = addr_bus[1] + 20000;
+	//addr_bus[3] = addr_bus[2] + 20000;
 	screen_set(addr_bus[2]);
 
 	screen_clear();
 end
 
-<<<<<<< HEAD
+//btw you can pass arrays by value now,
+// but there is no argument type checking.
+// oops....
 /*
 void test_printf()
 	printf("hello world!\n");
@@ -1171,49 +1174,11 @@ int string_pass_test(char* str1, char* str2)
 	writePort(3, str2[0]);
 end
 */
-=======
->>>>>>> main
+
 //btw you can pass arrays by value now,
 // but there is no argument type checking.
 // oops....
 
-<<<<<<< HEAD
-class Derp
-	int x = 2;
-	void constructor(int new_x, int new_y)
-		x = new_x+new_y;
-		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
-	end
-end
-
-=======
-class Const_colors 
-	int black = 0;
-	int white = 999;
-	int gray = 444;
-	int red = 900;
-	int green = 90;
-	int blue = 9;
-	int yellow = 990;
-	int orange = 940;
-	int cyan = 99;
-	int purple = 909;
-	int violet = 404;
-	
-	int bg_black = 0;
-	int bg_white = 999000;
-	int bg_gray = 444000;
-	int bg_red = 900000;
-	int bg_green = 90000;
-	int bg_blue = 9000;
-	int bg_yellow = 990000;
-	int bg_orange = 940000;
-	int bg_cyan = 99000;
-	int bg_purple = 909000;
-	int bg_violet = 404000;
-end
-
-class Const_colors Color;
 
 class Dev_address_bus
 	int addr[4];
@@ -1238,31 +1203,12 @@ class Dev_address_bus
 end
 
 
-class test_derpy1
-	int x = 10;
-	int y = 20;
-	void test_d1()
-		printf("d1 -------\nthis = %d\n&y   = %d\nx    = %d\n", this, &y, y);
+class Derp
+	int x = 2;
+	void constructor(int new_x, int new_y)
+		x = new_x+new_y;
+		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
 	end
-end
-
-class test_derpy2
-	int z = 30;
-	void test_d1()
-		printf("i am derpy dtwo\n");
-	end
-end
-
-void test_class_multiple_and_ptr()
-	class test_derpy1 D1;
-	printf("&D1 = %d\n", &D1);
-	D1.test_d1();
-	class test_derpy1 *ptr_D1 = &D1;
-	printf("(ptr_)");	
-	ptr_D1.test_d1();
-
-	class test_derpy2 D2;
-	D2.test_d1();
 end
 
 // -- [CLOSED] bug: can't have same-named method in multiple classes? 
@@ -1275,7 +1221,7 @@ end
 //				need need NEEED type checks on assign!
 // -- [bug] - number of arguments is not checked, which can fuck with 'this'
 
->>>>>>> main
+
 int main()
 	setup();
 	
@@ -1295,12 +1241,6 @@ int main()
 	printf("hello world!\n");
 	
 
-<<<<<<< HEAD
-	class Derp derp(4,3);
-	printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
-
-	run_all_tests();
-=======
 
 
 
@@ -1334,8 +1274,8 @@ int main()
 	printer.puts("Hello from CSPrinter!\n");
 	printf("z.");
 	
-	
->>>>>>> main
+	class Derp derp(4, 10);
+	printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
 	
 	infloop();
 end

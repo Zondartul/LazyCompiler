@@ -91,12 +91,33 @@ int string_pass_test(char* str1, char* str2)
 	writePort(3, str2[0]);
 end
 */
-=======
->>>>>>> main
+
 //btw you can pass arrays by value now,
 // but there is no argument type checking.
 // oops....
 
+
+class Dev_address_bus
+	int addr[4];
+	void constructor(int base_offset, int size1, int size2, int size3)
+		addr[0] = base_offset;
+		addr[1] = addr[0] + size1;
+		addr[2] = addr[1] + size2;
+		addr[3] = addr[2] + size3;
+		//printf("Dev_address_bus constructed with addr:\n%d, %d, %d, %d\n", addr[0], addr[1], addr[2], addr[3]);
+	end
+	void write(int dev_num, int* offset, int byte)
+		int *ptr = addr[dev_num] + offset;
+		//printf("write(*%d) <- %d\n", ptr, byte);
+		*ptr = byte;
+	end
+	int read(int dev_num, int* offset) /// variable was shadowed (addr)
+		int *ptr = addr[dev_num] + offset;
+		int byte = *ptr;
+		//printf("read(*%d) -> %d\n", ptr, byte); 
+		return *ptr;
+	end
+end
 
 
 class Derp
@@ -170,7 +191,8 @@ int main()
 	printer.puts("Hello from CSPrinter!\n");
 	printf("z.");
 	
-	
+	class Derp derp(4, 10);
+	printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
 	
 	infloop();
 end

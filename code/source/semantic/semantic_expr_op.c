@@ -93,13 +93,16 @@ void semantic_analyze_expr_notequal(ast_node* node, expr_settings stg) { semanti
 void semantic_analyze_expr_greater(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "GREATER", stg); }
 void semantic_analyze_expr_less(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "LESS", stg); }
 
-void semantic_analyze_expr_list(ast_node* node) {
+void semantic_analyze_expr_list(ast_node* node, expr_settings stg) {
 	//expr_list:	expr_list_ne | ;
 	//expr_list_ne: expr_list_ne ',' expr | expr;
 	//...
 	//linearized: expr_list: expr ',' expr ... ',' expr ;
 
 	if (semantic_decl) { return; }//goto semantic_exit;}
+	if(!stg.out_list){
+		error("Semantic error: expression list is not expected in this context");
+	}
 	//imperative pass: 
 	//printf("got expr_list\n");
 	for (int i = 0; i < node->children.size; i++) {
@@ -108,11 +111,12 @@ void semantic_analyze_expr_list(ast_node* node) {
 		
 		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
 		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-		PREP_RES(res1, E_LVAL);
+		PREP_RES(res1, E_RVAL); ///? before constructors, nobody used it, right? //E_LVAL);
 		semantic_expr_analyze(ast_get_child(node, i), res1stg); //expr
 		VERIFY_RES(res1);
 		//give name to new expression result?
 		//put it in stack?
+		m(*stg.out_list, push_back, res1);
 	}
 }
 
@@ -373,6 +377,10 @@ void semantic_analyze_expr_subexpr(ast_node* node, expr_settings stg) {
 	//push_expr("NODISCARD"); 
 	//-- just propagate the res_type we got.
 	semantic_expr_analyze(ast_get_child(node, 0), stg); //expr
+}
+
+void semantic_analyze_expr_braced_list(ast_node* node, expr_settings stg){
+	semantic_expr_analyze(ast_get_child(node,0), stg);
 }
 
 struct type_name* copy_type(struct type_name* T) {
@@ -785,7 +793,12 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
 	VERIFY_RES(res2);
 
-	emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+	if(res2_list.size){
+		error("yay, fun brace-list assignment!");
+	}
+	else{
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+	}
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.

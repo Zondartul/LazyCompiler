@@ -2807,7 +2807,7 @@ yyreduce:
 
   case 60: /* expr: '{' expr_list '}'  */
 #line 915 "input/yaccin.y"
-                                                                        {yyval = production("expr_braced_list",0,NULL,(yyloc),yyvsp[-2],yyvsp[0],0,0);}
+                                                                        {yyval = production("expr_braced_list",0,NULL,(yyloc),yyvsp[-1],0,0,0);}
 #line 2812 "generated/yaccin.tab.c"
     break;
 
@@ -2879,7 +2879,7 @@ yyreduce:
 
   case 72: /* expr: expr '|' expr  */
 #line 939 "input/yaccin.y"
-                                                                {yyval = production("expr_|",0,NULL,(yyloc),yyvsp[-2],yyvsp[0],0,0);}
+                                                                {yyval = production("expr_or",0,NULL,(yyloc),yyvsp[-2],yyvsp[0],0,0);}
 #line 2884 "generated/yaccin.tab.c"
     break;
 
