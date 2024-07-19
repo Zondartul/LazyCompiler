@@ -327,11 +327,11 @@ Not all rules and not all tokens have precedence. If either the rule
 %precedence LOGIC	// x & y
 %precedence COMPARE // x > y, x == y
 %precedence ADDSUB  // x + y, x - y
-%precedence MULDIV //EXPR  // x * y, x / y, x % y, x ^ y
+%precedence MULDIV EXP  // x * y, x / y, x % y, x ^ y
 %precedence PRENEG PREOP LNEG CAST REF DEREF // -x, !x, (type)x, &x, *x
 %precedence INDEX	// x[2]
 %precedence DOT		// x.m
-%precedence SUBEXPR CALL BRACELIST// (a+b), f(o), {1,2}
+%precedence SUBEXPR CALL BRACELIST POSTOP// (a+b), f(o), {1,2}
 
 /// Let bison complain about "useless precedence" and "useless associativity", it's just being a dick for no reason.
 /// the current rules may lead to a parser identical to one with less rules, but this way we know for certain the rules aren't flipped.
@@ -349,619 +349,154 @@ Not all rules and not all tokens have precedence. If either the rule
 
 program :	decl_stmt_list	
 							{	
-								YYLTYPE pos = @$;
-								ast_node *child1 = $1;
-								finalNode = ast_node_new(
-									ast_token_here("program",0,NULL,pos),
-									vector2_ptr_ast_node_here_from_list
-									(1, child1)
-								);
-								printParsed(finalNode);
+								// YYLTYPE pos = @$;
+								// ast_node *child1 = $1;
+								// finalNode = ast_node_new(
+								// 	ast_token_here("program",0,NULL,pos),
+								// 	vector2_ptr_ast_node_here_from_list
+								// 	(1, child1)
+								// );
+								// printParsed(finalNode);
+								finalNode = production("program",0,NULL,@$,$1,0,0,0);
 							}		
 		;
 
 stmt	:	imp_stmt		
 							{
-								ast_node **res = &($$);
-								*res = ast_node_new(
-									ast_token_here("stmt",0,NULL,@$),
-									vector2_ptr_ast_node_here_from_list
-									(1, $1)
-								);
-								printParsed(*res);
+								// ast_node **res = &($$);
+								// *res = ast_node_new(
+								// 	ast_token_here("stmt",0,NULL,@$),
+								// 	vector2_ptr_ast_node_here_from_list
+								// 	(1, $1)
+								// );
+								// printParsed(*res);
+								$$ = production("stmt",0,NULL,@$,$1,0,0,0);
 							}
-		|	decl_stmt		
-							{
-
-								//$$ = ast_node_new(
-								//	ast_token_here("stmt",1,NULL,@$),
-								//	vector2_ptr_ast_node_here_from_list
-								//	(1, $1)
-								//);
-								printParsed($$);
-								$$ = production("stmt",1,NULL,@$,$1,0,0,0);
-							}
+		|	decl_stmt		{/*printParsed($$);*/	$$ = production("stmt",1,NULL,@$,$1,0,0,0);}
 		;
 		
-stmt_list	: stmt_list_ne		
-								{
-									//$$ = ast_node_new(
-									//	ast_token_here("stmt_list",0,NULL,@$),
-									//	vector2_ptr_ast_node_here_from_list
-									//	(1, $1)
-									//);
-									//printParsed($$);
-									$$ = production("stmt_list",0,NULL,@$,$1,0,0,0);
-									ast_unroll_lists($$);
-								}
-			|					
-								{
-									//YYLTYPE *pos = &(@$);
-									//pos->null = 1;
-									@$.null = 1;
-
-									//$$ = ast_node_new(
-									//	ast_token_here("stmt_list",1,"<empty>",nullPos()),//@$),
-									//	vector2_ptr_ast_node_here_from_list
-									//	(0)
-									//);
-									//printParsed($$);
-									$$ = production("stmt_list",1,"<empty>",nullPos(),0,0,0,0);
-
-								} %empty
+stmt_list	: stmt_list_ne						{$$ = production("stmt_list",0,NULL,@$,$1,0,0,0); ast_unroll_lists($$);}
+			|					{@$.null = 1;	$$ = production("stmt_list",1,"<empty>",nullPos(),0,0,0,0);} %empty
 			;
 		
-stmt_list_ne	: stmt_list_ne stmt	
-									{
-										// $$ = ast_node_new(
-										// 	ast_token_here("stmt_list_ne",0,NULL,@$),
-										// 	vector2_ptr_ast_node_here_from_list
-										// 	(2, $1, $2)
-										// );
-										// printParsed($$);
-										$$ = production("stmt_list_ne",0,NULL,@$,$1,$2,0,0);
-									}
-				| stmt				
-									{
-										// $$ = ast_node_new(
-										// 	ast_token_here("stmt_list_ne",1,NULL,@$),
-										// 	vector2_ptr_ast_node_here_from_list
-										// 	(1, $1)
-										// );
-										// printParsed($$);
-										$$ = production("stmt_list_ne",1,NULL,@$,$1,0,0,0);
-									}
+stmt_list_ne	: stmt_list_ne stmt				{$$ = production("stmt_list_ne",0,NULL,@$,$1,$2,0,0);}
+				| stmt							{$$ = production("stmt_list_ne",1,NULL,@$,$1,0,0,0);}
 				;
 		
 decl_stmt	:
-			class_def		
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt",0,NULL,@$,$1,0,0,0);
-								}
-			|	func_def		
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt",1,NULL,@$,$1,0,0,0);
-								}
-			|	var_decl ';' 	{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt",2,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt",2,NULL,@$,$1,0,0,0);
-								}
-			|	error 			{   $$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
+			class_def							{$$ = production("decl_stmt",0,NULL,@$,$1,0,0,0);}
+			|	func_def						{$$ = production("decl_stmt",1,NULL,@$,$1,0,0,0);}
+			|	var_decl ';'					{$$ = production("decl_stmt",2,NULL,@$,$1,0,0,0);}
+			|	error							{$$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
 			;	
 			
-decl_stmt_list	:	decl_stmt_list_ne	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt_list",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt_list",0,NULL,@$,$1,0,0,0);
-									ast_unroll_lists($$);
-								}
-				|						
-								{
-									//YYLTYPE *pos = &(@$);
-									//pos->null = 1;
-									@$.null =  1;
-
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt_list",1,"<empty>",nullPos()),//@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt_list",1,"<empty>",nullPos(),0,0,0,0);
-								} %empty
+decl_stmt_list	:	decl_stmt_list_ne			{$$ = production("decl_stmt_list",0,NULL,@$,$1,0,0,0);ast_unroll_lists($$);}
+				|				{@$.null =  1;	$$ = production("decl_stmt_list",1,"<empty>",nullPos(),0,0,0,0);} %empty
 				;
 
-decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt  
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt_list_ne",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $2)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt_list_ne",0,NULL,@$,$1,$2,0,0);
-								}
-					| decl_stmt						
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("decl_stmt_list_ne",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("decl_stmt_list_ne",1,NULL,@$,$1,0,0,0);
-								}
+decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt {$$ = production("decl_stmt_list_ne",0,NULL,@$,$1,$2,0,0);}
+					| decl_stmt					{$$ = production("decl_stmt_list_ne",1,NULL,@$,$1,0,0,0);}
 					;
-//synchronize :   ';' | END ; // list of ways to get back to parsing after an error production
-//semicolon_or_error : ';' | error synchronize   {   yyerror("Syntax error: expected semicolon ';'"); $$ = ast_node_new(ast_token_here("error",0,NULL,@$),vector2_ptr_ast_node_here_from_list(0));} ;  				
-imp_stmt	:	if_block					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",0,NULL,@$,$1,0,0,0);
-								}
-			|	while_loop					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",1,NULL,@$,$1,0,0,0);
-								}
-			|	for_loop					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",5,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);
-								}
+imp_stmt	:	if_block						{$$ = production("imp_stmt",0,NULL,@$,$1,0,0,0);}
+			|	while_loop						{$$ = production("imp_stmt",1,NULL,@$,$1,0,0,0);}
+			|	for_loop						{$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);}
 								
-			|	expr ';'					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",2,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",2,NULL,@$,$1,0,0,0);
-								}
-			|	RETURN ';'					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",3,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",3,NULL,@$,0,0,0,0);
-								}
-			|	RETURN expr ';'				
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("imp_stmt",4,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $2)
-									// );
-									// printParsed($$);
-									$$ = production("imp_stmt",5,NULL,@$,$2,0,0,0);
-								}
-			|	error 			{   $$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
+			|	expr ';'						{$$ = production("imp_stmt",2,NULL,@$,$1,0,0,0);}
+			|	RETURN ';'						{$$ = production("imp_stmt",3,NULL,@$,0,0,0,0);}
+			|	RETURN expr ';'					{$$ = production("imp_stmt",5,NULL,@$,$2,0,0,0);}
+			|	error 							{$$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
 			;
 			
-class_def	:	CLASS ID decl_stmt_list END	
-								{
-									const char *id_str = $2->token.value;
-									printf("CLASS_DEF ID = [%s]\n",id_str);
-									// $$ = ast_node_new(
-									// 	ast_token_here("class_def",0,id_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $2, $3)
-									// );
-									// printParsed($$);
-									$$ = production("class_def",0,id_str,@$,$2,$3,0,0);
-								}
+class_def	:	CLASS ID decl_stmt_list END		{const char *id_str = $2->token.value; $$ = production("class_def",0,id_str,@$,$2,$3,0,0);}
 
-STAR		:   '*'					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("stars",0,"*",@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );
-									// printParsed($$);
-									$$ = production("stars",0,"*",@$,0,0,0,0);
-								}
+STAR		:   '*'	 							{$$ = production("stars",0,"*",@$,0,0,0,0);}
 			;
 
-ptr_stars	:	ptr_stars_ne		
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("ptr_stars",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("ptr_stars",0,NULL,@$,$1,0,0,0);
-									ast_unroll_lists($$);
-								}
-			|						
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("ptr_stars",1,"<empty>",nullPos()),//@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );
-									// printParsed($$);
-									$$ = production("ptr_stars",1,"<empty>",nullPos(),0,0,0,0);
-								}	%empty
+ptr_stars	:	ptr_stars_ne					{$$ = production("ptr_stars",0,NULL,@$,$1,0,0,0); ast_unroll_lists($$);}
+			|									{$$ = production("ptr_stars",1,"<empty>",nullPos(),0,0,0,0);}	%empty
 			;
 
-ptr_stars_ne:	ptr_stars_ne STAR	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("ptr_stars_ne",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $2)
-									// );
-									// printParsed($$);
-									$$ = production("ptr_stars_ne",0,NULL,@$,$1,$2,0,0);
-								}
-			|	STAR				
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("ptr_stars_ne",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("ptr_stars_ne",1,NULL,@$,$1,0,0,0);
-								}
+ptr_stars_ne:	ptr_stars_ne STAR 				{$$ = production("ptr_stars_ne",0,NULL,@$,$1,$2,0,0);}
+			|	STAR							{$$ = production("ptr_stars_ne",1,NULL,@$,$1,0,0,0);}
 			;
 
-typename	:	TYPE	 ptr_stars	
-								{
-									const char *type_str = $1->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("typename",0,type_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $2)
-									// );
-									// printParsed($$);
-									$$ = production("typename",0,type_str,@$,$1,$2,0,0);
-								}
-			|	CLASS ID ptr_stars	
-								{
-									const char *type_str = $2->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("typename",1,type_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $2, $3)
-									// );
-									// printParsed($$);
-									$$ = production("typename",1,type_str,@$,$2,$3,0,0);
-								}
+typename	:	TYPE	 ptr_stars 				{const char *type_str = $1->token.value; $$ = production("typename",0,type_str,@$,$1,$2,0,0);}
+			|	CLASS ID ptr_stars 				{const char *type_str = $2->token.value; $$ = production("typename",1,type_str,@$,$2,$3,0,0);}
 			;
 
 func_def	:	typename ID '('	var_decl_list ')' stmt_list END	
-								{
-									const char *id_str = $2->token.value;
-									printf("FUNC_DEF ID = [%s]\n", id_str);
-									// $$ = ast_node_new(
-									// 	ast_token_here("func_def", 0, id_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(4, $1, $2, $4, $6)
-									// );
-									// printParsed($$);
-									$$ = production("func_def",0,id_str,@$,$1,$2,$4,$6); // rare one that uses 4 args
-								}
+												{const char *id_str = $2->token.value; $$ = production("func_def",0,id_str,@$,$1,$2,$4,$6);}
 
-var_decl	:	typename ID						
-								{
-									const char *id_str = $2->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl",0,id_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $2)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl",0,id_str,@$,$1,$2,0,0);
-								}
-			|	typename ID '[' expr ']'		
-								{
-									const char *id_str = $2->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl",1,id_str, @$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(3, $1, $2, $4)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl",1,id_str,@$,$1,$2,$4,0);
-								}
-			|	typename ID '=' expr			
-								{
-									const char *id_str = $2->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_assign",0,id_str,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(3, $1, $2, $4)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl_assign",0,id_str,@$,$1,$2,$4,0);
-								}
-			|	typename ID '(' expr_list ')'
-								{
-									const char *id_str = $2->token.value;
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_constructor",0,id_str,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(3, $1, $2, $4)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl_constructor",0,id_str,@$,$1,$2,$4,0);
-								}
+var_decl	:	typename ID						{const char *id_str = $2->token.value; $$ = production("var_decl",0,id_str,@$,$1,$2,0,0);}
+			|	typename ID '[' expr ']'		{const char *id_str = $2->token.value; $$ = production("var_decl",1,id_str,@$,$1,$2,$4,0);}
+			|	typename ID '=' expr			{const char *id_str = $2->token.value; $$ = production("var_decl_assign",0,id_str,@$,$1,$2,$4,0);}
+			|	typename ID '(' expr_list ')'	{const char *id_str = $2->token.value; $$ = production("var_decl_constructor",0,id_str,@$,$1,$2,$4,0);}
 			;
 
-var_decl_list	:	var_decl_list_ne			
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_list",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl_list",0,NULL,@$,$1,0,0,0);
-									ast_unroll_lists($$);
-								}
-				|								
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_list",1,"<empty>",nullPos()),//@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );
-									// printParsed($$);
-									$$ = production ("var_decl_list",1,"<empty>",nullPos(),0,0,0,0);
-								} %empty //inform Bison/YACC that this rule was intentionally left empty
+var_decl_list	:	var_decl_list_ne							{$$ = production("var_decl_list",0,NULL,@$,$1,0,0,0); ast_unroll_lists($$);}
+				|												{$$ = production ("var_decl_list",1,"<empty>",nullPos(),0,0,0,0);} %empty //inform Bison/YACC that this rule was intentionally left empty
 				;
 				
-var_decl_list_ne	:	var_decl_list_ne ',' var_decl	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_list_ne",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $3)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl_list_ne",0,NULL,@$,$1,$3,0,0);
-								}
-					|	var_decl						
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("var_decl_list_ne",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("var_decl_list_ne",1,NULL,@$,$1,0,0,0);
-								}
+var_decl_list_ne	:	var_decl_list_ne ',' var_decl			{$$ = production("var_decl_list_ne",0,NULL,@$,$1,$3,0,0);}
+					|	var_decl								{$$ = production("var_decl_list_ne",1,NULL,@$,$1,0,0,0);}
 					;
 				
-if_block	:	if_then END									
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("if_block",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("if_block",0,NULL,@$,$1,0,0,0);
-								}
-			|	if_then ELSE stmt_list END					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("if_block",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $3)
-									// );
-									// printParsed($$);
-									$$ = production("if_block",1,NULL,@$,$1,$3,0,0);
-								}
+if_block	:	if_then END										{$$ = production("if_block",0,NULL,@$,$1,0,0,0);}
+			|	if_then ELSE stmt_list END						{$$ = production("if_block",1,NULL,@$,$1,$3,0,0);}
 			;
 
-if_then		:	IF '(' expr ')' stmt_list	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("if_then",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $3, $5)
-									// );
-									// printParsed($$);
-									$$ = production("if_then",0,NULL,@$,$3,$5,0,0);
-								}
-			|	if_then ELSEIF '(' expr ')' stmt_list
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("if_then",2,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(3, $1, $4, $6)
-									// );
-									// printParsed($$);
-									$$ = production("if_then",2,NULL,@$,$1,$4,$6,0);
-								}
+if_then		:	IF '(' expr ')' stmt_list						{$$ = production("if_then",0,NULL,@$,$3,$5,0,0);}
+			|	if_then ELSEIF '(' expr ')' stmt_list			{$$ = production("if_then",2,NULL,@$,$1,$4,$6,0);}
 			;
 			
-while_loop	:	WHILE '(' expr ')' stmt_list END	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("while_loop",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $3, $5)
-									// );
-									// printParsed($$);
-									$$ = production("while_loop",0,NULL,@$,$3,$5,0,0);
-								}
+while_loop	:	WHILE '(' expr ')' stmt_list END				{$$ = production("while_loop",0,NULL,@$,$3,$5,0,0);}
 			;
 
-for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("for_loop",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(4, $3, $4, $6, $8)
-									// );
-									// printParsed($$);
-									$$ = production("for_loop",0,NULL,@$,$3,$4,$6,$8); // another complex production with all 4 args
-								}
+for_loop	:	FOR '(' stmt expr ';' expr ')' stmt_list END	{$$ = production("for_loop",0,NULL,@$,$3,$4,$6,$8);}
 			;
 			
-expr_list	:	expr_list_ne	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("expr_list",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("expr_list",0,NULL,@$,$1,0,0,0);
-									ast_unroll_lists($$);
-								}
-			|					
-								{
-									//YYLTYPE *pos = &(@$);
-									//pos->null = 1;
-									@$.null = 1;
-									// $$ = ast_node_new(
-									// 	ast_token_here("expr_list",1,"<empty>",nullPos()),//@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(0)
-									// );	
-									// printParsed($$);
-									$$ = production("expr_list",1,"<empty>",nullPos(),0,0,0,0);
-								} %empty
+expr_list	:	expr_list_ne					{$$ = production("expr_list",0,NULL,@$,$1,0,0,0);ast_unroll_lists($$);}
+			|					{@$.null = 1; 	$$ = production("expr_list",1,"<empty>",nullPos(),0,0,0,0);} %empty
 			;
 			
-expr_list_ne	: expr_list_ne ',' expr	
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("expr_list_ne",0,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(2, $1, $3)
-									// );
-									// printParsed($$);
-									$$ = production("expr_list_ne",0,NULL,@$,$1,$3,0,0);
-								}
-				| expr					
-								{
-									// $$ = ast_node_new(
-									// 	ast_token_here("expr_list_ne",1,NULL,@$),
-									// 	vector2_ptr_ast_node_here_from_list
-									// 	(1, $1)
-									// );
-									// printParsed($$);
-									$$ = production("expr_list_ne",1,NULL,@$,$1,0,0,0);
-								}
+expr_list_ne	: expr_list_ne ',' expr			{$$ = production("expr_list_ne",0,NULL,@$,$1,$3,0,0);}
+				| expr							{$$ = production("expr_list_ne",1,NULL,@$,$1,0,0,0);}
 				;
 
-expr	:	ID							{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);}
-//{$$ = ast_node_new(ast_token_here("expr_id",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	INTEGER						{$$ = production("expr_const",0,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	0,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	INTEGERX					{$$ = production("expr_const",1,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	1,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	INTEGERB					{$$ = production("expr_const",2,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	2,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	FLOATING					{$$ = production("expr_const",3,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	3,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	CHARACTER					{$$ = production("expr_const",4,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	4,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	STRING						{$$ = production("expr_const",5,$1->token.value,@$,yylval,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_const",	5,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
+expr	:	ID									{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);}
+		|	INTEGER								{$$ = production("expr_const",0,$1->token.value,@$,yylval,0,0,0);}
+		|	INTEGERX							{$$ = production("expr_const",1,$1->token.value,@$,yylval,0,0,0);}
+		|	INTEGERB							{$$ = production("expr_const",2,$1->token.value,@$,yylval,0,0,0);}
+		|	FLOATING							{$$ = production("expr_const",3,$1->token.value,@$,yylval,0,0,0);}
+		|	CHARACTER							{$$ = production("expr_const",4,$1->token.value,@$,yylval,0,0,0);}
+		|	STRING								{$$ = production("expr_const",5,$1->token.value,@$,yylval,0,0,0);}
 		|	expr '[' expr ']'	%prec INDEX		{$$ = production("expr_index",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_index",	0,NULL,@$),	vector2_ptr_ast_node_here_from_list(2, $1,$3)); printParsed($$);}
-		|	'(' expr ')'	%prec SUBEXPR			{$$ = production("expr_subexpr",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_subexpr",0,NULL,@$),vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'{' expr_list '}'	%prec BRACELIST		{$$ = production("expr_braced_list",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_braced_list",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}	
+		|	'(' expr ')'	%prec SUBEXPR		{$$ = production("expr_subexpr",0,NULL,@$,$2,0,0,0);}
+		|	'{' expr_list '}'	%prec BRACELIST	{$$ = production("expr_braced_list",0,NULL,@$,$2,0,0,0);}	
 		|	expr '(' expr_list ')'	%prec CALL	{$$ = production("expr_call",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_call",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
 		|	expr '.' expr	%prec DOT			{$$ = production("expr_.",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_.",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '^' expr	%prec EXP	{$$ = production("expr_^",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_^",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '/' expr	%prec MULDIV			{$$ = production("expr_/",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_/",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '*' expr	%prec MULDIV			{$$ = production("expr_*",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_*",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '%' expr	%prec MULDIV			{$$ = production("expr_%",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_%",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '-' expr	%prec ADDSUB			{$$ = production("expr_-",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_-",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '+' expr	%prec ADDSUB			{$$ = production("expr_+",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_+",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
+		|	expr '^' expr	%prec EXP			{$$ = production("expr_^",0,NULL,@$,$1,$3,0,0);}
+		|	expr '/' expr	%prec MULDIV		{$$ = production("expr_/",0,NULL,@$,$1,$3,0,0);}
+		|	expr '*' expr	%prec MULDIV		{$$ = production("expr_*",0,NULL,@$,$1,$3,0,0);}
+		|	expr '%' expr	%prec MULDIV		{$$ = production("expr_%",0,NULL,@$,$1,$3,0,0);}
+		|	expr '-' expr	%prec ADDSUB		{$$ = production("expr_-",0,NULL,@$,$1,$3,0,0);}
+		|	expr '+' expr	%prec ADDSUB		{$$ = production("expr_+",0,NULL,@$,$1,$3,0,0);}
 		|	'(' typename ')' expr	%prec CAST	{$$ = production("expr_cast",0,NULL,@$,$2,$4,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_cast",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $2, $4)); printParsed($$);}
 		|	'!' expr	%prec LNEG				{$$ = production("expr_not",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_not",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
 		|	expr '&' expr	%prec LOGIC			{$$ = production("expr_and",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_and",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '|' expr	%prec LOGIC		{$$ = production("expr_or",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_or",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr EQUAL expr	%prec COMPARE			{$$ = production("expr_==",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_==",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr NOTEQUAL expr %prec COMPARE		  	{$$ = production("expr_!=",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_!=",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '>' expr	%prec COMPARE 	{$$ = production("expr_>",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_>",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '<' expr	%prec COMPARE 	{$$ = production("expr_<",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_<",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '=' expr	%prec ASSIGN	{$$ = production("expr_=",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_=",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr INC	%prec POSTOP	{$$ = production("expr_++",0,NULL,@$,$1,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_++",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	INC	expr    %prec PREOP	{$$ = production("expr_++",1,NULL,@$,$2,0,0,0);} // note: repaired from $1
-		//{$$ = ast_node_new(ast_token_here("expr_++",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	expr DEC	%prec POSTOP	{$$ = production("expr_--",0,NULL,@$,$1,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_--",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	DEC	expr    %prec PREOP	{$$ = production("expr_--",1,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_--",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'-' expr 	%prec PRENEG	{$$ = production("expr_neg",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_neg",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'*' expr	%prec DEREF	{$$ = production("expr_deref",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_deref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'&' expr	%prec REF	{$$ = production("expr_ref",0,NULL,@$,$2,0,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_ref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
+		|	expr '|' expr	%prec LOGIC			{$$ = production("expr_or",0,NULL,@$,$1,$3,0,0);}
+		|	expr EQUAL expr	%prec COMPARE		{$$ = production("expr_==",0,NULL,@$,$1,$3,0,0);}
+		|	expr NOTEQUAL expr %prec COMPARE	{$$ = production("expr_!=",0,NULL,@$,$1,$3,0,0);}
+		|	expr '>' expr	%prec COMPARE 		{$$ = production("expr_>",0,NULL,@$,$1,$3,0,0);}
+		|	expr '<' expr	%prec COMPARE 		{$$ = production("expr_<",0,NULL,@$,$1,$3,0,0);}
+		|	expr '=' expr	%prec ASSIGN		{$$ = production("expr_=",0,NULL,@$,$1,$3,0,0);}
+		|	expr INC	%prec POSTOP			{$$ = production("expr_++",0,NULL,@$,$1,0,0,0);}
+		|	INC	expr    %prec PREOP				{$$ = production("expr_++",1,NULL,@$,$2,0,0,0);} // note: repaired from $1
+		|	expr DEC	%prec POSTOP			{$$ = production("expr_--",0,NULL,@$,$1,0,0,0);}
+		|	DEC	expr    %prec PREOP				{$$ = production("expr_--",1,NULL,@$,$2,0,0,0);}
+		|	'-' expr 	%prec PRENEG			{$$ = production("expr_neg",0,NULL,@$,$2,0,0,0);}
+		|	'*' expr	%prec DEREF				{$$ = production("expr_deref",0,NULL,@$,$2,0,0,0);}
+		|	'&' expr	%prec REF				{$$ = production("expr_ref",0,NULL,@$,$2,0,0,0);}
 		;
 
 %%

@@ -6,6 +6,8 @@
         "code_segment.h": "c",
         "semantic_context_kind.h": "c",
         "codegen_gen_command.h": "c",
-        "*.y": "c"
+        "*.y": "yacc",
+        "assert.h": "c",
+        "semantic.h": "c"
     }
 }

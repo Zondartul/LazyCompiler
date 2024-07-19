@@ -112,12 +112,15 @@ void semantic_analyze_expr_list(ast_node* node, expr_settings stg) {
 		//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
 		//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
 		PREP_RES(res1, E_RVAL); ///? before constructors, nobody used it, right? //E_LVAL);
+		res1stg.dest.author = "expr_list item (,)";
 		semantic_expr_analyze(ast_get_child(node, i), res1stg); //expr
 		VERIFY_RES(res1);
 		//give name to new expression result?
 		//put it in stack?
 		m(*stg.out_list, push_back, res1);
 	}
+	stg.actual->rv_type = E_LIST;
+	stg.actual->val = "<expr_list>";
 }
 
 
@@ -767,7 +770,7 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	output_res(stg, result, NO_EMIT);
 }
 
-
+extern int indent;
 
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
@@ -793,8 +796,45 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
 	VERIFY_RES(res2);
 
-	if(res2_list.size){
+	if(res2.rv_type == E_LIST){//res2_list.size){
 		error("yay, fun brace-list assignment!");
+		struct type_name *T = res1.T;
+		struct symbol *S = 0;
+		if(T->symclass){
+			emit_code("// brace-list assignment to object of class %d", T->symclass->username);
+			struct symbol_table *scope = T->symclass.symclass.scope;
+
+			int n_members = count_members(scope);
+			#pragma warning waaah
+			indent++;
+			for(int i = 0; i < array_size; i++){
+				/// arr[i] = element
+				/// *(arr+i) = element
+				const char *arr = res1.val;
+				const char *element = (i < res2_list.size) ? m(res2_list, get, i).val : "0";
+				const char *arr_accessor = IR_next_name(namespace_semantic, "temp");
+				emit_code("ADD %s %s %d", arr_accessor, res1.val, i);
+				emit_code("MOV #%s, %d", arr_accessor, element);
+			}
+			indent--;
+		}else if(check_if_array(ast_get_child(node,0), &S)){
+			/// wait, type_name can't represent arrays???
+			/// we'll do a hack where we allow to assign directly to variable
+			int array_size = S->symvariable.arraysize;
+			emit_code("// brace-list assignment to array (%s[%d])", S->username, array_size);
+			indent++;
+			for(int i = 0; i < array_size; i++){
+				/// arr[i] = element
+				/// *(arr+i) = element
+				const char *arr = res1.val;
+				const char *element = (i < res2_list.size) ? m(res2_list, get, i).val : "0";
+				const char *arr_accessor = IR_next_name(namespace_semantic, "temp");
+				emit_code("ADD %s %s %d", arr_accessor, res1.val, i);
+				emit_code("MOV #%s, %d", arr_accessor, element);
+			}
+			indent--;
+		}
+
 	}
 	else{
 		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));

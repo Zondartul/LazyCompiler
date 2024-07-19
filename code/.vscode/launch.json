@@ -8,8 +8,8 @@
             "name": "Debug C++/Cmake",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/lazycomp",
-            //"program": "${workspaceRoot}/bin/lazycomp.exe",
+            //"program": "${workspaceRoot}/bin/lazycomp",
+            "program": "${workspaceRoot}/bin/lazycomp.exe",
             "args": [
                 "-i", "data_in/lazy2.txt",
                 "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
@@ -21,6 +21,7 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
+                // both Linux/GCC and Windows/MinGW:
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
@@ -29,6 +30,22 @@
                 {
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                // for Windows / MinGW:
+                {
+                    "text": "set breakpoint pending on",
+                    "description": "Ensures that a breakpoint for abort will be set!",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "break abort",
+                    "description": "Breaks on failed asserts",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "set breakpoint pending auto",
+                    "description": "Setting back to default behaviour",
                     "ignoreFailures": true
                 }
             ]

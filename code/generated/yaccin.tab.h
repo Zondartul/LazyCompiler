@@ -93,18 +93,18 @@ extern int yydebug;
     COMPARE = 280,                 /* COMPARE  */
     ADDSUB = 281,                  /* ADDSUB  */
     MULDIV = 282,                  /* MULDIV  */
-    PRENEG = 283,                  /* PRENEG  */
-    PREOP = 284,                   /* PREOP  */
-    LNEG = 285,                    /* LNEG  */
-    CAST = 286,                    /* CAST  */
-    REF = 287,                     /* REF  */
-    DEREF = 288,                   /* DEREF  */
-    INDEX = 289,                   /* INDEX  */
-    DOT = 290,                     /* DOT  */
-    SUBEXPR = 291,                 /* SUBEXPR  */
-    CALL = 292,                    /* CALL  */
-    BRACELIST = 293,               /* BRACELIST  */
-    EXP = 294,                     /* EXP  */
+    EXP = 283,                     /* EXP  */
+    PRENEG = 284,                  /* PRENEG  */
+    PREOP = 285,                   /* PREOP  */
+    LNEG = 286,                    /* LNEG  */
+    CAST = 287,                    /* CAST  */
+    REF = 288,                     /* REF  */
+    DEREF = 289,                   /* DEREF  */
+    INDEX = 290,                   /* INDEX  */
+    DOT = 291,                     /* DOT  */
+    SUBEXPR = 292,                 /* SUBEXPR  */
+    CALL = 293,                    /* CALL  */
+    BRACELIST = 294,               /* BRACELIST  */
     POSTOP = 295                   /* POSTOP  */
   };
   typedef enum yytokentype yytoken_kind_t;
