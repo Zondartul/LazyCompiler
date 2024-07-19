@@ -279,71 +279,34 @@ char *get_source_text2(YYLTYPE pos);
 				:vector2_ptr_ast_node_here_from_list(0)			
 			);
 		printParsed(res);
-		return res;
 	}
 
 	ast_node *error_production(const char* msg, YYLTYPE pos){
 		yylloc = prev_yylloc[3]; 
-		yyerror(msg); 
+		yyerror("Syntax error: expected semicolon ';'"); 
 		return ast_node_new(ast_token_here("error",0,NULL,pos),vector2_ptr_ast_node_here_from_list(0));
 	}
 	#define STR_ERR_SEMICOLON "Syntax error: expected semicolon ';'"
 	#define STR_ERR_END "Syntax error: expected 'end'"
-	#define STR_ERR_END_OR_SEMICOLON "Syntax error: expected 'end' or semicolon ';'"
+
 }
 
-/*
-From https://www.gnu.org/software/bison/manual/bison.html#Precedence
-
-The first precedence/associativity declaration in the file declares 
-	the operators whose precedence is lowest, the next such declaration 
-	declares the operators whose precedence is a little higher, and so on.
-
-Finally, the resolution of conflicts works by comparing the precedence 
-	of the rule being considered with that of the lookahead token. 
-	If the token’s precedence is higher, the choice is to shift. 
-	If the rule’s precedence is higher, the choice is to reduce. 
-	If they have equal precedence, the choice is made based on the 
-	associativity of that precedence level. The verbose output file 
-	made by -v (see Invoking Bison) says how each conflict was resolved.
-
-Not all rules and not all tokens have precedence. If either the rule 
-	or the lookahead token has no precedence, then the default is to shift.
-*/
-
 %token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC
-
-/// precedence-coding tokens:
-/// INDEX SUBEXPR BRACELIST CALL DOT EXPR MULDIV ADDSUB CAST LNEG LOGIC COMPARE ASSIGN POSTOP PREOP REF DEREF PRENEG 
 /*%glr-parser*/
 %debug
-%define parse.error verbose
+%error-verbose
 %left '='
 %left '|' '&'
-//%left EQUAL NOTEQUAL '<' '>'
-//%left '+' '-'
-//%left '^' '/' '*'
-%precedence ASSIGN  // x =
-%precedence LOGIC	// x & y
-%precedence COMPARE // x > y, x == y
-%precedence ADDSUB  // x + y, x - y
-%precedence MULDIV //EXPR  // x * y, x / y, x % y, x ^ y
-%precedence PRENEG PREOP LNEG CAST REF DEREF // -x, !x, (type)x, &x, *x
-%precedence INDEX	// x[2]
-%precedence DOT		// x.m
-%precedence SUBEXPR CALL BRACELIST// (a+b), f(o), {1,2}
-
-/// Let bison complain about "useless precedence" and "useless associativity", it's just being a dick for no reason.
-/// the current rules may lead to a parser identical to one with less rules, but this way we know for certain the rules aren't flipped.
-
-//%precedence CAST
-//%precedence '[' //']'
-//%precedence '(' //')' 
-//%precedence PREDEREF PREREF '!'
-//%precedence POSTINC POSTDEC 
-//%precedence PREINC PREDEC 
-//%precedence PRENEG
+%left EQUAL NOTEQUAL '<' '>'
+%left '+' '-'
+%left '^' '/' '*'
 //%left '.' 
+%precedence '[' //']'
+%precedence '(' //')' 
+%precedence PREDEREF PREREF '!'
+%precedence PREINC PREDEC 
+%precedence PRENEG
+%left '.' 
 //%precedence POSTINC POSTDEC
 %%
 
@@ -433,7 +396,11 @@ stmt_list_ne	: stmt_list_ne stmt
 									}
 				;
 		
-decl_stmt	:
+decl_stmt	:	decl_stmt_end {$$ = $1;}
+			|	decl_stmt_smc {$$ = $1;}
+			;
+			
+decl_stmt_end:	/// declarative statement, that ends with 'end'
 			class_def		
 								{
 									// $$ = ast_node_new(
@@ -454,7 +421,10 @@ decl_stmt	:
 									// printParsed($$);
 									$$ = production("decl_stmt",1,NULL,@$,$1,0,0,0);
 								}
-			|	var_decl ';' 	{
+			|	error 			{   $$ = error_production(STR_ERR_END, @$);}
+			;
+
+decl_stmt_smc:	var_decl ';' 	{
 									// $$ = ast_node_new(
 									// 	ast_token_here("decl_stmt",2,NULL,@$),
 									// 	vector2_ptr_ast_node_here_from_list
@@ -463,7 +433,7 @@ decl_stmt	:
 									// printParsed($$);
 									$$ = production("decl_stmt",2,NULL,@$,$1,0,0,0);
 								}
-			|	error 			{   $$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
+			|	error 			{   $$ = error_production(STR_ERR_SEMICOLON, @$);}
 			;	
 			
 decl_stmt_list	:	decl_stmt_list_ne	
@@ -516,7 +486,11 @@ decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt
 					;
 //synchronize :   ';' | END ; // list of ways to get back to parsing after an error production
 //semicolon_or_error : ';' | error synchronize   {   yyerror("Syntax error: expected semicolon ';'"); $$ = ast_node_new(ast_token_here("error",0,NULL,@$),vector2_ptr_ast_node_here_from_list(0));} ;  				
-imp_stmt	:	if_block					
+imp_stmt	:	imp_stmt_smc	{ $$ = $1;}
+			|	imp_stmt_end	{ $$ = $1;}
+			;
+imp_stmt_end:	/// imperative statement, that ends with 'end'
+				if_block					
 								{
 									// $$ = ast_node_new(
 									// 	ast_token_here("imp_stmt",0,NULL,@$),
@@ -547,7 +521,11 @@ imp_stmt	:	if_block
 									$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);
 								}
 								
-			|	expr ';'					
+			|	error 			{   $$ = error_production(STR_ERR_END, @$);}
+			;
+
+imp_stmt_smc:	/// imperative statement, that ends in semicolon ';'
+				expr ';'					
 								{
 									// $$ = ast_node_new(
 									// 	ast_token_here("imp_stmt",2,NULL,@$),
@@ -577,7 +555,7 @@ imp_stmt	:	if_block
 									// printParsed($$);
 									$$ = production("imp_stmt",5,NULL,@$,$2,0,0,0);
 								}
-			|	error 			{   $$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
+			|	error 			{   $$ = error_production(STR_ERR_SEMICOLON, @$);}
 			;
 			
 class_def	:	CLASS ID decl_stmt_list END	
@@ -908,59 +886,59 @@ expr	:	ID							{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_const",	4,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
 		|	STRING						{$$ = production("expr_const",5,$1->token.value,@$,yylval,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_const",	5,$1->token.value,@$), vector2_ptr_ast_node_here_from_list(1, yylval)); printParsed($$);}
-		|	expr '[' expr ']'	%prec INDEX		{$$ = production("expr_index",0,NULL,@$,$1,$3,0,0);}
+		|	expr '[' expr ']'			{$$ = production("expr_index",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_index",	0,NULL,@$),	vector2_ptr_ast_node_here_from_list(2, $1,$3)); printParsed($$);}
-		|	'(' expr ')'	%prec SUBEXPR			{$$ = production("expr_subexpr",0,NULL,@$,$2,0,0,0);}
+		|	'(' expr ')'				{$$ = production("expr_subexpr",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_subexpr",0,NULL,@$),vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'{' expr_list '}'	%prec BRACELIST		{$$ = production("expr_braced_list",0,NULL,@$,$1,$3,0,0);}
-		//{$$ = ast_node_new(ast_token_here("expr_braced_list",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}	
-		|	expr '(' expr_list ')'	%prec CALL	{$$ = production("expr_call",0,NULL,@$,$1,$3,0,0);}
+		|	'{' expr_list '}'			{$$ = production("expr_braced_list",0,NULL,@$,$1,$3,0,0);}
+		//{$$ = ast_node_new(ast_token_here("expr_braced_list",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
+		|	expr '(' expr_list ')'		{$$ = production("expr_call",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_call",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '.' expr	%prec DOT			{$$ = production("expr_.",0,NULL,@$,$1,$3,0,0);}
+		|	expr '.' expr				{$$ = production("expr_.",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_.",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '^' expr	%prec EXP	{$$ = production("expr_^",0,NULL,@$,$1,$3,0,0);}
+		|	expr '^' expr				{$$ = production("expr_^",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_^",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '/' expr	%prec MULDIV			{$$ = production("expr_/",0,NULL,@$,$1,$3,0,0);}
+		|	expr '/' expr				{$$ = production("expr_/",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_/",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '*' expr	%prec MULDIV			{$$ = production("expr_*",0,NULL,@$,$1,$3,0,0);}
+		|	expr '*' expr				{$$ = production("expr_*",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_*",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '%' expr	%prec MULDIV			{$$ = production("expr_%",0,NULL,@$,$1,$3,0,0);}
+		|	expr '%' expr				{$$ = production("expr_%",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_%",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '-' expr	%prec ADDSUB			{$$ = production("expr_-",0,NULL,@$,$1,$3,0,0);}
+		|	expr '-' expr				{$$ = production("expr_-",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_-",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '+' expr	%prec ADDSUB			{$$ = production("expr_+",0,NULL,@$,$1,$3,0,0);}
+		|	expr '+' expr				{$$ = production("expr_+",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_+",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	'(' typename ')' expr	%prec CAST	{$$ = production("expr_cast",0,NULL,@$,$2,$4,0,0);}
+		|	'(' typename ')' expr		{$$ = production("expr_cast",0,NULL,@$,$2,$4,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_cast",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $2, $4)); printParsed($$);}
-		|	'!' expr	%prec LNEG				{$$ = production("expr_not",0,NULL,@$,$2,0,0,0);}
+		|	'!' expr					{$$ = production("expr_not",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_not",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	expr '&' expr	%prec LOGIC			{$$ = production("expr_and",0,NULL,@$,$1,$3,0,0);}
+		|	expr '&' expr				{$$ = production("expr_and",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_and",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '|' expr	%prec LOGIC		{$$ = production("expr_|",0,NULL,@$,$1,$3,0,0);}
+		|	expr '|' expr				{$$ = production("expr_|",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_or",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr EQUAL expr	%prec COMPARE			{$$ = production("expr_==",0,NULL,@$,$1,$3,0,0);}
+		|	expr EQUAL expr				{$$ = production("expr_==",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_==",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr NOTEQUAL expr %prec COMPARE		  	{$$ = production("expr_!=",0,NULL,@$,$1,$3,0,0);}
+		|	expr NOTEQUAL expr		  	{$$ = production("expr_!=",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_!=",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '>' expr	%prec COMPARE 	{$$ = production("expr_>",0,NULL,@$,$1,$3,0,0);}
+		|	expr '>' expr			 	{$$ = production("expr_>",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_>",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '<' expr	%prec COMPARE 	{$$ = production("expr_<",0,NULL,@$,$1,$3,0,0);}
+		|	expr '<' expr			 	{$$ = production("expr_<",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_<",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr '=' expr	%prec ASSIGN	{$$ = production("expr_=",0,NULL,@$,$1,$3,0,0);}
+		|	expr '=' expr				{$$ = production("expr_=",0,NULL,@$,$1,$3,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_=",		0,NULL,@$), vector2_ptr_ast_node_here_from_list(2, $1, $3)); printParsed($$);}
-		|	expr INC	%prec POSTOP	{$$ = production("expr_++",0,NULL,@$,$1,0,0,0);}
+		|	expr INC					{$$ = production("expr_++",0,NULL,@$,$1,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_++",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	INC	expr    %prec PREOP	{$$ = production("expr_++",1,NULL,@$,$2,0,0,0);} // note: repaired from $1
+		|	INC	expr    %prec PREINC	{$$ = production("expr_++",1,NULL,@$,$2,0,0,0);} // note: repaired from $1
 		//{$$ = ast_node_new(ast_token_here("expr_++",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	expr DEC	%prec POSTOP	{$$ = production("expr_--",0,NULL,@$,$1,0,0,0);}
+		|	expr DEC					{$$ = production("expr_--",0,NULL,@$,$1,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_--",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $1)); printParsed($$);}
-		|	DEC	expr    %prec PREOP	{$$ = production("expr_--",1,NULL,@$,$2,0,0,0);}
+		|	DEC	expr    %prec PREDEC	{$$ = production("expr_--",1,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_--",	1,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'-' expr 	%prec PRENEG	{$$ = production("expr_neg",0,NULL,@$,$2,0,0,0);}
+		|	'-' expr 	%prec PRENEG	{$$ = production("expr_neg",0,NULL,@$,$2,0,0,0:)}
 		//{$$ = ast_node_new(ast_token_here("expr_neg",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'*' expr	%prec DEREF	{$$ = production("expr_deref",0,NULL,@$,$2,0,0,0);}
+		|	'*' expr	%prec PREDEREF	{$$ = production("expr_deref",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_deref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
-		|	'&' expr	%prec REF	{$$ = production("expr_ref",0,NULL,@$,$2,0,0,0);}
+		|	'&' expr	%prec PREREF	{$$ = production("expr_ref",0,NULL,@$,$2,0,0,0);}
 		//{$$ = ast_node_new(ast_token_here("expr_ref",	0,NULL,@$), vector2_ptr_ast_node_here_from_list(1, $2)); printParsed($$);}
 		;
 

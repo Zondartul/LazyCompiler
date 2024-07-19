@@ -26,6 +26,7 @@ void init_printf()
 	screen_clear();
 end
 
+/*
 void test_printf()
 	printf("hello world!\n");
 	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
@@ -51,7 +52,7 @@ void test_printf()
 	debug_s_arg(zuzubaf); printf("\n");
 	return;
 
-	int x = 10
+	int x = 10;
 	printf("t0 x1: %d\n", x); // 10
 	char buff2[7];
 	set_buff_warudo(buff2);
@@ -67,6 +68,7 @@ void test_printf()
 	//printf(str);
 	//printf("\n");
 end
+*/
 
 void stuff_test_2()
 	int x;
@@ -94,6 +96,14 @@ end
 // but there is no argument type checking.
 // oops....
 
+class Derp
+	int x = 2;
+	void constructor(int new_x, int new_y)
+		x = new_x+new_y;
+		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
+	end
+end
+
 int main()
 	setup();
 	
@@ -101,6 +111,9 @@ int main()
 	//test_printf();
 	
 	printf("Hello [%s] %d!\n", "world", 123);
+
+	class Derp derp(4,3);
+	printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
 
 	run_all_tests();
 	

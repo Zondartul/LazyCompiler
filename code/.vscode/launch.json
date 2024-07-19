@@ -8,8 +8,8 @@
             "name": "Debug C++/Cmake",
             "type": "cppdbg",
             "request": "launch",
-            //"program": "${workspaceRoot}/bin/lazycomp",
-            "program": "${workspaceRoot}/bin/lazycomp.exe",
+            "program": "${workspaceRoot}/bin/lazycomp",
+            //"program": "${workspaceRoot}/bin/lazycomp.exe",
             "args": [
                 "-i", "data_in/lazy2.txt",
                 "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",

@@ -44,7 +44,7 @@ set(path_yacc_tab_c ${CMAKE_CURRENT_SOURCE_DIR}/generated/yaccin.tab.c)
 set(path_yacc_tab_h ${CMAKE_CURRENT_SOURCE_DIR}/generated/yaccin.tab.h)
 
 add_custom_command(OUTPUT ${path_yacc_tab_c} ${path_yacc_tab_h}
-				   COMMAND bison -d -Wall -ogenerated/yaccin.tab.c input/yaccin.y
+				   COMMAND bison -d -Wall -ogenerated/yaccin.tab.c input/yaccin.y #-Wcounterexamples --update
 				   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 				   DEPENDS input/yaccin.y)
 
