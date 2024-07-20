@@ -12,8 +12,9 @@
             "program": "${workspaceRoot}/bin/lazycomp.exe",
             "args": [
                 "-i", "data_in/lazy2.txt",
-                "-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
-               // "--no-asm-comments"
+                //"-o", "~/mnt/Data/SteamLibrary/steamapps/common/GarrysMod/garrysmod/data/cpuchip/lazycomp/lazy2_asm",
+                "-o", "E:\\SteamLibrary\\steamapps\\common\\GarrysMod\\garrysmod\\data\\cpuchip\\lazy2_asm",
+                //"--no-asm-comments"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}/..", //"${fileDirname}",

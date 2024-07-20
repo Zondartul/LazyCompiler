@@ -1,100 +1,24 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/testOutput.txt"
 #include "data_in/big/printf.txt"
-#include "data_in/big/class_csprinter.txt"
+//#include "data_in/big/class_csprinter.txt"
 
 int addr_bus[4];
 
-// todo:
-//   - array literals {a, b, c}
-//   - 
-
-
-
 void init_printf()
 	addr_bus = {65536, 65536+20000, 65536+20000*2, 65536+20000*3};
-	//addr_bus[0] = 65536;
-	//addr_bus[1] = addr_bus[0] + 20000;
-	//addr_bus[2] = addr_bus[1] + 20000;
-	//addr_bus[3] = addr_bus[2] + 20000;
 	screen_set(addr_bus[2]);
-
 	screen_clear();
 end
 
-//btw you can pass arrays by value now,
-// but there is no argument type checking.
-// oops....
+
 /*
-void test_printf()
-	printf("hello world!\n");
-	/// todo: uhh, constructor of derp initializes it to 10 instead of 1 (test61)
-	/// oh hey, it turns out our printf or num2str doesn't flip the digits oops
-	//printf("123[%d],45[%d],1[%d],10[%d],0.1[%d]\n",123,45,1,10,1/10);
-	// bluuuuh, nothing but %d works on printf and even that crappily backwards
-	printf("s test: %s\n","abra_cadabra_karabas_barabas");
-	printf("d test: %d, %d, %d\n", 123, 45, 1907);
-	char *str = "[my strings]";
-	int L = strlen(str);
-	printf("strlen = %d\n", L);
-
-	printf("char C = %c\n", (char)97);
-
-	printf(str);
-	char zuzubaf[20];
-	set_buff_mario(zuzubaf);
-	debug_s_arg(zuzubaf); printf("\n");
-	memmove(zuzubaf, str, L+1);
-	debug_s_arg(zuzubaf); printf("\n");
-	printf("str : [");printf(str);printf("]\n");
-	printf("buff: [");printf(zuzubaf);printf("]\n");
-	debug_s_arg(zuzubaf); printf("\n");
-	return;
-
-	int x = 10;
-	printf("t0 x1: %d\n", x); // 10
-	char buff2[7];
-	set_buff_warudo(buff2);
-	debug_s_arg(buff2);
-	stuff_test_1();
-	stuff_test_2();
-	printf("t0 x2: %d\n", x); // 10
-	debug_s_arg(buff2);
-	//printf("\n");
-	//printf("before: %s\n",str);
-	//string_reverse(str);
-	//printf("after : %s\n",str);
-	//printf(str);
-	//printf("\n");
-end
-*/
-
 void stuff_test_2()
 	int x;
 	printf("t2 x1: %d\n", x); // ???
 	x = 12;
 	printf("t2 x2: %d\n", x); // 12
 end
-
-/*
-int *adr_port = 65536;
-
-void writePort(int port, int val)
-	*(adr_port+port) = val;
-end
-*/
-/*
-int string_pass_test(char* str1, char* str2)
-	writePort(0, str1);
-	writePort(1, str1[0]);
-	writePort(2, str2);
-	writePort(3, str2[0]);
-end
-*/
-
-//btw you can pass arrays by value now,
-// but there is no argument type checking.
-// oops....
 
 
 class Dev_address_bus
@@ -104,17 +28,14 @@ class Dev_address_bus
 		addr[1] = addr[0] + size1;
 		addr[2] = addr[1] + size2;
 		addr[3] = addr[2] + size3;
-		//printf("Dev_address_bus constructed with addr:\n%d, %d, %d, %d\n", addr[0], addr[1], addr[2], addr[3]);
 	end
 	void write(int dev_num, int* offset, int byte)
 		int *ptr = addr[dev_num] + offset;
-		//printf("write(*%d) <- %d\n", ptr, byte);
 		*ptr = byte;
 	end
 	int read(int dev_num, int* offset) /// variable was shadowed (addr)
 		int *ptr = addr[dev_num] + offset;
 		int byte = *ptr;
-		//printf("read(*%d) -> %d\n", ptr, byte); 
 		return *ptr;
 	end
 end
@@ -125,74 +46,55 @@ class Derp
 	void constructor(int new_x, int new_y)
 		x = new_x+new_y;
 		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
+		//derpyfunc("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
 	end
 end
 
-// -- [CLOSED] bug: can't have same-named method in multiple classes? 
-// -- [CLOSED] bug: 'this' passed differently for pointer and real object?
-//				nope, works fine, see test_class_multiple_and_ptr
-
-// -- also, zASM fuckery: labels are not case-sensitive
-// -- [bug] - IR_next_name needs case-insensitive collision to match zASM
-// -- [bug] 'void *ptr = class' is allowed but it's a bug!
-//				need need NEEED type checks on assign!
-// -- [bug] - number of arguments is not checked, which can fuck with 'this'
-
+void derpyfunc(int arg1, int arg2, int arg3)
+end
+*/
 
 int main()
 	setup();
 	
 	init_printf();
-	//test_printf();
-	
-	//printf("Hello [%s] %d!\n", "world", 123);
 	printf("Running LazyComp unit tests\n");
-	//run_all_tests();
-	//printf("&Color = %d\n", &Color);
-	//printf("Color.green = %d\n",Color.green);
-	//printf("Color.blue = %d\n", Color.blue);
-	//class Const_colors Color2;
-	//printf("&Color2 = %d, green = %d\n", &Color2, Color2.green);
+	run_all_tests();
 	Prints("All tests green",90); 	
 	screen_clear(); setPrintCursor(0,0);
-	printf("hello world!\n");
+	//printf("hello world!\n");
 	
-
-
-
-
-
-	class Dev_address_bus addr_bus;//(65536, 20000, 20000, 20000);
-	class CScreen scr;
-	class CSPrinter printer;
-	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	printf("step 0.");
-	addr_bus.constructor(65536, 20000, 20000, 20000);
-	printf("1.");
-	//printf("addr_bus @ %d, arr @ %d:\n%d %d %d %d\n", 
-	//	   &addr_bus, &(addr_bus.addr), 
-	//	   addr_bus.addr[0], addr_bus.addr[1], addr_bus.addr[2], addr_bus.addr[3]);
-	//int C1 = addr_bus.read(2, 0);
-	//int C2 = addr_bus.read(2, 1);
-	//printf("C1 %d (%c), C2 %d (%c)\n", C1, C1, C2, C2);
-
-	scr.constructor();
-	printf("2.");
-	scr.set(addr_bus.addr[2]);
-	printf("... scr.memscr = %d\n", scr.mem_scr);
-	printf("3.");
-	printer.init();
-	printf("4.");
-	printer.scr = &scr;
-	printf("... printer.scr = %d\n", printer.scr);
-	printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
-	printf("... scr.memscr = %d\n", scr.mem_scr);
-	printf("5.");
-	printer.puts("Hello from CSPrinter!\n");
-	printf("z.");
+	printf("Hello [%s] %d!\n", "world", 123);
 	
-	class Derp derp(4, 10);
-	printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
+	//class Dev_address_bus addr_bus;
+	
+	
+	//class CScreen scr;
+	
+	
+	//class CSPrinter printer;
+	//printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
+	//printf("step 0.");
+	//addr_bus.constructor(65536, 20000, 20000, 20000);
+	//printf("1.");
+
+	//scr.constructor();
+	//printf("2.");
+	//scr.set(addr_bus.addr[2]);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("3.");
+	//printer.init();
+	//printf("4.");
+	//printer.scr = &scr;
+	//printf("... printer.scr = %d\n", printer.scr);
+	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("5.");
+	//printer.puts("Hello from CSPrinter!\n");
+	//printf("z.");
+	
+	//class Derp derp(4, 10);
+	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
 	
 	infloop();
 end

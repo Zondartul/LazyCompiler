@@ -240,12 +240,16 @@ char *get_source_text2(YYLTYPE pos);
 
 	void /*int*/ yyerror(const char *s)
 	{	
+		YYLTYPE report_loc = prev_yylloc[2];
+		if(report_loc.null){report_loc = prev_yylloc[1];}
+		if(report_loc.null){report_loc = prev_yylloc[0];}
+		if(report_loc.null){report_loc = yylloc;}
 		printf("\nyyerror(%s)!\n", s);
-		int x1 = yylloc.first_column;
-		int y1 = yylloc.first_line;
-		int x2 = yylloc.last_column;
+		int x1 = report_loc.first_column;
+		int y1 = report_loc.first_line;
+		int x2 = report_loc.last_column;
 		//int y2 = yylloc.last_line;
-		const char *f = yylloc.filename;
+		const char *f = report_loc.filename;
 		int length = x2-x1;
 		if(length == 1){length = 0;}
 		point_out_error(y1,x1,f,s,length);
@@ -283,7 +287,7 @@ char *get_source_text2(YYLTYPE pos);
 	}
 
 	ast_node *error_production(const char* msg, YYLTYPE pos){
-		yylloc = prev_yylloc[3]; 
+		//yylloc = prev_yylloc[3]; 
 		yyerror(msg); 
 		return ast_node_new(ast_token_here("error",0,NULL,pos),vector2_ptr_ast_node_here_from_list(0));
 	}
@@ -318,12 +322,63 @@ Not all rules and not all tokens have precedence. If either the rule
 /*%glr-parser*/
 %debug
 %define parse.error verbose
+/// ps: 'left' and 'precedence' are both precedence
+///     but 'precedence' does not set associativity
+
+/// HOW TO SET UP PRECEDENCE AND ASSOCIATIVITY:
+/// a method that seems to work, 20 July 2024:
+/// 1. use both operator tokens (e.g. '=')
+///    and production tokens (e.g. ASSIGN).
+///		- explanation: when the bottom up parser encounters the next operator, and it's at the end of a production,
+///		  there is a shift/reduce conflict. Shift means 'prefer the incoming operator, it has higher precedence'.
+///		  Reduce means 'prefer the existing production, it has higher precedence'. The prec. of production and token are compared.
+///		  associativity also does something, idk.
+///		  operator token associativity marks the token itself, while production token creates a fake token for an expression,
+///		  because the precedence of a production comes from the last token and that happens to be 'expr' which is used in multiple productions
+///		  and so one value of precedence for 'expr' doesn't help us.
+///	2. use %right and %left when possible - they set associativity and precedence simultaneously.
+///	   if not possible, use %precedence to set only precedence without associativity.
+///  3. Things that appear later in the %right %left list (on a lower line) are "more important".
+///  4. Use the 'C operator precedence list' and write it down upside-down while following rule 1.
+///  5. Check unit-tests and compare actual ASTs to check if production is correct.
+///  6. suspect ambiguous tokens as it is unclear which line to put them on 
+///		suspect tokens:
+///		  INC / NEG are tokens in both POSTOP and PREOP (++x, x++, --x, x--)
+/// 	  '*' used in both DEREF and MULDIV (1*2, *ptr)
+///		  - used in both NEG and ADDSUB (-x, 2-1)
+///		  ( used in CALL, CAST and SUBEXPR ( foo(), (int)x, 1*(2+3))
+///		  & used in both LOGIC and DEREF ( isA & isB, &x)
+///
+
+%right '=' ASSIGN
+%left LOGIC
+%left EQUAL NOTEQUAL COMPARE
+%left '+' ADDSUB // -
+%left '/' '%' MULDIV EXP  // *
+%right PREOP INC DEC '-' NEG '!' LNEG CAST '*' DEREF '&' REF
+%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
+%precedence SUBEXPR
+
+/*
+%precedence SUBEXPR
+%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
+%right PREOP INC DEC '-' NEG '!' LNEG CAST '*' DEREF '&' REF
+%left '/' '%' MULDIV EXP  // *
+%left '+' ADDSUB // -
+%left EQUAL NOTEQUAL COMPARE
+%left LOGIC
+%right '=' ASSIGN
+*/
+
+
+/*
 %left '='
 %left '|' '&'
-//%left EQUAL NOTEQUAL '<' '>'
-//%left '+' '-'
-//%left '^' '/' '*'
-%precedence ASSIGN  // x =
+%left '<' '>' 
+%left '+' '-'
+%left '^' '/' '*'
+*/
+/* %precedence ASSIGN  // x =
 %precedence LOGIC	// x & y
 %precedence COMPARE // x > y, x == y
 %precedence ADDSUB  // x + y, x - y
@@ -332,19 +387,16 @@ Not all rules and not all tokens have precedence. If either the rule
 %precedence '[' //']'
 %precedence INDEX	// x[2]
 %precedence DOT		// x.m
-%precedence SUBEXPR CALL BRACELIST POSTOP// (a+b), f(o), {1,2}
+%precedence SUBEXPR CALL BRACELIST POSTOP// (a+b), f(o), {1,2} */
+
+
+
 
 /// Let bison complain about "useless precedence" and "useless associativity", it's just being a dick for no reason.
 /// the current rules may lead to a parser identical to one with less rules, but this way we know for certain the rules aren't flipped.
 
-//%precedence CAST
-//%precedence '(' //')' 
-//%precedence PREDEREF PREREF '!'
-//%precedence POSTINC POSTDEC 
-//%precedence PREINC PREDEC 
-//%precedence PRENEG
-%left '.' 
-//%precedence POSTINC POSTDEC
+//%left '.' 
+
 %%
 
 program :	decl_stmt_list	
@@ -399,11 +451,10 @@ decl_stmt_list_ne	: decl_stmt_list_ne decl_stmt {$$ = production("decl_stmt_list
 					;
 imp_stmt	:	if_block						{$$ = production("imp_stmt",0,NULL,@$,$1,0,0,0);}
 			|	while_loop						{$$ = production("imp_stmt",1,NULL,@$,$1,0,0,0);}
-			|	for_loop						{$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);}
-								
 			|	expr ';'						{$$ = production("imp_stmt",2,NULL,@$,$1,0,0,0);}
 			|	RETURN ';'						{$$ = production("imp_stmt",3,NULL,@$,0,0,0,0);}
-			|	RETURN expr ';'					{$$ = production("imp_stmt",5,NULL,@$,$2,0,0,0);}
+			|	RETURN expr ';'					{$$ = production("imp_stmt",4,NULL,@$,$2,0,0,0);} //repaired from 5
+			|	for_loop						{$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);}
 			|	error 							{$$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
 			;
 			

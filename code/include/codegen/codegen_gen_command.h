@@ -15,6 +15,7 @@ void gen_command_sub();
 void gen_command_div();
 void gen_command_mul();
 void gen_command_mod();
+void gen_command_exp();
 void gen_command_and();
 void gen_command_or();
 void gen_command_not();

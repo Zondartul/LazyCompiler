@@ -448,6 +448,25 @@ void gen_command_mod() {
 	return;
 }
 
+void gen_command_exp() {
+	if (codegen_decl) {
+		//do nothing
+		const char* result = strtok(0, " ");
+		checkResult(result);
+	}
+	else {
+		printTrace();
+		const char* result = strtok(0, " ");
+		const char* arg1 = loadLValue(strtok(0, " "));
+		const char* arg2 = loadRValue(strtok(0, " "));
+		//storeValue(result, loadValue(arg1));
+		printindent();
+		asm_println("fpwr %s, %s", arg1, arg2);
+		storeValue(result, arg1);
+	}
+	return;
+}
+
 void gen_command_and() {
 	if (codegen_decl) {
 		//do nothing

@@ -545,12 +545,12 @@ int lexlinestart;
 int lexnumtabs;
 int lexnewline = 0;
 
-YYLTYPE prev2_yylloc;
-YYLTYPE prev_yylloc;
+YYLTYPE prev_yylloc[3];
 
 void updatelloc(){
-	prev2_yylloc = prev_yylloc;
-	prev_yylloc = yylloc;
+	prev_yylloc[2] = prev_yylloc[1];
+	prev_yylloc[1] = prev_yylloc[0];
+	prev_yylloc[0] = yylloc;
 
 	yylloc.null = 0;
 	yylloc.first_line = yylloc.last_line;

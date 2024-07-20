@@ -1365,6 +1365,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"DIV")==0)		{gen_command_div();			return;}
 		if(strcmp(codegen_tok,"MUL")==0)		{gen_command_mul();			return;}
 		if(strcmp(codegen_tok,"MOD")==0)		{gen_command_mod();			return;}
+		if(strcmp(codegen_tok,"EXP")==0)		{gen_command_exp();			return;}
 		if(strcmp(codegen_tok,"AND")==0)		{gen_command_and();			return;}
 		if(strcmp(codegen_tok,"OR")==0)			{gen_command_or();			return;}
 		if(strcmp(codegen_tok,"NOT")==0)		{gen_command_not();			return;}

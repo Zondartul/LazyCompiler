@@ -94,18 +94,19 @@ extern int yydebug;
     ADDSUB = 281,                  /* ADDSUB  */
     MULDIV = 282,                  /* MULDIV  */
     EXP = 283,                     /* EXP  */
-    PRENEG = 284,                  /* PRENEG  */
-    PREOP = 285,                   /* PREOP  */
+    PREOP = 284,                   /* PREOP  */
+    NEG = 285,                     /* NEG  */
     LNEG = 286,                    /* LNEG  */
     CAST = 287,                    /* CAST  */
-    REF = 288,                     /* REF  */
-    DEREF = 289,                   /* DEREF  */
-    INDEX = 290,                   /* INDEX  */
-    DOT = 291,                     /* DOT  */
-    SUBEXPR = 292,                 /* SUBEXPR  */
-    CALL = 293,                    /* CALL  */
+    DEREF = 288,                   /* DEREF  */
+    REF = 289,                     /* REF  */
+    POSTOP = 290,                  /* POSTOP  */
+    CALL = 291,                    /* CALL  */
+    INDEX = 292,                   /* INDEX  */
+    DOT = 293,                     /* DOT  */
     BRACELIST = 294,               /* BRACELIST  */
-    POSTOP = 295                   /* POSTOP  */
+    SUBEXPR = 295,                 /* SUBEXPR  */
+    PRENEG = 296                   /* PRENEG  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -143,6 +144,6 @@ int yyparse (void);
 char *posToString(YYLTYPE pos);
 char *get_source_text2(YYLTYPE pos);
 
-#line 147 "generated/yaccin.tab.h"
+#line 148 "generated/yaccin.tab.h"
 
 #endif /* !YY_YY_GENERATED_YACCIN_TAB_H_INCLUDED  */

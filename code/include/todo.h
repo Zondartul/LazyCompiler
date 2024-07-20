@@ -88,6 +88,10 @@
 * [bug 51] 'void *ptr = class' is allowed but it's a bug! need need NEED type checks on assign!
 * [bug 52] number of arguments in a function is not checked (can this break 'this'?)
 * [todo 53] change struct type_name to tell if type is an array, also change 'poitnerlevel' to 'is_pointer' and add 'pointed-type'
+* [bug 53] some derp4 class gets constructed in prologue after call to main (unreachable code) i.e. never.
+*
+*
+*
 *
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators
