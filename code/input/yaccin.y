@@ -329,6 +329,7 @@ Not all rules and not all tokens have precedence. If either the rule
 %precedence ADDSUB  // x + y, x - y
 %precedence MULDIV EXP  // x * y, x / y, x % y, x ^ y
 %precedence PRENEG PREOP LNEG CAST REF DEREF // -x, !x, (type)x, &x, *x
+%precedence '[' //']'
 %precedence INDEX	// x[2]
 %precedence DOT		// x.m
 %precedence SUBEXPR CALL BRACELIST POSTOP// (a+b), f(o), {1,2}
@@ -337,13 +338,12 @@ Not all rules and not all tokens have precedence. If either the rule
 /// the current rules may lead to a parser identical to one with less rules, but this way we know for certain the rules aren't flipped.
 
 //%precedence CAST
-//%precedence '[' //']'
 //%precedence '(' //')' 
 //%precedence PREDEREF PREREF '!'
 //%precedence POSTINC POSTDEC 
 //%precedence PREINC PREDEC 
 //%precedence PRENEG
-//%left '.' 
+%left '.' 
 //%precedence POSTINC POSTDEC
 %%
 

@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdint.h> // for uint64_t
 #include <inttypes.h> // for PRIu64 for printf
+#include "ast_gen.h"
 
 int do_integer_coersion = 1;
 int relax_integer_coersion = 1;
@@ -770,7 +771,97 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	output_res(stg, result, NO_EMIT);
 }
 
+/// if node refers to an array variable symbol, output that symbol to S and return 1. 
+int check_if_array(struct ast_node *node, struct symbol **out_S){
+	if(strcmp(node->token.type, "expr_id") == 0){
+		struct symbol *S = lookup_symbol(node->token.value);
+		if((S->type == SYMBOL_VARIABLE) || (S->type == SYMBOL_PARAM)){
+			if(S->symvariable.array){
+				*out_S = S;
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
 extern int indent;
+
+void semantic_analyze_expr_assign_brace_list(ast_node* node, expr_settings /*stg*/){
+	assert(strcmp(ast_get_child(node,1)->token.type, "expr_braced_list") == 0);
+
+	PREP_RES(res1, E_LVAL); //R=read, L=write //E_RVAL);
+	res1stg.dest.author = "expr_assign_brace_list arg1 (... =)";
+	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	VERIFY_RES(res1);
+	
+
+	struct ast_node *ast_obj = ast_get_child(node,0);
+	struct ast_node *ast_brace_list = ast_get_child(node,1);
+	struct ast_node *ast_expr_list = ast_get_child(ast_brace_list,0);
+
+	struct type_name *T = res1.T;
+	struct symbol *S = 0;
+	if(T->symclass){
+		emit_code("// brace-list assignment to object of class %d", T->symclass->username);
+		struct symbol_table *scope = T->symclass->symclass.scope;
+		
+		int n_members = scope->symbols.size;
+		
+		indent++;
+		int j = 0;
+		for(int i = 0; i < n_members; i++){
+			struct symbol *S2 = m(scope->symbols,get,i);
+			//SYMBOL_ERROR, SYMBOL_VARIABLE, SYMBOL_PARAM, SYMBOL_MEMBER, SYMBOL_FUNCTION, SYMBOL_CLASS, SYMBOL_LABEL, SYMBOL_CONST
+			if(S2->type == SYMBOL_MEMBER)
+			{
+				//obj.member = element
+				struct ast_node *obj_elem = ast_gen_dot(ast_obj, ast_gen_id(S2->username));
+				struct ast_node *list_elem = ast_get_child(ast_expr_list, j++);
+				struct ast_node *ast_assign = ast_gen_assign(obj_elem, list_elem);
+				
+				PREP_RES(res2, E_DISCARD); //R=read, L=write //E_RVAL);
+				res2stg.dest.author = "expr_assign_brace_list class element ( x.( ... ) = { (...), y, z} )";
+				semantic_expr_analyze(ast_assign, res2stg); //expr
+				VERIFY_RES(res2);
+			}
+		}
+		indent--;
+	}else if(check_if_array(ast_get_child(node,0), &S)){
+		/// wait, type_name can't represent arrays???
+		/// we'll do a hack where we allow to assign directly to variable
+		// if(S->symvariable.size == 1){
+			// int array_size = S->symvariable.arraysize;
+			// for(int i = 0; i < array_size; i++){
+			// emit_code("// brace-list assignment to array (%s[%d])", S->username, array_size);
+			// indent++;
+			/// arr[i] = element
+			// 	const char *arr = res1.val;
+			// 	const char *element = (i < res2_list.size) ? m(res2_list, get, i).val : "0";
+			// 	const char *arr_accessor = IR_next_name(namespace_semantic, "temp");
+			// 	emit_code("ADD %s %s %d", arr_accessor, res1.val, i);
+			// 	emit_code("MOV #%s, %d", arr_accessor, element);
+			// }
+			// indent--;
+		// }
+		int array_size = S->symvariable.arraysize;
+		emit_code("// brace-list assignment to array (%s[%d])", S->username, array_size);
+		indent++;
+		int j = 0;
+		for(int i = 0; i < array_size; i++){
+			/// arr[i] = element
+			struct ast_node *arr_elem = ast_gen_index(ast_obj, ast_gen_num(i));
+			struct ast_node *list_elem = ast_get_child(ast_expr_list, j++);
+			struct ast_node *ast_assign = ast_gen_assign(arr_elem, list_elem);
+			
+			PREP_RES(res2, E_DISCARD); //R=read, L=write //E_RVAL);
+			res2stg.dest.author = "expr_assign_brace_list arr element ( arr[ ... ] = { (...), y, z} )";
+			semantic_expr_analyze(ast_assign, res2stg); //expr
+			//VERIFY_RES(res2);
+		}
+		indent--;
+	}
+}
 
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
@@ -784,6 +875,11 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 
 	if (semantic_decl) { return; }
 
+	if(strcmp(ast_get_child(node,1)->token.type,"expr_braced_list")==0){
+		semantic_analyze_expr_assign_brace_list(node, stg); 
+		return;
+	}
+
 	PREP_RES(res1, E_LVAL); //R=read, L=write //E_RVAL);
 	res1stg.dest.author = "expr_assign arg1 (... =)";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
@@ -796,49 +892,7 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
 	VERIFY_RES(res2);
 
-	if(res2.rv_type == E_LIST){//res2_list.size){
-		error("yay, fun brace-list assignment!");
-		struct type_name *T = res1.T;
-		struct symbol *S = 0;
-		if(T->symclass){
-			emit_code("// brace-list assignment to object of class %d", T->symclass->username);
-			struct symbol_table *scope = T->symclass.symclass.scope;
-
-			int n_members = count_members(scope);
-			#pragma warning waaah
-			indent++;
-			for(int i = 0; i < array_size; i++){
-				/// arr[i] = element
-				/// *(arr+i) = element
-				const char *arr = res1.val;
-				const char *element = (i < res2_list.size) ? m(res2_list, get, i).val : "0";
-				const char *arr_accessor = IR_next_name(namespace_semantic, "temp");
-				emit_code("ADD %s %s %d", arr_accessor, res1.val, i);
-				emit_code("MOV #%s, %d", arr_accessor, element);
-			}
-			indent--;
-		}else if(check_if_array(ast_get_child(node,0), &S)){
-			/// wait, type_name can't represent arrays???
-			/// we'll do a hack where we allow to assign directly to variable
-			int array_size = S->symvariable.arraysize;
-			emit_code("// brace-list assignment to array (%s[%d])", S->username, array_size);
-			indent++;
-			for(int i = 0; i < array_size; i++){
-				/// arr[i] = element
-				/// *(arr+i) = element
-				const char *arr = res1.val;
-				const char *element = (i < res2_list.size) ? m(res2_list, get, i).val : "0";
-				const char *arr_accessor = IR_next_name(namespace_semantic, "temp");
-				emit_code("ADD %s %s %d", arr_accessor, res1.val, i);
-				emit_code("MOV #%s, %d", arr_accessor, element);
-			}
-			indent--;
-		}
-
-	}
-	else{
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
-	}
+	emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.

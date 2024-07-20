@@ -840,7 +840,7 @@ void semantic_analyze_var_decl_constructor(ast_node *node){//, expr_settings stg
 			PREP_RES(res2, E_DISCARD); // R=read, L=write //E_LVAL);
 			res2stg.dest.author = "var_decl_constructor call obj.c(...)";
 			semantic_expr_analyze(S->init_expr, res2stg);
-			VERIFY_RES(res2);
+			//VERIFY_RES(res2);
 
 			//emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
 			//res2.author = "var_decl_assign";
