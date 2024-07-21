@@ -49,7 +49,8 @@ const char *codegen_str = 0;
 char *codegen_tok = 0;
 int trace_gens = 1;	//if 1, every assembly line will have "emitted from here" trace
 
-
+int get_IR_symbol_size(ptr_IR_symbol S);
+int get_arg_size(const char* val);
 
 void asm_println2(const char* postfix, const char* fmt, ...) {
 	assert(fmt);
@@ -289,10 +290,11 @@ void printGlobalVars(){
 	for(int I = 0; I < curframe->symbols.size; I++){
 		ptr_IR_symbol S = m(curframe->symbols,get,I);
 		if(!strcmp(S->type,"VAR")){
-			if(!S->arraysize){
+			int size = get_IR_symbol_size(S);
+			if(size == 1){//!S->arraysize){
 				asm_println("%s: db 0 //%s",S->lbl_at,S->IR_name);
 			}else{
-				asm_println("%s: alloc %d //%s",S->lbl_at,S->arraysize,S->IR_name);
+				asm_println("%s: alloc %d //%s",S->lbl_at,/*S->arraysize*/ size,S->IR_name);
 			}
 		}
 		if(!strcmp(S->type,"STRING")){
@@ -1193,6 +1195,13 @@ void storeValue(const char *val, const char *reg){
 int max(int a, int b){return (a>b? a : b);}
 int min(int a, int b){return (a<b? a : b);}
 
+int get_IR_symbol_size(ptr_IR_symbol S){
+	if(strcmp(S->type, "FUNC") == 0){return 1;}
+	if(S->pointerlevel)  {return 1;}
+	else if(S->arraysize){return max(S->size * S->arraysize, 1);}
+	else				 {return max(S->size, 1);}
+}
+
 int get_arg_size(const char* val) {
 	//int acc_ref = 0;
 	//int acc_deref = 0;
@@ -1209,11 +1218,7 @@ int get_arg_size(const char* val) {
 	ptr_IR_symbol S = find_IR_symbol(val);
 	if (!S) { goto err_undefined; }
 
-	if(strcmp(S->type, "FUNC") == 0){return 1;}
-
-	if(S->pointerlevel)  {return 1;}
-	else if(S->arraysize){return max(S->size * S->arraysize, 1);}
-	else				 {return max(S->size, 1);}
+	return get_IR_symbol_size(S);
 
 	err_null_val: error("[CODE GEN] get_arg_size: argument is null");
 	err_undefined: error("[CODE GEN] get_arg_size: symbol %s is undefined", val);
@@ -1383,6 +1388,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"DEBUG")==0)		{gen_command_debug();		return;}
 		if(strcmp(codegen_tok,"COMMENT")==0)	{gen_command_comment();		return;}
 		if(strcmp(codegen_tok,"FLOOR")==0)		{gen_command_floor();		return;}
+		if(strcmp(codegen_tok,"EXIT")==0)		{gen_command_exit();		return;}
 		asm_println("*RECORD SCRATCH*\n");
 		error("[CODE GEN] Error: unsupported command [%s] (line %d)",codegen_tok,CurCMD+1);
 		/*

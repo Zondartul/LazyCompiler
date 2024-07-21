@@ -101,7 +101,11 @@ void output_res(expr_settings stg, val_handle src, int do_emit);
 
 //vars
 extern int semantic_decl;
+extern int need_global_initializers;
 extern struct code_segment *init_CS;
+extern struct code_segment *global_CS;
+extern struct code_segment *global_init_CS;
+extern struct code_segment *global_deinit_CS;
 extern ptr_symbol symbolThis;
 
 extern vector2_ptr_char expr_stack;

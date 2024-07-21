@@ -16,9 +16,11 @@ void semantic_analyze_program(ast_node *node){
 	new_code_segment();
 	init_CS = currentCodeSegment;
 	pop_code_segment();
+	global_CS = currentCodeSegment;
 	semantic_decl = 1;
 	analyze_scope(ast_get_child(node,0),&currentCodeSegment,0,&currentSymbolTable,0,0);
 	semantic_decl = 0;
+	need_global_initializers = 1;
 	analyze_scope(ast_get_child(node,0),&currentCodeSegment,0,&currentSymbolTable,0,1);
 
 	semantic_finalize();

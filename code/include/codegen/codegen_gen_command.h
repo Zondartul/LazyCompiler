@@ -33,5 +33,6 @@ void gen_command_frame();
 void gen_command_debug();
 void gen_command_comment();
 void gen_command_floor();
+void gen_command_exit();
 
 #endif

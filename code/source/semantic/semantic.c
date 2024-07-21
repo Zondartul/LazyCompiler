@@ -23,7 +23,11 @@ implementation_vector_of(val_handle);
 
 //variables
 int semantic_decl = 0;
+int need_global_initializers = 0;
 struct code_segment *init_CS  = 0;
+struct code_segment *global_CS  = 0;
+struct code_segment *global_init_CS = 0;
+struct code_segment *global_deinit_CS = 0;
 ptr_symbol symbolThis = 0;
 
 vector2_ptr_char expr_stack;
@@ -262,7 +266,12 @@ void semantic_finalize(){
 		struct code_segment *CS = currentCodeSegment;
 		currentCodeSegment = init_CS;
 		const char *result = IR_next_name(namespace_semantic,"temp");
+
+		emit_code_segment(global_init_CS);
 		emit_code("CALL %s _main", sanitize_string(result)); //idk how to pass main's params yet.
+		emit_code_segment(global_deinit_CS);
+		emit_code("EXIT");
+
 		emit_code_segment(CS);
 		/*
 		for(i = 0; i < CS_list.size; i++){
@@ -614,6 +623,11 @@ void emit_initializer(struct symbol *S){
 		struct symbol *S3 = lookup_symbol("constructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
 		//emit_code("CALL %s %s %s",exprResult,S3->IR_name,S->IR_name);
+
+		if(strcmp(S->username, "derp4")==0){
+			printf("debug breakpoint");
+		}
+
 		emit_code("CALL %s %s &%s", 
 			sanitize_string(exprResult), 
 			sanitize_string(S3->IR_name), 
@@ -717,11 +731,32 @@ void analyze_scope(struct ast_node *N,
 		printf("analyzing (imp) scope %s / %s\n",currentSymbolTable->name,currentCodeSegment->name);
 		printf("symbol table so far:\n");
 		print_symbol_table(currentSymbolTable);	
-		emit_all_declarations((semantic_this != 0));
-		emit_all_initializers();
-		semantic_general_analyze(N);
-		emit_all_deinitializers();
-		emit_all_undeclarations();
+		if(need_global_initializers){
+			need_global_initializers = 0; /// we only run this once
+			//switch code segments so we can layout the overall file
+			push_code_segment();
+				new_code_segment();
+				global_init_CS = currentCodeSegment;
+				emit_all_declarations(0);
+				emit_all_initializers();
+			pop_code_segment();
+			
+			push_code_segment();
+				new_code_segment();
+				global_deinit_CS = currentCodeSegment;
+				emit_all_deinitializers();
+				emit_all_undeclarations();
+			pop_code_segment();
+
+			/// now do the 99% of the program code that isn't global vars.
+			semantic_general_analyze(N);
+		}else{
+			emit_all_declarations((semantic_this != 0));
+			emit_all_initializers();
+			semantic_general_analyze(N);
+			emit_all_deinitializers();
+			emit_all_undeclarations();
+		}
 		if(!noEnterLeave){emit_code("FRAME LEAVE");}
 		if(CCS){pop_code_segment();}			
 	}

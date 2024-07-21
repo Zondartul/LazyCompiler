@@ -931,3 +931,11 @@ void gen_command_floor(){
 	}
 }
 
+void gen_command_exit(){
+	if(codegen_decl){
+		//do nothing
+	}else{
+		printindent(); asm_println("int 1"); // halt
+		printindent(); asm_println("int 0"); // reset
+	}
+}
