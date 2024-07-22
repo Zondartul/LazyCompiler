@@ -81,7 +81,8 @@
 * [todo 46] {1,2,3} list initializer
 * [todo 47] type checking (e.g. class vs int)
 *			47.1 : argument type checking
-*			47.2 : assignment type checking
+*		 V  47.2 : assignment type checking - done
+*			47.3 : operator type checking
 * [todo 48] warning when a variable is shadowed
 * [todo 49] add setting to decide where the stack lives (codegen.c: print_skeleton_start)
 * [bug 50] IR_next_name needs to be case-insensitive because stupid zASM has case-insensitive labels

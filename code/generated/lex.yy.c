@@ -1,6 +1,6 @@
-#line 1 "generated/lex.yy.c"
+#line 2 "generated/lex.yy.c"
 
-#line 3 "generated/lex.yy.c"
+#line 4 "generated/lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -617,8 +617,8 @@ YYLTYPE tokPos(){return yylloc;}
 "#line "(0|([1-9][0-9]*))[^\n]*\n			{char *str = substring(yytext,6,strlen(yytext)-1); int L; sscanf(str,"%d",&L); setline(L);}
 
 */
-#line 620 "generated/lex.yy.c"
 #line 621 "generated/lex.yy.c"
+#line 622 "generated/lex.yy.c"
 
 #define INITIAL 0
 
@@ -841,7 +841,7 @@ YY_DECL
 #line 96 "<stdin>"
 //yylloc.first_column = yylloc.last_column;
 
-#line 844 "generated/lex.yy.c"
+#line 845 "generated/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -927,7 +927,7 @@ case 8:
 case 9:
 YY_RULE_SETUP
 #line 107 "<stdin>"
-{yylval = ast_node_new(ast_token_here("TYPE",	0,stralloc(yytext),	tokPos()),	v2pan_here());/*(int)stralloc(yytext)*/; return(TYPE);}
+{yylval = ast_node_new(ast_token_here("TYPE",	0,stralloc(yytext),	tokPos()),	v2pan_here());return(TYPE);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
@@ -982,32 +982,32 @@ YY_RULE_SETUP
 case 20:
 YY_RULE_SETUP
 #line 118 "<stdin>"
-{yylval = ast_node_new(ast_token_here("ID",		0,stralloc(yytext),	tokPos()), v2pan_here()); return(ID);}//yylval = (int)stralloc(yytext); return(ID);}
+{yylval = ast_node_new(ast_token_here("ID",		0,stralloc(yytext),	tokPos()), v2pan_here()); return(ID);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 119 "<stdin>"
-{yylval = ast_node_new(ast_token_here("INTEGERX",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERX);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
+{yylval = ast_node_new(ast_token_here("INTEGERX",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERX);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 120 "<stdin>"
-{yylval = ast_node_new(ast_token_here("INTEGERB",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERB);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
+{yylval = ast_node_new(ast_token_here("INTEGERB",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERB);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 121 "<stdin>"
-{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}//{float *F = malloc(sizeof(float)); sscanf(yytext,"%f",&F); yylval = (int)F; return(FLOATING);}
+{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 122 "<stdin>"
-{yylval = ast_node_new(ast_token_here("INTEGER",0,stralloc(yytext),	tokPos()), v2pan_here()); return(INTEGER);}//{sscanf(yytext,"%d",&yylval); return(INTEGER);}
+{yylval = ast_node_new(ast_token_here("INTEGER",0,stralloc(yytext),	tokPos()), v2pan_here()); return(INTEGER);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 123 "<stdin>"
-{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}//{sscanf(yytext,"%c",&yylval); return(CHARACTER);}
+{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
@@ -1044,7 +1044,7 @@ YY_RULE_SETUP
 #line 130 "<stdin>"
 ECHO;
 	YY_BREAK
-#line 1047 "generated/lex.yy.c"
+#line 1048 "generated/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

@@ -103,7 +103,7 @@ int		|
 float	|
 char	|
 void	|
-string										{yylval = ast_node_new(ast_token_here("TYPE",	0,stralloc(yytext),	tokPos()),	v2pan_here());/*(int)stralloc(yytext)*/; return(TYPE);}
+string										{yylval = ast_node_new(ast_token_here("TYPE",	0,stralloc(yytext),	tokPos()),	v2pan_here());return(TYPE);}
 end											{yylval = ast_node_new(ast_token_here("END",	0,NULL,				tokPos()), v2pan_here()); return(END);}
 if											{yylval = ast_node_new(ast_token_here("IF",		0,NULL,				tokPos()), v2pan_here()); return(IF);}
 else										{yylval = ast_node_new(ast_token_here("ELSE",	0,NULL,				tokPos()), v2pan_here()); return(ELSE);}
@@ -114,12 +114,12 @@ for											{yylval = ast_node_new(ast_token_here("FOR",	0,NULL,				tokPos()),
 \!\=										{yylval = ast_node_new(ast_token_here("NOTEQUAL",0,NULL,			tokPos()), v2pan_here()); return(NOTEQUAL);}
 \-\-										{yylval = ast_node_new(ast_token_here("DEC",	0,NULL,				tokPos()), v2pan_here()); return(DEC);}
 \+\+										{yylval = ast_node_new(ast_token_here("INC",	0,NULL,				tokPos()), v2pan_here()); return(INC);}
-[a-zA-Z_][a-zA-Z_0-9]* 						{yylval = ast_node_new(ast_token_here("ID",		0,stralloc(yytext),	tokPos()), v2pan_here()); return(ID);}//yylval = (int)stralloc(yytext); return(ID);}
-(0x[0-9]+)									{yylval = ast_node_new(ast_token_here("INTEGERX",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERX);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
-(0b[0-1]+)									{yylval = ast_node_new(ast_token_here("INTEGERB",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERB);}//{sscanf(yytext,"%x",&yylval); return(INTEGER);}
-(0|([1-9][0-9]*))\.(0-9)+					{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}//{float *F = malloc(sizeof(float)); sscanf(yytext,"%f",&F); yylval = (int)F; return(FLOATING);}
-(0|([1-9][0-9]*))							{yylval = ast_node_new(ast_token_here("INTEGER",0,stralloc(yytext),	tokPos()), v2pan_here()); return(INTEGER);}//{sscanf(yytext,"%d",&yylval); return(INTEGER);}
-\'.\' 										{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}//{sscanf(yytext,"%c",&yylval); return(CHARACTER);}
+[a-zA-Z_][a-zA-Z_0-9]* 						{yylval = ast_node_new(ast_token_here("ID",		0,stralloc(yytext),	tokPos()), v2pan_here()); return(ID);}
+(0x[0-9]+)									{yylval = ast_node_new(ast_token_here("INTEGERX",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERX);}
+(0b[0-1]+)									{yylval = ast_node_new(ast_token_here("INTEGERB",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERB);}
+(0|([1-9][0-9]*))\.(0-9)+					{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}
+(0|([1-9][0-9]*))							{yylval = ast_node_new(ast_token_here("INTEGER",0,stralloc(yytext),	tokPos()), v2pan_here()); return(INTEGER);}
+\'.\' 										{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}
 \"([^\\"]|\\.)*\"							{char *str =  substring(yytext,1,strlen(yytext)-1);
 											 yylval = ast_node_new(ast_token_here("RETURN",	0,str,				tokPos()), v2pan_here()); return(STRING);}
 [ \t\n\r]									;

@@ -5,8 +5,8 @@ void semantic_analyze_decl_stmt_list(ast_node *node);
 void semantic_analyze_decl_stmt(ast_node *node);
 void semantic_analyze_func_def(ast_node *node);
 void semantic_analyze_var_decl_list(ast_node *node);
-void semantic_analyze_var_decl(ast_node *node);
 void semantic_analyze_var_decl_constructor(ast_node *node);
+void semantic_analyze_var_decl(ast_node *node);
 void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg);
 void semantic_analyze_stmt_list(ast_node *node);
 void semantic_analyze_stmt(ast_node *node);
@@ -43,6 +43,7 @@ void semantic_analyze_expr_notequal(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_greater(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_less(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_assign(ast_node *node, expr_settings stg);
+void semantic_analyze_expr_cast(ast_node *node, expr_settings stg);
 
 
 

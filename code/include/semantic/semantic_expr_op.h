@@ -34,3 +34,8 @@ void semantic_analyze_expr_greater(ast_node* node, expr_settings stg);
 void semantic_analyze_expr_less(ast_node* node, expr_settings stg);
 //--- infix ops with side effects ---
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg);
+
+/// --------- internal funcs ---------------
+/// internal use - check types before doing stuff
+void typecheck_assign(val_handle res1, val_handle res2);
+struct type_name* dereffed_type(struct type_name* T);

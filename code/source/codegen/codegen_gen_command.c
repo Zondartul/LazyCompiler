@@ -1,6 +1,7 @@
 #include "codegen_gen_command.h"
 #include "codegen.h"
 #include "semantic.h"
+#include "assert.h"
 
 int countMembers() {
 	int n = 0;
@@ -927,6 +928,98 @@ void gen_command_floor(){
 		printTrace();
 		printindent();
 		asm_println("fint %s", arg1);
+		storeValue(result, arg1);
+	}
+}
+
+enum CONVERT_TYPE {CONV_ERROR, CONV_I32, CONV_U8, CONV_F64};
+enum CONVERT_TYPE str_to_convtype(const char *str){
+	assert(str);
+	if(strcmp(str, "I32") == 0){return CONV_I32;}
+	if(strcmp(str, "U8") == 0){return CONV_U8;}
+	if(strcmp(str, "F64") == 0){return CONV_F64;}
+	error("[CODE GEN] unknown conversion type [%s]", str);
+	return CONV_ERROR;
+}
+
+#define STR_INT_MAX "2147483647"
+#define STR_INT_MIN "-2147483648"
+#define STR_UINT_MAX "4294967295"
+
+void gen_command_convert(){
+	if(codegen_decl){
+		//do noting
+		const char* result = strtok(0, " ");
+		checkResult(result); /// "declare" the result temporary
+	}else{
+		const char* result = strtok(0, " ");
+		const char* str_arg1 = strtok(0, " ");
+		const char *arg1 = loadLValue(str_arg1);
+		enum CONVERT_TYPE type_from = str_to_convtype(strtok(0, " "));
+		enum CONVERT_TYPE type_to = str_to_convtype(strtok(0, " "));
+
+		switch(type_from){
+			case CONV_I32:
+			{
+				switch(type_to){
+					case CONV_I32:
+					/// do nothing
+					break;
+					case CONV_U8:
+					{
+						printindent(); asm_println("mod %s, 255", arg1);
+						printindent(); asm_println("fint %s", arg1);
+					}
+					break;
+					case CONV_F64:
+					/// do nothing
+					break;
+					default: error("[CODE_GEN] unsupported conversion"); break;
+				}
+			}
+			break;
+			case CONV_U8:
+			{
+				switch(type_to){
+					case CONV_I32:
+					/// do nothing
+					break;
+					case CONV_U8:
+					/// do nothing
+					break;
+					case CONV_F64:
+					/// do nothing
+					break;
+					default: error("[CODE GEN] unsupported conversion"); break;
+				}
+			}
+			break;
+			case CONV_F64:
+			{
+				switch(type_to){
+					case CONV_I32:
+					{
+						printindent(); asm_println("sub %s, " STR_INT_MIN, arg1);
+						printindent(); asm_println("mod %s, " STR_UINT_MAX, arg1);
+						printindent(); asm_println("add %s, " STR_INT_MIN, arg1);
+						printindent(); asm_println("fint %s", arg1);
+					}
+					break;
+					case CONV_U8:
+					{
+						printindent(); asm_println("mod %s, 255", arg1);
+						printindent(); asm_println("fint %s", arg1);
+					}
+					break;
+					case CONV_F64:
+					/// do nothing
+					break;
+					default: error("[CODE GEN] unsupported conversion"); break;
+				}
+			}
+			break;
+			default: error("[CODE GEN] unsupported conversion"); break;
+		}
 		storeValue(result, arg1);
 	}
 }

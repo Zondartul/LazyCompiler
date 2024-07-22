@@ -7,6 +7,7 @@
 
 int do_integer_coersion = 1;
 int relax_integer_coersion = 1;
+int do_typechecks = 1;
 
 void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings stg) {
 	//const char* res_dest = pop_expr(); assert_expr_res(res_dest);
@@ -42,7 +43,7 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	// integer arithmetic check
 	if(do_integer_coersion){
 		if(res2.T && res2.T->name //type is known
-			&& (res2.T->pointerlevel == 0)) // not a pointer but a primitive
+			&& (res2.T->points_to == 0)) /// not a pointer but a primitive
 		{
 			if(relax_integer_coersion){
 				if(strcmp(OP, "DIV") == 0){
@@ -81,18 +82,18 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	output_res(stg, result, NO_EMIT);
 }
 
-void semantic_analyze_expr_pow(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "EXP", stg); }
-void semantic_analyze_expr_divide(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "DIV", stg); }
-void semantic_analyze_expr_multiply(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "MUL", stg); }
-void semantic_analyze_expr_modulo(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "MOD", stg); }
-void semantic_analyze_expr_and(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "AND", stg); }
-void semantic_analyze_expr_or(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "OR", stg); }
-void semantic_analyze_expr_minus(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "SUB", stg); }
-void semantic_analyze_expr_plus(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "ADD", stg); }
-void semantic_analyze_expr_equals(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "EQUAL", stg); }
-void semantic_analyze_expr_notequal(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "NOTEQUAL", stg); }
-void semantic_analyze_expr_greater(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "GREATER", stg); }
-void semantic_analyze_expr_less(ast_node* node, expr_settings stg) { semantic_analyze_expr_op_ifx(node, "LESS", stg); }
+void semantic_analyze_expr_pow(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "EXP", stg); }
+void semantic_analyze_expr_divide(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "DIV", stg); }
+void semantic_analyze_expr_multiply(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "MUL", stg); }
+void semantic_analyze_expr_modulo(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "MOD", stg); }
+void semantic_analyze_expr_and(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "AND", stg); }
+void semantic_analyze_expr_or(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "OR", stg); }
+void semantic_analyze_expr_minus(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "SUB", stg); }
+void semantic_analyze_expr_plus(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "ADD", stg); }
+void semantic_analyze_expr_equals(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "EQUAL", stg);		stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
+void semantic_analyze_expr_notequal(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "NOTEQUAL", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
+void semantic_analyze_expr_greater(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "GREATER", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
+void semantic_analyze_expr_less(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "LESS", stg);		stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
 
 void semantic_analyze_expr_list(ast_node* node, expr_settings stg) {
 	//expr_list:	expr_list_ne | ;
@@ -145,6 +146,7 @@ struct symbol* get_symbol_in_this(const char* name, struct symbol* S_this) {
 		//if (!S_this->symclass) {error("internal semantic error: 'this' is not of class type");}
 		assert(S_this->type == SYMBOL_PARAM);
 		struct type_name* T = S_this->symvariable.type;
+		T = dereffed_type(T);
 		assert(T->symclass);
 		struct symbol_table* ST = T->symclass->symclass.scope;
 
@@ -299,10 +301,10 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 		// 
 	//sanitize the value, maybe put it somewhere,
 	//get pointers, whatever
-	struct type_name* T = malloc(sizeof(struct type_name));
+	struct type_name* T = type_name_new0();//malloc(sizeof(struct type_name));
 	T->symclass = 0;
 	T->args = 0;
-
+	T->is_literal = 1;
 	const char* author = "expr_const";
 	
 	switch (node->token.production) {
@@ -387,14 +389,15 @@ void semantic_analyze_expr_braced_list(ast_node* node, expr_settings stg){
 	semantic_expr_analyze(ast_get_child(node,0), stg);
 }
 
-struct type_name* copy_type(struct type_name* T) {
-	assert(T);
-	struct type_name* T2 = malloc(sizeof(struct type_name));
-	*T2 = *T;
-	return T2;
-}
+//struct type_name* copy_type(struct type_name* T) {
+//	assert(T);
+//	struct type_name* T2 = type_name_new0();//malloc(sizeof(struct type_name));
+//	*T2 = *T;
+//	return T2;
+//}
 
 struct type_name* dereffed_type(struct type_name* T) {
+	/*
 	struct type_name* T2 = copy_type(T);
 	if (T2->pointerlevel) {
 		T2->pointerlevel--;
@@ -403,11 +406,27 @@ struct type_name* dereffed_type(struct type_name* T) {
 		error("type %s is not a pointer or array\n", T->name);
 	}
 	return T2;
+	*/
+	if(T->is_array){
+		struct type_name *T2 = type_name_shallow_copy(T);
+		T2->is_array = 0;
+		T2->arraysize = 0;
+		return T2;
+	}else if(T->points_to){
+		return T->points_to;
+	}else{
+		error("[INTERNAL] type %s is not an array or pointer\n", type_name_to_string(T));
+	}
+	assert(!"unreachable");
+	return 0;
 }
 
 struct type_name* reffed_type(struct type_name* T) {
-	struct type_name* T2 = copy_type(T);
-	T2->pointerlevel++;
+	//struct type_name* T2 = copy_type(T);
+	//T2->pointerlevel++;
+	//return T2;
+	struct type_name *T2 = type_name_new0();
+	T2->points_to = T;
 	return T2;
 }
 
@@ -435,17 +454,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	//okay first of all, expr isn't necessarily a symtable symbol but
 	//it could just be an rvalue expression (i.e. temporary value)
 
-	struct type_name* T = res1.T;//res2.T;//pop_exprtype();
-	//if (T->pointerlevel == 0) {
-	//	//error("Semantic error: array access into %s, which has non-pointer type %s\n",S->username,T->name);
-	//	const char* expr1_text = 0; //how do
-	//	const char* expr1_type_text = 0;
-	//	error("Semantic error: array access into %s, which has non-pointer type %s\n", expr1_text, expr1_type_text);
-	//}
-	//struct type_name* T2 = malloc(sizeof(struct type_name));
-	//*T2 = *T;
-	//T2->pointerlevel--;
-	//push_exprtype(T2);
+	struct type_name* T = res1.T;
 	struct type_name* T2 = dereffed_type(T);
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
@@ -466,11 +475,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 }
 
-struct type_name* shallow_copy(struct type_name* src){
-	struct type_name *res = (struct type_name *)malloc(sizeof(struct type_name));
-	*res = *src;
-	return res;
-}
+
 
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
@@ -507,9 +512,10 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	if(T->args){
 		resT = m(*(T->args), get, 0);
 	}else{
-		if(T->pointerlevel){
-			resT = shallow_copy(T);
-			resT->pointerlevel--;
+		if(T->points_to){
+			//resT = type_name_shallow_copy(T);
+			//resT->pointerlevel--;
+			resT = T->points_to;
 		}else{
 			YYLTYPE pos = node->token.pos;
 			err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
@@ -567,15 +573,17 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (first one)
 	VERIFY_RES(res1);
 	
-	struct type_name *T = malloc(sizeof(struct type_name));
-	*T = *res1.T;
-	if (!T->symclass) {
+	struct type_name *T = type_name_shallow_copy(res1.T);
+	struct type_name *T2 = T;
+	
+	if(T->points_to){T2 = dereffed_type(T);}
+	if (!T2->symclass) {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 		error("semantic error: member access (x.y) impossible because x is a primitive (%s)\n", T->name);
 	}
 	
-	if(T->pointerlevel){ /// so that "ptr.x" is equivalent to "(*ptr).x"
+	if(T->points_to){ /// so that "ptr.x" is equivalent to "(*ptr).x"
 		if(res1.val[0] == '&'){
 			res1.val++;
 		}else{
@@ -583,9 +591,10 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 			emit_code("MOV %s *%s", sanitize_string(deref_obj), sanitize_string(res1.val));
 			res1.val = deref_obj;
 		}
-		T->pointerlevel--;
+		res1.T = T2;
+	}else{
+		res1.T = T;
 	}
-	res1.T = T;
 	if(stg.out_sem_this){*stg.out_sem_this = res1;}
 	
 
@@ -771,7 +780,9 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	output_res(stg, result, NO_EMIT);
 }
 
+/*
 /// if node refers to an array variable symbol, output that symbol to S and return 1. 
+/// deprecated, check type_name instead
 int check_if_array(struct ast_node *node, struct symbol **out_S){
 	if(strcmp(node->token.type, "expr_id") == 0){
 		struct symbol *S = lookup_symbol(node->token.value);
@@ -784,6 +795,7 @@ int check_if_array(struct ast_node *node, struct symbol **out_S){
 	}
 	return 0;
 }
+*/
 
 extern int indent;
 
@@ -801,7 +813,6 @@ void semantic_analyze_expr_assign_brace_list(ast_node* node, expr_settings /*stg
 	struct ast_node *ast_expr_list = ast_get_child(ast_brace_list,0);
 
 	struct type_name *T = res1.T;
-	struct symbol *S = 0;
 	if(T->symclass){
 		emit_code("// brace-list assignment to object of class %d", T->symclass->username);
 		struct symbol_table *scope = T->symclass->symclass.scope;
@@ -827,7 +838,7 @@ void semantic_analyze_expr_assign_brace_list(ast_node* node, expr_settings /*stg
 			}
 		}
 		indent--;
-	}else if(check_if_array(ast_get_child(node,0), &S)){
+	}else if(T->is_array){
 		/// wait, type_name can't represent arrays???
 		/// we'll do a hack where we allow to assign directly to variable
 		// if(S->symvariable.size == 1){
@@ -844,8 +855,12 @@ void semantic_analyze_expr_assign_brace_list(ast_node* node, expr_settings /*stg
 			// }
 			// indent--;
 		// }
-		int array_size = S->symvariable.arraysize;
-		emit_code("// brace-list assignment to array (%s[%d])", S->username, array_size);
+		int array_size = T->arraysize;
+		int list_size = ast_expr_list->children.size;
+		if(array_size != list_size){
+			error("Semantic error: size mismatch: assigning a %d-element list to a %d-element array", list_size, array_size);
+		}
+		emit_code("// brace-list assignment to array[%d]", array_size);
 		indent++;
 		int j = 0;
 		for(int i = 0; i < array_size; i++){
@@ -861,6 +876,130 @@ void semantic_analyze_expr_assign_brace_list(ast_node* node, expr_settings /*stg
 		}
 		indent--;
 	}
+}
+
+int safe_strcmp(const char *A, const char *B){
+	if(A && B){return strcmp(A,B);}
+	if(A && !B){return 1;}
+	if(!A && B){return 1;}
+	if(!A && !B){return 0;}
+	assert(!"unreachable");
+	return 1;
+}
+
+/// checks the types between variable and expression, and assigns if it's ok 
+void typecheck_assign(val_handle res1, val_handle res2){
+	assert(res1.T);
+	assert(res2.T);
+	assert(type_name_is_sane(res1.T));
+	assert(type_name_is_sane(res2.T));
+	const char *type1_str = type_name_to_string(res1.T);
+	const char *type2_str = type_name_to_string(res2.T);
+	int arg1_is_func = (res1.T->args != 0);
+	int arg2_is_func = (res1.T->args != 0);
+	//struct symbol *S1 = 0;
+	//struct symbol *S2 = 0;
+	int arg1_is_array = res1.T->is_array; //check_if_array(dest, &S1);
+	int arg2_is_array = res2.T->is_array; //check_if_array(src,  &S2);
+	int arg1_is_ptr = (res1.T->points_to != 0);
+	int arg2_is_ptr = (res2.T->points_to != 0);
+	//int arg1_is_primitive = !arg1_is_func && !arg1_is_array && !arg1_is_ptr;
+	//int arg2_is_primitive = !arg2_is_func && !arg2_is_array && !arg2_is_ptr;
+	int arg1_is_int  = strcmp(type1_str, "int") ==0;
+	int arg2_is_int  = strcmp(type2_str, "int") ==0;
+	int arg1_is_char = strcmp(type1_str, "char")==0;
+	int arg2_is_char = strcmp(type2_str, "char")==0;
+	int arg1_is_float = strcmp(type1_str, "float")==0;
+	int arg2_is_float = strcmp(type2_str, "float")==0;
+	int arg1_is_number = arg1_is_int || arg1_is_char || arg1_is_float;
+	int arg2_is_number = arg2_is_int || arg2_is_char || arg2_is_float;
+	int arg1_is_string = strcmp(type1_str, "string")==0;
+	int arg2_is_string = strcmp(type2_str, "string")==0;
+	int arg1_is_void = strcmp(type1_str, "void")==0;
+	int arg2_is_void = strcmp(type2_str, "void")==0;
+	//int arg1_is_literal = (res1.T->is_literal);
+	int arg1_is_class = (res1.T->symclass != 0);
+	int arg2_is_class = (res2.T->symclass != 0);
+
+
+	//int arg2_is_literal = (res2.T->is_literal);
+	struct type_name *T3 = type_name_shallow_copy(res2.T);
+	T3->is_literal = 0;
+
+	if(type_name_equals(res1.T, res2.T)){
+		//int size = getTypeSize(res1.T);
+		// class or primitive, we memcpy anyway
+		// codegen should know how much to copy based on var size
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+		return;
+	}else if(type_name_equals(res1.T, T3)){
+		/// assigning a literal to non-literal is allowed
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+		return;	
+	}
+
+	if(arg1_is_array && !arg2_is_array)							{error("Semantic error: [type error 1: %s <- %s]:  trying to assign non-array to array", type1_str, type2_str);}
+	if(!arg1_is_array && arg2_is_array)							{error("Semantic error: [type error 2: %s <- %s]:  trying to assign array to non-array", type1_str, type2_str);}
+	if(arg1_is_array && arg2_is_array){
+		int arr1_size = res1.T->arraysize; //S1->symvariable.arraysize;
+		int arr2_size = res2.T->arraysize; //S2->symvariable.arraysize;
+		if(arr1_size == arr2_size)								{error("Semantic error: [type error 3: %s <- %s]: trying to assign arrays of different types", type1_str, type2_str);}
+		else													{error("Semantic error: [type error 4: %s <- %s]: trying to assign arrays of different size", type1_str, type2_str);}
+	}
+	/// not an array. maybe a pointer?
+	
+	if(arg1_is_ptr && !arg2_is_ptr){
+		if(type_name_equals(dereffed_type(res1.T), res2.T))		{error("Semantic error: [type error 5: %s <- %s]: assigning non-pointer to pointer (try '&')", type1_str, type2_str);}
+		else													{error("Semantic error: [type error 6: %s <- %s]: assigning different types", type1_str, type2_str);}
+		/// actually, maybe we can assign function to pointer?
+	}else if(!arg1_is_ptr && arg2_is_ptr){
+		if(type_name_equals(res1.T, dereffed_type(res2.T)))		{error("Semantic error: [type error 7: %s <- %s]: assigning pointer to non-pointer (try '*')", type1_str, type2_str);}
+		else													{error("Semantic error: [type error 8: %s <- %s]: assigning different types", type1_str, type2_str);}	
+	}else if(arg1_is_ptr && arg2_is_ptr){
+		if(type_name_equals(
+			dereffed_type(res1.T), dereffed_type(res2.T)))		{error("[INTERNAL] Semantic error: [type error 9: %s <- %s]: unknown type error", type1_str, type2_str);}
+		else													{error("Semantic error: [type error 10: %s <- %s]: assigning pointers of different types needs an explicit cast", type1_str, type2_str);}
+	}
+	/// not an array or pointer.
+	
+	if(arg1_is_void)											{error("Semantic error: [type error 11: %s <- %s]: can't assign to void", type1_str, type2_str);}
+	else if(arg2_is_void)										{error("Semantic error: [type error 12: %s <- %s]: can't assign void", type1_str, type2_str);}
+	
+	if(arg1_is_func)											{error("Semantic error: [type error 13: %s <- %s]: can't assign to a function", type1_str, type2_str);}
+	else if(arg2_is_func)										{error("Semantic error: [type error 14: %s <- %s]: can't assign a function", type1_str, type2_str);}
+	/// not an array, pointer or function. Class?
+	
+	if(arg1_is_class || arg2_is_class)							{error("Semantic error: [type error 15: %s <- %s]: assigning different types", type1_str, type2_str);}
+	
+	///not an array, pointer, function or class. Primitive type.
+	if(arg1_is_string)											{error("Semantic error: [type error 16: %s <- %s]: can't assign to a string",type1_str, type2_str);}
+	else if(arg2_is_string)										{error("Semantic error: [type error 17: %s <- %s]: can't assing a string", type1_str, type2_str);}
+	/// not a string
+	
+	if(arg1_is_number && arg2_is_number){
+		/// number to number implicit cast is allowed!
+		const char *ir_type1 = 0;
+		if(arg1_is_int)		{ir_type1 = "I32";}
+		if(arg1_is_char)	{ir_type1 = "U8";}
+		if(arg1_is_float)	{ir_type1 = "F64";}
+		assert(ir_type1);
+
+		const char *ir_type2 = 0;
+		if(arg2_is_int)		{ir_type2 = "I32";}
+		if(arg2_is_char)	{ir_type2 = "U8";}
+		if(arg2_is_float)	{ir_type2 = "F64";}
+		assert(ir_type2);
+
+		assert(strcmp(ir_type1, ir_type2) != 0);
+
+		/// emit conversion and copy
+		const char *reg = IR_next_name(namespace_semantic, "temp");
+		emit_code("CONVERT %s %s %s %s", sanitize_string(reg), sanitize_string(res2.val), ir_type1, ir_type2);
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(reg));
+		return;
+	}
+																error("Semantic error: [type error 18: %s <- %s]: assigning different types", type1_str, type2_str);
+	assert(!"uncreachable");
 }
 
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
@@ -880,19 +1019,26 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 		return;
 	}
 
+	struct ast_node *dest = ast_get_child(node,0);
+	struct ast_node *src = ast_get_child(node, 1);
+	
 	PREP_RES(res1, E_LVAL); //R=read, L=write //E_RVAL);
 	res1stg.dest.author = "expr_assign arg1 (... =)";
-	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr
+	semantic_expr_analyze(dest, res1stg); //expr
 	VERIFY_RES(res1);
 	//assert(res1.val && (res1.val[0] == '*'));
 	assert(res1.val);
 
 	PREP_RES(res2, E_RVAL);//E_LVAL);
 	res2stg.dest.author = "expr_assign arg2 (= ...)";
-	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr
+	semantic_expr_analyze(src, res2stg); //expr
 	VERIFY_RES(res2);
 
-	emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+	if(do_typechecks){
+		typecheck_assign(res1, res2);
+	}else{
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+	}
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.
@@ -926,4 +1072,71 @@ void semantic_analyze_expr_not(ast_node* node, expr_settings stg) {
 	output_res(stg, result, NO_EMIT);
 }
 
+void semantic_analyze_expr_cast(ast_node* node, expr_settings stg){
+	/// tbh this is mostly a beurocratic operation to verify you really intend to do this.
 
+	//expr_cast: '(' typename ')' expr
+	if(semantic_decl){return;}
+	const char* author = "expr_cast((type)x)";
+
+	struct type_name *T1 = parseTypename(ast_get_child(node,0));
+
+	PREP_RES(res1, E_RVAL);
+	res1stg.dest.author = author;
+	semantic_expr_analyze(ast_get_child(node, 1),res1stg);
+	VERIFY_RES(res1);
+
+	const char *exprResult = 0;
+
+	struct type_name *T2 = res1.T;
+	
+	const char *T1_str = type_name_to_string(T1);
+	const char *T2_str = type_name_to_string(T2);
+	
+	int T1_is_array = (T1->is_array != 0);
+	int T2_is_array = (T2->is_array != 0);
+
+	int T1_is_ptr = (T1->points_to != 0);
+	int T2_is_ptr = (T2->points_to != 0);
+
+	int arg1_is_int  =  strcmp(T1_str, "int") ==0;
+	int arg2_is_int  =  strcmp(T2_str, "int") ==0;
+	int arg1_is_char =  strcmp(T1_str, "char")==0;
+	int arg2_is_char =  strcmp(T2_str, "char")==0;
+	int arg1_is_float = strcmp(T1_str, "float")==0;
+	int arg2_is_float = strcmp(T2_str, "float")==0;
+	int arg1_is_number = arg1_is_int || arg1_is_char || arg1_is_float;
+	int arg2_is_number = arg2_is_int || arg2_is_char || arg2_is_float;
+
+
+	if(type_name_equals(T1,T2)){exprResult = res1.val;} /// conversion to what it already is, lol
+	else if(T1_is_array || T2_is_array){error("Semantic error: [cast error 1: %s <- %s]: can't cast between types of arrays", T1_str, T2_str);}
+	else if(T1_is_ptr != T2_is_ptr){error("Semantic error: [cast error 2: %s <- %s]:can't convert between pointer and non-pointer (use * &)", T1_str, T2_str);}
+	else if(T1_is_ptr && T2_is_ptr){exprResult = res1.val;}/// pointer cast is no-op
+	else if(arg1_is_number && arg2_is_number){
+		/// number to number implicit cast is allowed!
+		const char *ir_type1 = 0;
+		if(arg1_is_int)		{ir_type1 = "I32";}
+		if(arg1_is_char)	{ir_type1 = "U8";}
+		if(arg1_is_float)	{ir_type1 = "F64";}
+		assert(ir_type1);
+
+		const char *ir_type2 = 0;
+		if(arg2_is_int)		{ir_type2 = "I32";}
+		if(arg2_is_char)	{ir_type2 = "U8";}
+		if(arg2_is_float)	{ir_type2 = "F64";}
+		assert(ir_type2);
+
+		assert(strcmp(ir_type1, ir_type2) != 0);
+
+		/// emit conversion and copy
+		exprResult = IR_next_name(namespace_semantic, "temp");
+		emit_code("CONVERT %s %s %s %s", sanitize_string(exprResult), sanitize_string(res1.val), ir_type1, ir_type2);
+		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(exprResult));
+		return;
+	}
+	
+	assert(exprResult);
+	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = T1, .author = author };
+	output_res(stg, result, NO_EMIT);
+}

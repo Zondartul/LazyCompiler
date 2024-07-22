@@ -12,7 +12,7 @@ int TYPE_GLOBAL = 3;
 int unit_test_ignore_global_address = 0;
 int unit_test_ignore_stack_address = 0;
 int unit_test_adaptive_stack = 1;
-int unit_test_stack_offset = 0;
+void* unit_test_stack_offset = 0;
 
 #file "data_in/big/string.txt"
 #line 1
@@ -697,7 +697,7 @@ end
 
 void unit_test_set_base_offset()
 	int base = 0;
-	unit_test_stack_offset = &base;
+	unit_test_stack_offset = (void*)&base;
 	writePort(7, unit_test_stack_offset);
 end
 

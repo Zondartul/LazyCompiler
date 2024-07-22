@@ -531,8 +531,10 @@ void semantic_analyze_func_def(ast_node *node){
 		S->symfunction.code = 0;
 		if(symbolThis){
 			//add param: this;
-			struct type_name *T = semantic_get_type(symbolThis->username);
-			T->pointerlevel = 1;
+			struct type_name *T0 = semantic_get_type(symbolThis->username);
+			struct type_name *T = type_name_new0();
+			T->points_to = T0;
+			//T->pointerlevel = 1;
 			char *name = "this";
 			struct symbol *S;
 			S = symbol_new0();
@@ -544,8 +546,8 @@ void semantic_analyze_func_def(ast_node *node){
 			}
 			S->type = SYMBOL_PARAM;
 			S->symvariable.type = T;
-			S->symvariable.array = 0;
-			S->symvariable.arraysize = 0;
+			//S->symvariable.array = 0;
+			//S->symvariable.arraysize = 0;
 			S->store_adr = 0;
 			S->symvariable.size = getTypeSize(T);
 			S->storage = STORE_DATA_STACK;
@@ -553,7 +555,7 @@ void semantic_analyze_func_def(ast_node *node){
 		}
 		semantic_context = SEMANTIC_PARAM;
 			//use new separate symbol table;
-		struct type_name *signature = malloc(sizeof(struct type_name));
+		struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
 		signature->name = 0;
 		signature->symclass = 0;
 		signature->args = vector2_ptr_type_name_new();
@@ -649,6 +651,10 @@ void semantic_analyze_var_decl(ast_node *node){
 		}
 		arraysize = atoi(Nsize->token.value);
 	}
+	if(array){
+		T->is_array = 1;
+		T->arraysize = arraysize;
+	}
 	struct symbol *S;
 
 	S = symbol_new0();
@@ -665,7 +671,7 @@ void semantic_analyze_var_decl(ast_node *node){
 		//S->symvariable.pos = getNumParameters();
 		S->store_adr = getNumParameters();
 		S->symvariable.size = getTypeSize(T);
-		S->symvariable.array = 0;
+		//S->symvariable.array = 0;
 		S->storage = STORE_DATA_STACK;
 		if(array){error("semantic error: arrays as function parameter not implemented ");}
 	/*}else if(semantic_context == SEMANTIC_MEMBER){ //SEMANTIC_MEMBER isn't very descriptive anyway
@@ -683,7 +689,7 @@ void semantic_analyze_var_decl(ast_node *node){
 		S->store_adr = getNumMembers();
 		S->symvariable.size = getTypeSize(T);
 		S->storage = STORE_DATA_STACK;
-		S->symvariable.array = 0;
+		//S->symvariable.array = 0;
 		S->init_expr = 0;
 	}else {
 		S->type = SYMBOL_VARIABLE;
@@ -691,9 +697,9 @@ void semantic_analyze_var_decl(ast_node *node){
 		S->store_adr = getNumVariables();
 		S->symvariable.size = getTypeSize(T);
 		S->storage = STORE_DATA_STACK;
-		S->symvariable.array = 0;
+		//S->symvariable.array = 0;
 	}
-	if(array){S->symvariable.array = 1; S->symvariable.type->pointerlevel++; S->symvariable.arraysize = arraysize;}
+	//if(array){S->symvariable.array = 1; S->symvariable.type->is_array = 1; S->symvariable.type->arraysize = arraysize;}
 	if(!currentSymbolTable->parent){S->global = 1;}
 	push_symbol(S);
 	//put into symbol table
@@ -724,7 +730,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			S->type = SYMBOL_PARAM;
 			S->store_adr = getNumParameters();
 			S->symvariable.size = getTypeSize(T);
-			S->symvariable.array = 0;
+			//S->symvariable.array = 0;
 			S->storage = STORE_DATA_STACK;
 		/*}else if(semantic_context == SEMANTIC_MEMBER){
 			S->type = SYMBOL_MEMBER;
@@ -738,14 +744,14 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			S->type = SYMBOL_MEMBER;
 			S->store_adr = getNumMembers();
 			S->symvariable.size = getTypeSize(T);
-			S->symvariable.array = 0;
+			//S->symvariable.array = 0;
 			S->storage = STORE_DATA_MEMBER;
 			S->init_expr = node_expr;
 		}else{
 			S->type = SYMBOL_VARIABLE;
 			S->store_adr = getNumVariables();
 			S->symvariable.size = getTypeSize(T);
-			S->symvariable.array = 0;
+			//S->symvariable.array = 0;
 			S->storage = STORE_DATA_STACK;
 		}
 		if(!currentSymbolTable->parent){S->global = 1;}
@@ -811,14 +817,14 @@ void semantic_analyze_var_decl_constructor(ast_node *node){//, expr_settings stg
 			S->type = SYMBOL_MEMBER;
 			S->store_adr = getNumMembers();
 			S->symvariable.size = getTypeSize(T);
-			S->symvariable.array = 0;
+			//S->symvariable.array = 0;
 			S->storage = STORE_DATA_MEMBER;
 			S->init_expr = ast_gen_constructor_call(name, node_expr_list);
 		}else{
 			S->type = SYMBOL_VARIABLE;
 			S->store_adr = getNumVariables();
 			S->symvariable.size = getTypeSize(T);
-			S->symvariable.array = 0;
+			//S->symvariable.array = 0;
 			S->storage = STORE_DATA_STACK;
 			S->init_expr = ast_gen_constructor_call(name, node_expr_list);
 		}

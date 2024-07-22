@@ -142,6 +142,8 @@ int semantic_dispatch_expr(struct ast_node* node, expr_settings stg) {
 		semantic_analyze_expr_ref		(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_="))		{ 
 		semantic_analyze_expr_assign	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_cast"))		{
+		semantic_analyze_expr_cast		(node, stg);	return 1; }
 	if (semantic_dispatch_expr_op(node, stg)) { 
 		return 1; }
 	return 0;
@@ -309,8 +311,10 @@ void semantic_finalize(){
 void add_symbol_this(){
 	assert(symbolThis);
 	//add param: this;
-	struct type_name *T = semantic_get_type(symbolThis->username);
-	T->pointerlevel = 1;
+	struct type_name *T0 = semantic_get_type(symbolThis->username);
+	struct type_name *T = type_name_new0();
+	T->points_to = T0;
+	//T->pointerlevel = 1;
 	char *name = "this";
 	struct symbol *S;
 	S = symbol_new0();
@@ -322,8 +326,8 @@ void add_symbol_this(){
 	}
 	S->type = SYMBOL_PARAM;
 	S->symvariable.type = T;
-	S->symvariable.array = 0;
-	S->symvariable.arraysize = 0;
+	//S->symvariable.array = 0;
+	//S->symvariable.arraysize = 0;
 	S->store_adr = 0;
 	S->symvariable.size = getTypeSize(T);
 	S->storage = STORE_DATA_STACK;
@@ -443,7 +447,7 @@ void class_def_finalize(){
 		struct type_name *T = semantic_get_type("void");
 		S->symfunction.returntype = T;
 		/// make a signature
-			struct type_name *signature = malloc(sizeof(struct type_name));
+			struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
 			signature->name = 0;
 			signature->symclass = 0;
 			signature->args = vector2_ptr_type_name_new();
@@ -471,7 +475,7 @@ void class_def_finalize(){
 		struct type_name *T = semantic_get_type("void");
 		S->symfunction.returntype = T;
 		/// make a signature
-			struct type_name *signature = malloc(sizeof(struct type_name));
+			struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
 			signature->name = 0;
 			signature->symclass = 0;
 			signature->args = vector2_ptr_type_name_new();
@@ -515,8 +519,8 @@ void emit_all_decl_helper(){
 				}
 			}
 
-			if (S->symvariable.array) {
-				vec_printf(&vstr, " ARRAY %d", S->symvariable.arraysize);
+			if (S->symvariable.type->is_array){//S->symvariable.array) {
+				vec_printf(&vstr, " ARRAY %d", S->symvariable.type->arraysize);
 			}
 			emit_code("%s", vstr.data);
 			//if(S->symvariable.array){
@@ -859,14 +863,19 @@ struct type_name *parseTypename(struct ast_node *N){
 	struct type_name *T = semantic_get_type(N->token.value);
 	//struct ast_node *ptr_stars = m(N->children,get,0);//ast_get_node(m(N->children,get,0));
 	struct ast_node *ptr_stars = m(N->children,get,1); //22.03.2022 ptr_stars were not being detected
-	T->pointerlevel = ptr_stars->children.size;
+	int pointerlevel = ptr_stars->children.size;
+	for(int i = 0; i < pointerlevel; i++){
+		struct type_name *T2 = type_name_new0();
+		T2->points_to = T;
+		T = T2; /// lol, memleak
+	}
 	return T;
 }
 
 struct type_name *semantic_get_type(const char *str){
-	struct type_name *T = malloc(sizeof(struct type_name));
+	struct type_name *T = type_name_new0();//malloc(sizeof(struct type_name));
 	T->args = 0;
-	T->pointerlevel = 0;
+	//T->pointerlevel = 0;
 	if(!strcmp(str, "int")){
 		T->name = "int";
 		T->symclass = 0;
@@ -1063,7 +1072,7 @@ int getNumVariables(){
 }
 
 int getTypeSize(ptr_type_name T){
-	if(T->pointerlevel != 0){
+	if(T->points_to != 0){
 		//is a pointer
 		return 1;
 	}
