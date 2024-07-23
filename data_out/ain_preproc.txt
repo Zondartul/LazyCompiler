@@ -12,7 +12,7 @@ int TYPE_GLOBAL = 3;
 int unit_test_ignore_global_address = 0;
 int unit_test_ignore_stack_address = 0;
 int unit_test_adaptive_stack = 1;
-void* unit_test_stack_offset = 0;
+int unit_test_stack_offset = 0;
 
 #file "data_in/big/string.txt"
 #line 1
@@ -395,17 +395,17 @@ end
 
 void test_3_local_pointer()
 	int derp = 6;
-	expect_basic(3, 1, derp,      6);
-	expect_stack(3, 2, &derp,    -5);
+	expect_basic(3, 1, derp,       6);
+	expect_stack(3, 2, (int)&derp,-5);
 	int *p = derp; /// *derp is forbidden by compiler
-	expect_basic(3, 3, p,         6); 
+	expect_basic(3, 3, (int)p,     6); 
 	expect_global(3, 4, *p,       14);
 end
 
 int test3_var = 7;
 void test_3_global_pointer()
 	expect_basic(3, 5, test3_var,      7);
-	expect_global(3, 6, &test3_var, 12402);
+	expect_global(3, 6, (int)&test3_var, 12402);
 	int *p = test3_var; /// *test3_var is forbidden by compiler
 	expect_global(3, 7, *p, 25);
 end
@@ -418,7 +418,7 @@ void test_3_array_pointer()
 	arr[2] = 12;
 	arr[3] = 13;
 	arr_addr = &arr;
-	expect_stack(3, 8,  &arr,   -8);
+	expect_stack(3, 8,  (int)&arr,   -8);
 	expect_basic(3, 9,  arr[0], 10);
 	expect_basic(3, 10, arr[2], 12);
 	expect_basic(3, 11, arr_addr[2], 12);
@@ -429,9 +429,9 @@ void test_3_array_pointer()
 end
 
 void test_3_array_arg(int* arg)
-	expect_basic(3, 13, arg,arr_addr);
-	expect_stack(3, 14, arg,      -8);
-	expect_stack(3, 15, &arg,    -27);
+	expect_basic(3, 13, (int)arg,(int)arr_addr);
+	expect_stack(3, 14, (int)arg,      -8);
+	expect_stack(3, 15, (int)&arg,    -27);
 	expect_basic(3, 16, arg[2],   12);
 	expect_basic(3, 17, *arg,     10);
 	expect_basic(3, 18, *(arg+1), 11);
@@ -444,11 +444,11 @@ int test_4_helper()
 end
 
 int test_4_funcptr()
-	expect_global(4, 1, test_4_helper,  1098);
+	expect_global(4, 1, (int)(void*)test_4_helper,  1098);
 	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
 	int p2 = test_4_helper;
-	expect_global(4, 3, p1,             1098);
+	expect_global(4, 3, (int)p1,             1098);
 	expect_global(4, 4, p2,             1098);
 	int res = p1();
 	expect_basic(4, 5, res,              10);
@@ -503,7 +503,7 @@ void set_buff_warudo(char *buff)
 end
 
 int test_6_arrays()
-	int arr[10];
+	char arr[10];
 	set_buff_mario(&arr);		// pass array by pointer
 	/// arr == {mario}
 	expect_basic(6, 1, arr[0], 'm');
@@ -528,7 +528,7 @@ int test_6_arrays()
 	int L = strlen(&arr);
 	expect_basic(6, 13, L, 5);			// stdlib function "strlen" works
 
-	int arr2[20];
+	char arr2[20];
 	set_buff_warudo(&arr2);			// another test buffer
 	/// arr  == {moreo\0}
 	/// arr2 == {warudo\0}
@@ -562,7 +562,7 @@ class Test_7_class_derp //class Derp
 	end
 	int test71()
 		printf("derp.t71:  x = %d\n", x);
-		printf("derp.t71: &x = %d\n", &x);
+		printf("derp.t71: &x = %d\n", (int)&x);
 		printf("derp.t71: this = %d\n", this);
 		printf("derp.t71: y1 = %d\n", y);
 		y = 3;
@@ -578,11 +578,11 @@ end
 
 int test_7_class_local()
 	class Test_7_class_derp derp1;
-	printf("test7: &derp1 = %d\n", &derp1);
-	printf("test7: &(derp1.x) = %d\n", &(derp1.x));
+	printf("test7: &derp1 = %d\n", (int)&derp1);
+	printf("test7: &(derp1.x) = %d\n", (int)&(derp1.x));
 	printf("test7: derp1.x = %d\n", derp1.x);
 	derp1.test71();
-	expect_stack(7, 1, &derp1,		-23);
+	expect_stack(7, 1, (int)&derp1,		-23);
 	derp1.y = 12;
 	expect_basic(7, 2, derp1.y,	     12);
 	derp1.report_y();
@@ -598,7 +598,7 @@ end
 
 int test_7_class_by_val(class Test_7_class_derp derp2)
 	writePort(6, 199999);
-	expect_stack(7, 7, &derp2,		 -21);
+	expect_stack(7, 7, (int)&derp2,		 -21);
 	expect_basic(7, 8, derp2.x,		  3);
 	expect_basic(7, 9, derp2.y,		  4);
 	expect_basic(7, 10, derp2.sum(5),  12);
@@ -608,7 +608,7 @@ end
 
 int test_7_class_by_ptr(class Test_7_class_derp *derp3)
 	expect_stack(7, 12, derp3,		 -3);
-	expect_stack(7, 13, &derp3,	     -20);
+	expect_stack(7, 13, (int)&derp3,	     -20);
 	expect_basic(7, 14, (*derp3).x,	  5);
 	expect_basic(7, 15, derp3.x,		  5);
 	expect_basic(7, 16, derp3.y,		  6);
@@ -697,7 +697,7 @@ end
 
 void unit_test_set_base_offset()
 	int base = 0;
-	unit_test_stack_offset = (void*)&base;
+	unit_test_stack_offset = (int)&base;
 	writePort(7, unit_test_stack_offset);
 end
 
@@ -1115,10 +1115,11 @@ int sprintf(char *buff, char *fmt, int *parg)
 	return printed;
 end
 
-int printf(char *fmt, float args)
+int printf(char *fmt, varargs)
 	int printed = 0;
 	char buff[80];
-	int *parg = &args;
+	void *parg = (void*)&fmt; 
+	parg++;
 	printed = sprintf(&buff, fmt, parg);
 	Prints(&buff, 999);
 	return printed;

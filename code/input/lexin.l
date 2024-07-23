@@ -104,6 +104,7 @@ float	|
 char	|
 void	|
 string										{yylval = ast_node_new(ast_token_here("TYPE",	0,stralloc(yytext),	tokPos()),	v2pan_here());return(TYPE);}
+varargs										{yylval = ast_node_new(ast_token_here("VARARGS",0,NULL,				tokPos()), v2pan_here()); return(VARARGS);}
 end											{yylval = ast_node_new(ast_token_here("END",	0,NULL,				tokPos()), v2pan_here()); return(END);}
 if											{yylval = ast_node_new(ast_token_here("IF",		0,NULL,				tokPos()), v2pan_here()); return(IF);}
 else										{yylval = ast_node_new(ast_token_here("ELSE",	0,NULL,				tokPos()), v2pan_here()); return(ELSE);}

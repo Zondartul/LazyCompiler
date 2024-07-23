@@ -107,6 +107,12 @@ struct type_name *type_name_shallow_copy(struct type_name* T){
 	return res;
 }
 
+struct type_name *get_func_ret_type(struct type_name* T){
+	struct type_name *T2 = type_name_shallow_copy(T);
+	T2->args = 0;
+	return T2;
+}
+
 const char *type_name_to_string(struct type_name *T){
 	struct vector2_char vstr = vector2_char_here();
 
@@ -118,7 +124,9 @@ const char *type_name_to_string(struct type_name *T){
 
 	if(is_function){
 		assert(T->args->size > 0);
-		vec_printf(&vstr, "%s ", ARG(0));
+
+		const char *ret_str = type_name_to_string(ARG(0)); 
+		vec_printf(&vstr, "%s ", ret_str);
 
 		vec_printf(&vstr, is_pointer? "(func*)(" : "func(");
 		for(int i = 1; i < T->args->size; i++){
@@ -132,9 +140,18 @@ const char *type_name_to_string(struct type_name *T){
 			const char *deref_str = type_name_to_string(T->points_to);
 			vec_printf(&vstr, "%s*", deref_str);
 		}else{
-			vec_printf(&vstr, "%s", T->name);
+			if(T->name){
+				vec_printf(&vstr, "%s", T->name);
+			}else{
+				vec_printf(&vstr, "?");
+			}
+			if(T->is_array){
+				vec_printf(&vstr, "[%d]", T->arraysize);
+			}
 		}
 	}
+	assert(strcmp(vstr.data,"") != 0); //can't return an empty string
+
 	return stralloc(vstr.data);
 }
 

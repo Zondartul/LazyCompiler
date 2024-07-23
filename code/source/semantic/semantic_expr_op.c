@@ -4,6 +4,7 @@
 #include <stdint.h> // for uint64_t
 #include <inttypes.h> // for PRIu64 for printf
 #include "ast_gen.h"
+#include "typecheck.h"
 
 int do_integer_coersion = 1;
 int relax_integer_coersion = 1;
@@ -472,10 +473,15 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 	val_handle result = { .val = resultExpr, .rv_type = E_PTR, .T = T2, .author = "expr_index" };
 	//return;//you piece of shit, you didn't output the result
 	output_res(stg, result, YES_EMIT);
-
 }
 
-
+int has_varargs(vector2_ptr_type_name *args){
+	for(int i = 1; i < args->size; i++){
+		struct type_name *T = m(*args, get, i);
+		if(T->name && (strcmp(T->name, "varargs") == 0)){return i;}
+	}
+	return 0;
+}
 
 void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	//expr: expr '(' expr_list ')'
@@ -509,31 +515,35 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	struct type_name* T = res1.T;
 	/// 9 July 2024: allow us to call a pointer, result is deref type
 	struct type_name* resT = 0;
-	if(T->args){
-		resT = m(*(T->args), get, 0);
-	}else{
-		if(T->points_to){
-			//resT = type_name_shallow_copy(T);
-			//resT->pointerlevel--;
-			resT = T->points_to;
-		}else{
-			YYLTYPE pos = node->token.pos;
-			err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
-			error("semantic error: attempt to call '%s', which is not a function in this scope\n", name);
-		}
+	int skip_typechecks = 0; /// used to skip some or all of type checks during argument parsing for this call only
+	if(T->points_to){
+		T = T->points_to;
+		skip_typechecks = 1;
 	}
-	
+	if(!T->args && !skip_typechecks){
+		YYLTYPE pos = node->token.pos;
+		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
+		error("semantic error: attempt to call '%s', which is not a function in this scope\n", name);
+	}
+	if(skip_typechecks){
+		resT = T;
+	}else{
+		resT = m(*(T->args), get, 0);
+	}
 	//2.push the arguments of the function
+	vector2_val_handle arguments = vector2_val_handle_here();
+
 	ast_node* list = ast_get_child(node, 1);
 	int i;
 	 //2.1 collect the values that we need to push
-	 vector2_ptr_char ministack = vector2_ptr_char_here();
+	 //vector2_ptr_char ministack = vector2_ptr_char_here();
 	  //2.1.1 if the function is called as a method, push the 'this'.
 		if (arg_this.rv_type != E_ERROR) {
-			vector2_char vstr = vector2_char_here();
-			vec_printf(&vstr, "%s", arg_this.val);//stg.sem_this.val); //should already be a pointer, e.g. &derp
-			const char* this_ref = stralloc(vstr.data);
-			m(ministack, push_back, this_ref);
+			//vector2_char vstr = vector2_char_here();
+			//vec_printf(&vstr, "%s", arg_this.val);//stg.sem_this.val); //should already be a pointer, e.g. &derp
+			//const char* this_ref = stralloc(vstr.data);
+			//m(ministack, push_back, this_ref);
+			m(arguments, push_back, arg_this);
 		}
 	  //2.1.2 add the arguments actually given
 		for (i = 0; i < list->children.size; i++) {
@@ -541,15 +551,69 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 			res2stg.dest.author = "expr_call args";
 			semantic_expr_analyze(ast_get_child(list, i), res2stg); //expr? one of func args?
 			VERIFY_RES(res2);
-			const char* expr = res2.val;
-			m(ministack, push_back, expr);
+			//const char* expr = res2.val;
+			//m(ministack, push_back, expr);
+			m(arguments, push_back, res2);
 		}
+
+	int variadic_pos = 0;
+	if(do_typechecks && !skip_typechecks){variadic_pos = has_varargs(T->args);} // non-variadic arguments of variadic functions are still type-checked up to the "variadic" keyword
+
+	if(do_typechecks && !skip_typechecks){
+		struct type_name *T_expr = type_name_new0();
+		T_expr->args = vector2_ptr_type_name_new();
+		m(*(T_expr->args),push_back,resT);
+		for(int i = 0; i < arguments.size; i++){
+			val_handle arg = m(arguments, get, i);
+			m(*(T_expr->args), push_back, arg.T);
+		}
+		if(!type_args_equals(T->args, T_expr->args)){
+			/// check if types are compatible by checking all args except first (return type).
+			if(!all_compatible(T->args, T_expr->args, 1, variadic_pos, IS_CALL)){
+				const char *T1_str = type_name_to_string(T);
+				const char *T2_str = type_name_to_string(T_expr);
+				error("Semantic error: function arguments don't match:\nexpected %s;\ngot      %s;", T1_str, T2_str);
+			}
+		}
+	}
+
 	 //2.2 format them as a string
 	 vector2_char vstr = vector2_char_here();
 	 if (list->children.size == 0) { vec_printf(&vstr, ""); }
-	 while(ministack.size){//for (i = 0; i < list->children.size; i++) {
- 		const char* expr = m(ministack, pop_front);
-		vec_printf(&vstr, " %s", expr);
+
+	 if(do_typechecks && !skip_typechecks){
+		int n_args_expected = T->args->size-1;
+		int n_args_got = arguments.size;
+
+		if(n_args_got > n_args_expected){
+			error("Semantic error: too many arguments for a function call (expected %d, got %d)", n_args_expected, n_args_got);
+		}else if((n_args_got < n_args_expected) && !variadic_pos){
+			error("Semantic error: not enough arguments for a function call (expected %d, got %d)", n_args_expected, n_args_got);
+		}
+		assert(arguments.size == T->args->size-1);
+	}
+
+	 for(int i = 0; i < arguments.size; i++){//while(ministack.size){//for (i = 0; i < list->children.size; i++) {
+ 		//const char* expr = m(ministack, pop_front);
+		val_handle res = m(arguments,get,i);
+		if(i == variadic_pos-1){skip_typechecks = 1;}
+
+		if(do_typechecks && !skip_typechecks){
+			struct type_name *arg_expected = m(*(T->args), get, i+1);
+			struct type_name *arg_got = res.T;
+			/// checking compatibility
+			enum TypeCheckVal compat = get_type_compatibility(arg_expected, arg_got, IS_CALL);
+			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP){
+				vec_printf(&vstr, " %s", res.val);
+			}else if(compat == TC_CONVERTIBLE_IMPL){
+				const char *converted_arg_val = emit_type_conversion(arg_expected, arg_got, res);
+				vec_printf(&vstr, " %s", converted_arg_val);
+			}else{
+				assert(!"unreachable due to earlier typecheck");
+			}
+		}else{
+			vec_printf(&vstr, " %s", res.val);
+		}
 	 }
 	//3. actually emit the call
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
@@ -887,6 +951,7 @@ int safe_strcmp(const char *A, const char *B){
 	return 1;
 }
 
+/*
 /// checks the types between variable and expression, and assigns if it's ok 
 void typecheck_assign(val_handle res1, val_handle res2){
 	assert(res1.T);
@@ -1001,6 +1066,7 @@ void typecheck_assign(val_handle res1, val_handle res2){
 																error("Semantic error: [type error 18: %s <- %s]: assigning different types", type1_str, type2_str);
 	assert(!"uncreachable");
 }
+*/
 
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
@@ -1034,11 +1100,23 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(src, res2stg); //expr
 	VERIFY_RES(res2);
 
+	const char *exprResult = 0;
+
 	if(do_typechecks){
-		typecheck_assign(res1, res2);
+		//typecheck_assign(res1, res2);
+		struct type_name *T1 = res1.T; //dest
+		struct type_name *T2 = res2.T; //src
+		const char *T1_str = type_name_to_string(T1);
+		const char *T2_str = type_name_to_string(T2);
+		enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL);
+		if((int)compat >= (int)TC_CONVERTIBLE_EXPL){
+			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprResult = res1.val;}
+			else												{exprResult = emit_type_conversion(T1, T2, res1);}
+		}else													{error("Semantic error: can't assign %s <- %s", T1_str, T2_str);}
 	}else{
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
+		exprResult = res1.val;
 	}
+	emit_code("MOV %s %s //=",sanitize_string(exprResult), sanitize_string(res2.val));
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.
@@ -1048,7 +1126,7 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//now it can, lol
 
 	//output_res(stg, res1, res1type);
-	val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T, .author = "expr_assign(=)" };
+	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = res1.T, .author = "expr_assign(=)" };
 	output_res(stg, result, NO_EMIT);
 }
 
@@ -1089,10 +1167,10 @@ void semantic_analyze_expr_cast(ast_node* node, expr_settings stg){
 	const char *exprResult = 0;
 
 	struct type_name *T2 = res1.T;
-	
+		
 	const char *T1_str = type_name_to_string(T1);
 	const char *T2_str = type_name_to_string(T2);
-	
+	/*
 	int T1_is_array = (T1->is_array != 0);
 	int T2_is_array = (T2->is_array != 0);
 
@@ -1135,7 +1213,14 @@ void semantic_analyze_expr_cast(ast_node* node, expr_settings stg){
 		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(exprResult));
 		return;
 	}
-	
+	*/
+
+	enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL);
+	if((int)compat >= (int)TC_CONVERTIBLE_EXPL){
+		if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprResult = res1.val;}
+		else												{exprResult = emit_type_conversion(T1, T2, res1);}
+	}else													{error("Semantic error: can't cast %s <- %s", T1_str, T2_str);}
+
 	assert(exprResult);
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = T1, .author = author };
 	output_res(stg, result, NO_EMIT);

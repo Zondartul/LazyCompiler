@@ -68,10 +68,11 @@ int sprintf(char *buff, char *fmt, int *parg)
 	return printed;
 end
 
-int printf(char *fmt, float args)
+int printf(char *fmt, varargs)
 	int printed = 0;
 	char buff[80];
-	int *parg = &args;
+	void *parg = (void*)&fmt; 
+	parg++;
 	printed = sprintf(&buff, fmt, parg);
 	Prints(&buff, 999);
 	return printed;

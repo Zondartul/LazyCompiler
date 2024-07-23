@@ -5,6 +5,7 @@
 #include "semantic_expr_op.h"
 #include "ast_gen.h"
 #include <assert.h>
+#include "typecheck.h"
 
 void semantic_analyze_program(ast_node *node){
 	//program :	decl_stmt_list	;
@@ -495,7 +496,7 @@ void semantic_analyze_func_def(ast_node *node){
 	struct ast_node *node_var_decl_list	= ast_get_child(node_func_def,2);
 	struct ast_node *node_stmt_list 	= ast_get_child(node_func_def,3);
 	
-	struct type_name *T = parseTypename(node_typename);
+	struct type_name *retT/*T*/ = parseTypename(node_typename);
 	const char *name = node->token.value;
 	if(semantic_decl){
 		//27.03.2022: make sure the symbol is not 'already declared'
@@ -516,7 +517,7 @@ void semantic_analyze_func_def(ast_node *node){
 			S->IR_name = name;
 		}
 		//get arguments
-		S->symfunction.returntype = T;
+		//S->symfunction.returntype = T;
 		push_symbol_table();
 		new_symbol_table(node);
 
@@ -556,14 +557,14 @@ void semantic_analyze_func_def(ast_node *node){
 		semantic_context = SEMANTIC_PARAM;
 			//use new separate symbol table;
 		struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
-		signature->name = 0;
-		signature->symclass = 0;
+		//signature->name = 0;
+		//signature->symclass = 0;
 		signature->args = vector2_ptr_type_name_new();
 		//parameter as visible from scope VS signature parameter, is confusing.
 		int i;
 		//wait, shouldn't we go through var_decl_list_ne first?
 		//no, it's linearized now
-		m((*(signature->args)), push_back, T);
+		m(*signature->args, push_back, retT); /// the return type is stored as the 'first argument' in signature.
 
 		for(i = 0; i < /*list*/node_var_decl_list->children.size; i++){
 			struct ast_node *arg = ast_get_child(node_var_decl_list,i);
@@ -571,6 +572,15 @@ void semantic_analyze_func_def(ast_node *node){
 			//m((*(signature->args)),push_back,T2);
 			semantic_general_analyze(arg); //var_decl
 		}
+		/// write down the argument types in the signature
+		for(i = 0; i < S->symfunction.scope->symbols.size; i++){
+			struct symbol *S2 = m(S->symfunction.scope->symbols, get, i);
+			if(S2->type == SYMBOL_PARAM){
+				assert(S2->symvariable.type);
+				m(*signature->args, push_back, S2->symvariable.type);
+			}
+		}
+
 		S->symfunction.signature = signature;
 			//join symbol table to definition
 		semantic_context = SEMANTIC_NORMAL;
@@ -857,6 +867,35 @@ void semantic_analyze_var_decl_constructor(ast_node *node){//, expr_settings stg
 		}
 	}
 }
+
+void semantic_analyze_var_decl_varargs(ast_node* /*node*/){
+	//var_decl:
+	//| VARARGS						<<< this one
+	//;
+
+	if(!semantic_decl){return;}
+
+	struct symbol *S;
+
+	S = symbol_new0();
+	S->username = "varargs";
+	if(semantic_flatten){
+		S->IR_name = IR_next_name(namespace_semantic,"varargs");
+	}else{
+		S->IR_name = "varargs";
+	}
+	struct type_name *T = gen_type_name_void_ptr();
+	T->name = "varargs";
+	S->symvariable.type = T;
+	if(semantic_context == SEMANTIC_PARAM){
+		S->type = SYMBOL_PARAM;
+		S->store_adr = getNumParameters();
+		S->symvariable.size = getTypeSize(T);
+		S->storage = STORE_DATA_STACK;
+	}
+	push_symbol(S);
+}
+
 
 void semantic_analyze_stmt_list(ast_node *node){
 	//stmt_list: stmt_list_ne | ;

@@ -88,25 +88,26 @@ extern int yydebug;
     NOTEQUAL = 275,                /* NOTEQUAL  */
     INC = 276,                     /* INC  */
     DEC = 277,                     /* DEC  */
-    ASSIGN = 278,                  /* ASSIGN  */
-    LOGIC = 279,                   /* LOGIC  */
-    COMPARE = 280,                 /* COMPARE  */
-    ADDSUB = 281,                  /* ADDSUB  */
-    MULDIV = 282,                  /* MULDIV  */
-    EXP = 283,                     /* EXP  */
-    PREOP = 284,                   /* PREOP  */
-    NEG = 285,                     /* NEG  */
-    LNEG = 286,                    /* LNEG  */
-    CAST = 287,                    /* CAST  */
-    DEREF = 288,                   /* DEREF  */
-    REF = 289,                     /* REF  */
-    POSTOP = 290,                  /* POSTOP  */
-    CALL = 291,                    /* CALL  */
-    INDEX = 292,                   /* INDEX  */
-    DOT = 293,                     /* DOT  */
-    BRACELIST = 294,               /* BRACELIST  */
-    SUBEXPR = 295,                 /* SUBEXPR  */
-    PRENEG = 296                   /* PRENEG  */
+    VARARGS = 278,                 /* VARARGS  */
+    ASSIGN = 279,                  /* ASSIGN  */
+    LOGIC = 280,                   /* LOGIC  */
+    COMPARE = 281,                 /* COMPARE  */
+    ADDSUB = 282,                  /* ADDSUB  */
+    MULDIV = 283,                  /* MULDIV  */
+    EXP = 284,                     /* EXP  */
+    PREOP = 285,                   /* PREOP  */
+    NEG = 286,                     /* NEG  */
+    LNEG = 287,                    /* LNEG  */
+    CAST = 288,                    /* CAST  */
+    DEREF = 289,                   /* DEREF  */
+    REF = 290,                     /* REF  */
+    POSTOP = 291,                  /* POSTOP  */
+    CALL = 292,                    /* CALL  */
+    INDEX = 293,                   /* INDEX  */
+    DOT = 294,                     /* DOT  */
+    BRACELIST = 295,               /* BRACELIST  */
+    SUBEXPR = 296,                 /* SUBEXPR  */
+    PRENEG = 297                   /* PRENEG  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -144,6 +145,6 @@ int yyparse (void);
 char *posToString(YYLTYPE pos);
 char *get_source_text2(YYLTYPE pos);
 
-#line 148 "generated/yaccin.tab.h"
+#line 149 "generated/yaccin.tab.h"
 
 #endif /* !YY_YY_GENERATED_YACCIN_TAB_H_INCLUDED  */

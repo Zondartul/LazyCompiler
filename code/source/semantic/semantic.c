@@ -179,6 +179,8 @@ int semantic_dispatch_general(struct ast_node* node) {
 		semantic_analyze_var_decl_constructor(node);return 1; }
 	if (!strcmp(node->token.type, "var_decl_assign"))	{ 
 		semantic_analyze_var_decl_assign(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "var_decl_varargs"))	{ 
+		semantic_analyze_var_decl_varargs(node);	return 1; }
 	if (!strcmp(node->token.type, "stmt_list"))			{ 
 		semantic_analyze_stmt_list(node);			return 1; }
 	if (!strcmp(node->token.type, "stmt"))				{ 

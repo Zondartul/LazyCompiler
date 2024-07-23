@@ -315,7 +315,7 @@ Not all rules and not all tokens have precedence. If either the rule
 	or the lookahead token has no precedence, then the default is to shift.
 */
 
-%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC
+%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC VARARGS
 
 /// precedence-coding tokens:
 /// INDEX SUBEXPR BRACELIST CALL DOT EXPR MULDIV ADDSUB CAST LNEG LOGIC COMPARE ASSIGN POSTOP PREOP REF DEREF PRENEG 
@@ -482,6 +482,7 @@ var_decl	:	typename ID						{const char *id_str = $2->token.value; $$ = producti
 			|	typename ID '[' expr ']'		{const char *id_str = $2->token.value; $$ = production("var_decl",1,id_str,@$,$1,$2,$4,0);}
 			|	typename ID '=' expr			{const char *id_str = $2->token.value; $$ = production("var_decl_assign",0,id_str,@$,$1,$2,$4,0);}
 			|	typename ID '(' expr_list ')'	{const char *id_str = $2->token.value; $$ = production("var_decl_constructor",0,id_str,@$,$1,$2,$4,0);}
+			|	VARARGS							{$$ = production("var_decl_varargs",0,0,@$,0,0,0,0);}
 			;
 
 var_decl_list	:	var_decl_list_ne							{$$ = production("var_decl_list",0,NULL,@$,$1,0,0,0); ast_unroll_lists($$);}

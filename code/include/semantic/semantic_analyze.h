@@ -8,6 +8,7 @@ void semantic_analyze_var_decl_list(ast_node *node);
 void semantic_analyze_var_decl_constructor(ast_node *node);
 void semantic_analyze_var_decl(ast_node *node);
 void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg);
+void semantic_analyze_var_decl_varargs(ast_node *node);
 void semantic_analyze_stmt_list(ast_node *node);
 void semantic_analyze_stmt(ast_node *node);
 void semantic_analyze_imp_stmt(ast_node *node);
