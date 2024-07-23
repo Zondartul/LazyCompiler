@@ -592,7 +592,7 @@ int test_7_class_local()
 	expect_basic(7, 5, derp1.sum(4),	  9);
 	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
 	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
-	expect_global(7, 6, derp1.sum,    4573);
+	expect_global(7, 6, (int)(void*)derp1.sum,    4573);
 	return CODE_OK;
 end
 
@@ -602,37 +602,37 @@ int test_7_class_by_val(class Test_7_class_derp derp2)
 	expect_basic(7, 8, derp2.x,		  3);
 	expect_basic(7, 9, derp2.y,		  4);
 	expect_basic(7, 10, derp2.sum(5),  12);
-	expect_global(7, 11, derp2.sum,   4573);
+	expect_global(7, 11, (int)(void*)derp2.sum,   4573);
 	return CODE_OK;
 end
 
 int test_7_class_by_ptr(class Test_7_class_derp *derp3)
-	expect_stack(7, 12, derp3,		 -3);
+	expect_stack(7, 12, (int)derp3,		 -3);
 	expect_stack(7, 13, (int)&derp3,	     -20);
 	expect_basic(7, 14, (*derp3).x,	  5);
 	expect_basic(7, 15, derp3.x,		  5);
 	expect_basic(7, 16, derp3.y,		  6);
 	expect_basic(7, 17, derp3.sum(7),	 18);
-	expect_global(7, 18, derp3.sum,   4573);
+	expect_global(7, 18, (int)(void*)derp3.sum,   4573);
 	return CODE_OK;
 end
 
 class Test_7_class_derp derp4;
 
 int test_7_class_global()
-	expect_global(7, 19, &derp4,	  999);
+	expect_global(7, 19, (int)&derp4,	  999);
 	void *p1 = &derp4;
-	expect_global(7, 20, p1,		  999);
+	expect_global(7, 20, (int)p1,		  999);
 	void *px = &(derp4.x);
 	void *py = &(derp4.y);
 	int b1 = (p1 == px);
 	int b2 = ((p1 + 1) == py);
 	expect_basic(7, 21, b1, 			1);
 	expect_basic(7, 22, b2,			1);
-	expect_basic(7, 23, *px,			1);
+	expect_basic(7, 23, *(int*)px,		1);
 	expect_basic(7, 24, derp4.x,		1);
 	derp4.y = 4;
-	expect_basic(7, 25, *py,			4);
+	expect_basic(7, 25, *(int*)py,			4);
 	expect_basic(7, 26, derp4.y,		4);
 	expect_basic(7, 27, derp4.sum(10),15);
 	return CODE_OK;
@@ -766,19 +766,19 @@ void delay(int n) for(int i = 0; i < n; i++) end end
 #line 1
 #file "data_in/big/consolescreen.txt"
 #line 1
-char *AdrScreen = 0;
+int *AdrScreen = 0;
 
 void printCharXY(int X, int Y, char C, int col)
 	int offs = 2*(X+Y*30);
-	char *P = AdrScreen + offs;
+	int *P = AdrScreen + offs;
 	P[0] = C;
 	P++;
 	P[0] = col;
 end
 
-void screen_set(char *scr) 
-	writePort(5, scr);
-	AdrScreen = scr; 
+void screen_set(int scr) 
+	writePort(5, (int)scr);
+	AdrScreen = (int*)scr; 
 end
 void screen_clear() AdrScreen[2041] = 1; end
 void screen_cursor_enable() AdrScreen[2046] = 1; end
@@ -989,8 +989,8 @@ end
 
 void Printn(int num, int col)
 	char buff[20];
-	int2str(num, buff);
-	Prints(buff, col);
+	int2str(num, (char*)&buff);
+	Prints((char*)&buff, col);
 end
 
 void newline()
@@ -1071,7 +1071,7 @@ void debug_s_arg(char *arg)
 	printf("]");
 end
 
-int sprintf(char *buff, char *fmt, int *parg)
+int sprintf(char *buff, char *fmt, void *parg)
 	int printed = 0;
 	while(*fmt)
 		char c = *fmt;
@@ -1079,10 +1079,10 @@ int sprintf(char *buff, char *fmt, int *parg)
 			fmt++;
 			char c2 = *fmt;
 			fmt++;
-			if(c2 == 'd') int2str(*parg, buff); parg++; end
-			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
-			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *parg); parg++; end
-			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
+			if(c2 == 'd') int2str(*(int*)parg, buff); parg++; end
+			if(c2 == 'f') float2str(*(float*)parg, 4, buff); parg++; end
+			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *(char**)parg); parg++; end
+			if(c2 == 'c') buff[0] = *(char*)parg; parg++; buff[1] = 0; end
 			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
 			int inc = strlen(buff);
 			printed = printed + inc;

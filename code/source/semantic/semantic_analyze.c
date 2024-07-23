@@ -53,7 +53,7 @@ const char *sanitize_string(const char* str) {
 const char* emit_push_label(const char* lbl) {
 	const char* lbl2 = IR_next_name(namespace_semantic, lbl);
 	push_expr(lbl2);
-	emit_code("SYMBOL %s LABEL", sanitize_string(lbl2));
+	emit_code("SYMBOL %s LABEL // semantic_analyze.c:56", sanitize_string(lbl2));
 	return lbl2;
 }
 
@@ -600,14 +600,14 @@ void semantic_analyze_func_def(ast_node *node){
 		const char *s_typename = get_source_text2(node_typename->token.pos);
 		const char *s_args = get_source_text2(node_var_decl_list->token.pos);
 		
-		emit_code("COMMENT SOURCE \"%s %s(%s)\" // semantic_analyze.c:480 ",//"/* %s %s(%s) */", 
+		emit_code("COMMENT SOURCE \"%s %s(%s)\" // semantic_analyze.c:603 ",//"/* %s %s(%s) */", 
 		sanitize_string(s_typename), sanitize_string(name), sanitize_string(s_args));
 		
 		push_symbol_table();
 		currentSymbolTable = S->symfunction.scope;
 		//the analyze_scope will handle symbols (they are inside a frame anyway)
 	
-		emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));			
+		emit_code("FUNCTION %s BEGIN // semantic_analyze.c:610", sanitize_string(S->IR_name));			
 		push_semantic_context();
 		
 		pop_symbol_table();
@@ -621,9 +621,9 @@ void semantic_analyze_func_def(ast_node *node){
 		semantic_this = 0;
 		pop_semantic_context();
 		emit_code_segment(S->symfunction.code);
-		emit_code("RET");
+		emit_code("RET // semantic_analyze.c:624");
 		emit_all_undeclarations();
-		emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
+		emit_code("FUNCTION %s END // semantic_analyze.c:627", sanitize_string(S->IR_name));
 		emit_code("/* end */");
 		printf("semantic_analyze (imperative) of func %s done\n",name);
 	}
@@ -789,7 +789,7 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 			semantic_expr_analyze(node_expr, res2stg);
 			VERIFY_RES(res2);
 
-			emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
+			emit_code("MOV %s %s // semantic_analyze.c:792", sanitize_string(res1.val), sanitize_string(res2.val));
 			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
 			//output_res(stg, result1, result1type);
 			res2.author = "var_decl_assign";
@@ -858,11 +858,7 @@ void semantic_analyze_var_decl_constructor(ast_node *node){//, expr_settings stg
 			PREP_RES(res2, E_DISCARD); // R=read, L=write //E_LVAL);
 			res2stg.dest.author = "var_decl_constructor call obj.c(...)";
 			semantic_expr_analyze(S->init_expr, res2stg);
-			//VERIFY_RES(res2);
 
-			//emit_code("MOV %s %s", sanitize_string(res1.val), sanitize_string(res2.val));
-			//res2.author = "var_decl_assign";
-			//output_res(stg, res2, YES_EMIT);
 			pop_code_segment();
 		}
 	}
@@ -1015,26 +1011,26 @@ void semantic_analyze_imp_stmt(ast_node *node){
 					warning = "error: double failure while printing: ";
 				}
 			}//"expression";}
-			emit_code("COMMENT SOURCE \"%s%s\" // semantic_analyze.c:711 ",//"/* %s */", 
+			emit_code("COMMENT SOURCE \"%s%s\" // semantic_analyze.c:1014 ",//"/* %s */", 
 				warning, str);
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
 			if(semantic_decl){return;}
-			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:717 ",//"/* %s */",
+			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1020 ",//"/* %s */",
 				sanitize_string(removeComments(get_source_text2(node->token.pos))));
-			emit_code("RET");
+			emit_code("RET // semantic_analyze.c:1022");
 			break;
 		case(4)://return expr
 			if(semantic_decl){return;}
-			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:722 ", //"/* %s */",
+			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1026 ", //"/* %s */",
 				sanitize_string(removeComments(get_source_text2(node->token.pos))));
 			PREP_RES(res1, E_RVAL);
 			res1stg.dest.author = "return expr";
 			semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (what to return)
 			VERIFY_RES(res1);
 
-			emit_code("RET %s", sanitize_string(res1.val));
+			emit_code("RET %s // semantic_analyze.c:1033", sanitize_string(res1.val));
 			break;
 		case(5)://for_loop
 			semantic_general_analyze(ast_get_child(node,0)); //for_loop
@@ -1090,8 +1086,8 @@ void semantic_analyze_if_block(ast_node *node){
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
 				//if_else = pop_expr(); assert_is_if_else(if_else);
 				//if_exit = pop_expr(); assert_is_if_exit(if_exit);
-				emit_code("LABEL %s", sanitize_string(if_exit));
-				emit_code("COMMENT SOURCE \"end if\" // semantic_analyze.c:788 ");//"/* end if */");
+				emit_code("LABEL %s // semantic_analyze.c:1089", sanitize_string(if_exit));
+				emit_code("COMMENT SOURCE \"end if\" // semantic_analyze.c:1090 ");//"/* end if */");
 				break;
 			}
 			case(1)://if_then ELSE stmt_list END
@@ -1106,16 +1102,16 @@ void semantic_analyze_if_block(ast_node *node){
 					//.out_else_label = &if_else 
 				};
 				semantic_if_analyze(ast_get_child(node, 0), stg1); //if_then
-				emit_code("COMMENT SOURCE \"else\" // semantic_analyze.c:803 ");//"/* else */");
-				emit_code("LABEL %s", sanitize_string(if_else));
+				emit_code("COMMENT SOURCE \"else\" // semantic_analyze.c:1105 ");//"/* else */");
+				emit_code("LABEL %s // semantic_analyze.c:1106", sanitize_string(if_else));
 				struct code_segment* CSinsert;
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 1));
 				analyze_scope(ast_get_child(node, 1), 0, &CSinsert, &currentSymbolTable, 0, 1);
 				emit_code_segment(CSinsert);
 				//if_else = pop_expr();	assert_is_if_else(if_else);
 				//if_exit = pop_expr();	assert_is_if_exit(if_exit);
-				emit_code("LABEL %s", sanitize_string(if_exit));
-				emit_code("COMMENT SOURCE \"end if\" // semantic_analyze.c:812 ");//"/* end if */");
+				emit_code("LABEL %s // semantic_analyze.c:1113", sanitize_string(if_exit));
+				emit_code("COMMENT SOURCE \"end if\" // semantic_analyze.c:1114 ");//"/* end if */");
 				break;
 			}
 			default:
@@ -1174,7 +1170,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//IF ( expr ) stmt_list
 				//(expr)
 				pos = ast_get_child(node, 0)->token.pos;
-				emit_code("COMMENT SOURCE \"if(%s)\" // semantic_analyze.c:871 ",//"/* if(%s) */", 
+				emit_code("COMMENT SOURCE \"if(%s)\" // semantic_analyze.c:1173 ",//"/* if(%s) */", 
 				sanitize_string(get_source_text2(pos)));//get_source_text(pos.start,pos.end,pos.filename));
 				
 				//val_handle res1; val_handle res1dest = { .rv_type = E_LVAL };
@@ -1186,11 +1182,11 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				
 				const char* condition_result = res1.val;
 				//if then
-				emit_code("/* this skips untrue if's */ // semantic_analyze.c:883");
+				emit_code("/* this skips untrue if's */ // semantic_analyze.c:1185");
 				emit_code("JE 0 %s %s", 
 					sanitize_string(condition_result), 
 					sanitize_string(nextLabel));
-				emit_code("/* 'if' is true: */ // semantic_analyze.c:887");
+				emit_code("/* 'if' is true: */ // semantic_analyze.c:1189");
 
 				//stmt_list
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 1));
@@ -1200,7 +1196,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//if_exit = IR_next_name(namespace_semantic,"lbl_if_exit");
 				//emit_code("SYMBOL %s LABEL",if_exit);
 				if (nextLabel != if_exit) {  
-					emit_code("JMP %s", sanitize_string(if_exit));
+					emit_code("JMP %s // semantic_analyze.c:1199", sanitize_string(if_exit));
 				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
 				//push_expr(if_exit);
 				//end
@@ -1221,9 +1217,9 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//assert_is_if_exit(pop_expr()); 
 				//else if
 				YYLTYPE pos = ast_get_child(node, 1)->token.pos;
-				emit_code("COMMENT SOURCE \"else if(%s)\" // semantic_analyze.c:918 ", //"/* else if(%s) */", 
+				emit_code("COMMENT SOURCE \"else if(%s)\" // semantic_analyze.c:1220 ", //"/* else if(%s) */", 
 				sanitize_string(get_source_text2(pos)));//get_source_text(pos.start,pos.end,pos.filename));
-				emit_code("LABEL %s", sanitize_string(if_elseif));
+				emit_code("LABEL %s // semantic_analyze.c:1222", sanitize_string(if_elseif));
 				//( expr )
 				
 				//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
@@ -1239,11 +1235,11 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				//const char* label1 = IR_next_name(namespace_semantic, "lbl_elseif_then");
 				//emit_code("SYMBOL %s LABEL",label1);
 				//emit_code("JE 0 %s %s", pop_expr(), label1);
-				emit_code("/* this skips untrue if's */ // semantic_analyze.c:936");
-				emit_code("JE 0 %s %s", 
+				emit_code("/* this skips untrue if's */ // semantic_analyze.c:1238");
+				emit_code("JE 0 %s %s // semantic_analyze.c:1239", 
 					sanitize_string(condition_result), 
 					sanitize_string(nextLabel));
-				emit_code("COMMENT SOURCE \"then\" // semantic_analyze.c:940 ");//"/* then */");
+				emit_code("COMMENT SOURCE \"then\" // semantic_analyze.c:1242 ");//"/* then */");
 				//stmt_list
 				currentSymbolTable = find_symbol_table_by_node(ast_get_child(node, 2));
 				struct code_segment* CSinsert;
@@ -1251,7 +1247,7 @@ void semantic_analyze_if_then(ast_node *node, if_settings stg){
 				emit_code_segment(CSinsert);
 				//if_exit = pop_expr(); //using existing exit
 				if (nextLabel != if_exit) {
-					emit_code("JMP %s", sanitize_string(if_exit));
+					emit_code("JMP %s // semantic_analyze.c:1250", sanitize_string(if_exit));
 				} //else, we can skip the jmp as the next instruction is already at the end of the if-block.
 				//push_expr(if_exit);
 				//emit_code("LABEL %s", label1);
@@ -1275,12 +1271,12 @@ void semantic_analyze_while_loop(ast_node *node){
 		pop_symbol_table();
 	}else{
 		YYLTYPE pos1 = ast_get_child(node,0)->token.pos;
-		emit_code("COMMENT SOURCE \"while(%s)\" // semantic_analyze.c:977 ",//"/* while(%s) */",
+		emit_code("COMMENT SOURCE \"while(%s)\" // semantic_analyze.c:1274 ",//"/* while(%s) */",
 			sanitize_string(get_source_text2(pos1)));
 		const char *label1 = IR_next_name(namespace_semantic,"lbl_while_do");
 		const char *label2 = IR_next_name(namespace_semantic,"lbl_while_exit");
-		emit_code("SYMBOL %s LABEL", sanitize_string(label1));
-		emit_code("SYMBOL %s LABEL", sanitize_string(label2));
+		emit_code("SYMBOL %s LABEL // semantic_analyze.c:1278", sanitize_string(label1));
+		emit_code("SYMBOL %s LABEL // semantic_analyze.c:1279", sanitize_string(label2));
 		emit_code("LABEL %s",sanitize_string(label1));
 		
 		//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
@@ -1290,18 +1286,18 @@ void semantic_analyze_while_loop(ast_node *node){
 		semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (condition)
 		VERIFY_RES(res1);
 		
-		emit_code("JE 0 %s %s", 
+		emit_code("JE 0 %s %s // semantic_analyze.c:1289", 
 			sanitize_string(res1.val), 
 			sanitize_string(label2));
-		emit_code("COMMENT SOURCE \"do\" // semantic_analyze.c:995 ");//"/* do */");
+		emit_code("COMMENT SOURCE \"do\" // semantic_analyze.c:1292");//"/* do */");
 		push_symbol_table();
 		currentSymbolTable = find_symbol_table_by_node(node);
 		struct code_segment *CSinsert;
 		analyze_scope(ast_get_child(node,1),0,&CSinsert,&currentSymbolTable,0,1);
 		emit_code_segment(CSinsert);
-		emit_code("JMP %s", sanitize_string(label1));
-		emit_code("LABEL %s",sanitize_string(label2));
-		emit_code("COMMENT SOURCE \"end while\" // semantic_analyze.c:1003 ");//"/* end while*/");
+		emit_code("JMP %s // semantic_analyze.c:1298", sanitize_string(label1));
+		emit_code("LABEL %s // semantic_analyze.c:1299",sanitize_string(label2));
+		emit_code("COMMENT SOURCE \"end while\" // semantic_analyze.c:1300");//"/* end while*/");
 		pop_symbol_table();
 	}
 }
@@ -1328,7 +1324,7 @@ void semantic_analyze_for_loop(ast_node *node){
 		pos4.last_column = pos3.last_column;
 
 		//comment that this is a for-loop
-		emit_code("COMMENT SOURCE \"for(%s)\" // semantic_analyze.c:1030 ",//"/* for(%s) */", 
+		emit_code("COMMENT SOURCE \"for(%s)\" // semantic_analyze.c:1327",//"/* for(%s) */", 
 			sanitize_string(get_source_text2(pos4)));
 
 		//1. enter the scope of the for-loop
@@ -1345,7 +1341,7 @@ void semantic_analyze_for_loop(ast_node *node){
 
 		//2. process the initializer statement
 		//2.1 comment that this is an initializer (stmt/expr 1)
-		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1047 ",//"/* %s */", 
+		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1344",//"/* %s */", 
 		 	sanitize_string(removeComments(get_source_text2(pos1))));
 		//2.2 emit the statement code 
 		 semantic_general_analyze(node_init);
@@ -1353,14 +1349,14 @@ void semantic_analyze_for_loop(ast_node *node){
 		//3. declare the jump labels that we will later use
 		 const char *loopCondition = IR_next_name(namespace_semantic,"lbl_for");
 		 const char *loopExit = IR_next_name(namespace_semantic,"lbl_for_exit");
-		 emit_code("SYMBOL %s LABEL", sanitize_string(loopCondition));
-		 emit_code("SYMBOL %s LABEL", sanitize_string(loopExit));
+		 emit_code("SYMBOL %s LABEL // semantic_analyze.c:1352", sanitize_string(loopCondition));
+		 emit_code("SYMBOL %s LABEL // semantic_analyze.c:1353", sanitize_string(loopExit));
 		
 		//4. process the condition expression
 		//4.1 emit the label that the loop will jump to, to begin each iteration.
-		 emit_code("LABEL %s", sanitize_string(loopCondition));
+		 emit_code("LABEL %s // semantic_analyze.c:1357", sanitize_string(loopCondition));
 		//4.2 comment that this is a condition (expr 2)
-		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1062 ",//"/* %s */", 
+		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1359",//"/* %s */", 
 		 	sanitize_string(removeComments(get_source_text2(pos2))));
 		//4.3 emit the code to calculate the condition value
 		 PREP_RES(res1, E_LVAL);
@@ -1369,34 +1365,34 @@ void semantic_analyze_for_loop(ast_node *node){
 		 VERIFY_RES(res1);
 		 const char* condition = res1.val;
 		//4.4 emit the code to skip the loop if the condition is not met
-		 emit_code("JE 0 %s %s",
+		 emit_code("JE 0 %s %s // semantic_analyze.c:1368",
 			sanitize_string(condition),
 			sanitize_string(loopExit));
 
 		//5. process the loop body
 		//5.1 comment that this is the loop body
-		 emit_code("COMMENT SOURCE \"loop body\" // semantic_analyze.c:1077 ");//"/* loop body */");
+		 emit_code("COMMENT SOURCE \"loop body\" // semantic_analyze.c:1374");//"/* loop body */");
 		//5.2 emit the code of the loop body statements
 		 semantic_general_analyze(node_body); //stmt_list
 
 		//6. process the post-loop expression
 		//6.1 comment that this is the post-expression
-		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1083 ",//"/* %s */", 
+		 emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1380",//"/* %s */", 
 		 	sanitize_string(removeComments(get_source_text2(pos3))));
 		//6.2 emit the code to execute the post-expression
 		 semantic_general_analyze(ast_get_child(node,2)); //expr (i++)
 		
 		//7. jump back to condition to begin the next iteration
-		 emit_code("JMP %s", sanitize_string(loopCondition));
+		 emit_code("JMP %s // semantic_analyze.c:1386", sanitize_string(loopCondition));
 
 		//8. emit the loop exit label
-		 emit_code("LABEL %s", sanitize_string(loopExit));
+		 emit_code("LABEL %s // semantic_analyze.c:1389", sanitize_string(loopExit));
 		
 		//9. clean up
 		 emit_all_deinitializers();
 		
 		//comment that we are done
-		 emit_code("COMMENT SOURCE \"end for\" // semantic_analyze.c:1098 ");//"/* end for */");
+		 emit_code("COMMENT SOURCE \"end for\" // semantic_analyze.c:1395");//"/* end for */");
 		
 		pop_symbol_table();
 	}
@@ -1445,25 +1441,7 @@ void semantic_analyze_class_def(ast_node *node){
 		//03.04.2022 - we don't need to add "symbol this" to a struct because
 		// function calls do that automatically, plus 
 		// it messes up symbol lookup from within a function.
-		//struct symbol *T = symbol_new0();
-		//T->username = stralloc("this");
-		//T->IR_name = IR_next_name(namespace_semantic,"this");
-		//T->type = SYMBOL_PARAM; //wait a sec, wtf is a SYMBOL_MEMBER?
-		//T->storage = STORE_DATA_STACK; //no idea if this does anything
-		//T->store_adr = 0;
-		//T->global = 0;
-		//T->symvariable.pos = 0;
-		//	struct type_name *Tn = malloc(sizeof(struct type_name));
-		//	Tn->name = S->username;
-		//	Tn->pointerlevel = 1;
-		//	Tn->symclass = S;
-		//	Tn->args = 0;
-		//T->symvariable.type = Tn;
-		//T->symvariable.array = 0;
-		//T->symvariable.arraysize = 0;
-		//
-		//push_symbol(T);
-		
+
 		semantic_general_analyze(node_dsl); //decl_stmt_list
 		
 		pop_semantic_context();
@@ -1490,177 +1468,3 @@ void semantic_analyze_class_def(ast_node *node){
 		//semantic_this = 0;
 	}
 }
-
-#if 0
-//--- random crap backup ------------
-
-/*
-int is_prefix_of(const char* str1, const char* str2) {
-	return (strncmp(str1, str2, strlen(str1)) == 0);
-}
-
-int is_label_type(const char* lbl1, const char* lbl2) {
-	return is_prefix_of(lbl2, lbl1);
-}
-
-int is_temp_val(const char* val) {
-	return is_prefix_of("temp", val);
-}
-
-void assert_label_type(const char* lbl1, const char* lbl2) {
-	if (!is_label_type(lbl1, lbl2)) {
-		error("internal semantic error: got lbl [%s], expected one of [%s]", lbl1, lbl2);
-	}
-}
-
-void assert_temp_val(const char* val) {
-	if (!is_temp_val(val)) {
-		error("internal semantic error: got [%s], expected a temporary value", val);
-	}
-}
-
-void assert_is_if_exit(const char* lbl) {
-	assert_label_type(lbl, "lbl_if_exit");
-}
-
-void assert_is_if_else(const char* lbl) {
-	if (strcmp(lbl, "NOELSE") != 0) {
-		assert_label_type(lbl, "lbl_if_else"); //elseif also matches
-	}
-}
-
-int is_rval(const char* val) {
-	return is_prefix_of("rval", val);
-}
-
-void assert_rval(const char* val) {
-	if (!is_rval(val)) {
-		error("internal semantic error: got [%s], expected RValue", val);
-	}
-}
-
-int is_lval(const char* val) {
-	return is_prefix_of("lval", val);
-}
-
-void assert_lval(const char* val) {
-	if (!is_lval(val)) {
-		error("internal semantic error: got [%s], expected LValue", val);
-	}
-}
-
-int is_number(const char* val) {
-	//1. check if it only has digits and format symbols
-	int len = strlen(val);
-	for (int i = 0; i < len; i++) {
-		char c = val[i];
-		if (isdigit(c) || (c == '.')) //how do we deal with 0x, 0c, 0b?
-		{
-			continue;
-		}
-		else {
-			return 0;
-		}
-	}
-	//2. maybe check if it actually reads? nah
-	return 1;
-}
-
-int is_ival(const char* val) {
-	return is_number(val);
-}
-
-int is_val(const char* val) {
-	return is_lval(val) || is_rval(val) || is_ival(val);
-}
-
-void assert_val(const char* val) {
-	if (!is_val(val)) {
-		error("inernal semantic error: got [%s], expected val", val);
-	}
-}
-
-int is_expr_res(const char* val) {
-	return (strcmp(val, "DISCARD") == 0) || is_val(val);
-}
-
-void assert_expr_res(const char* val) {
-	if (!is_expr_res(val)) {
-		error("internal semantic error: got [%s], expected expr_res type");
-	}
-}
-
-void assert_no_result(const char* val) {
-	if (!(strcmp(val, "DISCARD") == 0)) {
-		error("internal semantic error: expr_res is [%s] but only DISCARD is allowed because there is no result.");
-	}
-}
-
-
-const char* new_rval() {return IR_next_name(namespace_semantic, "rval");}
-const char* new_lval() {return IR_next_name(namespace_semantic, "lval");}
-
-const char* to_prefixed_name(const char* prefix, const char *val) {
-	char buff[80];
-	snprintf(buff, "%s%s", prefix, val);
-	const char* res = IR_next_name(namespace_semantic, buff);
-	return res;
-}
-
-const char* to_rval_name(const char* val) { return to_prefixed_name("rval_", val); }
-const char* to_lval_name(const char* val) { return to_prefixed_name("lval_", val); }
-*/
-
-//outputs the value res_val into the destination res_dest,
-//changing r-v-qualification if necessary.
-//returns 1 if something was outputted and 0 otherwise.
-//... note: also maybe ask before emitting random code?
-//old
-/*
-int output_res(const char* res_dest, const char* res_val) {
-	assert_expr_res(res_dest);
-	assert_val(res_val);
-	if (strcmp(res_dest, "DISCARD")==0) {
-		return 0;
-	}
-	else if (is_rval(res_dest)) {
-		if (is_rval(res_val)) {
-			emit_code("MOV %s %s // R<-R, ref copy ", res_dest, res_val);
-			push_expr(res_dest);
-			return 1;
-		}
-		else if(is_lval(res_val)){
-
-			//for both lvals and constants
-			//emit("MOV %s &%s // R<-L, promote ", res_dest, res_val);
-			error("internal semantic error: cannot promote Lvalue (%s) to Rvalue", res_val);
-		}
-		else {
-			error("internal semantic error: cannot promote I-Lvalue (%s) to Rvalue", res_val);
-		}
-	}
-	else if (is_lval(res_dest)) {
-		if (is_rval(res_val)) {
-			emit_code("MOV %s *%s // L<-R, demote/deref ", res_dest, res_val);
-			push_expr(res_dest);
-			return 1;
-		}
-		else if (is_lval(res_val)) {
-			emit_code("MOV %s %s // L<-L, val copy ", res_dest, res_val);
-			push_expr(res_dest);
-			return 1;
-		}
-		else{
-			//probably a costant
-			emit_code("MOV %s %s // L<-I, load immediate ", res_dest, res_val);
-			push_expr(res_dest);
-			return 1;
-		}
-	}
-	else {
-		error("internal semantic error: can only write to rvals and lvals");
-	}
-	return 0; //unreachable
-}
-*/
-#endif

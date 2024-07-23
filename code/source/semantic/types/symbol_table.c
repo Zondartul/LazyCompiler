@@ -146,7 +146,7 @@ void print_symbol_table_helper_short(struct symbol_table *T, int indent){
 				
 				if(S->type == SYMBOL_FUNCTION){
 					const char *type = "?";
-					if(S->symfunction.returntype){type = S->symfunction.returntype->name;}
+					//if(S->symfunction.returntype){type = S->symfunction.returntype->name;} //returntype no longer exists
 					const char *name = S->username;
 					const char *ir_name = S->IR_name;
 					const char *scope = "?";
@@ -250,7 +250,7 @@ void print_symbol_table_helper(struct symbol_table *T, int indent){
 			case(SYMBOL_FUNCTION):
 				printf("function\n");
 				padprint(indent); printf(" IR_name = %s\n",S->IR_name);
-				padprint(indent); printf(" return type = %s\n", S->symfunction.returntype->name);
+				//padprint(indent); printf(" return type = %s\n", S->symfunction.returntype->name);
 				padprint(indent); printf(" scope = %s\n", S->symfunction.scope->name);
 				padprint(indent); printf(" code = %s\n", S->symfunction.code->name);
 				//print_symbol_table_helper(S->symfunction.scope, indent+1);

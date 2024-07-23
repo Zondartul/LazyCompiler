@@ -21,6 +21,9 @@ int is_numeric(struct type_name *T){
 }
 
 const char *emit_type_conversion(struct type_name *T_dest, struct type_name *T_src, val_handle src_res){
+	//if(strcmp(src_res.val, "*temp_244")==0){
+	//	printf("debug breakpoint");
+	//}
 	const char *dest_str = 0;
 	const char *src_str = 0;
     if(T_dest->points_to){
@@ -40,7 +43,7 @@ const char *emit_type_conversion(struct type_name *T_dest, struct type_name *T_s
     
 	if(!dest_str || !src_str){error("[INTERNAL] bad arguments for type conversion");}
 	const char *exprRes = IR_next_name(namespace_semantic, "temp");
-	emit_code("CONVERT %s %s %s %s", exprRes, src_res.val, src_str, dest_str);
+	emit_code("CONVERT %s %s %s %s // typecheck.c:46", exprRes, src_res.val, src_str, dest_str);
 	return exprRes;
 }
 
@@ -168,9 +171,10 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 
 /// checks type compatibility for arguments first ... last-1.
 int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *args_got, int first, int last, int is_call){
-	if(args_expect->size != args_got->size){return 0;}
-    if(!last){last = args_expect->size;}
-	for(int i = first; i < last; i++){
+	if(!last){last = args_expect->size;}
+	//if(args_expect->size != args_got->size){return 0;}
+    if(last > args_got->size){return 0;}
+    for(int i = first; i < last; i++){
 		struct type_name *T1 = m(*args_expect, get, i);
 		struct type_name *T2 = m(*args_got, get, i);
 		enum TypeCheckVal compat = get_type_compatibility(T1, T2, is_call);

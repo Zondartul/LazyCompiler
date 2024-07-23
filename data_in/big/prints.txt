@@ -66,8 +66,8 @@ end
 
 void Printn(int num, int col)
 	char buff[20];
-	int2str(num, buff);
-	Prints(buff, col);
+	int2str(num, (char*)&buff);
+	Prints((char*)&buff, col);
 end
 
 void newline()

@@ -1,16 +1,16 @@
-char *AdrScreen = 0;
+int *AdrScreen = 0;
 
 void printCharXY(int X, int Y, char C, int col)
 	int offs = 2*(X+Y*30);
-	char *P = AdrScreen + offs;
+	int *P = AdrScreen + offs;
 	P[0] = C;
 	P++;
 	P[0] = col;
 end
 
-void screen_set(char *scr) 
-	writePort(5, scr);
-	AdrScreen = scr; 
+void screen_set(int scr) 
+	writePort(5, (int)scr);
+	AdrScreen = (int*)scr; 
 end
 void screen_clear() AdrScreen[2041] = 1; end
 void screen_cursor_enable() AdrScreen[2046] = 1; end

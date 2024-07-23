@@ -34,7 +34,7 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	VERIFY_RES(res2);
 
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("%s %s %s %s", 
+	emit_code("%s %s %s %s // semantic_expr_op.c:37", 
 		sanitize_string(OP), 
 		sanitize_string(exprResult), 
 		sanitize_string(res1.val), 
@@ -49,7 +49,7 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 			if(relax_integer_coersion){
 				if(strcmp(OP, "DIV") == 0){
 					const char* temp1 = IR_next_name(namespace_semantic, "temp");
-					emit_code("FLOOR %s %s", temp1, exprResult);
+					emit_code("FLOOR %s %s // semantic_expr_op.c:52", temp1, exprResult);
 					exprResult = temp1;
 				}
 			}else{
@@ -69,11 +69,11 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 					const char* temp2 = IR_next_name(namespace_semantic, "temp");
 					const char* temp3 = IR_next_name(namespace_semantic, "temp");
 					const char* temp4 = IR_next_name(namespace_semantic, "temp");
-					emit_code("COMMENT GENERAL \"(integer conversion to %s)\" // semantic_expr_op.c:58", res2.T->name);
-					emit_code("FLOOR %s %s", temp1, exprResult);
-					emit_code("SUB %s %s %" PRId64, temp2, temp1, min_limit); ///
-					emit_code("MOD %s %s %" PRId64, temp3, temp2, total_limit);
-					emit_code("ADD %s %s %" PRId64, temp4, temp3, min_limit);
+					emit_code("COMMENT GENERAL \"(integer conversion to %s)\" // semantic_expr_op.c:72", res2.T->name);
+					emit_code("FLOOR %s %s // semantic_expr_op.c:73", temp1, exprResult);
+					emit_code("SUB %s %s %" PRId64 " // semantic_expr_op.c:74", temp2, temp1, min_limit); ///
+					emit_code("MOD %s %s %" PRId64 " // semantic_expr_op.c:75", temp3, temp2, total_limit);
+					emit_code("ADD %s %s %" PRId64 " // semantic_expr_op.c:76", temp4, temp3, min_limit);
 					exprResult = temp4;
 				}
 			}
@@ -283,7 +283,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 
 	//if (vstr.size) {
 		vec_printf(&vstr, "   /* %s [%s] */", str_access_type, name);
-		emit_code("%s", sanitize_string(vstr.data));
+		emit_code("%s // semantic_expr_op.c:286", sanitize_string(vstr.data));
 	//}
 	//5. phone home
 
@@ -361,7 +361,7 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 
 		push_code_segment();
 		currentCodeSegment = init_CS;
-		emit_code("SYMBOL %s STRING %s", 
+		emit_code("SYMBOL %s STRING %s", // no comment here cause string is until the end of line 
 			sanitize_string(str_name), 
 			sanitize_string(escape_string(node->token.value))
 		);
@@ -460,7 +460,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
 
-	emit_code("ADD %s %s %s", 
+	emit_code("ADD %s %s %s // semantic_expr_op.c:463", 
 		sanitize_string(resultExpr), 
 		sanitize_string(index), 
 		sanitize_string(ptr));
@@ -557,9 +557,9 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 		}
 
 	int variadic_pos = 0;
-	if(do_typechecks && !skip_typechecks){variadic_pos = has_varargs(T->args);} // non-variadic arguments of variadic functions are still type-checked up to the "variadic" keyword
 
 	if(do_typechecks && !skip_typechecks){
+		variadic_pos = has_varargs(T->args); // non-variadic arguments of variadic functions are still type-checked up to the "variadic" keyword
 		struct type_name *T_expr = type_name_new0();
 		T_expr->args = vector2_ptr_type_name_new();
 		m(*(T_expr->args),push_back,resT);
@@ -569,9 +569,9 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 		}
 		if(!type_args_equals(T->args, T_expr->args)){
 			/// check if types are compatible by checking all args except first (return type).
+			const char *T1_str = type_name_to_string(T);
+			const char *T2_str = type_name_to_string(T_expr);
 			if(!all_compatible(T->args, T_expr->args, 1, variadic_pos, IS_CALL)){
-				const char *T1_str = type_name_to_string(T);
-				const char *T2_str = type_name_to_string(T_expr);
 				error("Semantic error: function arguments don't match:\nexpected %s;\ngot      %s;", T1_str, T2_str);
 			}
 		}
@@ -583,14 +583,14 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 
 	 if(do_typechecks && !skip_typechecks){
 		int n_args_expected = T->args->size-1;
+		if(variadic_pos){n_args_expected = variadic_pos-1;}
 		int n_args_got = arguments.size;
 
-		if(n_args_got > n_args_expected){
+		if((n_args_got > n_args_expected) && !variadic_pos){
 			error("Semantic error: too many arguments for a function call (expected %d, got %d)", n_args_expected, n_args_got);
-		}else if((n_args_got < n_args_expected) && !variadic_pos){
+		}else if(n_args_got < n_args_expected){
 			error("Semantic error: not enough arguments for a function call (expected %d, got %d)", n_args_expected, n_args_got);
 		}
-		assert(arguments.size == T->args->size-1);
 	}
 
 	 for(int i = 0; i < arguments.size; i++){//while(ministack.size){//for (i = 0; i < list->children.size; i++) {
@@ -617,7 +617,7 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	 }
 	//3. actually emit the call
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("CALL %s %s%s", 
+	emit_code("CALL %s %s%s // semantic_expr_op.c:620", 
 		sanitize_string(exprResult), 
 		sanitize_string(name), 
 		sanitize_string(vstr.data));//buff);
@@ -626,6 +626,7 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = resT, .author = "expr_call" };
 	output_res(stg, result, NO_EMIT);
 }
+#define UNUSED(x) (void)x;
 
 void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	//expr: expr '.' expr
@@ -640,26 +641,58 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 	struct type_name *T = type_name_shallow_copy(res1.T);
 	struct type_name *T2 = T;
 	
-	if(T->points_to){T2 = dereffed_type(T);}
+	PREP_RES(res_this, E_RVAL);
+	res_this.rv_type = E_RVAL;
+	res_this.val = res1.val;
+	UNUSED(res_thisstg);
+
+	if(T->points_to){
+		T2 = dereffed_type(T);
+		res_this.T = T;
+	}else{
+		res_this.T = reffed_type(T);
+	}
+
 	if (!T2->symclass) {
 		YYLTYPE pos = node->token.pos;
 		err("line %d: [%s]\n", pos.first_line, get_source_text2(pos));//get_source_text(pos.start,pos.end,pos.filename));
 		error("semantic error: member access (x.y) impossible because x is a primitive (%s)\n", T->name);
 	}
 	
+	
 	if(T->points_to){ /// so that "ptr.x" is equivalent to "(*ptr).x"
 		if(res1.val[0] == '&'){
 			res1.val++;
+			res_this.val = res1.val;
 		}else{
+			res_this.val = res1.val;
 			const char* deref_obj = IR_next_name(namespace_semantic, "temp");
-			emit_code("MOV %s *%s", sanitize_string(deref_obj), sanitize_string(res1.val));
+			emit_code("MOV %s *%s // semantic_expr_op.c:670", sanitize_string(deref_obj), sanitize_string(res1.val));
 			res1.val = deref_obj;
 		}
 		res1.T = T2;
 	}else{
 		res1.T = T;
+
+		if(stg.out_sem_this){
+			vector2_char vstr = vector2_char_here();
+			if(res1.val[0] == '&'){
+					/// referencing further causes pointer-to-pointer-to-obj,
+					/// implying that the original type should have had T->pointed_to...
+				//const char *ref_obj = IR_next_name(namespace_semantic, "temp");
+				//emit_code("MOV %s %s // semantic_expr_op.c:681", sanitize_string(ref_obj), sanitize_string(res1.val));
+				//vec_printf(&vstr, "&%s", ref_obj);
+				//res_this.val = stralloc(vstr.data);
+				res_this.val = res1.val;
+			}else{
+				vec_printf(&vstr, "&%s", res1.val);
+				res_this.val = stralloc(vstr.data);
+			}
+		}
 	}
-	if(stg.out_sem_this){*stg.out_sem_this = res1;}
+	if(stg.out_sem_this){
+		*stg.out_sem_this = res_this;//res1;
+	}
 	
 
 	//push_symbol_table();
@@ -704,15 +737,15 @@ void semantic_analyze_expr_increment(ast_node* node, expr_settings stg) {
 	if (node->token.production == 0) {
 		//post-increment
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-		emit_code("MOV %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
-		emit_code("ADD %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
+		emit_code("MOV %s %s // semantic_expr_op.c:730", sanitize_string(resultExpr), sanitize_string(res1.val));
+		emit_code("ADD %s %s 1 // semantic_expr_op.c:731", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, result, res1type);
 		val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T, .author = author };
 		output_res(stg, result, NO_EMIT);
 	}
 	else {
 		//pre-increment
-		emit_code("ADD %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
+		emit_code("ADD %s %s 1 // semantic_expr_op.c:738", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, res1, res1type);
 		val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T, .author = author };
 		output_res(stg, result, NO_EMIT);
@@ -735,15 +768,15 @@ void semantic_analyze_expr_decrement(ast_node* node, expr_settings stg) {
 	if (node->token.production == 0) {
 		//post-decrement
 		const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-		emit_code("MOV %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
-		emit_code("SUB %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
+		emit_code("MOV %s %s // semantic_expr_op.c:761", sanitize_string(resultExpr), sanitize_string(res1.val));
+		emit_code("SUB %s %s 1 // semantic_expr_op.c:762", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, result, res1type);
 		val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T, .author = author };
 		output_res(stg, result, NO_EMIT);
 	}
 	else {
 		//pre-decrement
-		emit_code("SUB %s %s 1", sanitize_string(res1.val), sanitize_string(res1.val));
+		emit_code("SUB %s %s 1 // semantic_expr_op.c:762", sanitize_string(res1.val), sanitize_string(res1.val));
 		//output_res(stg, res1, res1type);
 		val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T, .author = author };
 		output_res(stg, result, NO_EMIT);
@@ -765,7 +798,7 @@ void semantic_analyze_expr_neg(ast_node* node, expr_settings stg) {
 	VERIFY_RES(res1);
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-	emit_code("NEG %s %s", sanitize_string(resultExpr), sanitize_string(res1.val));
+	emit_code("NEG %s %s // semantic_expr_op.c:791", sanitize_string(resultExpr), sanitize_string(res1.val));
 	
 	//output_res(stg, result, res1type);
 	val_handle result = { .val = resultExpr, .rv_type = E_LVAL, .T = res1.T, .author = author };
@@ -834,7 +867,7 @@ void semantic_analyze_expr_ref(ast_node* node, expr_settings stg) {
 	
 	
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
-	emit_code("MOV %s %s", resultExpr, res1.val);
+	emit_code("MOV %s %s // semantic_expr_op.c:860", resultExpr, res1.val);
 	/// we take a value, remove adorations (ref or deref as necessary)
 	/// and then present it as a plain number (RValue=read)
 
@@ -951,123 +984,6 @@ int safe_strcmp(const char *A, const char *B){
 	return 1;
 }
 
-/*
-/// checks the types between variable and expression, and assigns if it's ok 
-void typecheck_assign(val_handle res1, val_handle res2){
-	assert(res1.T);
-	assert(res2.T);
-	assert(type_name_is_sane(res1.T));
-	assert(type_name_is_sane(res2.T));
-	const char *type1_str = type_name_to_string(res1.T);
-	const char *type2_str = type_name_to_string(res2.T);
-	int arg1_is_func = (res1.T->args != 0);
-	int arg2_is_func = (res1.T->args != 0);
-	//struct symbol *S1 = 0;
-	//struct symbol *S2 = 0;
-	int arg1_is_array = res1.T->is_array; //check_if_array(dest, &S1);
-	int arg2_is_array = res2.T->is_array; //check_if_array(src,  &S2);
-	int arg1_is_ptr = (res1.T->points_to != 0);
-	int arg2_is_ptr = (res2.T->points_to != 0);
-	//int arg1_is_primitive = !arg1_is_func && !arg1_is_array && !arg1_is_ptr;
-	//int arg2_is_primitive = !arg2_is_func && !arg2_is_array && !arg2_is_ptr;
-	int arg1_is_int  = strcmp(type1_str, "int") ==0;
-	int arg2_is_int  = strcmp(type2_str, "int") ==0;
-	int arg1_is_char = strcmp(type1_str, "char")==0;
-	int arg2_is_char = strcmp(type2_str, "char")==0;
-	int arg1_is_float = strcmp(type1_str, "float")==0;
-	int arg2_is_float = strcmp(type2_str, "float")==0;
-	int arg1_is_number = arg1_is_int || arg1_is_char || arg1_is_float;
-	int arg2_is_number = arg2_is_int || arg2_is_char || arg2_is_float;
-	int arg1_is_string = strcmp(type1_str, "string")==0;
-	int arg2_is_string = strcmp(type2_str, "string")==0;
-	int arg1_is_void = strcmp(type1_str, "void")==0;
-	int arg2_is_void = strcmp(type2_str, "void")==0;
-	//int arg1_is_literal = (res1.T->is_literal);
-	int arg1_is_class = (res1.T->symclass != 0);
-	int arg2_is_class = (res2.T->symclass != 0);
-
-
-	//int arg2_is_literal = (res2.T->is_literal);
-	struct type_name *T3 = type_name_shallow_copy(res2.T);
-	T3->is_literal = 0;
-
-	if(type_name_equals(res1.T, res2.T)){
-		//int size = getTypeSize(res1.T);
-		// class or primitive, we memcpy anyway
-		// codegen should know how much to copy based on var size
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
-		return;
-	}else if(type_name_equals(res1.T, T3)){
-		/// assigning a literal to non-literal is allowed
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(res2.val));
-		return;	
-	}
-
-	if(arg1_is_array && !arg2_is_array)							{error("Semantic error: [type error 1: %s <- %s]:  trying to assign non-array to array", type1_str, type2_str);}
-	if(!arg1_is_array && arg2_is_array)							{error("Semantic error: [type error 2: %s <- %s]:  trying to assign array to non-array", type1_str, type2_str);}
-	if(arg1_is_array && arg2_is_array){
-		int arr1_size = res1.T->arraysize; //S1->symvariable.arraysize;
-		int arr2_size = res2.T->arraysize; //S2->symvariable.arraysize;
-		if(arr1_size == arr2_size)								{error("Semantic error: [type error 3: %s <- %s]: trying to assign arrays of different types", type1_str, type2_str);}
-		else													{error("Semantic error: [type error 4: %s <- %s]: trying to assign arrays of different size", type1_str, type2_str);}
-	}
-	/// not an array. maybe a pointer?
-	
-	if(arg1_is_ptr && !arg2_is_ptr){
-		if(type_name_equals(dereffed_type(res1.T), res2.T))		{error("Semantic error: [type error 5: %s <- %s]: assigning non-pointer to pointer (try '&')", type1_str, type2_str);}
-		else													{error("Semantic error: [type error 6: %s <- %s]: assigning different types", type1_str, type2_str);}
-		/// actually, maybe we can assign function to pointer?
-	}else if(!arg1_is_ptr && arg2_is_ptr){
-		if(type_name_equals(res1.T, dereffed_type(res2.T)))		{error("Semantic error: [type error 7: %s <- %s]: assigning pointer to non-pointer (try '*')", type1_str, type2_str);}
-		else													{error("Semantic error: [type error 8: %s <- %s]: assigning different types", type1_str, type2_str);}	
-	}else if(arg1_is_ptr && arg2_is_ptr){
-		if(type_name_equals(
-			dereffed_type(res1.T), dereffed_type(res2.T)))		{error("[INTERNAL] Semantic error: [type error 9: %s <- %s]: unknown type error", type1_str, type2_str);}
-		else													{error("Semantic error: [type error 10: %s <- %s]: assigning pointers of different types needs an explicit cast", type1_str, type2_str);}
-	}
-	/// not an array or pointer.
-	
-	if(arg1_is_void)											{error("Semantic error: [type error 11: %s <- %s]: can't assign to void", type1_str, type2_str);}
-	else if(arg2_is_void)										{error("Semantic error: [type error 12: %s <- %s]: can't assign void", type1_str, type2_str);}
-	
-	if(arg1_is_func)											{error("Semantic error: [type error 13: %s <- %s]: can't assign to a function", type1_str, type2_str);}
-	else if(arg2_is_func)										{error("Semantic error: [type error 14: %s <- %s]: can't assign a function", type1_str, type2_str);}
-	/// not an array, pointer or function. Class?
-	
-	if(arg1_is_class || arg2_is_class)							{error("Semantic error: [type error 15: %s <- %s]: assigning different types", type1_str, type2_str);}
-	
-	///not an array, pointer, function or class. Primitive type.
-	if(arg1_is_string)											{error("Semantic error: [type error 16: %s <- %s]: can't assign to a string",type1_str, type2_str);}
-	else if(arg2_is_string)										{error("Semantic error: [type error 17: %s <- %s]: can't assing a string", type1_str, type2_str);}
-	/// not a string
-	
-	if(arg1_is_number && arg2_is_number){
-		/// number to number implicit cast is allowed!
-		const char *ir_type1 = 0;
-		if(arg1_is_int)		{ir_type1 = "I32";}
-		if(arg1_is_char)	{ir_type1 = "U8";}
-		if(arg1_is_float)	{ir_type1 = "F64";}
-		assert(ir_type1);
-
-		const char *ir_type2 = 0;
-		if(arg2_is_int)		{ir_type2 = "I32";}
-		if(arg2_is_char)	{ir_type2 = "U8";}
-		if(arg2_is_float)	{ir_type2 = "F64";}
-		assert(ir_type2);
-
-		assert(strcmp(ir_type1, ir_type2) != 0);
-
-		/// emit conversion and copy
-		const char *reg = IR_next_name(namespace_semantic, "temp");
-		emit_code("CONVERT %s %s %s %s", sanitize_string(reg), sanitize_string(res2.val), ir_type1, ir_type2);
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(reg));
-		return;
-	}
-																error("Semantic error: [type error 18: %s <- %s]: assigning different types", type1_str, type2_str);
-	assert(!"uncreachable");
-}
-*/
-
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
 
@@ -1100,7 +1016,7 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	semantic_expr_analyze(src, res2stg); //expr
 	VERIFY_RES(res2);
 
-	const char *exprResult = 0;
+	const char *exprSrc = 0;
 
 	if(do_typechecks){
 		//typecheck_assign(res1, res2);
@@ -1110,13 +1026,13 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 		const char *T2_str = type_name_to_string(T2);
 		enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL);
 		if((int)compat >= (int)TC_CONVERTIBLE_EXPL){
-			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprResult = res1.val;}
-			else												{exprResult = emit_type_conversion(T1, T2, res1);}
+			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprSrc = res2.val;}
+			else												{exprSrc = emit_type_conversion(T1, T2, res2);}
 		}else													{error("Semantic error: can't assign %s <- %s", T1_str, T2_str);}
 	}else{
-		exprResult = res1.val;
+		exprSrc = res2.val;
 	}
-	emit_code("MOV %s %s //=",sanitize_string(exprResult), sanitize_string(res2.val));
+	emit_code("MOV %s %s //=  // semantic_expr_op.c:1025",sanitize_string(res1.val), sanitize_string(exprSrc));
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.
@@ -1126,7 +1042,7 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//now it can, lol
 
 	//output_res(stg, res1, res1type);
-	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = res1.T, .author = "expr_assign(=)" };
+	val_handle result = { .val = res1.val, .rv_type = E_LVAL, .T = res1.T, .author = "expr_assign(=)" };
 	output_res(stg, result, NO_EMIT);
 }
 
@@ -1145,7 +1061,7 @@ void semantic_analyze_expr_not(ast_node* node, expr_settings stg) {
 	VERIFY_RES(res1);
 
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
-	emit_code("NOT %s %s", sanitize_string(exprResult), sanitize_string(res1.val));
+	emit_code("NOT %s %s // semantic_expr_op.c:1054", sanitize_string(exprResult), sanitize_string(res1.val));
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = res1.T, .author = author };
 	output_res(stg, result, NO_EMIT);
 }

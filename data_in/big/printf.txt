@@ -24,7 +24,7 @@ void debug_s_arg(char *arg)
 	printf("]");
 end
 
-int sprintf(char *buff, char *fmt, int *parg)
+int sprintf(char *buff, char *fmt, void *parg)
 	int printed = 0;
 	while(*fmt)
 		char c = *fmt;
@@ -32,10 +32,10 @@ int sprintf(char *buff, char *fmt, int *parg)
 			fmt++;
 			char c2 = *fmt;
 			fmt++;
-			if(c2 == 'd') int2str(*parg, buff); parg++; end
-			if(c2 == 'f') float2str(*parg, 4, buff); parg++; end
-			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *parg); parg++; end
-			if(c2 == 'c') buff[0] = *parg; parg++; buff[1] = 0; end
+			if(c2 == 'd') int2str(*(int*)parg, buff); parg++; end
+			if(c2 == 'f') float2str(*(float*)parg, 4, buff); parg++; end
+			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *(char**)parg); parg++; end
+			if(c2 == 'c') buff[0] = *(char*)parg; parg++; buff[1] = 0; end
 			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
 			int inc = strlen(buff);
 			printed = printed + inc;

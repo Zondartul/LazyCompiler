@@ -272,7 +272,7 @@ void semantic_finalize(){
 		const char *result = IR_next_name(namespace_semantic,"temp");
 
 		emit_code_segment(global_init_CS);
-		emit_code("CALL %s _main", sanitize_string(result)); //idk how to pass main's params yet.
+		emit_code("CALL %s _main // semantic.c:275", sanitize_string(result)); //idk how to pass main's params yet.
 		emit_code_segment(global_deinit_CS);
 		emit_code("EXIT");
 
@@ -351,8 +351,8 @@ void emit_member_initializers(struct symbol_table *table){
 
 void class_constructor_emit(struct symbol *S){
 	assert(semantic_this);
-	emit_code("/* default class constructor */ // semantic.c:265 ");
-	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
+	emit_code("/* default class constructor */ // semantic.c:354 ");
+	emit_code("FUNCTION %s BEGIN // semantic.c:355", sanitize_string(S->IR_name));
 	push_symbol_table();
 	struct symbol_table* class_symtable = currentSymbolTable;
 	new_symbol_table(0);
@@ -362,48 +362,48 @@ void class_constructor_emit(struct symbol *S){
 	new_code_segment();
 	S->symfunction.code = currentCodeSegment;
 	S->symfunction.scope = currentSymbolTable;
-		emit_code("FRAME ENTER");
+		emit_code("FRAME ENTER // semantic.c:365");
 		
 		//emit_code("LABEL %s",S->IR_name);
 		//emit_all_initializers();
 		emit_all_declarations(DONT_USE_THIS); // need to declare "this"
 		emit_member_initializers(class_symtable);
-		emit_code("RET");
+		emit_code("RET // semantic.c:371");
 		//emit_all_undeclarations();
-		emit_code("FRAME LEAVE");
+		emit_code("FRAME LEAVE // semantic.c:373");
 	pop_code_segment();
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);
-	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
-	emit_code("/* end */ // semantic.c:284 ");
+	emit_code("FUNCTION %s END // semantic.c:377", sanitize_string(S->IR_name));
+	emit_code("/* end */ // semantic.c:378 ");
 }
 
 void class_destructor_emit(struct symbol *S){
 	emit_code("/* default class destructor */ // semantic.c:288 ");
-	emit_code("FUNCTION %s BEGIN", sanitize_string(S->IR_name));
+	emit_code("FUNCTION %s BEGIN // semantic.c:383", sanitize_string(S->IR_name));
 	push_symbol_table();
 	new_symbol_table(0);
 	push_code_segment();
 	new_code_segment();
 	S->symfunction.code = currentCodeSegment;
 	S->symfunction.scope = currentSymbolTable;
-		emit_code("FRAME ENTER");
+		emit_code("FRAME ENTER // semantic.c:390");
 		emit_all_declarations(DONT_USE_THIS);
 		//emit_code("LABEL %s",S->IR_name);
 		emit_all_deinitializers();
 		emit_code("RET");
 		emit_all_undeclarations();
-		emit_code("FRAME LEAVE");
+		emit_code("FRAME LEAVE // semantic.c:396");
 	pop_code_segment();
 	pop_symbol_table();
 	emit_code_segment(S->symfunction.code);	
-	emit_code("FUNCTION %s END", sanitize_string(S->IR_name));
+	emit_code("FUNCTION %s END // semantic.c:400", sanitize_string(S->IR_name));
 	emit_code("/* end */ // semantic.c:307 ");
 }
 
 void class_emit_start(){
 	//emit struct code so member addresses are available
-	emit_code("STRUCT %s BEGIN", sanitize_string(symbolThis->IR_name));
+	emit_code("STRUCT %s BEGIN // semantic.c:406", sanitize_string(symbolThis->IR_name));
 	//const char *smt = semantic_this;
 	//semantic_this = 0;					// do not declare "this" among class members
 	push_symbol_table();
@@ -417,7 +417,7 @@ void class_emit_start(){
 }
 
 void class_emit_end(){
-	emit_code("STRUCT %s END", sanitize_string(symbolThis->IR_name));
+	emit_code("STRUCT %s END // semantic.c:420", sanitize_string(symbolThis->IR_name));
 }
 
 void class_def_finalize(){
@@ -447,7 +447,7 @@ void class_def_finalize(){
 		S->username = name;
 		S->IR_name = IR_name;
 		struct type_name *T = semantic_get_type("void");
-		S->symfunction.returntype = T;
+		//S->symfunction.returntype = T;
 		/// make a signature
 			struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
 			signature->name = 0;
@@ -475,7 +475,7 @@ void class_def_finalize(){
 		S->username = name;
 		S->IR_name = IR_name;
 		struct type_name *T = semantic_get_type("void");
-		S->symfunction.returntype = T;
+		//S->symfunction.returntype = T;
 		/// make a signature
 			struct type_name *signature = type_name_new0();//malloc(sizeof(struct type_name));
 			signature->name = 0;
@@ -492,7 +492,7 @@ void class_def_finalize(){
 
 void emit_all_decl_helper(){
 	if(symbolThis){
-		emit_code("USING %s", sanitize_string(symbolThis->IR_name));
+		emit_code("USING %s // semantic.c:495", sanitize_string(symbolThis->IR_name));
 	}
 	int i = 0;
 	for(i = 0; i < currentSymbolTable->symbols.size; i++){
@@ -524,7 +524,7 @@ void emit_all_decl_helper(){
 			if (S->symvariable.type->is_array){//S->symvariable.array) {
 				vec_printf(&vstr, " ARRAY %d", S->symvariable.type->arraysize);
 			}
-			emit_code("%s", vstr.data);
+			emit_code("%s // semantic.c:527", vstr.data);
 			//if(S->symvariable.array){
 			//	if(S->type == SYMBOL_PARAM){
 			//		emit_code("SYMBOL %s ARG ARRAY %d", 
@@ -634,7 +634,7 @@ void emit_initializer(struct symbol *S){
 			printf("debug breakpoint");
 		}
 
-		emit_code("CALL %s %s &%s", 
+		emit_code("CALL %s %s &%s // semantic.c:637", 
 			sanitize_string(exprResult), 
 			sanitize_string(S3->IR_name), 
 			sanitize_string(S->IR_name));
@@ -647,7 +647,7 @@ void emit_initializer(struct symbol *S){
 		if(semantic_this && (S->type == SYMBOL_MEMBER)){
 			if(S->init_expr){
 				// Generate the member initialization code like x = y;
-				emit_code("COMMENT SOURCE \"this.%s = member initializer;\" // semantic.c:543", S->username);
+				emit_code("COMMENT SOURCE \"this.%s = member initializer;\" // semantic.c:650", S->username);
 				
 				//struct ast_node *id_this = make_ast_ID("this");
 				struct ast_node *lhs = make_ast_ID(S->username);
@@ -688,7 +688,7 @@ void emit_deinitializer(struct symbol *S){
 		currentSymbolTable = S2->symclass.scope;
 		struct symbol *S3 = lookup_symbol("destructor");
 		const char *exprResult = IR_next_name(namespace_semantic,"temp");
-		emit_code("CALL %s %s &%s", 
+		emit_code("CALL %s %s &%s // semantic.c:691", 
 			sanitize_string(exprResult), 
 			sanitize_string(S3->IR_name), 
 			sanitize_string(S->IR_name));
@@ -763,7 +763,7 @@ void analyze_scope(struct ast_node *N,
 			emit_all_deinitializers();
 			emit_all_undeclarations();
 		}
-		if(!noEnterLeave){emit_code("FRAME LEAVE");}
+		if(!noEnterLeave){emit_code("FRAME LEAVE // semantic.c:766");}
 		if(CCS){pop_code_segment();}			
 	}
 	pop_symbol_table();
@@ -995,7 +995,7 @@ void emit_code_segment(struct code_segment *CS){
 		}
 		//m(CS_list,pop_back);
 	}else{
-		emit_code("INSERT %s", sanitize_string(CS->name));
+		emit_code("INSERT %s // semantic.c:998", sanitize_string(CS->name));
 	}
 }
 
