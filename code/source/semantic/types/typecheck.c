@@ -1,6 +1,17 @@
 #include "typecheck.h"
 #include "assert.h"
 
+void init_typechecking(){
+	T_char = gen_type_name_char();
+	T_int = gen_type_name_int();
+	T_float = gen_type_name_float();
+	T_void = gen_type_name_void();
+	T_void_ptr = gen_type_name_void_ptr();
+	T_string = gen_type_name_string();
+
+	init_op_typechecking();
+}
+
 struct type_name *gen_type_name_char(){struct type_name *T = type_name_new0(); T->name = "char"; return T;}
 struct type_name *gen_type_name_int(){struct type_name *T = type_name_new0(); T->name = "int"; return T;}
 struct type_name *gen_type_name_float(){struct type_name *T = type_name_new0(); T->name = "float"; return T;}
@@ -181,4 +192,73 @@ int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *ar
 		if((int)compat < (int)TC_CONVERTIBLE_IMPL){return 0;}
 	}
 	return 1;
+}
+
+///--------------- operator type-checking -----------------
+
+implementation_vector_of(ptr_TypeOpStrategy);
+
+vector2_ptr_TypeOpStrategy OpStrats;
+
+TypeOpStrategy *TypeOpStrategy_new0(){
+	struct TypeOpStrategy *strat = (TypeOpStrategy*)malloc(sizeof(TypeOpStrategy));
+	strat->in_T1 = 0;
+	strat->op = 0;
+	strat->in_T2 = 0;
+	strat->is_symmetric = 0;
+	strat->arg1_promote_to = 0;
+	strat->arg2_promote_to = 0;
+	strat->strategy = 0;
+	return strat;
+}
+
+TypeOpStrategy *TypeOpStrategy_new(
+	struct type_name *in_T1, const char *op, struct type_name *in_T2, 
+	int is_symmetric, struct type_name *arg1_promote_to, struct type_name *arg2_promote_to,
+	op_func strategy)
+{
+	struct TypeOpStrategy *strat = (TypeOpStrategy*)malloc(sizeof(TypeOpStrategy));
+	strat->in_T1 = 0;
+	strat->op = 0;
+	strat->in_T2 = 0;
+	strat->is_symmetric = 0;
+	strat->arg1_promote_to = 0;
+	strat->arg2_promote_to = 0;
+	strat->strategy = 0;
+	return strat;
+}
+
+void init_op_typechecking(){
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "+", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "-", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "*", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "/", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "^", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "%%", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "any", T_int, 1, 0, 0, 0));
+	
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "+", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "-", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "*", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "/", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "^", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "%%", T_float, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_float, "any", T_float, 1, 0, 0, 0));
+	
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "+", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "-", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "*", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "/", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "^", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "%%", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "any", T_int, 1, 0, 0, 0));
+	
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "+", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "-", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "*", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "/", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "^", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "%%", T_int, 1, 0, 0, 0));
+	m(OpStrats, push_back, TypeOpStrategy_new(T_int, "any", T_int, 1, 0, 0, 0));
+
 }

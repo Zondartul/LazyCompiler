@@ -5,6 +5,7 @@
 #include "codegen.h"
 #include "yaccin.tab.h"
 #include "main.h"
+#include "typecheck.h"
 extern FILE *yyin;
 extern FILE *yyin2;
 
@@ -191,6 +192,7 @@ good_args:
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	ast_init();
+	init_typechecks();
 	//yydebug = 1;
 	yylloc.last_line = 1;
 	yylloc.end = 0;
