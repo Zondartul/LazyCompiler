@@ -53,6 +53,96 @@ end
 void derpyfunc(int arg1, int arg2, int arg3)
 end
 */
+/*
+void float2str_test()
+	char buff[80];
+	char *pbuff = (char*)&buff;
+	float2str_debug(3.14, 4, pbuff);
+	printf("test end, buff = [%s]\n",pbuff);
+end
+
+int fl2int(float x) return (int)(x*1000); end
+
+void float2str_debug(float num, int prec, char *buff)
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
+	char *buffInit = buff;
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	printf("  isNeg = %d, num = %df\n", isNeg, fl2int(num));
+	int num_fl = floor(num);
+	float num_fr = frac(num);
+	float num_frpr = floorPrec_debug(num_fr, prec);
+	printf("  num_fl = %d, num_fr = %df,\n  num_frpr = %df\n", num_fl, fl2int(num_fr), fl2int(num_frpr));
+	//printf("float2str(%d, %d):\n",num, prec);
+	//printf("  num_fl = %d\n", num_fl);
+	//printf("  num_fr*1000 = %d\n", num_fr*1000);
+	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
+	//if(isNeg) *buff++ = '-'; end
+	if(isNeg) buff[0] = '-'; buff++; end
+	int2str(num_fl, buff);
+	buff = buff + strlen(buff);
+	//if(num_fr)
+		//*buff++ = '.';
+		buff[0] = '.';
+		buff++;
+		int k = ipow10(prec);
+		float num_final = floor(num_frpr*k);
+		printf("  k = %d, num_final = %df\n", k, fl2int(num_final));
+		//printf("  num_final = %d\n", num_final);
+		int2str(num_final, buff);
+		strPadBegin(buff, prec, '0');
+	//end
+end
+
+int floorPrec_debug(float num, int prec)
+	printf("  floorPrec_debug(%df, %d)\n", fl2int(num), prec);
+	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
+	
+	num = num * k; 			//printf(" num*k = %d\n", num);
+	printf("    k = %d, num1 = %df\n", k, fl2int(num));
+	num = floor(num);		//printf(" floor(num) = %d\n", num);
+	printf("    num2 = %df, ", fl2int(num));
+	num = num / k;			//printf(" num/k = %d\n", num);
+	printf("num3 = %df\n", fl2int(num));
+	return num;
+end
+
+void printftest2()
+	float num = 3.14;
+	int prec = 4;
+	char *buff = 59906;
+	printf("Hello %d!\n", 123);
+	printf("f1 [%d]\n", 3140);
+	printf("f2 %d %d %d %d %d %d\n", 0, 1, 12, 123, 1234, 12345);
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
+
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", 3140, 4, 59906);
+	
+	printf("f3 [%d] [%d] [%d]\n", 3140, 4, 59906);
+	printf("f4 [%d]\n", 3140);
+	
+
+end
+
+void string_reverse_test()
+	string_reverse_debug("54321");
+	string_reverse_debug("4321");
+end
+
+void string_reverse_debug(char *str)
+	printf("rev before: [%s]\n", str);
+	int len = strlen(str);
+	printf("len = %d\n", len);
+	for(int i = 0; i < len/2; i++)
+		int opposite = len-1-i;
+		printf("swap (%d (%c)<-> %d (%c))\n", i, str[i], opposite, str[opposite]);
+		char d = str[i];
+		str[i] = str[opposite];
+		str[opposite] = d;
+	end	
+	printf("rev after:  [%s]\n", str);
+end
+*/
 
 int main()
 	setup();
@@ -65,8 +155,13 @@ int main()
 	//printf("hello world!\n");
 	
 	printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello %d!\n", 123);
 	
-	//class Dev_address_bus addr_bus;
+	//float2str_test();
+	//printftest2();
+	//string_reverse_test();
+//class Dev_address_bus addr_bus;
 	
 	
 	//class CScreen scr;

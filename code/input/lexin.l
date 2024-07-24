@@ -116,6 +116,7 @@ for											{yylval = ast_node_new(ast_token_here("FOR",	0,NULL,				tokPos()),
 \-\-										{yylval = ast_node_new(ast_token_here("DEC",	0,NULL,				tokPos()), v2pan_here()); return(DEC);}
 \+\+										{yylval = ast_node_new(ast_token_here("INC",	0,NULL,				tokPos()), v2pan_here()); return(INC);}
 [a-zA-Z_][a-zA-Z_0-9]* 						{yylval = ast_node_new(ast_token_here("ID",		0,stralloc(yytext),	tokPos()), v2pan_here()); return(ID);}
+([0-9]*\.[0-9]+)							{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}
 (0x[0-9]+)									{yylval = ast_node_new(ast_token_here("INTEGERX",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERX);}
 (0b[0-1]+)									{yylval = ast_node_new(ast_token_here("INTEGERB",0,stralloc(yytext),tokPos()), v2pan_here()); return(INTEGERB);}
 (0|([1-9][0-9]*))\.(0-9)+					{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}

@@ -38,7 +38,7 @@ int floor(float num)
 	return res;
 end
 
-int floorPrec(float num, float prec)
+int floorPrec(float num, int prec)
 	//printf("floorPrec(%d):\n", num);
 	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
 	num = num * k; 			//printf(" num*k = %d\n", num);
@@ -57,7 +57,7 @@ end
 
 
 
-void int2str(float num, char *buff)
+void int2str(int num, char *buff)
 	char *buffInit = buff;
 //	if(num == 0)
 //		buff[0] = '0';//*buff++ = '0';

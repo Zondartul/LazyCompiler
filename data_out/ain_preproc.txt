@@ -131,9 +131,9 @@ void test_0_associativity()
 		%right '=' ASSIGN
 		%left LOGIC
 		%left EQUAL NOTEQUAL COMPARE
-		%left '+' ADDSUB // -
-		%left '/' '%' MULDIV EXP  // *
-		%right PREOP INC DEC '-' NEG '!' LNEG CAST '*' DEREF '&' REF
+		%left '+' '-' ADDSUB
+		%left '/' '%' '*' MULDIV EXP
+		%right PREOP INC DEC NEG '!' LNEG CAST DEREF '&' REF // '*' '-' 
 		%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
 		%precedence SUBEXPR
 	
@@ -201,7 +201,8 @@ void test_0_associativity()
 	  // |  |   \expr_const "2"
 	  // |  |    \INTEGER "2"
 	writePort(1, 3);
-	x = 2 * 3 ^ 4 / 2; // (((2*3)^4)/2) = 648; (2 * (3^4)) / 2 = 81;
+	x = 2 * 3 ^ 4 / 2; // good: (2 * (3^4)) / 2 = 81; bad: (((2*3)^4)/2) = 648;  2 * (3^(4/2)) = 18;
+					   // bad: 2 * ((3^4)/2) = 80 (due to 81/2 = 40.5 -> 40)
 	writePort(2, x);
 	if (x != 81) crash(); end
 	x = 0;
@@ -363,6 +364,49 @@ void test_0_associativity()
 	writePort(2, x);
 	if (x != 1) crash(); end
 	x = 0;
+
+	/// does SUB have left-to-right associativity?
+	// correct:
+		// |  +stmt
+		// |  |\imp_stmt
+		// |  | \expr_=
+		// |  |  +expr_id "x"
+		// |  |  |\ID "x"
+		// |  |  \expr_-
+		// |  |   +expr_-
+		// |  |   |+expr_const "10"
+		// |  |   ||\INTEGER "10"
+		// |  |   |\expr_const "2"
+		// |  |   | \INTEGER "2"
+		// |  |   \expr_const "1"
+		// |  |    \INTEGER "1"
+	writePort(1, 9);
+	x = 10 - 2 - 1; // good: (10-2)-1 = 7; bad: 10 - (2-1) = 9
+	writePort(2, x);
+	if (x != 7) crash(); end
+	x = 0;
+
+	/// does DIV have left-to-right associavitiy?
+	// correct:
+		// |  +stmt
+		// |  |\imp_stmt
+		// |  | \expr_=
+		// |  |  +expr_id "x"
+		// |  |  |\ID "x"
+		// |  |  \expr_/
+		// |  |   +expr_/
+		// |  |   |+expr_const "360"
+		// |  |   ||\INTEGER "360"
+		// |  |   |\expr_const "12"
+		// |  |   | \INTEGER "12"
+		// |  |   \expr_const "3"
+		// |  |    \INTEGER "3"
+	writePort(1, 10);
+	x = 360 / 12 / 3; // good (360/12)/3 = 30/3 = 10; bad: 360 / (12/3) = 360/4 = 90;
+	writePort(3, x);
+	if (x != 10) crash(); end
+	x = 0;
+
 end
 
 
@@ -458,6 +502,7 @@ end
 
 int test_5_arithmetic()
 	test_5_arithmetic_integer();
+	test_5_arithmetic_float();
 end
 
 int test_5_arithmetic_integer()
@@ -467,7 +512,7 @@ int test_5_arithmetic_integer()
 	expect_basic(5,  1, x+y, 30);
 	expect_basic(5,  2, x-y, -10);
 	expect_basic(5,  3, x*y, 200);
-	expect_basic(5,  4, x/y, 0);
+	expect_basic(5,  4, (int)(float)(x/y), 0);
 	expect_basic(5,  5, y/x, 2);
 	expect_basic(5,  6, x>y, 0);
 	expect_basic(5,  7, x<y, 1);
@@ -481,6 +526,20 @@ int test_5_arithmetic_integer()
 	expect_basic(5, 15, !!x, 1);
 	
 	return CODE_OK;
+end
+
+int test_5_arithmetic_float()
+	float pi = 3.14;
+	float x = 0.1;
+	expect_basic(5, 16, pi, 3);
+	expect_basic(5, 17, x, 0);
+	expect_basic(5, 18, pi*10, 31);
+	expect_basic(5, 19, x*10, 1);
+	expect_basic(5, 20, pi*x, 0);
+	//ps. conversion from float to int should happen through
+	//expression (op) typechecks, but that's not yet implemented
+	expect_basic(5, 21, (int)(float)(2*pi/x), 62); 
+	printf("pi = %f\n", pi);
 end
 
 void set_buff_mario(char *buff)
@@ -848,7 +907,7 @@ int floor(float num)
 	return res;
 end
 
-int floorPrec(float num, float prec)
+int floorPrec(float num, int prec)
 	//printf("floorPrec(%d):\n", num);
 	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
 	num = num * k; 			//printf(" num*k = %d\n", num);
@@ -867,7 +926,7 @@ end
 
 
 
-void int2str(float num, char *buff)
+void int2str(int num, char *buff)
 	char *buffInit = buff;
 //	if(num == 0)
 //		buff[0] = '0';//*buff++ = '0';
@@ -1194,6 +1253,95 @@ void derpyfunc(int arg1, int arg2, int arg3)
 end
 */
 
+void float2str_test()
+	char buff[80];
+	char *pbuff = (char*)&buff;
+	float2str_debug(3.14, 4, pbuff);
+	printf("test end, buff = [%s]\n",pbuff);
+end
+
+int fl2int(float x) return (int)(x*1000); end
+
+void float2str_debug(float num, int prec, char *buff)
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
+	char *buffInit = buff;
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	printf("  isNeg = %d, num = %df\n", isNeg, fl2int(num));
+	int num_fl = floor(num);
+	float num_fr = frac(num);
+	float num_frpr = floorPrec_debug(num_fr, prec);
+	printf("  num_fl = %d, num_fr = %df,\n  num_frpr = %df\n", num_fl, fl2int(num_fr), fl2int(num_frpr));
+	//printf("float2str(%d, %d):\n",num, prec);
+	//printf("  num_fl = %d\n", num_fl);
+	//printf("  num_fr*1000 = %d\n", num_fr*1000);
+	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
+	//if(isNeg) *buff++ = '-'; end
+	if(isNeg) buff[0] = '-'; buff++; end
+	int2str(num_fl, buff);
+	buff = buff + strlen(buff);
+	//if(num_fr)
+		//*buff++ = '.';
+		buff[0] = '.';
+		buff++;
+		int k = ipow10(prec);
+		float num_final = floor(num_frpr*k);
+		printf("  k = %d, num_final = %df\n", k, fl2int(num_final));
+		//printf("  num_final = %d\n", num_final);
+		int2str(num_final, buff);
+		strPadBegin(buff, prec, '0');
+	//end
+end
+
+int floorPrec_debug(float num, int prec)
+	printf("  floorPrec_debug(%df, %d)\n", fl2int(num), prec);
+	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
+	
+	num = num * k; 			//printf(" num*k = %d\n", num);
+	printf("    k = %d, num1 = %df\n", k, fl2int(num));
+	num = floor(num);		//printf(" floor(num) = %d\n", num);
+	printf("    num2 = %df, ", fl2int(num));
+	num = num / k;			//printf(" num/k = %d\n", num);
+	printf("num3 = %df\n", fl2int(num));
+	return num;
+end
+
+void printftest2()
+	float num = 3.14;
+	int prec = 4;
+	char *buff = 59906;
+	printf("Hello %d!\n", 123);
+	printf("f1 [%d]\n", 3140);
+	printf("f2 %d %d %d %d %d %d\n", 0, 1, 12, 123, 1234, 12345);
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
+
+	printf("float2str_debug(num %df, prec %d, buff %dp)\n", 3140, 4, 59906);
+	
+	printf("f3 [%d] [%d] [%d]\n", 3140, 4, 59906);
+	printf("f4 [%d]\n", 3140);
+	
+
+end
+
+void string_reverse_test()
+	string_reverse_debug("54321");
+	string_reverse_debug("4321");
+end
+
+void string_reverse_debug(char *str)
+	printf("rev before: [%s]\n", str);
+	int len = strlen(str);
+	printf("len = %d\n", len);
+	for(int i = 0; i < len/2; i++)
+		int opposite = len-1-i;
+		printf("swap (%d (%c)<-> %d (%c))\n", i, str[i], opposite, str[opposite]);
+		char d = str[i];
+		str[i] = str[opposite];
+		str[opposite] = d;
+	end	
+	printf("rev after:  [%s]\n", str);
+end
+
 int main()
 	setup();
 	
@@ -1205,8 +1353,13 @@ int main()
 	//printf("hello world!\n");
 	
 	printf("Hello [%s] %d!\n", "world", 123);
+	printf("Hello [%s] %d!\n", "world", 123);
+	printf("Hello %d!\n", 123);
 	
-	//class Dev_address_bus addr_bus;
+	float2str_test();
+	//printftest2();
+	//string_reverse_test();
+//class Dev_address_bus addr_bus;
 	
 	
 	//class CScreen scr;

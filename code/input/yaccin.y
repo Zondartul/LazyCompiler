@@ -353,9 +353,9 @@ Not all rules and not all tokens have precedence. If either the rule
 %right '=' ASSIGN
 %left LOGIC
 %left EQUAL NOTEQUAL COMPARE
-%left '+' ADDSUB // -
-%left '/' '%' MULDIV EXP  // *
-%right PREOP INC DEC '-' NEG '!' LNEG CAST '*' DEREF '&' REF
+%left '+' '-' ADDSUB
+%left '/' '%' '*' MULDIV EXP
+%right PREOP INC DEC NEG '!' LNEG CAST DEREF '&' REF // '*' '-' 
 %left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
 %precedence SUBEXPR
 

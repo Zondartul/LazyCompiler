@@ -270,12 +270,25 @@ void printindent(){
 }
 
 int isnumber(const char *str){
+	//if(strcmp(str, "3.14")==0){
+	//	printf("debug breakpoint");
+	//}
 	char C = *str++;
 	if(C == '-'){C = *str++;}
 	while(C){
-		if(!isdigit(C)){return 0;}
+		if(!isdigit(C)){break;}
 		C = *str++;
 	}
+	/// check float
+	if(C == '.'){
+		C = *str++;
+		while(C){
+			if(!isdigit(C)){break;}
+			C = *str++;
+		}
+	}
+	if(C){return 0;} // string has a character that does not belong in a number 
+
 	return 1;
 }
 
