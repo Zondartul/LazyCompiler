@@ -33,6 +33,10 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	semantic_expr_analyze(ast_get_child(node, 1), res2stg);
 	VERIFY_RES(res2);
 
+	PREP_RES(res3, E_ASIS);
+	typecheck_op(res1, res2, res3stg);
+	VERIFY_RES(res3);
+	/*
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("%s %s %s %s // semantic_expr_op.c:37", 
 		sanitize_string(OP), 
@@ -54,37 +58,16 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 					exprResult = temp1;
 				}
 			}else{
-				//int is_int = (strcmp(res2.T->name, "int") == 0);
-				//int is_char = (strcmp(res2.T->name, "char") == 0);
-				//int is_some_integer = is_int || is_char;
 				if(is_int(res2.T) || is_char(res2.T)){
-					//uint64_t max_limit = 0;
-					//int64_t min_limit = 0;
-					//int64_t total_limit = 0;
-					//if(is_int){min_limit = -2147483648; /*max_limit = 2147483647;*/ total_limit = 1ULL<<32;} // int always  sint32_t
-					//if(is_char){min_limit = 0; /*max_limit = 255;*/ total_limit = 256;}				 // char always uint8_t
-
-					//if(is_some_integer){
-						/// we need to floor and clamp the number
-						/// num = ((floor(num) - min_limit) % total_limit) + min_limit
-						//const char* temp1 = IR_next_name(namespace_semantic, "temp");
-						//const char* temp2 = IR_next_name(namespace_semantic, "temp");
-						//const char* temp3 = IR_next_name(namespace_semantic, "temp");
-						//const char* temp4 = IR_next_name(namespace_semantic, "temp");
-						//emit_code("COMMENT GENERAL \"(integer coersion to %s)\" // semantic_expr_op.c:72", res2.T->name);
-						//emit_code("FLOOR %s %s // semantic_expr_op.c:73", temp1, exprResult);
-						//emit_code("SUB %s %s %" PRId64 " // semantic_expr_op.c:74", temp2, temp1, min_limit); ///
-						//emit_code("MOD %s %s %" PRId64 " // semantic_expr_op.c:75", temp3, temp2, total_limit);
-						//emit_code("ADD %s %s %" PRId64 " // semantic_expr_op.c:76", temp4, temp3, min_limit);
-						//exprResult = temp4;
-					//}
 					emit_code("COMMENT GENERAL \"(integer coersion to ensure %s stays %s)\" // semantic_expr_op.c:82", res2.T->name);
 					exprResult = emit_type_conversion(gen_type_name_float(), res2.T, res2);
 				}
 			}
 		}
 	}
-	val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL, .author = "expr_op_ifx"};
+	*/
+	//val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL, .author = "expr_op_ifx"};
+	val_handle result = { .val = res3.val, .T = res3.T, .rv_type = res3.rv_type, .author = "expr_op_ifx"};
 	output_res(stg, result, NO_EMIT);
 }
 

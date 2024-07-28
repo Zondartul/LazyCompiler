@@ -91,7 +91,7 @@
 * [todo 53] change struct type_name to tell if type is an array, also change 'poitnerlevel' to 'is_pointer' and add 'pointed-type'
 * [FIXED 54] some derp4 class gets constructed in prologue after call to main (unreachable code) i.e. never.
 *		-- turns out semantic_analyze_program would insert a "call main" at the beginning* of a scope and didn't control for when the initializers appeared
-*
+* [idea 55] generate IR using templated text instead of emit_code %s %s %s and IR_next_name. Have special tokens that mean "next temp token" and "last temp token".
 *
 *
 * ----- FIXED bugs: ----------------
