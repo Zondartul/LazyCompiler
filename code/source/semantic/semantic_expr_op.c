@@ -34,7 +34,8 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	VERIFY_RES(res2);
 
 	PREP_RES(res3, E_ASIS);
-	typecheck_op(res1, res2, res3stg);
+	m(vstr, clear);  vec_printf(&vstr, "op %s arg2", OP); res3stg.dest.author = vstr.data;
+	typecheck_op(res1, OP, res2, res3stg);
 	VERIFY_RES(res3);
 	/*
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
@@ -67,7 +68,7 @@ void semantic_analyze_expr_op_ifx(ast_node* node, const char* OP, expr_settings 
 	}
 	*/
 	//val_handle result = { .val = exprResult, .T = res1.T, .rv_type = E_LVAL, .author = "expr_op_ifx"};
-	val_handle result = { .val = res3.val, .T = res3.T, .rv_type = res3.rv_type, .author = "expr_op_ifx"};
+	val_handle result = { .val = res3.val, .T = res3.T, .rv_type = E_LVAL, .author = "expr_op_ifx"};
 	output_res(stg, result, NO_EMIT);
 }
 

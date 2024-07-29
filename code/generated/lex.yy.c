@@ -1,6 +1,6 @@
-#line 2 "generated/lex.yy.c"
+#line 1 "generated/lex.yy.c"
 
-#line 4 "generated/lex.yy.c"
+#line 3 "generated/lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -626,8 +626,8 @@ YYLTYPE tokPos(){return yylloc;}
 "#line "(0|([1-9][0-9]*))[^\n]*\n			{char *str = substring(yytext,6,strlen(yytext)-1); int L; sscanf(str,"%d",&L); setline(L);}
 
 */
+#line 629 "generated/lex.yy.c"
 #line 630 "generated/lex.yy.c"
-#line 631 "generated/lex.yy.c"
 
 #define INITIAL 0
 
@@ -850,7 +850,7 @@ YY_DECL
 #line 96 "<stdin>"
 //yylloc.first_column = yylloc.last_column;
 
-#line 854 "generated/lex.yy.c"
+#line 853 "generated/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1063,7 +1063,7 @@ YY_RULE_SETUP
 #line 132 "<stdin>"
 ECHO;
 	YY_BREAK
-#line 1067 "generated/lex.yy.c"
+#line 1066 "generated/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

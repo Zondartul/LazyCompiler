@@ -192,7 +192,7 @@ good_args:
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	ast_init();
-	init_typechecks();
+	init_typechecking();
 	//yydebug = 1;
 	yylloc.last_line = 1;
 	yylloc.end = 0;

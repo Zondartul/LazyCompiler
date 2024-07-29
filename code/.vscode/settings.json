@@ -8,6 +8,7 @@
         "codegen_gen_command.h": "c",
         "*.y": "yacc",
         "assert.h": "c",
-        "semantic.h": "c"
+        "semantic.h": "c",
+        "typecheck.h": "c"
     }
 }

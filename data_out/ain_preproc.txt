@@ -1252,7 +1252,7 @@ end
 void derpyfunc(int arg1, int arg2, int arg3)
 end
 */
-
+/*
 void float2str_test()
 	char buff[80];
 	char *pbuff = (char*)&buff;
@@ -1341,6 +1341,7 @@ void string_reverse_debug(char *str)
 	end	
 	printf("rev after:  [%s]\n", str);
 end
+*/
 
 int main()
 	setup();
@@ -1353,10 +1354,10 @@ int main()
 	//printf("hello world!\n");
 	
 	printf("Hello [%s] %d!\n", "world", 123);
-	printf("Hello [%s] %d!\n", "world", 123);
-	printf("Hello %d!\n", 123);
+	//printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello %d!\n", 123);
 	
-	float2str_test();
+	//float2str_test();
 	//printftest2();
 	//string_reverse_test();
 //class Dev_address_bus addr_bus;

@@ -1,5 +1,13 @@
 #include "typecheck.h"
 #include "assert.h"
+#include "semantic_expr_op.h" //for dereffed_type
+
+struct type_name *T_char = 0;
+struct type_name *T_int = 0;
+struct type_name *T_float = 0;
+struct type_name *T_void = 0;
+struct type_name *T_void_ptr = 0;
+struct type_name *T_string = 0;
 
 void init_typechecking(){
 	T_char = gen_type_name_char();
@@ -27,9 +35,15 @@ int is_void(struct type_name *T){return T->name && (strcmp(T->name,"void")==0);}
 int is_void_ptr(struct type_name *T){return T->points_to && is_void(T->points_to);}
 int is_string(struct type_name *T){return T->name && (strcmp(T->name,"string")==0);}
 
-int is_numeric(struct type_name *T){
-	return is_char(T) || is_int(T) || is_float(T);
-}
+int is_pointer(struct type_name *T){return (T->points_to != 0);}
+int is_array(struct type_name *T){return T->is_array;}
+int is_function(struct type_name *T){return (T->args != 0);}
+int is_class(struct type_name *T){return (T->symclass != 0);}
+
+int is_primitive(struct type_name *T){return (!is_pointer(T)) && (!is_array(T)) && (!is_function(T)) && (!is_class(T));}
+int is_numeric(struct type_name *T){return is_char(T) || is_int(T) || is_float(T);}
+int is_integer(struct type_name *T){return is_char(T) || is_int(T);}
+int is_indexible(struct type_name *T){return is_pointer(T) || is_array(T) || is_string(T);}
 
 const char *emit_type_conversion(struct type_name *T_dest, struct type_name *T_src, val_handle src_res){
 	//if(strcmp(src_res.val, "*temp_244")==0){
@@ -196,31 +210,56 @@ int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *ar
 
 ///--------------- operator type-checking -----------------
 
+// typedef struct Type_LFC_Data{
+// 	// expression input
+// 	val_handle res1;
+// 	const char *op;
+// 	val_handle res2;
+// 	//
+// 	enum eLFCData job;
+// 	enum eLFCData side;
+// } LFCData;
+
+LFCData LFCData_here0(){
+	LFCData data;
+	data.res1.rv_type = E_ERROR;
+	data.op = 0;
+	data.res2.rv_type = E_ERROR;
+	data.job = LFCD_ERROR;
+	data.side = LFCD_ERROR;
+	return data;
+}
+
 struct Type_Literal_Filter_or_Calc LFC_here0(){
 	LFC lfc;
-	lfc.is_literal = 0;
-	lfc.is_calc = 0;
-	lfc.is_filter = 0;
+	lfc.type = LFCT_ERROR;
 	lfc.filter = 0;
 	lfc.calc = 0;
 	lfc.T = 0;
 	return lfc;
 }
+
+struct Type_Literal_Filter_or_Calc LFC_any(){
+	LFC lfc = LFC_here0();
+	lfc.type = LFCT_ANY;
+	return lfc;
+}
+
 struct Type_Literal_Filter_or_Calc LFC_literal(struct type_name *T){
 	LFC lfc = LFC_here0();
-	lfc.is_literal = 1;
+	lfc.type = LFCT_LITERAL;
 	lfc.T = T;
 	return lfc;
 }
 struct Type_Literal_Filter_or_Calc LFC_filter(type_filter_func func){
 	LFC lfc = LFC_here0();
-	lfc.is_filter = 1;
+	lfc.type = LFCT_FILTER;
 	lfc.filter = func;
 	return lfc;
 }
-struct Type_Literal_Filter_or_Calc LFC_calc(type_calculator_func_2 func){
+struct Type_Literal_Filter_or_Calc LFC_calc(type_calculator_func func){
 	LFC lfc = LFC_here0();
-	lfc.is_calc = 1;
+	lfc.type = LFCT_CALC;
 	lfc.calc = func;
 	return lfc;
 }
@@ -231,19 +270,19 @@ vector2_ptr_TypeOpStrategy OpStrats;
 
 TypeOpStrategy *TypeOpStrategy_new0(){
 	struct TypeOpStrategy *strat = (TypeOpStrategy*)malloc(sizeof(TypeOpStrategy));
-	strat->in_T1 = 0;
+	strat->in_T1 = LFC_here0();
 	strat->op = 0;
-	strat->in_T2 = 0;
+	strat->in_T2 = LFC_here0();
 	strat->is_symmetric = 0;
-	strat->arg1_promote_to = 0;
-	strat->arg2_promote_to = 0;
+	strat->arg1_promote_to = LFC_here0();
+	strat->arg2_promote_to = LFC_here0();
 	strat->strategy = 0;
 	return strat;
 }
 
 TypeOpStrategy *TypeOpStrategy_new(
-	LFC *in_T1, const char *op, LFC *in_T2, int allow,
-	int is_symmetric, LFC *arg1_promote_to, LFC *arg2_promote_to, LFC *result_type,
+	LFC in_T1, const char *op, LFC in_T2, int allow,
+	int is_symmetric, LFC arg1_promote_to, LFC arg2_promote_to, LFC result_type,
 	op_func strategy)
 {
 	struct TypeOpStrategy *strat = (TypeOpStrategy*)malloc(sizeof(TypeOpStrategy));
@@ -259,24 +298,24 @@ TypeOpStrategy *TypeOpStrategy_new(
 	return strat;
 }
 
-void strat_default(val_handle res1, const char *op, val_handle res2, expr_settings stg){
+void strat_default(LFCData data, expr_settings stg){
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("%s %s %s %s // typecheck.c:264", 
-		sanitize_string(op), 
+		sanitize_string(data.op), 
 		sanitize_string(exprResult), 
-		sanitize_string(res1.val), 
-		sanitize_string(res2.val)
+		sanitize_string(data.res1.val), 
+		sanitize_string(data.res2.val)
 			);
 	*(stg.actual) = (val_handle){.author = "strat_default", .rv_type = E_RVAL, .T = 0, .val = exprResult};
 }
 
-void strat_integer_arithmetic(val_handle res1, const char *op, val_handle res2, expr_settings stg){
+void strat_integer_arithmetic(LFCData data, expr_settings stg){
 	const char* temp1 = IR_next_name(namespace_semantic, "temp");
 	emit_code("%s %s %s %s // typecheck.c:275", 
-		sanitize_string(op), 
+		sanitize_string(data.op), 
 		sanitize_string(temp1), 
-		sanitize_string(res1.val), 
-		sanitize_string(res2.val)
+		sanitize_string(data.res1.val), 
+		sanitize_string(data.res2.val)
 			);
 	const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	emit_code("FLOOR %s %s // typecheck.c:282",
@@ -286,31 +325,40 @@ void strat_integer_arithmetic(val_handle res1, const char *op, val_handle res2, 
 	*(stg.actual) = (val_handle){.author = "strat_default_arithmetic", .rv_type = E_RVAL, .T = 0, .val = exprResult};
 }
 
-void strat_err_noindex(val_handle res1, const char *, val_handle res2, expr_settings)
-{error("Attempt to index into %s by [%s]", type_name_to_string(res1.T), type_name_to_string(res2.T));}
+void strat_err_noindex(LFCData data, expr_settings)
+{error("Attempt to index into %s by [%s]", type_name_to_string(data.res1.T), type_name_to_string(data.res2.T));}
 
 //int (*type_filter_func)(struct type_name *T);
-int Tff_is_integer(struct type_name *T){
-	return is_char(T) || is_int(T);
+
+
+int one_sided_filter(LFCData data, int (*func)(struct type_name *T)){
+	assert(data.job == LFCD_FILTER);
+	if(data.side == LFCD_SIDE_A){return func(data.res1.T);}
+	else if(data.side == LFCD_SIDE_B){return func(data.res2.T);}
+	assert(!"unreachable");
+	return 0;
 }
 
-int Tff_is_numeric(struct type_name *T){
-	return is_char(T) || is_int(T) || is_float(T);
+int Tff_is_integer	(LFCData data){return one_sided_filter(data, is_integer);}
+int Tff_is_numeric	(LFCData data){return one_sided_filter(data, is_numeric);}
+int Tff_is_indexible(LFCData data){return one_sided_filter(data, is_indexible);}
+int Tff_is_pointer	(LFCData data){return one_sided_filter(data, is_pointer);}
+
+int Tff_is_numeric_same(LFCData data){
+	return type_name_equals(data.res1.T, data.res2.T) && is_numeric(data.res1.T) && is_numeric(data.res2.T);
 }
 
-int Tff_is_indexible(struct type_name *T){
-	return (T->points_to) || (T->is_array) || is_string(T);
+int Tff_same(LFCData data){
+	return type_name_equals(data.res1.T, data.res2.T);
 }
 
-int Tff_is_pointer(struct type_name *T){
-	return (T->points_to != 0);
-}
+struct type_name *Tcf_first(LFCData data){return data.res1.T;}
 
-struct type_name *Tcf_first(struct type_name *T1, struct type_name *T2){
-	return T1;
-}
+struct type_name *Tcf_number_promotion(LFCData data){
+	struct type_name *T1 = data.res1.T;
+	struct type_name *T2 = data.res2.T;
 
-struct type_name *Tcf_number_promotion(struct type_name *T1, struct type_name *T2){
+	assert(is_primitive(T1) && is_primitive(T2));
 	if(is_float(T1) || is_float(T2)){return T_float;}
 	if(is_int(T1) || is_int(T2)){return T_int;}
 	if(is_char(T1) || is_char(T2)){return T_char;}
@@ -318,8 +366,8 @@ struct type_name *Tcf_number_promotion(struct type_name *T1, struct type_name *T
 	return 0;
 }
 
-struct type_name *Tcf_index_result(struct type_name *T1, struct type_name *T2){
-	return dereffed_type(T1); /// btw dereferencing void* is an error because we can't produce void
+struct type_name *Tcf_index_result(LFCData data){
+	return dereffed_type(data.res1.T); /// btw dereferencing void* is an error because we can't produce void
 }
 
 /// how strategy choice works:
@@ -337,20 +385,21 @@ struct type_name *Tcf_index_result(struct type_name *T1, struct type_name *T2){
 /// actually, just check strategies in the order they are supplied
 
 void init_op_typechecking(){
-	struct type_name *T_any = 0;
-	struct type_name *no_promo = 0;
 	int allow = 1;
 	int forbid = 0;
 	int yes_symmetry = 1;
 	int no_symmetry = 0;
-	op_func no_strat = 0;
+	//op_func no_strat = 0;
 	//op_func strat_index = 0;
 	//op_func strat_err_noindex = 0;
 
-	LFC Tl_any = LFC_literal(T_any);
-	LFC Tl_no_promo = LFC_literal(no_promo);
+	LFC Ta_any = LFC_any();
+	LFC Ta_no_promo = LFC_any();
+	LFC Tl_int = LFC_literal(T_int);
+	LFC Tf_same = LFC_filter(Tff_same);
 	LFC Tf_integer = LFC_filter(Tff_is_integer);
 	LFC Tf_numeric = LFC_filter(Tff_is_numeric);
+	LFC Tf_numeric_same = LFC_filter(Tff_is_numeric_same);
 	LFC Tf_pointer = LFC_filter(Tff_is_pointer);
 	LFC Tf_indexable = LFC_filter(Tff_is_indexible);
 	LFC Tc_num_promo = LFC_calc(Tcf_number_promotion);
@@ -358,26 +407,39 @@ void init_op_typechecking(){
 	LFC Tc_first = LFC_calc(Tcf_first);
 
 
+	OpStrats = vector2_ptr_TypeOpStrategy_here();
 	/// allow string[idx], ptr[idx], array[idx]
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_indexable, "INDEX",   Tf_integer,   
-		allow, no_symmetry, Tl_no_promo, Tl_no_promo, /*->*/ Tc_index_result,  strat_default));
+		allow, no_symmetry, Ta_no_promo, Ta_no_promo, /*->*/ Tc_index_result,  strat_default));
 	/// forbid [] for anything else
-	m(OpStrats, push_back, TypeOpStrategy_new(Tl_any,       "INDEX",   Tl_any,   
-		forbid, no_symmetry, Tl_no_promo, Tl_no_promo, /*->*/ Tl_any,  strat_err_noindex));
+	m(OpStrats, push_back, TypeOpStrategy_new(Ta_any,       "INDEX",   Ta_any,   
+		forbid, no_symmetry, Ta_no_promo, Ta_no_promo, /*->*/ Ta_any,  strat_err_noindex));
 	/// integer divisions
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_integer,   "DIV",   Tf_integer,   
 		allow, yes_symmetry, Tc_num_promo, Tc_num_promo, /*->*/ Tc_num_promo,  strat_integer_arithmetic));
 	/// integer exponents
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_integer,   "EXP",   Tf_integer,   
 		allow, yes_symmetry, Tc_num_promo, Tc_num_promo, /*->*/ Tc_num_promo,  strat_integer_arithmetic));
+	/// general comparison ops
+	m(OpStrats, push_back, TypeOpStrategy_new(Tf_same,  "GREATER", Tf_same, 
+		allow, yes_symmetry, Ta_no_promo,  Ta_no_promo, /*->*/ Tl_int, strat_default));
+	m(OpStrats, push_back, TypeOpStrategy_new(Tf_same,  "LESS", Tf_same, 
+		allow, yes_symmetry, Ta_no_promo, Ta_no_promo, /*->*/ Tl_int, strat_default));
+	m(OpStrats, push_back, TypeOpStrategy_new(Tf_same,  "EQUAL", Tf_same, 
+		allow, yes_symmetry, Ta_no_promo, Ta_no_promo, /*->*/ Tl_int, strat_default));
+	m(OpStrats, push_back, TypeOpStrategy_new(Tf_same,  "NOTEQUAL", Tf_same, 
+		allow, yes_symmetry, Ta_no_promo, Ta_no_promo, /*->*/ Tl_int, strat_default));
+	/// normal arithmetic for any two same numeric types
+	m(OpStrats, push_back, TypeOpStrategy_new(Tf_numeric_same,  "any", Tf_numeric_same, 
+		allow, yes_symmetry, Ta_no_promo,  Ta_no_promo, /*->*/ Tc_first, strat_default));
 	/// normal arithmetic (any combination of numbers, integers or not)
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_numeric,  "any", Tf_numeric, 
 		allow, yes_symmetry, Tc_num_promo,  Tc_num_promo, /*->*/ Tc_num_promo, strat_default));
 	/// ... also write some rules for pointers
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_pointer,  "ADD", Tf_integer, 
-		allow, yes_symmetry, Tc_num_promo,  Tc_num_promo, /*->*/ Tc_first, strat_default));
+		allow, yes_symmetry, Ta_no_promo,  Ta_no_promo, /*->*/ Tc_first, strat_default));
 	m(OpStrats, push_back, TypeOpStrategy_new(Tf_pointer,  "SUB", Tf_integer, 
-		allow, yes_symmetry, Tc_num_promo,  Tc_num_promo, /*->*/ Tc_first, strat_default));
+		allow, yes_symmetry, Ta_no_promo,  Ta_no_promo, /*->*/ Tc_first, strat_default));
 
 }
 
@@ -389,34 +451,70 @@ int op_matches(const char *op_template, const char *op_in){
 	return 0;
 }
 
-int LFC_matches(LFC lfc, val_handle res){
-	if(lfc.is_literal && type_name_equals(lfc.T, res.T)){return 1;}
-	if(lfc.is_filter && (*lfc.filter)(res.T)){return 1;}
+
+int LFC_matches(LFCData data, LFC lfc){
+	assert(data.job == LFCD_FILTER);
+	if(lfc.type == LFCT_ANY){return 1;}
+	if(lfc.type == LFCT_FILTER){return lfc.filter(data);}
+	if(lfc.type == LFCT_LITERAL){
+		struct type_name *T = 0;
+			 if(data.side == LFCD_SIDE_A){T = data.res1.T;}
+		else if(data.side == LFCD_SIDE_B){T = data.res2.T;}
+		else assert(!"unreachable");
+		return type_name_equals(lfc.T, T);
+	}
+	assert(!"unreachable");
 	return 0;
 }
 
-int strategy_matches(TypeOpStrategy *strat, val_handle res1, const char *op, val_handle res2){
-	if(op_matches(strat->op, op)){
-		if(LFC_matches(*strat->in_T1, res1) && LFC_matches(*strat->in_T2, res2)){
-			return 1;
-		}
+int strategy_matches(TypeOpStrategy *strat, LFCData data){
+	LFCData data_sideA = data; data_sideA.side = LFCD_SIDE_A;
+	LFCData data_sideB = data; data_sideB.side = LFCD_SIDE_B;
+
+	if(op_matches(strat->op, data.op)){
+		if(LFC_matches(data_sideA, strat->in_T1) && 
+			LFC_matches(data_sideB, strat->in_T2))
+			{return 1;}
 		/// symmetry check
-		if(strat->is_symmetric && LFC_matches(*strat->in_T1, res2) && LFC_matches(*strat->in_T2, res1)){
-			return 1;
-		}
+		if(strat->is_symmetric && 
+			LFC_matches(data_sideB, strat->in_T1) && 
+			LFC_matches(data_sideA, strat->in_T2))
+			{return 1;}
 	}
 	return 0;
 }
 
-TypeOpStrategy *lookup_op_strategy(val_handle res1, const char *op, val_handle res2){
+TypeOpStrategy *lookup_op_strategy(LFCData data){
 	for(int i = 0; i < OpStrats.size; i++){
 		TypeOpStrategy *strat = m(OpStrats, get, i);
-		if(strategy_matches(strat, res1, op, res2)){
+		if(strategy_matches(strat, data)){
 			return strat;
 		}
 	}
 	return 0;
 }
+
+struct type_name *LFC_get_type(LFCData data, LFC lfc){
+	if(data.job == LFCD_PROMOTE){
+		 if(lfc.type == LFCT_ANY){
+			if(data.side == LFCD_SIDE_A){return data.res1.T;}
+			if(data.side == LFCD_SIDE_B){return data.res2.T;}
+			}
+	}
+	if((data.job == LFCD_PROMOTE) || (data.job == LFCD_OUTPUT)){
+		if(lfc.type == LFCT_LITERAL){return lfc.T;}
+		if(lfc.type == LFCT_CALC){return lfc.calc(data);}
+	}
+	assert(!"unreachable");
+}
+
+val_handle run_strat_promotions(LFCData data, val_handle res_in, LFC lfc){
+	val_handle res_out = res_in;
+	assert(data.job = LFCD_PROMOTE);
+	res_out.T = LFC_get_type(data, lfc);
+	return res_out;
+}
+
 
 /// now we need to write the thing that actually calls these strategies...
 void typecheck_op(val_handle res1, const char *op, val_handle res2, expr_settings stg){
@@ -429,25 +527,41 @@ void typecheck_op(val_handle res1, const char *op, val_handle res2, expr_setting
 	/// else (forbidden):
 	/// 3. activate err strategy (noreturn)
 
-	TypeOpStrategy *strat = lookup_op_strategy(res1, op, res2);
+	const char *type1_str = type_name_to_string(res1.T);
+	const char *type2_str = type_name_to_string(res2.T);
+	printf("type checking [%s] %s [%s]\n", type1_str, op, type2_str);
+
+	LFCData data = LFCData_here0();
+	data.res1 = res1;
+	data.op = op;
+	data.res2 = res2;
+
+	data.job = LFCD_FILTER;
+	TypeOpStrategy *strat = lookup_op_strategy(data);
 	if(!strat){error("operator does not apply between these types: [%s] %s [%s]", type_name_to_string(res1.T), op, type_name_to_string(res2.T));}
 
 	if(strat->allow){
-		struct type_name *T1 = res1.T;
-		struct type_name *T2 = res2.T;
-		res1 = run_strat_promotions(*strat->arg1_promote_to, res1);
-		res2 = run_strat_promotions(*strat->arg2_promote_to, res2);
+		//struct type_name *T1 = res1.T;
+		//struct type_name *T2 = res2.T;
+		data.job = LFCD_PROMOTE;
+		data.side = LFCD_SIDE_A;
+		res1 = run_strat_promotions(data, res1, strat->arg1_promote_to);
+		data.side = LFCD_SIDE_B;
+		res2 = run_strat_promotions(data, res2, strat->arg2_promote_to);
 
 		PREP_RES(res, E_ASIS);
-		(*strat->strategy)(res1, res2, resstg);
+		data.job = LFCD_DO_OP; data.side = LFCD_ERROR;
+		(*strat->strategy)(data, resstg);
 		VERIFY_RES(res);
-		struct type_name *T = LFC_get_type(strat->result_type, T1, T2);
+		data.job = LFCD_OUTPUT; data.side = LFCD_ERROR;
+		struct type_name *T = LFC_get_type(data, strat->result_type);
 
 		val_handle result = {.author = "typecheck_op", .rv_type = res.rv_type, .T = T, .val = res.val};
 		output_res(stg, result, NO_EMIT);
 	}else{
 		PREP_RES(res, E_ASIS);
-		(*strat->strategy)(res1, res2, resstg); /// this should be a strategy that only prints an error.
+		data.job = LFCD_ERROR;
+		(strat->strategy)(data, resstg); /// this should be a strategy that only prints an error.
 
 		assert(!"unreachable");
 	}

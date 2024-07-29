@@ -14,12 +14,12 @@ void init_typechecking();
 #define IS_CALL 1
 #define NOT_A_CALL 0
 
-struct type_name *T_char;
-struct type_name *T_int;
-struct type_name *T_float;
-struct type_name *T_void;
-struct type_name *T_void_ptr;
-struct type_name *T_string;
+extern struct type_name *T_char;
+extern struct type_name *T_int;
+extern struct type_name *T_float;
+extern struct type_name *T_void;
+extern struct type_name *T_void_ptr;
+extern struct type_name *T_string;
 
 struct type_name *gen_type_name_char();
 struct type_name *gen_type_name_int();
@@ -41,36 +41,52 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *args_got, int first, int last, int is_call);
 
 ///-------------------- operator typechecking --------
+////    LFC (Literal, Filter or Calculator) is a framework for functional programming of type checks and type conversions (by me :v)
 
-typedef void (*op_func)(val_handle res1, const char *op, val_handle res2, expr_settings stg); /// ptr to function that returns an IR value after emitting some processing code
-typedef int (*type_filter_func)(struct type_name *T); /// ptr to function that returns 1 or 0 depending on some properties of type T
-typedef struct type_name *(*type_calculator_func_1)(struct type_name *T);  /// calculates new type based on old type
-typedef struct type_name *(*type_calculator_func_2)(struct type_name *T1, struct type_name *T2); /// calculates new type based on two old types
+enum eLFCData {LFCD_ERROR, LFCD_FILTER, LFCD_PROMOTE, LFCD_DO_OP, LFCD_OUTPUT, LFCD_SIDE_A, LFCD_SIDE_B, LFCD_OUT};
+
+
+typedef struct Type_LFC_Data{
+	// expression input
+	val_handle res1;
+	const char *op;
+	val_handle res2;
+	//
+	enum eLFCData job;
+	enum eLFCData side;
+} LFCData;
+
+LFCData LFCData_here0();
+
+typedef void (*op_func)(LFCData data, expr_settings stg); /// ptr to function that returns an IR value after emitting some processing code
+typedef int (*type_filter_func)(LFCData data); /// ptr to function that returns 1 or 0 depending on some properties of type T
+typedef struct type_name *(*type_calculator_func)(LFCData data); /// calculates new type based on old types
+
+enum eLFCType {LFCT_ERROR, LFCT_NONE, LFCT_ANY, LFCT_LITERAL, LFCT_FILTER, LFCT_CALC};
 
 typedef struct Type_Literal_Filter_or_Calc{
-	int is_literal;
-	int is_filter;
-	int is_calc;
+	enum eLFCType type;
 	struct type_name *T;
-	type_filter_func *filter;
-	type_calculator_func_2 *calc;
+	type_filter_func filter;
+	type_calculator_func calc;
 } LFC;
 
 struct Type_Literal_Filter_or_Calc LFC_here0();
+struct Type_Literal_Filter_or_Calc LFC_any();
 struct Type_Literal_Filter_or_Calc LFC_literal(struct type_name *T);
 struct Type_Literal_Filter_or_Calc LFC_filter(type_filter_func func);
-struct Type_Literal_Filter_or_Calc LFC_calc(type_calculator_func_2 func);
+struct Type_Literal_Filter_or_Calc LFC_calc(type_calculator_func func);
 
 typedef struct TypeOpStrategy{
-	LFC *in_T1; 		/// specific type or 0 for 'any'
+	LFC in_T1; 		/// specific type or 0 for 'any'
 	const char *op;		/// specific operator or "any" for 'any'
-	LFC *in_T2; 		/// specific type or 0 for 'any'
+	LFC in_T2; 		/// specific type or 0 for 'any'
 	int allow;			/// 1 if operation is allowed, 0 if forbidden
 	int is_symmetric;	/// 1 if order of operands doesn't matter
-	LFC *arg1_promote_to; /// what type to promote args to
-	LFC *arg2_promote_to;
-	LFC *result_type; /// what the output type is
-	op_func *strategy;
+	LFC arg1_promote_to; /// what type to promote args to
+	LFC arg2_promote_to;
+	LFC result_type; /// what the output type is
+	op_func strategy;
 } TypeOpStrategy;
 
 typedef TypeOpStrategy* ptr_TypeOpStrategy;
@@ -81,3 +97,5 @@ TypeOpStrategy *TypeOpStrategy_new0();
 TypeOpStrategy *TypeOpStrategy_new();
 
 void init_op_typechecking();
+
+void typecheck_op(val_handle res1, const char *op, val_handle res2, expr_settings stg);
