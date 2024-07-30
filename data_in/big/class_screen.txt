@@ -38,10 +38,10 @@ class CScreen
 		printf("74.");
 	end
 
-	void set(char *scr) 
+	void set(int scr_adr) 
 		//writePort(5, scr);
-		mem_scr = scr; 
-		printf("set mem_scr to %d, new mem_scr is %d\n", scr, mem_scr);
+		mem_scr = (char*)scr_adr; 
+		printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
 	end
 
 	void clear() 							mem_scr[2041] = 1; 			end

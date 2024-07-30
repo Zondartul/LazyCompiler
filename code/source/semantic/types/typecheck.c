@@ -27,20 +27,21 @@ struct type_name *gen_type_name_void(){struct type_name *T = type_name_new0(); T
 struct type_name *gen_type_name_void_ptr(){struct type_name *T = type_name_new0(); T->points_to = gen_type_name_void(); return T;}
 struct type_name *gen_type_name_string(){struct type_name *T = type_name_new0(); T->name = "string"; return T;}
 
-int is_char(struct type_name *T){return T->name && (strcmp(T->name, "char")==0);}
-int is_char_ptr(struct type_name *T){return T->points_to &&is_char(T->points_to);}
-int is_int(struct type_name *T){return T->name && (strcmp(T->name, "int")==0);}
-int is_float(struct type_name *T){return T->name && (strcmp(T->name, "float")==0);}
-int is_void(struct type_name *T){return T->name && (strcmp(T->name,"void")==0);}
-int is_void_ptr(struct type_name *T){return T->points_to && is_void(T->points_to);}
-int is_string(struct type_name *T){return T->name && (strcmp(T->name,"string")==0);}
 
 int is_pointer(struct type_name *T){return (T->points_to != 0);}
 int is_array(struct type_name *T){return T->is_array;}
 int is_function(struct type_name *T){return (T->args != 0);}
 int is_class(struct type_name *T){return (T->symclass != 0);}
-
 int is_primitive(struct type_name *T){return (!is_pointer(T)) && (!is_array(T)) && (!is_function(T)) && (!is_class(T));}
+
+int is_char(struct type_name *T){return is_primitive(T) && T->name && (strcmp(T->name, "char")==0);}
+int is_char_ptr(struct type_name *T){return T->points_to &&is_char(T->points_to);}
+int is_int(struct type_name *T){return is_primitive(T) && T->name && (strcmp(T->name, "int")==0);}
+int is_float(struct type_name *T){return is_primitive(T) && T->name && (strcmp(T->name, "float")==0);}
+int is_void(struct type_name *T){return is_primitive(T) && T->name && (strcmp(T->name,"void")==0);}
+int is_void_ptr(struct type_name *T){return T->points_to && is_void(T->points_to);}
+int is_string(struct type_name *T){return is_primitive(T) && T->name && (strcmp(T->name,"string")==0);}
+
 int is_numeric(struct type_name *T){return is_char(T) || is_int(T) || is_float(T);}
 int is_integer(struct type_name *T){return is_char(T) || is_int(T);}
 int is_indexible(struct type_name *T){return is_pointer(T) || is_array(T) || is_string(T);}

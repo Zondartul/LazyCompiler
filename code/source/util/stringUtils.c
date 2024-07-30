@@ -190,8 +190,15 @@ int countTabs(const char *str){
 
 void open_IDE_at_error(const char *file, int line, int pos){
 	vector2_char vstr = vector2_char_here();
+	#ifdef __WIN32__
 	const char *npp_path = "\"C:\\Progra~1\\Notepad++\\notepad++.exe\"";
 	vec_printf(&vstr, "%s -n%d -c%d %s", npp_path, line, pos, file);
+	#elif __linux__
+	const char *npp_path = "notepadqq";
+	vec_printf(&vstr, "%s -l%d -c%d %s", npp_path, line, pos, file);
+	#endif
+
+	fprintf(stderr, "running [%s]\n", vstr.data);
 	int res = system(vstr.data);
 	if(res != 0){
 		fprintf(stderr, "Can't open IDE at error\n");

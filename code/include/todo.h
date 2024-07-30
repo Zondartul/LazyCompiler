@@ -92,8 +92,11 @@
 * [FIXED 54] some derp4 class gets constructed in prologue after call to main (unreachable code) i.e. never.
 *		-- turns out semantic_analyze_program would insert a "call main" at the beginning* of a scope and didn't control for when the initializers appeared
 * [idea 55] generate IR using templated text instead of emit_code %s %s %s and IR_next_name. Have special tokens that mean "next temp token" and "last temp token".
-*
-*
+* [bug 56] Methods called from methods don't automatically know to use this:
+*   works:
+*	void putch(char C)		this.print_char(C, scr.col);		end 
+*   should work, but does not:
+*	void putch(char C)		print_char(C, scr.col);		end
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators
 * [FIXED Todo 9] display the source code location during semantic errors

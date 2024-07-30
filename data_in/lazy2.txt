@@ -1,7 +1,7 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/testOutput.txt"
 #include "data_in/big/printf.txt"
-//#include "data_in/big/class_csprinter.txt"
+#include "data_in/big/class_csprinter.txt"
 
 int addr_bus[4];
 
@@ -10,16 +10,6 @@ void init_printf()
 	screen_set(addr_bus[2]);
 	screen_clear();
 end
-
-
-/*
-void stuff_test_2()
-	int x;
-	printf("t2 x1: %d\n", x); // ???
-	x = 12;
-	printf("t2 x2: %d\n", x); // 12
-end
-
 
 class Dev_address_bus
 	int addr[4];
@@ -39,6 +29,68 @@ class Dev_address_bus
 		return *ptr;
 	end
 end
+
+
+int main()
+	setup();
+	
+	init_printf();
+	printf("Running LazyComp unit tests\n");
+	run_all_tests();
+	Prints("All tests green",90); 	
+	screen_clear(); setPrintCursor(0,0);
+	//printf("hello world!\n");
+	
+	printf("Hello [%s] %d!\n", "world", 123456);
+	//printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello %d!\n", 123);
+	
+	//float2str_test();
+	//printftest2();
+	//string_reverse_test();
+	class Dev_address_bus addr_bus;
+	
+	
+	class CScreen scr;
+	
+	
+	class CSPrinter printer;
+	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
+	//printf("step 0.");
+	addr_bus.constructor(65536, 20000, 20000, 20000);
+	//printf("1.");
+
+	scr.constructor();
+	//printf("2.");
+	scr.set(addr_bus.addr[2]);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("3.");
+	printer.init();
+	//printf("4.");
+	printer.scr = &scr;
+	//printf("... printer.scr = %d\n", printer.scr);
+	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("5.");
+	printer.puts("Hello from CSPrinter!\n");
+	//printf("z.");
+	
+	//class Derp derp(4, 10);
+	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
+	
+	infloop();
+end
+
+/*
+void stuff_test_2()
+	int x;
+	printf("t2 x1: %d\n", x); // ???
+	x = 12;
+	printf("t2 x2: %d\n", x); // 12
+end
+
+
+
 
 
 class Derp
@@ -143,53 +195,3 @@ void string_reverse_debug(char *str)
 	printf("rev after:  [%s]\n", str);
 end
 */
-
-int main()
-	setup();
-	
-	init_printf();
-	printf("Running LazyComp unit tests\n");
-	run_all_tests();
-	Prints("All tests green",90); 	
-	screen_clear(); setPrintCursor(0,0);
-	//printf("hello world!\n");
-	
-	printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello %d!\n", 123);
-	
-	//float2str_test();
-	//printftest2();
-	//string_reverse_test();
-//class Dev_address_bus addr_bus;
-	
-	
-	//class CScreen scr;
-	
-	
-	//class CSPrinter printer;
-	//printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	//printf("step 0.");
-	//addr_bus.constructor(65536, 20000, 20000, 20000);
-	//printf("1.");
-
-	//scr.constructor();
-	//printf("2.");
-	//scr.set(addr_bus.addr[2]);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("3.");
-	//printer.init();
-	//printf("4.");
-	//printer.scr = &scr;
-	//printf("... printer.scr = %d\n", printer.scr);
-	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("5.");
-	//printer.puts("Hello from CSPrinter!\n");
-	//printf("z.");
-	
-	//class Derp derp(4, 10);
-	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
-	
-	infloop();
-end

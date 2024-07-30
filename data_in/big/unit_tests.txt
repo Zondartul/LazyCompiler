@@ -508,7 +508,7 @@ int test_6_arrays()
 	/// arr == {morio}			
 	expect_basic(6, 8, arr[1], 'o');	// array is writeable by local var index
 	expect_basic(6, 9, arr[i], 'o');	// array is readible by local var index
-	int b1 = (&(arr[i]) == arr+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
+	int b1 = (&(arr[i]) == (&arr)+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
 	expect_basic(6, 10, b1, 1);		
 	arr[i+2] = 'e';	// array is writeable by arithmetic expression
 	/// arr == {moreo}

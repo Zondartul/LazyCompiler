@@ -577,7 +577,7 @@ int test_6_arrays()
 	/// arr == {morio}			
 	expect_basic(6, 8, arr[1], 'o');	// array is writeable by local var index
 	expect_basic(6, 9, arr[i], 'o');	// array is readible by local var index
-	int b1 = (&(arr[i]) == arr+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
+	int b1 = (&(arr[i]) == (&arr)+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
 	expect_basic(6, 10, b1, 1);		
 	arr[i+2] = 'e';	// array is writeable by arithmetic expression
 	/// arr == {moreo}
@@ -1200,7 +1200,257 @@ end
 
 #file "data_in/lazy2.txt"
 #line 4
-//#include "data_in/big/class_csprinter.txt"
+#file "data_in/big/class_csprinter.txt"
+#line 1
+// class CSPrinter - handles screen extents and scrolling logic
+#file "data_in/big/class_screen.txt"
+#line 1
+/// driver for a console screen
+class CScreen
+	char* mem_scr;
+	//int X;
+	//int Y;
+	int x_max;
+	int y_max;
+	int col;
+
+	void constructor()
+		mem_scr = 65536;
+		//X = 0;
+		//Y = 0;
+		x_max = 30;
+		y_max = 19;
+		col = 999;
+		printf("CScreen constructed @ %d\n", this);
+	end
+
+	//void incXY()
+	//	X++;
+	//	if(X > Xmax)
+	//		X = 0;
+	//		Y++;
+	//		if(Y > Ymax)
+	//			Y = 0;
+	//		end
+	//	end
+	//end 
+ 
+	void putchXY(char C, int x, int y)
+		printf("CScreen.putchXY\n(this %d, C %d, x %d, y %d)\n",this, C, x, y);
+		printf("\n x = %d, x_max = %d, y = %d\n", x, x_max, y);
+		printf("\nmem_scr = %d\nadr = %d\ntotal offset = %d\n", mem_scr, adr, mem_scr+adr);
+		int adr = (x+x_max*y)*2;
+		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
+		mem_scr[adr+1] = col;
+		printf("74.");
+	end
+
+	void set(int scr_adr) 
+		//writePort(5, scr);
+		mem_scr = (char*)scr_adr; 
+		printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
+	end
+
+	void clear() 							mem_scr[2041] = 1; 			end
+	void cursor_enable() 					mem_scr[2046] = 1; 			end
+	void cursor_disable() 					mem_scr[2046] = 0; 			end
+	void set_cursor_pos(int pos) 			mem_scr[2045] = 2*pos; 		end
+	void set_cursor_pos_xy(int x, int y) 	mem_scr[2045] = 2*(30*y+x); end
+	void force_refresh() 					mem_scr[2020] = 1; delay(1); end
+	//void set_shift_box_x1(int n) mem_scr[2031] = n; end
+	//void set_shift_box_x2(int n) mem_scr[2032] = n; end
+	//void set_shift_box_y1(int n) mem_scr[2033] = n; end
+	//void set_shift_box_y2(int n) mem_scr[2034] = n; end
+
+	void set_shift_box(int x1, int x2, int y1, int y2)
+		mem_scr[2031] = x1;
+		mem_scr[2032] = x2;
+		mem_scr[2033] = y1;
+		mem_scr[2034] = y2;
+	end
+
+	void shift_vertical(int n) 				mem_scr[2038] = n; 			end
+	void shift_horizontal(int n) 			mem_scr[2037] = n; 			end
+
+	// general print-some-text stuff
+	/*
+  void putch(char C)
+     putchXY(C, X, Y);
+     incXY();
+  end 
+
+  void printXY(char *str, int X, int Y)
+    while(*str)
+       putch(*str++, X++, Y);
+    end
+  end
+ 
+  void print(char *str)
+    while(*str)
+       putch(*str++);
+    end 
+  end
+  */
+end
+#file "data_in/big/class_csprinter.txt"
+#line 3
+
+class CSPrinter
+	class CScreen *scr = 0;
+	
+	int box_x_min = 0;
+	int box_y_min = 0;
+	int box_x_max = 30;
+	int box_y_max = 19;
+
+	int last_x = 29;
+	int last_y = 17;
+	int cur_x = 0;
+	int cur_y = 0;
+
+	//void libprints_init()
+	//	last_x = 29;
+	//	last_y = 17;
+	//	cur_x = 0;
+	//	cur_y = 0;
+	//end
+
+	void init()
+		printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
+		scr = 0;
+		box_x_min = 0;
+		box_y_min = 0;
+		box_x_max = 30;
+		box_y_max = 19;
+		last_x = 29;
+		last_y = 17;
+		cur_x = 0;
+		cur_y = 0;
+		printf("cur_x after: %d\n", cur_x);
+	end
+
+	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
+
+	int charcode_NL = 10; //same as enter
+	int charcode_BACK = 13; //same as backspace
+	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
+	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+	int charcode_BELL = 16; //make a beep or something
+	//sequences: 
+	//NL -> print pointer is at the beginning of the next line
+	//FILL -> line filled with spaces; print pointer at the end of this line
+	//CR -> print pointer at the beginning of this line
+	//CR FILL CR -> the line is blank and you are at the beginning
+	//BACK CR -> go to beginning of prev line
+	//hello BACK z -> hellz
+
+	void putch(char C)		this.print_char(C, scr.col);		end
+	void puts(char *str)	this.cs_prints(str, scr.col);	end
+
+	void print_char(char C, int col)
+		printf("621.");
+		if(C == charcode_NL)	this.cs_newline();	end
+		printf("622.");
+		if(C == charcode_BACK)	this.cs_prevcol();	end
+		printf("623.");
+		if(C == charcode_CR)	cur_x = 0;		end
+		printf("624.");
+		if(C == charcode_FILL)
+		printf("625.");
+			for(int i = cur_x; i < last_x; i++)
+		printf("626.");
+				scr.putchXY(' ', i, cur_y);
+		printf("627.");
+			end
+		printf("628.");
+			cur_x = last_x;
+		printf("629.");
+		end
+		printf("62A.");
+		if(C == charcode_BELL)	this.cs_beep();		end
+		printf("62B.");
+		if(C > 31)
+		printf("62C.");
+			scr.putchXY(C, cur_x, cur_y);
+		printf("62D.");
+			this.cs_newcol();
+		printf("62E.");
+		end
+		printf("62F.");
+	end
+
+	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
+		printf("61.");
+		while(*str2)
+			printf("62.");
+			this.print_char(*str2++, col);
+			printf("63.");	
+		end
+		printf("63.");
+	end
+
+	void cs_printn(int num, int col)
+		char buff[20];
+		int2str(num, &buff);
+		this.cs_prints(&buff, col);
+	end
+
+	void cs_newline()
+		cur_x = 0;
+		cur_y++;
+		if(cur_y > last_y-1)
+			this.shift_up();
+		end
+	end
+
+	void cs_prevline()
+		cur_x = last_x;
+		cur_y--;
+		if(cur_y < 0)
+			this.shift_down();
+		end
+	end
+
+	void cs_newcol()
+		cur_x++;
+		if(cur_x > last_x)
+			this.cs_newline();
+		end
+	end
+
+	void cs_prevcol()
+		cur_x--;
+		if(cur_x < 0)
+			this.cs_prevline();
+		end
+	end
+
+	void cs_beep() end
+
+	void shift_up()
+		if(cur_y > last_y-1)
+			scr.shift_vertical(1);
+			cur_y--;
+		end
+	end
+
+	void shift_down()
+		if(cur_y < 0)
+			scr.shift_vertical(-1);
+			cur_y++;
+		end
+	end
+
+	void set_print_box(int x1, int y1, int x2, int y2)
+		box_x_min = x1;
+		box_y_min = y1;
+		box_x_max = x2;
+		box_y_max = y2;
+	end
+end
+
+#file "data_in/lazy2.txt"
+#line 5
 
 int addr_bus[4];
 
@@ -1209,16 +1459,6 @@ void init_printf()
 	screen_set(addr_bus[2]);
 	screen_clear();
 end
-
-
-/*
-void stuff_test_2()
-	int x;
-	printf("t2 x1: %d\n", x); // ???
-	x = 12;
-	printf("t2 x2: %d\n", x); // 12
-end
-
 
 class Dev_address_bus
 	int addr[4];
@@ -1238,6 +1478,68 @@ class Dev_address_bus
 		return *ptr;
 	end
 end
+
+
+int main()
+	setup();
+	
+	init_printf();
+	printf("Running LazyComp unit tests\n");
+	run_all_tests();
+	Prints("All tests green",90); 	
+	screen_clear(); setPrintCursor(0,0);
+	//printf("hello world!\n");
+	
+	printf("Hello [%s] %d!\n", "world", 123456);
+	//printf("Hello [%s] %d!\n", "world", 123);
+	//printf("Hello %d!\n", 123);
+	
+	//float2str_test();
+	//printftest2();
+	//string_reverse_test();
+	class Dev_address_bus addr_bus;
+	
+	
+	class CScreen scr;
+	
+	
+	class CSPrinter printer;
+	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
+	//printf("step 0.");
+	addr_bus.constructor(65536, 20000, 20000, 20000);
+	//printf("1.");
+
+	scr.constructor();
+	//printf("2.");
+	scr.set(addr_bus.addr[2]);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("3.");
+	printer.init();
+	//printf("4.");
+	printer.scr = &scr;
+	//printf("... printer.scr = %d\n", printer.scr);
+	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
+	//printf("... scr.memscr = %d\n", scr.mem_scr);
+	//printf("5.");
+	printer.puts("Hello from CSPrinter!\n");
+	//printf("z.");
+	
+	//class Derp derp(4, 10);
+	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
+	
+	infloop();
+end
+
+/*
+void stuff_test_2()
+	int x;
+	printf("t2 x1: %d\n", x); // ???
+	x = 12;
+	printf("t2 x2: %d\n", x); // 12
+end
+
+
+
 
 
 class Derp
@@ -1342,53 +1644,3 @@ void string_reverse_debug(char *str)
 	printf("rev after:  [%s]\n", str);
 end
 */
-
-int main()
-	setup();
-	
-	init_printf();
-	printf("Running LazyComp unit tests\n");
-	run_all_tests();
-	Prints("All tests green",90); 	
-	screen_clear(); setPrintCursor(0,0);
-	//printf("hello world!\n");
-	
-	printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello %d!\n", 123);
-	
-	//float2str_test();
-	//printftest2();
-	//string_reverse_test();
-//class Dev_address_bus addr_bus;
-	
-	
-	//class CScreen scr;
-	
-	
-	//class CSPrinter printer;
-	//printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	//printf("step 0.");
-	//addr_bus.constructor(65536, 20000, 20000, 20000);
-	//printf("1.");
-
-	//scr.constructor();
-	//printf("2.");
-	//scr.set(addr_bus.addr[2]);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("3.");
-	//printer.init();
-	//printf("4.");
-	//printer.scr = &scr;
-	//printf("... printer.scr = %d\n", printer.scr);
-	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("5.");
-	//printer.puts("Hello from CSPrinter!\n");
-	//printf("z.");
-	
-	//class Derp derp(4, 10);
-	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
-	
-	infloop();
-end
