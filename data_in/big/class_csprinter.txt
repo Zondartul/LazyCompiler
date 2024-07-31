@@ -22,7 +22,8 @@ class CSPrinter
 	//end
 
 	void init()
-		printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
+		//printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
+		printf("CSPrinter init, this = %d\n", (int)this);
 		scr = 0;
 		box_x_min = 0;
 		box_y_min = 0;
@@ -32,7 +33,7 @@ class CSPrinter
 		last_y = 17;
 		cur_x = 0;
 		cur_y = 0;
-		printf("cur_x after: %d\n", cur_x);
+		//printf("cur_x after: %d\n", cur_x);
 	end
 
 	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
@@ -54,45 +55,46 @@ class CSPrinter
 	void puts(char *str)	this.cs_prints(str, scr.col);	end
 
 	void print_char(char C, int col)
-		printf("621.");
+		//printf("621.");
 		if(C == charcode_NL)	this.cs_newline();	end
-		printf("622.");
+		//printf("622.");
 		if(C == charcode_BACK)	this.cs_prevcol();	end
-		printf("623.");
+		//printf("623.");
 		if(C == charcode_CR)	cur_x = 0;		end
-		printf("624.");
+		//printf("624.");
 		if(C == charcode_FILL)
-		printf("625.");
+		//printf("625.");
 			for(int i = cur_x; i < last_x; i++)
-		printf("626.");
+		//printf("626.");
 				scr.putchXY(' ', i, cur_y);
-		printf("627.");
+		//printf("627.");
 			end
-		printf("628.");
+		//printf("628.");
 			cur_x = last_x;
-		printf("629.");
+		//printf("629.");
 		end
-		printf("62A.");
+		//printf("62A.");
 		if(C == charcode_BELL)	this.cs_beep();		end
-		printf("62B.");
+		//printf("62B.");
 		if(C > 31)
-		printf("62C.");
+		//printf("62C.");
 			scr.putchXY(C, cur_x, cur_y);
-		printf("62D.");
+		//printf("62D.");
 			this.cs_newcol();
-		printf("62E.");
+		//printf("62E.");
 		end
-		printf("62F.");
+		//printf("62F.");
 	end
 
 	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
-		printf("61.");
+		//printf("61.");
 		while(*str2)
-			printf("62.");
-			this.print_char(*str2++, col);
-			printf("63.");	
+			//printf("62.");
+			//this.print_char(*str2++, col);
+			print_char(*str2++, col);
+			//printf("63.");	
 		end
-		printf("63.");
+		//printf("63.");
 	end
 
 	void cs_printn(int num, int col)

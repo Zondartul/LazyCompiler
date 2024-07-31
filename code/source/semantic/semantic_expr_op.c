@@ -211,6 +211,7 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 				S = get_symbol_in_this(name, S_this);
 				if (S) {
 					this_val = S_this->IR_name;
+					if(stg.out_sem_this){*stg.out_sem_this = (val_handle){.author = "expr_id", .rv_type = E_PTR, .T = S_this->symvariable.type, .val = this_val};}
 				}
 				else {
 					S = lookup_symbol(name);
@@ -654,10 +655,11 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 			res1.val++;
 			res_this.val = res1.val;
 		}else{
-			res_this.val = res1.val;
+			//res_this.val = res1.val;
 			const char* deref_obj = IR_next_name(namespace_semantic, "temp");
 			emit_code("MOV %s *%s // semantic_expr_op.c:670", sanitize_string(deref_obj), sanitize_string(res1.val));
 			res1.val = deref_obj;
+			res_this.val = res1.val;
 		}
 		res1.T = T2;
 	}else{

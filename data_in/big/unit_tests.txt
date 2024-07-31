@@ -628,6 +628,48 @@ int test_7_class_global()
 	return CODE_OK;
 end
 
+void* test_7_class1_addr = 0;
+void* test_7_class2_addr = 0;
+
+class Test_7_class1
+	int x = 10;
+	void foo(int y)
+		expect_basic(7, 28, (int)this, (int)test_7_class1_addr);
+		expect_basic(7, 29, x, 10);
+		expect_basic(7, 30, y, 20);
+	end
+	
+	void baz(int y)
+		expect_basic(7, 35, (int)this, (int)test_7_class1_addr);
+		expect_basic(7, 36, x, 10);
+		expect_basic(7, 37, y, 50);
+	end
+end
+
+class Test_7_class2
+	int x = 30;
+	class Test_7_class1* c1;
+	void bar(int y)
+		expect_basic(7, 31, (int)this, (int)test_7_class2_addr);
+		expect_basic(7, 32, x, 30);
+		expect_basic(7, 33, y, 40);
+		expect_basic(7, 34, (int)c1, (int)test_7_class1_addr);
+		c1.baz(50);
+	end
+end
+
+class Test_7_class1 derp_c1;
+class Test_7_class2 derp_c2;
+
+int test_7_class_method()
+	test_7_class1_addr = &derp_c1;
+	test_7_class2_addr = &derp_c2;
+
+	derp_c1.foo(20);
+	derp_c2.c1 = &derp_c1;
+	derp_c2.bar(40);
+end
+
 int test_7_class()
 	test_7_class_local();
 	class Test_7_class_derp derp4;
@@ -637,6 +679,7 @@ int test_7_class()
 	derp5.x = 5; derp5.y = 6;
 	test_7_class_by_ptr(&derp5);
 	test_7_class_global();
+	test_7_class_method();
 	return CODE_OK;
 end
 

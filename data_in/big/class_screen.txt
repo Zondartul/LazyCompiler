@@ -1,45 +1,30 @@
 /// driver for a console screen
 class CScreen
 	char* mem_scr;
-	//int X;
-	//int Y;
 	int x_max;
 	int y_max;
 	int col;
 
 	void constructor()
 		mem_scr = 65536;
-		//X = 0;
-		//Y = 0;
 		x_max = 30;
 		y_max = 19;
 		col = 999;
 		printf("CScreen constructed @ %d\n", this);
 	end
 
-	//void incXY()
-	//	X++;
-	//	if(X > Xmax)
-	//		X = 0;
-	//		Y++;
-	//		if(Y > Ymax)
-	//			Y = 0;
-	//		end
-	//	end
-	//end 
  
 	void putchXY(char C, int x, int y)
-		printf("CScreen.putchXY\n(this %d, C %d, x %d, y %d)\n",this, C, x, y);
-		printf("\n x = %d, x_max = %d, y = %d\n", x, x_max, y);
-		printf("\nmem_scr = %d\nadr = %d\ntotal offset = %d\n", mem_scr, adr, mem_scr+adr);
+		//printf("CScreen.putchXY\n(this %d, C %d, x %d, y %d)\n",this, C, x, y);
+		//printf("\n x = %d, x_max = %d, y = %d\n", x, x_max, y);
+		//printf("\nmem_scr = %d\nadr = %d\ntotal offset = %d\n", mem_scr, adr, mem_scr+adr);
 		int adr = (x+x_max*y)*2;
 		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
 		mem_scr[adr+1] = col;
-		printf("74.");
+		//printf("74.");
 	end
 
 	void set(int scr_adr) 
-		//writePort(5, scr);
 		mem_scr = (char*)scr_adr; 
 		printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
 	end
@@ -50,10 +35,7 @@ class CScreen
 	void set_cursor_pos(int pos) 			mem_scr[2045] = 2*pos; 		end
 	void set_cursor_pos_xy(int x, int y) 	mem_scr[2045] = 2*(30*y+x); end
 	void force_refresh() 					mem_scr[2020] = 1; delay(1); end
-	//void set_shift_box_x1(int n) mem_scr[2031] = n; end
-	//void set_shift_box_x2(int n) mem_scr[2032] = n; end
-	//void set_shift_box_y1(int n) mem_scr[2033] = n; end
-	//void set_shift_box_y2(int n) mem_scr[2034] = n; end
+
 
 	void set_shift_box(int x1, int x2, int y1, int y2)
 		mem_scr[2031] = x1;
@@ -65,23 +47,5 @@ class CScreen
 	void shift_vertical(int n) 				mem_scr[2038] = n; 			end
 	void shift_horizontal(int n) 			mem_scr[2037] = n; 			end
 
-	// general print-some-text stuff
-	/*
-  void putch(char C)
-     putchXY(C, X, Y);
-     incXY();
-  end 
 
-  void printXY(char *str, int X, int Y)
-    while(*str)
-       putch(*str++, X++, Y);
-    end
-  end
- 
-  void print(char *str)
-    while(*str)
-       putch(*str++);
-    end 
-  end
-  */
 end
