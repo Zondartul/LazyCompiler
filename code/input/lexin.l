@@ -122,6 +122,7 @@ for											{yylval = ast_node_new(ast_token_here("FOR",	0,NULL,				tokPos()),
 (0|([1-9][0-9]*))\.(0-9)+					{yylval = ast_node_new(ast_token_here("FLOATING",0,stralloc(yytext),tokPos()), v2pan_here()); return(FLOATING);}
 (0|([1-9][0-9]*))							{yylval = ast_node_new(ast_token_here("INTEGER",0,stralloc(yytext),	tokPos()), v2pan_here()); return(INTEGER);}
 \'.\' 										{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}
+\'\\.\' 									{yylval = ast_node_new(ast_token_here("CHARACTER",0,stralloc(yytext),tokPos()), v2pan_here()); return(CHARACTER);}
 \"([^\\"]|\\.)*\"							{char *str =  substring(yytext,1,strlen(yytext)-1);
 											 yylval = ast_node_new(ast_token_here("RETURN",	0,str,				tokPos()), v2pan_here()); return(STRING);}
 [ \t\n\r]									;

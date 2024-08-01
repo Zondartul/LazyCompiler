@@ -14,16 +14,16 @@ class CSPrinter
 	int cur_x = 0;
 	int cur_y = 0;
 
-	//void libprints_init()
-	//	last_x = 29;
-	//	last_y = 17;
-	//	cur_x = 0;
-	//	cur_y = 0;
-	//end
+	int charcode_NL = '\n';//10; //same as enter
+	int charcode_BACK = 13; //same as backspace
+	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
+	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+	int charcode_BELL = 16; //make a beep or something
 
+	/*
 	void init()
-		//printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
-		printf("CSPrinter init, this = %d\n", (int)this);
+		//printf("CSPrinter init, this = %d\n", (int)this);
+		printf("CSPrinter constructor @ %d\n", (int)this);
 		scr = 0;
 		box_x_min = 0;
 		box_y_min = 0;
@@ -33,16 +33,11 @@ class CSPrinter
 		last_y = 17;
 		cur_x = 0;
 		cur_y = 0;
-		//printf("cur_x after: %d\n", cur_x);
 	end
+	*/
 
 	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
 
-	int charcode_NL = 10; //same as enter
-	int charcode_BACK = 13; //same as backspace
-	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
-	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-	int charcode_BELL = 16; //make a beep or something
 	//sequences: 
 	//NL -> print pointer is at the beginning of the next line
 	//FILL -> line filled with spaces; print pointer at the end of this line
@@ -55,46 +50,27 @@ class CSPrinter
 	void puts(char *str)	this.cs_prints(str, scr.col);	end
 
 	void print_char(char C, int col)
-		//printf("621.");
-		if(C == charcode_NL)	this.cs_newline();	end
-		//printf("622.");
-		if(C == charcode_BACK)	this.cs_prevcol();	end
-		//printf("623.");
-		if(C == charcode_CR)	cur_x = 0;		end
-		//printf("624.");
+		if(C == charcode_NL)	this.cs_newline(); return; end
+		if(C == charcode_BACK)	this.cs_prevcol();	return; end
+		if(C == charcode_CR)	cur_x = 0;			return; end
 		if(C == charcode_FILL)
-		//printf("625.");
 			for(int i = cur_x; i < last_x; i++)
-		//printf("626.");
 				scr.putchXY(' ', i, cur_y);
-		//printf("627.");
 			end
-		//printf("628.");
 			cur_x = last_x;
-		//printf("629.");
+			return;
 		end
-		//printf("62A.");
-		if(C == charcode_BELL)	this.cs_beep();		end
-		//printf("62B.");
-		if(C > 31)
-		//printf("62C.");
-			scr.putchXY(C, cur_x, cur_y);
-		//printf("62D.");
-			this.cs_newcol();
-		//printf("62E.");
-		end
-		//printf("62F.");
+		if(C == charcode_BELL)	this.cs_beep();		return; end
+		//if(C > 31)
+		scr.putchXY(C, cur_x, cur_y);
+		this.cs_newcol();
+		//end
 	end
 
 	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
-		//printf("61.");
 		while(*str2)
-			//printf("62.");
-			//this.print_char(*str2++, col);
 			print_char(*str2++, col);
-			//printf("63.");	
 		end
-		//printf("63.");
 	end
 
 	void cs_printn(int num, int col)

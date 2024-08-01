@@ -1,0 +1,16 @@
+/// error.txt
+
+int processing_error = 0;
+
+void error(char *str)
+	if(!processing_error)
+		processing_error = 1;
+		printf("%s\n", str);
+	end
+	crash();
+end
+
+void crash() int x = 1/0; end
+
+void assert(int cond) if(!cond) crash() end end
+

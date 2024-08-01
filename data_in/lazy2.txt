@@ -1,197 +1,49 @@
 #include "data_in/big/unit_tests.txt"
+#include "data_in/big/error.txt"
 #include "data_in/big/testOutput.txt"
-#include "data_in/big/printf.txt"
-#include "data_in/big/class_csprinter.txt"
-
-int addr_bus[4];
-
-void init_printf()
-	addr_bus = {65536, 65536+20000, 65536+20000*2, 65536+20000*3};
-	screen_set(addr_bus[2]);
-	screen_clear();
-end
-
-class Dev_address_bus
-	int addr[4];
-	void constructor(int base_offset, int size1, int size2, int size3)
-		addr[0] = base_offset;
-		addr[1] = addr[0] + size1;
-		addr[2] = addr[1] + size2;
-		addr[3] = addr[2] + size3;
-	end
-	void write(int dev_num, int* offset, int byte)
-		int *ptr = addr[dev_num] + offset;
-		*ptr = byte;
-	end
-	int read(int dev_num, int* offset) /// variable was shadowed (addr)
-		int *ptr = addr[dev_num] + offset;
-		int byte = *ptr;
-		return *ptr;
-	end
-end
-
+#include "data_in/big/simple/printf.txt"
+#include "data_in/big/classy/class_csprinter.txt"
+#include "data_in/big/classy/allocators/bump_allocator.txt"
+#include "data_in/big/classy/printf_io.txt"
 
 int main()
 	setup();
-	
-	init_printf();
-	printf("Running LazyComp unit tests\n");
 	run_all_tests();
-	Prints("All tests green",90); 	
-	screen_clear(); setPrintCursor(0,0);
-	//printf("hello world!\n");
 	
+	class Address_bus addr_bus(65536, 20000, 20000, 20000);
+	class CScreen scr; scr.set(addr_bus.addr[2]);
+	class CSPrinter printer; printer.scr = &scr;
+	std_out = printer.ifx;
+	scr.clear();
 	printf("Hello [%s] %d!\n", "world", 123456);
-	//printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello %d!\n", 123);
 	
-	//float2str_test();
-	//printftest2();
-	//string_reverse_test();
-	class Dev_address_bus addr_bus;
-	
-	
-	class CScreen scr;
-	
-	
-	class CSPrinter printer;
-	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	//printf("step 0.");
-	addr_bus.constructor(65536, 20000, 20000, 20000);
-	//printf("1.");
+	class bump_allocator;
+	int heap = 30000;
+	int heap_size = 10000;
+	bump_allocator.init((void*)heap, heap_size);
+	cur_allocator = bump_allocator.ifx;	
+	printf("malloc initialized\n");
+	printf("malloc(10) p1 = %d\n", (int)malloc(10));
+	printf("malloc(20) p2 = %d\n", (int)malloc(20));
 
-	scr.constructor();
-	//printf("2.");
-	scr.set(addr_bus.addr[2]);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("3.");
-	printer.init();
-	//printf("4.");
-	printer.scr = &scr;
-	//printf("... printer.scr = %d\n", printer.scr);
-	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("5.");
-	printer.puts("Hello from CSPrinter!\n");
-	//printf("z.");
-	
-	//class Derp derp(4, 10);
-	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
-	
 	infloop();
 end
 
-/*
-void stuff_test_2()
-	int x;
-	printf("t2 x1: %d\n", x); // ???
-	x = 12;
-	printf("t2 x2: %d\n", x); // 12
-end
 
 
 
 
 
-class Derp
-	int x = 2;
-	void constructor(int new_x, int new_y)
-		x = new_x+new_y;
-		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
-		//derpyfunc("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
-	end
-end
 
-void derpyfunc(int arg1, int arg2, int arg3)
-end
-*/
-/*
-void float2str_test()
-	char buff[80];
-	char *pbuff = (char*)&buff;
-	float2str_debug(3.14, 4, pbuff);
-	printf("test end, buff = [%s]\n",pbuff);
-end
 
-int fl2int(float x) return (int)(x*1000); end
 
-void float2str_debug(float num, int prec, char *buff)
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
-	char *buffInit = buff;
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	printf("  isNeg = %d, num = %df\n", isNeg, fl2int(num));
-	int num_fl = floor(num);
-	float num_fr = frac(num);
-	float num_frpr = floorPrec_debug(num_fr, prec);
-	printf("  num_fl = %d, num_fr = %df,\n  num_frpr = %df\n", num_fl, fl2int(num_fr), fl2int(num_frpr));
-	//printf("float2str(%d, %d):\n",num, prec);
-	//printf("  num_fl = %d\n", num_fl);
-	//printf("  num_fr*1000 = %d\n", num_fr*1000);
-	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
-	//if(isNeg) *buff++ = '-'; end
-	if(isNeg) buff[0] = '-'; buff++; end
-	int2str(num_fl, buff);
-	buff = buff + strlen(buff);
-	//if(num_fr)
-		//*buff++ = '.';
-		buff[0] = '.';
-		buff++;
-		int k = ipow10(prec);
-		float num_final = floor(num_frpr*k);
-		printf("  k = %d, num_final = %df\n", k, fl2int(num_final));
-		//printf("  num_final = %d\n", num_final);
-		int2str(num_final, buff);
-		strPadBegin(buff, prec, '0');
-	//end
-end
 
-int floorPrec_debug(float num, int prec)
-	printf("  floorPrec_debug(%df, %d)\n", fl2int(num), prec);
-	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
-	
-	num = num * k; 			//printf(" num*k = %d\n", num);
-	printf("    k = %d, num1 = %df\n", k, fl2int(num));
-	num = floor(num);		//printf(" floor(num) = %d\n", num);
-	printf("    num2 = %df, ", fl2int(num));
-	num = num / k;			//printf(" num/k = %d\n", num);
-	printf("num3 = %df\n", fl2int(num));
-	return num;
-end
 
-void printftest2()
-	float num = 3.14;
-	int prec = 4;
-	char *buff = 59906;
-	printf("Hello %d!\n", 123);
-	printf("f1 [%d]\n", 3140);
-	printf("f2 %d %d %d %d %d %d\n", 0, 1, 12, 123, 1234, 12345);
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
 
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", 3140, 4, 59906);
-	
-	printf("f3 [%d] [%d] [%d]\n", 3140, 4, 59906);
-	printf("f4 [%d]\n", 3140);
-	
 
-end
 
-void string_reverse_test()
-	string_reverse_debug("54321");
-	string_reverse_debug("4321");
-end
 
-void string_reverse_debug(char *str)
-	printf("rev before: [%s]\n", str);
-	int len = strlen(str);
-	printf("len = %d\n", len);
-	for(int i = 0; i < len/2; i++)
-		int opposite = len-1-i;
-		printf("swap (%d (%c)<-> %d (%c))\n", i, str[i], opposite, str[opposite]);
-		char d = str[i];
-		str[i] = str[opposite];
-		str[opposite] = d;
-	end	
-	printf("rev after:  [%s]\n", str);
-end
-*/
+
+
+
+

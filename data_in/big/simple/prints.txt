@@ -1,4 +1,4 @@
-#include "data_in/big/consolescreen.txt"
+#include "data_in/big/simple/consolescreen.txt"
 #include "data_in/big/number.txt"
 
 int screen_print_x_min = 0;

@@ -1250,7 +1250,7 @@ end
 #line 1
 /// driver for a console screen
 class CScreen
-	char* mem_scr;
+	int* mem_scr;
 	int x_max;
 	int y_max;
 	int col;
@@ -1265,18 +1265,14 @@ class CScreen
 
  
 	void putchXY(char C, int x, int y)
-		//printf("CScreen.putchXY\n(this %d, C %d, x %d, y %d)\n",this, C, x, y);
-		//printf("\n x = %d, x_max = %d, y = %d\n", x, x_max, y);
-		//printf("\nmem_scr = %d\nadr = %d\ntotal offset = %d\n", mem_scr, adr, mem_scr+adr);
 		int adr = (x+x_max*y)*2;
 		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
 		mem_scr[adr+1] = col;
-		//printf("74.");
 	end
 
 	void set(int scr_adr) 
-		mem_scr = (char*)scr_adr; 
-		printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
+		mem_scr = (int*)scr_adr; 
+		//printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
 	end
 
 	void clear() 							mem_scr[2041] = 1; 			end
@@ -1315,16 +1311,16 @@ class CSPrinter
 	int cur_x = 0;
 	int cur_y = 0;
 
-	//void libprints_init()
-	//	last_x = 29;
-	//	last_y = 17;
-	//	cur_x = 0;
-	//	cur_y = 0;
-	//end
+	int charcode_NL = '\n';//10; //same as enter
+	int charcode_BACK = 13; //same as backspace
+	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
+	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+	int charcode_BELL = 16; //make a beep or something
 
+	/*
 	void init()
-		//printf("CSPrinter init, this = %d, cur_x before: %d\n", this, cur_x);
-		printf("CSPrinter init, this = %d\n", (int)this);
+		//printf("CSPrinter init, this = %d\n", (int)this);
+		printf("CSPrinter constructor @ %d\n", (int)this);
 		scr = 0;
 		box_x_min = 0;
 		box_y_min = 0;
@@ -1334,16 +1330,11 @@ class CSPrinter
 		last_y = 17;
 		cur_x = 0;
 		cur_y = 0;
-		//printf("cur_x after: %d\n", cur_x);
 	end
+	*/
 
 	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
 
-	int charcode_NL = 10; //same as enter
-	int charcode_BACK = 13; //same as backspace
-	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
-	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-	int charcode_BELL = 16; //make a beep or something
 	//sequences: 
 	//NL -> print pointer is at the beginning of the next line
 	//FILL -> line filled with spaces; print pointer at the end of this line
@@ -1356,46 +1347,27 @@ class CSPrinter
 	void puts(char *str)	this.cs_prints(str, scr.col);	end
 
 	void print_char(char C, int col)
-		//printf("621.");
-		if(C == charcode_NL)	this.cs_newline();	end
-		//printf("622.");
-		if(C == charcode_BACK)	this.cs_prevcol();	end
-		//printf("623.");
-		if(C == charcode_CR)	cur_x = 0;		end
-		//printf("624.");
+		if(C == charcode_NL)	this.cs_newline(); return; end
+		if(C == charcode_BACK)	this.cs_prevcol();	return; end
+		if(C == charcode_CR)	cur_x = 0;			return; end
 		if(C == charcode_FILL)
-		//printf("625.");
 			for(int i = cur_x; i < last_x; i++)
-		//printf("626.");
 				scr.putchXY(' ', i, cur_y);
-		//printf("627.");
 			end
-		//printf("628.");
 			cur_x = last_x;
-		//printf("629.");
+			return;
 		end
-		//printf("62A.");
-		if(C == charcode_BELL)	this.cs_beep();		end
-		//printf("62B.");
-		if(C > 31)
-		//printf("62C.");
-			scr.putchXY(C, cur_x, cur_y);
-		//printf("62D.");
-			this.cs_newcol();
-		//printf("62E.");
-		end
-		//printf("62F.");
+		if(C == charcode_BELL)	this.cs_beep();		return; end
+		//if(C > 31)
+		scr.putchXY(C, cur_x, cur_y);
+		this.cs_newcol();
+		//end
 	end
 
 	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
-		//printf("61.");
 		while(*str2)
-			//printf("62.");
-			//this.print_char(*str2++, col);
 			print_char(*str2++, col);
-			//printf("63.");	
 		end
-		//printf("63.");
 	end
 
 	void cs_printn(int num, int col)
@@ -1497,15 +1469,9 @@ int main()
 	run_all_tests();
 	Prints("All tests green",90); 	
 	screen_clear(); setPrintCursor(0,0);
-	//printf("hello world!\n");
-	
+
 	printf("Hello [%s] %d!\n", "world", 123456);
-	//printf("Hello [%s] %d!\n", "world", 123);
-	//printf("Hello %d!\n", 123);
-	
-	//float2str_test();
-	//printftest2();
-	//string_reverse_test();
+	printf("NL = [%d][%c]\n", (int)'\n', '\n');
 	class Dev_address_bus addr_bus;
 	
 	
@@ -1514,142 +1480,18 @@ int main()
 	
 	class CSPrinter printer;
 	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	//printf("step 0.");
 	addr_bus.constructor(65536, 20000, 20000, 20000);
-	//printf("1.");
 
 	scr.constructor();
-	//printf("2.");
 	scr.set(addr_bus.addr[2]);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("3.");
-	printer.init();
-	//printf("4.");
+	//printer.init();
 	printer.scr = &scr;
-	//printf("... printer.scr = %d\n", printer.scr);
-	//printf(".printer.scr.memscr = %d\n", printer.scr.mem_scr);
-	//printf("... scr.memscr = %d\n", scr.mem_scr);
-	//printf("5.");
+	scr.clear();
 	printer.puts("Hello from CSPrinter!\n");
-	//printf("z.");
-	
-	//class Derp derp(4, 10);
-	//printf("&derp = %d, derp.x = %d\n", &derp, derp.x);
-	
+	printer.puts("bam pam\npa-ram\n");
+	for(int i = 0; i < 100; i++)
+		printer.cs_printn(i, 999); printer.puts("\n");	
+	end
+
 	infloop();
 end
-
-/*
-void stuff_test_2()
-	int x;
-	printf("t2 x1: %d\n", x); // ???
-	x = 12;
-	printf("t2 x2: %d\n", x); // 12
-end
-
-
-
-
-
-class Derp
-	int x = 2;
-	void constructor(int new_x, int new_y)
-		x = new_x+new_y;
-		printf("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
-		//derpyfunc("called user constructor:\nnew_x = %d, new_y = %d, x = %d\n",new_x,new_y,x);
-	end
-end
-
-void derpyfunc(int arg1, int arg2, int arg3)
-end
-*/
-/*
-void float2str_test()
-	char buff[80];
-	char *pbuff = (char*)&buff;
-	float2str_debug(3.14, 4, pbuff);
-	printf("test end, buff = [%s]\n",pbuff);
-end
-
-int fl2int(float x) return (int)(x*1000); end
-
-void float2str_debug(float num, int prec, char *buff)
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
-	char *buffInit = buff;
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	printf("  isNeg = %d, num = %df\n", isNeg, fl2int(num));
-	int num_fl = floor(num);
-	float num_fr = frac(num);
-	float num_frpr = floorPrec_debug(num_fr, prec);
-	printf("  num_fl = %d, num_fr = %df,\n  num_frpr = %df\n", num_fl, fl2int(num_fr), fl2int(num_frpr));
-	//printf("float2str(%d, %d):\n",num, prec);
-	//printf("  num_fl = %d\n", num_fl);
-	//printf("  num_fr*1000 = %d\n", num_fr*1000);
-	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
-	//if(isNeg) *buff++ = '-'; end
-	if(isNeg) buff[0] = '-'; buff++; end
-	int2str(num_fl, buff);
-	buff = buff + strlen(buff);
-	//if(num_fr)
-		//*buff++ = '.';
-		buff[0] = '.';
-		buff++;
-		int k = ipow10(prec);
-		float num_final = floor(num_frpr*k);
-		printf("  k = %d, num_final = %df\n", k, fl2int(num_final));
-		//printf("  num_final = %d\n", num_final);
-		int2str(num_final, buff);
-		strPadBegin(buff, prec, '0');
-	//end
-end
-
-int floorPrec_debug(float num, int prec)
-	printf("  floorPrec_debug(%df, %d)\n", fl2int(num), prec);
-	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
-	
-	num = num * k; 			//printf(" num*k = %d\n", num);
-	printf("    k = %d, num1 = %df\n", k, fl2int(num));
-	num = floor(num);		//printf(" floor(num) = %d\n", num);
-	printf("    num2 = %df, ", fl2int(num));
-	num = num / k;			//printf(" num/k = %d\n", num);
-	printf("num3 = %df\n", fl2int(num));
-	return num;
-end
-
-void printftest2()
-	float num = 3.14;
-	int prec = 4;
-	char *buff = 59906;
-	printf("Hello %d!\n", 123);
-	printf("f1 [%d]\n", 3140);
-	printf("f2 %d %d %d %d %d %d\n", 0, 1, 12, 123, 1234, 12345);
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", fl2int(num), prec, (int)buff);
-
-	printf("float2str_debug(num %df, prec %d, buff %dp)\n", 3140, 4, 59906);
-	
-	printf("f3 [%d] [%d] [%d]\n", 3140, 4, 59906);
-	printf("f4 [%d]\n", 3140);
-	
-
-end
-
-void string_reverse_test()
-	string_reverse_debug("54321");
-	string_reverse_debug("4321");
-end
-
-void string_reverse_debug(char *str)
-	printf("rev before: [%s]\n", str);
-	int len = strlen(str);
-	printf("len = %d\n", len);
-	for(int i = 0; i < len/2; i++)
-		int opposite = len-1-i;
-		printf("swap (%d (%c)<-> %d (%c))\n", i, str[i], opposite, str[opposite]);
-		char d = str[i];
-		str[i] = str[opposite];
-		str[opposite] = d;
-	end	
-	printf("rev after:  [%s]\n", str);
-end
-*/

@@ -1,6 +1,6 @@
 /// driver for a console screen
 class CScreen
-	char* mem_scr;
+	int* mem_scr;
 	int x_max;
 	int y_max;
 	int col;
@@ -15,18 +15,14 @@ class CScreen
 
  
 	void putchXY(char C, int x, int y)
-		//printf("CScreen.putchXY\n(this %d, C %d, x %d, y %d)\n",this, C, x, y);
-		//printf("\n x = %d, x_max = %d, y = %d\n", x, x_max, y);
-		//printf("\nmem_scr = %d\nadr = %d\ntotal offset = %d\n", mem_scr, adr, mem_scr+adr);
 		int adr = (x+x_max*y)*2;
 		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
 		mem_scr[adr+1] = col;
-		//printf("74.");
 	end
 
 	void set(int scr_adr) 
-		mem_scr = (char*)scr_adr; 
-		printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
+		mem_scr = (int*)scr_adr; 
+		//printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
 	end
 
 	void clear() 							mem_scr[2041] = 1; 			end

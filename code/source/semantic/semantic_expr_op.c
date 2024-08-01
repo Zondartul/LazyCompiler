@@ -281,6 +281,19 @@ void semantic_analyze_expr_id(ast_node* node, expr_settings stg) {
 	output_res(stg, result, YES_EMIT);
 }
 
+char unescape_char(char c){
+	switch(c){
+		case 'n': return '\n'; break;
+		case 'r': return '\r'; break;
+		case 't': return '\t'; break;
+		case 'b': return '\b'; break;
+		case '0': return '\0'; break;
+		default: error("unknown character escape sequence \\%c", c);
+	}
+	assert(!"unreachable");
+	return 0;
+}
+
 void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	//expr:
 		//| INTEGER
@@ -331,7 +344,20 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 	{
 		T->name = "char";
 		vector2_char vstr = vector2_char_here();
-		vec_printf(&vstr, "%d", node->token.value[1]);
+		const char *tok_str = node->token.value;
+		assert(tok_str);
+		int len = strlen(tok_str);
+		int val = 0;
+		if(len == 3){
+			val = tok_str[1];
+		}else if(len == 4){
+			assert(tok_str[1] == '\\');
+			val = unescape_char(tok_str[2]);
+		}else{
+			error("semantic error: bad char literal [%s]", tok_str);
+		}
+		//vec_printf(&vstr, "%d", node->token.value[1]);
+		vec_printf(&vstr, "%d", val);
 		const char* str = stralloc(vstr.data);
 		val_handle result = { .val = str, .T = T, .rv_type = E_LVAL, .author = author };
 		output_res(stg, result, NO_EMIT);
@@ -353,7 +379,8 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 		currentCodeSegment = init_CS;
 		emit_code("SYMBOL %s STRING %s", // no comment here cause string is until the end of line 
 			sanitize_string(str_name), 
-			sanitize_string(escape_string(node->token.value))
+			//sanitize_string(escape_string(node->token.value))
+			sanitize_string(escape_string(unescape_string(node->token.value)))
 		);
 		pop_code_segment();
 		

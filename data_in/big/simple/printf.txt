@@ -1,5 +1,5 @@
 //hello, am printf
-#include "data_in/big/prints.txt"
+#include "data_in/big/simple/prints.txt"
 
 char *lorem_ipsum(int I)
    int sw = I % 10;

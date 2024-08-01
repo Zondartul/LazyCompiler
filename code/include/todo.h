@@ -101,7 +101,7 @@
 * [FIXED bug 57] dot-methods called from methods get the wrong 'this'
 *	scr.putchXY(' ', i, cur_y); -> actually compiled as this.putchXY(...)
 *   - fixed, see unit test 7.35
-*
+* [bug 58] when a user constructor is provided, default members are not initialized
 *
 *
 *
