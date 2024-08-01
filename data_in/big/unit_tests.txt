@@ -470,7 +470,7 @@ int test_5_arithmetic_float()
 	//ps. conversion from float to int should happen through
 	//expression (op) typechecks, but that's not yet implemented
 	expect_basic(5, 21, (int)(float)(2*pi/x), 62); 
-	printf("pi = %f\n", pi);
+	//printf("pi = %f\n", pi);
 end
 
 void set_buff_mario(char *buff)
@@ -551,26 +551,26 @@ class Test_7_class_derp //class Derp
 		return w;
 	end
 	int test71()
-		printf("derp.t71:  x = %d\n", x);
-		printf("derp.t71: &x = %d\n", (int)&x);
-		printf("derp.t71: this = %d\n", this);
-		printf("derp.t71: y1 = %d\n", y);
+		//printf("derp.t71:  x = %d\n", x);
+		//printf("derp.t71: &x = %d\n", (int)&x);
+		//printf("derp.t71: this = %d\n", this);
+		//printf("derp.t71: y1 = %d\n", y);
 		y = 3;
-		printf("derp.t71: y2 = %d\n", y);
+		//printf("derp.t71: y2 = %d\n", y);
 	end
 	int set_y(int new_y)
 		y = new_y;
 	end
 	int report_y()
-		printf("derp.ry: y = %d\n", y);	
+		//printf("derp.ry: y = %d\n", y);	
 	end
 end
 
 int test_7_class_local()
 	class Test_7_class_derp derp1;
-	printf("test7: &derp1 = %d\n", (int)&derp1);
-	printf("test7: &(derp1.x) = %d\n", (int)&(derp1.x));
-	printf("test7: derp1.x = %d\n", derp1.x);
+	//printf("test7: &derp1 = %d\n", (int)&derp1);
+	//printf("test7: &(derp1.x) = %d\n", (int)&(derp1.x));
+	//printf("test7: derp1.x = %d\n", derp1.x);
 	derp1.test71();
 	expect_stack(7, 1, (int)&derp1,		-23);
 	derp1.y = 12;
@@ -670,6 +670,23 @@ int test_7_class_method()
 	derp_c2.bar(40);
 end
 
+int test_7_class_copy()
+	class Test_7_class_derp derp6;
+	class Test_7_class_derp derp7;
+	derp6.x = 10;
+	derp6.y = 20;
+	derp7.x = 30;
+	derp7.y = 40;
+	expect_basic(7, 35, derp6.x, 10);
+	expect_basic(7, 36, derp6.y, 20);
+	expect_basic(7, 37, derp7.x, 30);
+	expect_basic(7, 38, derp7.y, 40);
+	derp6 = derp7;
+	expect_basic(7, 39, derp6.x, 30);
+	expect_basic(7, 40, derp6.y, 40);
+	return CODE_OK;
+end
+
 int test_7_class()
 	test_7_class_local();
 	class Test_7_class_derp derp4;
@@ -680,6 +697,7 @@ int test_7_class()
 	test_7_class_by_ptr(&derp5);
 	test_7_class_global();
 	test_7_class_method();
+	test_7_class_copy();
 	return CODE_OK;
 end
 

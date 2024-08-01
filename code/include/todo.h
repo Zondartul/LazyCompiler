@@ -102,8 +102,9 @@
 *	scr.putchXY(' ', i, cur_y); -> actually compiled as this.putchXY(...)
 *   - fixed, see unit test 7.35
 * [bug 58] when a user constructor is provided, default members are not initialized
-*
-*
+* [bug 59] classes are not fully copied during = assignment
+*	- see unit 7.40
+* [todo 60] add "assembly verification" step to make sure no invalid asm is generated
 *
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators

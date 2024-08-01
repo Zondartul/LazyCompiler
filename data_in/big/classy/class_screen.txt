@@ -10,7 +10,7 @@ class CScreen
 		x_max = 30;
 		y_max = 19;
 		col = 999;
-		printf("CScreen constructed @ %d\n", this);
+		//printf("CScreen constructed @ %d\n", this);
 	end
 
  

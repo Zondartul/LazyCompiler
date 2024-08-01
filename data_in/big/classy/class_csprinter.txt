@@ -1,6 +1,7 @@
 // class CSPrinter - handles screen extents and scrolling logic
 #include "data_in/big/classy/class_screen.txt"
 #include "data_in/big/number.txt"
+#include "data_in/big/classy/ifx_iostream.txt"
 
 class CSPrinter
 	class CScreen *scr = 0;
@@ -21,6 +22,8 @@ class CSPrinter
 	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
 	int charcode_BELL = 16; //make a beep or something
 
+	class ifx_iostream ifx;
+
 	/*
 	void init()
 		//printf("CSPrinter init, this = %d\n", (int)this);
@@ -37,7 +40,13 @@ class CSPrinter
 	end
 	*/
 
+	void init()
+		ifx.impl = (void*)this;
+		ifx.putch = this.cs_putch;
+	end
+	
 	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
+
 
 	//sequences: 
 	//NL -> print pointer is at the beginning of the next line
@@ -47,24 +56,44 @@ class CSPrinter
 	//BACK CR -> go to beginning of prev line
 	//hello BACK z -> hellz
 
-	void putch(char C)		this.print_char(C, scr.col);		end
-	void puts(char *str)	this.cs_prints(str, scr.col);	end
+	int cs_putch(char C)		
+		writePort(0, 70);
+		this.print_char(C, scr.col); 
+		writePort(0, 71);
+		return C;	
+		writePort(0, 72);
+	end
+	int cs_puts(char *str)		this.cs_prints(str, scr.col); return strlen(str);	end
 
 	void print_char(char C, int col)
+		writePort(0, 73);
 		if(C == charcode_NL)	this.cs_newline(); return; end
+		writePort(0, 74);
 		if(C == charcode_BACK)	this.cs_prevcol();	return; end
+		writePort(0, 75);
 		if(C == charcode_CR)	cur_x = 0;			return; end
+		writePort(0, 76);
 		if(C == charcode_FILL)
+		writePort(0, 77);
 			for(int i = cur_x; i < last_x; i++)
+		writePort(0, 78);
 				scr.putchXY(' ', i, cur_y);
+		writePort(0, 79);
 			end
+		writePort(0, 80);
 			cur_x = last_x;
+		writePort(0, 81);
 			return;
+		writePort(0, 82);
 		end
+		writePort(0, 83);
 		if(C == charcode_BELL)	this.cs_beep();		return; end
+		writePort(0, 84);
 		//if(C > 31)
 		scr.putchXY(C, cur_x, cur_y);
+		writePort(0, 85);
 		this.cs_newcol();
+		writePort(0, 86);
 		//end
 	end
 

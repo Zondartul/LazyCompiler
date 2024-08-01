@@ -10,6 +10,7 @@ void gen_command_jne();
 void gen_command_je();
 void gen_command_call();
 void gen_command_mov();
+void gen_command_memcpy();
 void gen_command_add();
 void gen_command_sub();
 void gen_command_div();

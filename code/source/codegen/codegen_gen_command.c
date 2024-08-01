@@ -347,6 +347,31 @@ void gen_command_mov() {
 	return;
 }
 
+void gen_command_memcpy(){
+	if(codegen_decl){
+		//do nothing
+		//const char* dest = strtok(0, " ");
+		//checkResult(dest2);
+	}else{
+		const char *arg1 = strtok(0, " ");
+		const char *arg2 = strtok(0, " ");
+		const char *arg3 = strtok(0, " ");
+
+		int size = 0;
+		if(!sscanf(arg3, "%d", &size)){error("CODE GEN: bad arg (size)");}
+		const char* dest = loadLValue(arg1);
+		const char* src = loadLValue(arg2);
+		printTrace();
+
+		for(int i = 0; i < size; i++){
+			//storeValue(dest, src);
+			printindent(); asm_println("mov #%s, #%s", dest, src);
+			printindent(); asm_println("inc %s", dest);
+			printindent(); asm_println("inc %s", src);
+		}
+	}
+}
+
 void gen_command_add() {
 	if (codegen_decl) {
 		//do nothing

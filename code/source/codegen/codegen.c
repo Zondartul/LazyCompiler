@@ -1365,6 +1365,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"JE")==0)			{gen_command_je();			return;}
 		if(strcmp(codegen_tok,"CALL")==0)		{gen_command_call();		return;}
 		if(strcmp(codegen_tok,"MOV")==0)		{gen_command_mov();			return;}
+		if(strcmp(codegen_tok,"MEMCPY")==0)		{gen_command_memcpy();		return;}
 		if(strcmp(codegen_tok,"ADD")==0)		{gen_command_add();			return;}
 		if(strcmp(codegen_tok,"SUB")==0)		{gen_command_sub();			return;}
 		if(strcmp(codegen_tok,"DIV")==0)		{gen_command_div();			return;}

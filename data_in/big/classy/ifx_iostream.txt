@@ -47,7 +47,9 @@ int hasch() return fhasch(std_in); end
 int fputs(class ifx_iostream f, char *str)
 	int printed = 0;
 	while(*str)
-		if(fputch(f, *str++) != 0) printed++; end
+		if(fputch(f, *str++) != 0) 
+		printed++;
+		end
 	end
 	return printed;
 end

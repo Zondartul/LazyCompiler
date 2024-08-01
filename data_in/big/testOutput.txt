@@ -29,4 +29,4 @@ void crash()
 	x = x/0;
 end
 
-void delay(int n) for(int i = 0; i < n; i++) end end
+void delay(float n) n = n * 10000; for(int i = 0; i < n; i++) end end

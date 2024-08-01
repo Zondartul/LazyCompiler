@@ -1005,6 +1005,18 @@ int safe_strcmp(const char *A, const char *B){
 	return 1;
 }
 
+val_handle convert_rv_type(val_handle res_in, enum expr_type new_rv, const char *author){
+	if(res_in.rv_type == new_rv){
+		return res_in;
+	}else{
+		PREP_RES(res_out_, new_rv);
+		res_out_stg.dest.author = author;
+		output_res(res_out_stg, res_in, NO_EMIT);
+		VERIFY_RES(res_out_);
+		return res_out_;
+	}
+}
+
 void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	//expr: expr '=' expr
 
@@ -1025,19 +1037,28 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	struct ast_node *dest = ast_get_child(node,0);
 	struct ast_node *src = ast_get_child(node, 1);
 	
-	PREP_RES(res1, E_LVAL); //R=read, L=write //E_RVAL);
+	PREP_RES(res1, E_ASIS);//E_LVAL); //R=read, L=write //E_RVAL);
 	res1stg.dest.author = "expr_assign arg1 (... =)";
 	semantic_expr_analyze(dest, res1stg); //expr
 	VERIFY_RES(res1);
 	//assert(res1.val && (res1.val[0] == '*'));
 	assert(res1.val);
 
-	PREP_RES(res2, E_RVAL);//E_LVAL);
+	PREP_RES(res2, E_ASIS);//E_RVAL);//E_LVAL);
 	res2stg.dest.author = "expr_assign arg2 (= ...)";
 	semantic_expr_analyze(src, res2stg); //expr
 	VERIFY_RES(res2);
 
 	const char *exprSrc = 0;
+
+	int size = getTypeSize(res2.T);
+	if(size <= 1){
+		res1 = convert_rv_type(res1, E_LVAL, "expr_assign(size=1) arg1 (...=   )");
+		res2 = convert_rv_type(res2, E_RVAL, "expr_assign(size=1) arg2 (   =...)");
+	}else{
+		res1 = convert_rv_type(res1, E_PTR, "expr_assign(size=big) arg1 (...=   )");
+		res2 = convert_rv_type(res2, E_PTR, "expr_assign(size=big) arg2 (   =...)");
+	}
 
 	if(do_typechecks){
 		//typecheck_assign(res1, res2);
@@ -1054,7 +1075,13 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 	}else{
 		exprSrc = res2.val;
 	}
-	emit_code("MOV %s %s //=  // semantic_expr_op.c:1025",sanitize_string(res1.val), sanitize_string(exprSrc));
+
+	if(size <= 1){
+		emit_code("MOV %s %s //=  // semantic_expr_op.c:1080",sanitize_string(res1.val), sanitize_string(exprSrc));
+	}else{
+		// maybe convert src from 
+		emit_code("MEMCPY %s %s %d /= // semantic_expr_op.c:1083", sanitize_string(res1.val), sanitize_string(exprSrc), size);
+	}
 	//-- old note:
 	//currently the assignment can't have a value because
 	//we are using push_expr for other things too.

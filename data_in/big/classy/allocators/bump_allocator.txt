@@ -36,7 +36,7 @@ class Bump_allocator
 	
 	void *ba_realloc(void *p, int size)
 		void *p2 = malloc(size);
-		memmove(p2, p, size);
+		memmove((char*)p2, (char*)p, size);
 	end
 	
 	class malloc_info ba_malloc_get_counts()

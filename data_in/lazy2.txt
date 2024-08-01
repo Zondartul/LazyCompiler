@@ -7,18 +7,161 @@
 #include "data_in/big/classy/printf_io.txt"
 #include "data_in/big/classy/allocators/bump_allocator.txt"
 
+/// NEED NOW::: usercode stack trace in case of crash with emergency print
+
+class stack_frame
+	int *p_ebp = 0;
+
+	void set_current()
+		int *x = 0;		/// first variable in this function has addr EBP:-1
+		x = &x + 1;		/// pointer points to the cell after itself (EBP:-1:+1 == EBP)
+		p_ebp = x;		/// frame of the "set_current" function
+		p_ebp = *p_ebp; /// frame of the calling function
+	end
+
+	class stack_frame prev_frame()
+		class stack_frame F;
+		if(p_ebp) F.p_ebp = *p_ebp; end
+		return p_ebp;
+	end
+	
+	int get_ret_ip() return p_ebp[-1]; end	
+end
+
+class debug_info_func
+	int record_len = 0;
+	int lbl_entrance = 0;
+	int lbl_exit = 0;
+	int ir_name_len = 0;
+	char *ir_name = 0;
+	int user_name_len = 0;
+	char *user_name = 0;
+	
+	void deserialize(int *p)
+		record_len = *p++;
+		lbl_entrance = *p++;
+		lbl_exit = *p++;
+		ir_name_len = *p++;
+		ir_name = p; p = p + ir_name_len;
+		user_name_len = *p++;
+		user_name = p;
+	end
+end
+
+
+class debug_info_var
+	int record_len = 0;
+	int lbl_from = 0;
+	int lbl_to = 0;
+	int pos = 0;
+	int framedepth = 0;
+	int ir_name_len = 0;
+	char *ir_name = 0;
+	int user_name_len = 0;
+	char *user_name = 0;
+
+	void deserialize(int *p)
+		record_len = *p++;
+		lbl_from = *p++;
+		lbl_to = *p++;
+		pos = *p++;
+		framedepth = *p++;
+		ir_name_len = *p++;
+		ir_name = p; p = p + ir_name_len;
+		user_name_len = *p++;
+		user_name = p;
+	end
+end
+
+class debug_info_var_db
+	class debug_info_var vars[1000];
+	int n_vars = 0;
+	
+	void deserialize(int *p)
+		n_vars = *p++;
+		class debug_info_var var
+		for(int i = 0; i < n_vars; i++)
+			var.deserialize(p);
+			p = p+var.record_len;
+		end
+	end
+	
+	int get_var_at_ip(int ip, int from_idx)
+		for(int i = from_idx; i < n_vars; i++)
+			if((vars[i].lbl_from <= ip) & (vars[i].lbl_to >= ip))
+				return i;
+			end
+		end
+		return -1;
+	end
+end
+
+class debug_info_func_db
+	class debug_info_func funcs[1000];
+	int n_funcs = 0;
+	
+	void deserialize(int *p)
+		n_funcs = *p++;
+		class debug_info_func func;
+		for(int i = 0; i < n_funcs; i++)
+			func.deserialize(p);
+			p = p+func.record_len;
+		end
+	end
+	
+	int get_func_at_ip(int ip)
+		for(int i = 0; i < n_funcs; i++)
+			if((vars[i].lbl_entrance <= ip) & (vars[i].lbl_exit >= ip))
+				return i;
+			end
+		end
+		return -1;
+	end
+end
+
+class stack_trace
+	class debug_info_func_db *func_db = 0;
+	class debug_info_var_db *var_db = 0;
+	
+	void trace()
+		class stack_frame frame;
+		frame.set_current();
+		int frame_n = 0;
+		while(frame.p_ebp)
+			int ip = frame.get_ret_ip();
+			class debug_info_func func = func_db.get_func_at_ip(ip);
+			int offset = ip - func.lbl_entrance;
+			char *name = func.user_name;
+			err_printf("%d:%d (%s + %d)\n" frame_n, ip, name, offset);
+			frame = frame.prev_frame();
+			frame_n++;
+		end
+	end
+end
+
+/// we probably need asm to actually give the debug info to these functions
 
 int main()
 	setup();
+	err_printf(990, "Running unit tests...\n");
 	run_all_tests();
-	
+	err_printf(90,  "All tests pass.\n");
+	delay(1); err_printf(999, "1");
+	delay(1); err_printf(999, "2");
+	delay(1); err_printf(999, "3");
+	delay(1); err_printf(999, "4");
+	delay(1); err_printf(999, "5");
+	delay(1); err_printf(999, "6");
+
 	class Address_bus addr_bus(65536, 20000, 20000, 20000);
 	class CScreen scr; scr.set(addr_bus.addr[2]);
 	class CSPrinter printer; printer.scr = &scr;
+	printer.init();
 	std_out = printer.ifx;
 	scr.clear();
 	printf("Hello [%s] %d!\n", "world", 123456);
 	
+	/*
 	class Bump_allocator bumpalloc;
 	int heap = 30000;
 	int heap_size = 10000;
@@ -27,12 +170,9 @@ int main()
 	printf("malloc initialized\n");
 	printf("malloc(10) p1 = %d\n", (int)malloc(10));
 	printf("malloc(20) p2 = %d\n", (int)malloc(20));
-
+	*/
 	infloop();
 end
-
-
-
 
 
 

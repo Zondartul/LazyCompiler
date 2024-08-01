@@ -1,11 +1,13 @@
 /// error.txt
+#include "data_in/big/err_printf.txt"
 
 int processing_error = 0;
 
 void error(char *str)
 	if(!processing_error)
 		processing_error = 1;
-		printf("%s\n", str);
+		err_clear();
+		err_printf(911, "%s\n", str);
 	end
 	crash();
 end
