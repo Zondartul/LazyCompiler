@@ -498,6 +498,11 @@ void semantic_analyze_func_def(ast_node *node){
 	
 	struct type_name *retT/*T*/ = parseTypename(node_typename);
 	const char *name = node->token.value;
+
+	if(strcmp(name, "ba_malloc")==0){
+		printf("debug breakpoint\n");
+	}
+
 	if(semantic_decl){
 		//27.03.2022: make sure the symbol is not 'already declared'
 		struct symbol* Sprev = try_lookup_symbol(name);

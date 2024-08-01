@@ -488,7 +488,7 @@ int test_4_helper()
 end
 
 int test_4_funcptr()
-	expect_global(4, 1, (int)(void*)test_4_helper,  1098);
+	expect_global(4, 1, (int)(int*)test_4_helper,  1098);
 	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
 	int p2 = test_4_helper;
@@ -651,7 +651,7 @@ int test_7_class_local()
 	expect_basic(7, 5, derp1.sum(4),	  9);
 	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
 	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
-	expect_global(7, 6, (int)(void*)derp1.sum,    4573);
+	expect_global(7, 6, (int)(int*)derp1.sum,    4573);
 	return CODE_OK;
 end
 
@@ -661,7 +661,7 @@ int test_7_class_by_val(class Test_7_class_derp derp2)
 	expect_basic(7, 8, derp2.x,		  3);
 	expect_basic(7, 9, derp2.y,		  4);
 	expect_basic(7, 10, derp2.sum(5),  12);
-	expect_global(7, 11, (int)(void*)derp2.sum,   4573);
+	expect_global(7, 11, (int)(int*)derp2.sum,   4573);
 	return CODE_OK;
 end
 
@@ -672,7 +672,7 @@ int test_7_class_by_ptr(class Test_7_class_derp *derp3)
 	expect_basic(7, 15, derp3.x,		  5);
 	expect_basic(7, 16, derp3.y,		  6);
 	expect_basic(7, 17, derp3.sum(7),	 18);
-	expect_global(7, 18, (int)(void*)derp3.sum,   4573);
+	expect_global(7, 18, (int)(int*)derp3.sum,   4573);
 	return CODE_OK;
 end
 
@@ -825,6 +825,26 @@ end
 
 #file "data_in/lazy2.txt"
 #line 2
+#file "data_in/big/error.txt"
+#line 1
+/// error.txt
+
+int processing_error = 0;
+
+void error(char *str)
+	if(!processing_error)
+		processing_error = 1;
+		printf("%s\n", str);
+	end
+	crash();
+end
+
+//void crash() int x = 1/0; end
+
+void assert(int cond) if(!cond) crash(); end end
+
+#file "data_in/lazy2.txt"
+#line 3
 #file "data_in/big/testOutput.txt"
 #line 1
 void infloop() while(1) end end
@@ -860,54 +880,86 @@ end
 
 void delay(int n) for(int i = 0; i < n; i++) end end
 #file "data_in/lazy2.txt"
+#line 4
+//#include "data_in/big/simple/printf.txt"
+#file "data_in/big/classy/class_address_bus.txt"
+#line 1
+/// wiremod address bus
+
+class Address_bus
+	int addr[4];
+	void constructor(int base_offset, int size1, int size2, int size3)
+		addr[0] = base_offset;
+		addr[1] = addr[0] + size1;
+		addr[2] = addr[1] + size2;
+		addr[3] = addr[2] + size3;
+	end
+	void write(int dev_num, int* offset, int byte)
+		int *ptr = addr[dev_num] + offset;
+		*ptr = byte;
+	end
+	int read(int dev_num, int* offset) /// variable was shadowed (addr)
+		int *ptr = addr[dev_num] + offset;
+		int byte = *ptr;
+		return *ptr;
+	end
+end
+#file "data_in/lazy2.txt"
+#line 6
+#file "data_in/big/classy/class_csprinter.txt"
+#line 1
+// class CSPrinter - handles screen extents and scrolling logic
+#file "data_in/big/classy/class_screen.txt"
+#line 1
+/// driver for a console screen
+class CScreen
+	int* mem_scr;
+	int x_max;
+	int y_max;
+	int col;
+
+	void constructor()
+		mem_scr = 65536;
+		x_max = 30;
+		y_max = 19;
+		col = 999;
+		printf("CScreen constructed @ %d\n", this);
+	end
+
+ 
+	void putchXY(char C, int x, int y)
+		int adr = (x+x_max*y)*2;
+		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
+		mem_scr[adr+1] = col;
+	end
+
+	void set(int scr_adr) 
+		mem_scr = (int*)scr_adr; 
+		//printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
+	end
+
+	void clear() 							mem_scr[2041] = 1; 			end
+	void cursor_enable() 					mem_scr[2046] = 1; 			end
+	void cursor_disable() 					mem_scr[2046] = 0; 			end
+	void set_cursor_pos(int pos) 			mem_scr[2045] = 2*pos; 		end
+	void set_cursor_pos_xy(int x, int y) 	mem_scr[2045] = 2*(30*y+x); end
+	void force_refresh() 					mem_scr[2020] = 1; delay(1); end
+
+
+	void set_shift_box(int x1, int x2, int y1, int y2)
+		mem_scr[2031] = x1;
+		mem_scr[2032] = x2;
+		mem_scr[2033] = y1;
+		mem_scr[2034] = y2;
+	end
+
+	void shift_vertical(int n) 				mem_scr[2038] = n; 			end
+	void shift_horizontal(int n) 			mem_scr[2037] = n; 			end
+
+
+end
+#file "data_in/big/classy/class_csprinter.txt"
 #line 3
-#file "data_in/big/printf.txt"
-#line 1
-//hello, am printf
-#file "data_in/big/prints.txt"
-#line 1
-#file "data_in/big/consolescreen.txt"
-#line 1
-int *AdrScreen = 0;
-
-void printCharXY(int X, int Y, char C, int col)
-	int offs = 2*(X+Y*30);
-	int *P = AdrScreen + offs;
-	P[0] = C;
-	P++;
-	P[0] = col;
-end
-
-void screen_set(int scr) 
-	writePort(5, (int)scr);
-	AdrScreen = (int*)scr; 
-end
-void screen_clear() AdrScreen[2041] = 1; end
-void screen_cursor_enable() AdrScreen[2046] = 1; end
-void screen_cursor_disable() AdrScreen[2046] = 0; end
-void screen_set_cursor_pos(int pos) AdrScreen[2045] = 2*pos; end
-void screen_set_cursor_pos_xy(int x, int y) AdrScreen[2045] = 2*(30*y+x); end
-void screen_force_refresh() AdrScreen[2020] = 1; delay(1); end
-void screen_set_shift_box_x1(int n) AdrScreen[2031] = n; end
-void screen_set_shift_box_x2(int n) AdrScreen[2032] = n; end
-void screen_set_shift_box_y1(int n) AdrScreen[2033] = n; end
-void screen_set_shift_box_y2(int n) AdrScreen[2034] = n; end
-
-void screen_set_shift_box(int x1, int x2, int y1, int y2)
-	AdrScreen[2031] = x1;
-	AdrScreen[2032] = x2;
-	AdrScreen[2033] = y1;
-	AdrScreen[2034] = y2;
-end
-
-void screen_shift_vertical(int n) AdrScreen[2038] = n; end
-void screen_shift_horizontal(int n) AdrScreen[2037] = n; end
-
-
-
-//void delay(int n) end
-#file "data_in/big/prints.txt"
-#line 2
 #file "data_in/big/number.txt"
 #line 1
 
@@ -1023,280 +1075,8 @@ void float2str(float num, int prec, char *buff)
 		strPadBegin(buff, prec, '0');
 	//end
 end
-#file "data_in/big/prints.txt"
-#line 3
-
-int screen_print_x_min = 0;
-int screen_print_y_min = 0;
-int screen_print_x_max = 30;
-int screen_print_y_max = 19;
-
-int cs_last_x = 29;
-int cs_last_y = 17;
-int printScrX = 0;
-int printScrY = 0;
-
-void libprints_init()
-	cs_last_x = 29;
-	cs_last_y = 17;
-	printScrX = 0;
-	printScrY = 0;
-end
-
-void setPrintCursor(int x, int y) printScrX = x; printScrY = y; end
-
-
-//idea: functor as 'character inserter'. can check bounds, do /dev/null, etc.
-//so basically stream?
-int charcode_NL = 10; //same as enter
-int charcode_BACK = 13; //same as backspace
-int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
-int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-int charcode_BELL = 16; //make a beep or something
-//sequences: 
-//NL -> print pointer is at the beginning of the next line
-//FILL -> line filled with spaces; print pointer at the end of this line
-//CR -> print pointer at the beginning of this line
-//CR FILL CR -> the line is blank and you are at the beginning
-//BACK CR -> go to beginning of prev line
-//hello BACK z -> hellz
-
-
-
-
-void PrintChar(char C, int col)
-	//dbgprint("printchar ", C, C);
-	if(C == charcode_NL) newline(); end
-	if(C == charcode_BACK) prevcol(); end
-	if(C == charcode_CR) printScrX = 0; end
-	if(C == charcode_FILL)
-		for(int i = printScrX; i < cs_last_x; i++)
-			printCharXY(i, printScrY, ' ', col);
-		end
-		printScrX = cs_last_x;
-	end
-	if(C == charcode_BELL) beep(); end
-	if(C > 31)
-		printCharXY(printScrX, printScrY, C, col);
-		newcol();
-	end
-end
-
-
-void Prints(char *str2, int col) //maybe str conflicts with the str in print?
-	while(*str2)
-		PrintChar(*str2++, col);
-	end
-end
-
-void Printn(int num, int col)
-	char buff[20];
-	int2str(num, (char*)&buff);
-	Prints((char*)&buff, col);
-end
-
-void newline()
-	printScrX = 0;
-	printScrY++;
-	if(printScrY > cs_last_y-1)
-		ConsoleShiftUp();
-	end
-end
-
-void prevline()
-	printScrX = cs_last_x;
-	printScrY--;
-	if(printScrY < 0)
-		ConsoleShiftDown();
-	end
-end
-
-void newcol()
-	printScrX++;
-	if(printScrX > cs_last_x)
-		newline();
-	end
-end
-
-void prevcol()
-	printScrX--;
-	if(printScrX < 0)
-		prevline();
-	end
-end
-
-void beep() end
-
-void ConsoleShiftUp()
-	if(printScrY > cs_last_y-1)
-		screen_shift_vertical(1);
-		printScrY--;
-	end
-end
-
-void ConsoleShiftDown()
-	if(printScrY < 0)
-		screen_shift_vertical(-1);
-		printScrY++;
-	end
-end
-
-void screen_set_print_box(int x1, int y1, int x2, int y2)
-	screen_print_x_min = x1;
-	screen_print_y_min = y1;
-	screen_print_x_max = x2;
-	screen_print_y_max = y2;
-end
-#file "data_in/big/printf.txt"
-#line 3
-
-char *lorem_ipsum(int I)
-   int sw = I % 10;
-   if(sw == 0) return "Lorem ipsum dolor sit amet, "; end
-   if(sw == 1) return "consectetur adipiscing elit. "; end
-   if(sw == 2) return "Nam auctor lorem in massa tempor bibendum. "; end
-   if(sw == 3) return "Nulla in metus in nunc ornare "; end
-   if(sw == 4) return "porta ullamcorper non enim. "; end
-   if(sw == 5) return "Donec tincidunt magna "; end
-   if(sw == 6) return "non tellus blandit faucibus. "; end
-   if(sw == 7) return "Nullam ac sem vitae lectus gravida vulputate. "; end
-   if(sw == 8) return "Quisque quis lacinia risus, "; end
-   if(sw == 9) return "non rutrum turpis. "; end
-   return "(oops)";
-end
-
-void debug_s_arg(char *arg)
-	printf("{s %d}:[",arg);
-	while(*arg)
-		printf("%c",*arg++);	
-	end
-	printf("]");
-end
-
-int sprintf(char *buff, char *fmt, void *parg)
-	int printed = 0;
-	while(*fmt)
-		char c = *fmt;
-		if(c == '%')
-			fmt++;
-			char c2 = *fmt;
-			fmt++;
-			if(c2 == 'd') int2str(*(int*)parg, buff); parg++; end
-			if(c2 == 'f') float2str(*(float*)parg, 4, buff); parg++; end
-			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *(char**)parg); parg++; end
-			if(c2 == 'c') buff[0] = *(char*)parg; parg++; buff[1] = 0; end
-			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
-			int inc = strlen(buff);
-			printed = printed + inc;
-			buff = buff + inc;
-		end
-		if(c != '%')
-			if(c == '\')
-				fmt++;
-				char c2 = *fmt;
-				fmt++;
-				if(c2 == 'n') buff[0] = charcode_NL; buff[1] = 0; end
-				if(c2 == 'r') buff[0] = charcode_CR; buff[1] = 0; end
-				if(c2 == 'f') buff[0] = charcode_FILL; buff[1] = 0; end
-				if(c2 == 'b') buff[0] = charcode_BACK; buff[1] = 0; end
-				if(c2 == 'e') buff[0] = charcode_BELL; buff[1] = 0; end
-				if(c2 == '\') buff[0] = '\'; buff[1] = 0; end
-				int inc = strlen(buff);
-				printed = printed + inc;
-				buff = buff+inc;
-			end
-			if(c != '\')
-				buff[0] = c;
-				buff[1] = 0;
-				printed++;
-				buff++;
-				fmt++;
-			end
-		end
-	end
-	return printed;
-end
-
-int printf(char *fmt, varargs)
-	int printed = 0;
-	char buff[80];
-	void *parg = (void*)&fmt; 
-	parg++;
-	printed = sprintf(&buff, fmt, parg);
-	Prints(&buff, 999);
-	return printed;
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#file "data_in/lazy2.txt"
+#file "data_in/big/classy/class_csprinter.txt"
 #line 4
-#file "data_in/big/class_csprinter.txt"
-#line 1
-// class CSPrinter - handles screen extents and scrolling logic
-#file "data_in/big/class_screen.txt"
-#line 1
-/// driver for a console screen
-class CScreen
-	int* mem_scr;
-	int x_max;
-	int y_max;
-	int col;
-
-	void constructor()
-		mem_scr = 65536;
-		x_max = 30;
-		y_max = 19;
-		col = 999;
-		printf("CScreen constructed @ %d\n", this);
-	end
-
- 
-	void putchXY(char C, int x, int y)
-		int adr = (x+x_max*y)*2;
-		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
-		mem_scr[adr+1] = col;
-	end
-
-	void set(int scr_adr) 
-		mem_scr = (int*)scr_adr; 
-		//printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
-	end
-
-	void clear() 							mem_scr[2041] = 1; 			end
-	void cursor_enable() 					mem_scr[2046] = 1; 			end
-	void cursor_disable() 					mem_scr[2046] = 0; 			end
-	void set_cursor_pos(int pos) 			mem_scr[2045] = 2*pos; 		end
-	void set_cursor_pos_xy(int x, int y) 	mem_scr[2045] = 2*(30*y+x); end
-	void force_refresh() 					mem_scr[2020] = 1; delay(1); end
-
-
-	void set_shift_box(int x1, int x2, int y1, int y2)
-		mem_scr[2031] = x1;
-		mem_scr[2032] = x2;
-		mem_scr[2033] = y1;
-		mem_scr[2034] = y2;
-	end
-
-	void shift_vertical(int n) 				mem_scr[2038] = n; 			end
-	void shift_horizontal(int n) 			mem_scr[2037] = n; 			end
-
-
-end
-#file "data_in/big/class_csprinter.txt"
-#line 3
 
 class CSPrinter
 	class CScreen *scr = 0;
@@ -1431,67 +1211,313 @@ class CSPrinter
 end
 
 #file "data_in/lazy2.txt"
-#line 5
+#line 7
+#file "data_in/big/classy/printf_io.txt"
+#line 1
+//printf designed for iostreams
+#file "data_in/big/classy/ifx_iostream.txt"
+#line 1
+// abstract interface for input-output character streams
 
-int addr_bus[4];
-
-void init_printf()
-	addr_bus = {65536, 65536+20000, 65536+20000*2, 65536+20000*3};
-	screen_set(addr_bus[2]);
-	screen_clear();
+class ifx_iostream /// input-output stream interface
+	void *impl = 0; // used by implementations to store state
+	int EOF = -1;
+	/// int impl::putch(char C) // returns the character if succesful, else returns 0
+	int *putch = 0; // void putch(void* impl, char C);
+	/// int impl::getch() // returns the next character in the stream or EOF
+	int *getch = 0;
+	/// int impl::hasch() // returns 1 if there is a character to read
+	int *hasch = 0;
 end
 
-class Dev_address_bus
-	int addr[4];
-	void constructor(int base_offset, int size1, int size2, int size3)
-		addr[0] = base_offset;
-		addr[1] = addr[0] + size1;
-		addr[2] = addr[1] + size2;
-		addr[3] = addr[2] + size3;
-	end
-	void write(int dev_num, int* offset, int byte)
-		int *ptr = addr[dev_num] + offset;
-		*ptr = byte;
-	end
-	int read(int dev_num, int* offset) /// variable was shadowed (addr)
-		int *ptr = addr[dev_num] + offset;
-		int byte = *ptr;
-		return *ptr;
+class ifx_iostream std_in;
+class ifx_iostream std_out;
+
+int fputch(class ifx_iostream f, char C)
+	if(f.putch)
+		return f.putch(f.impl, C);
+	else
+		error("iostream error: putch not set");
 	end
 end
+
+int putch(char C) return fputch(std_out, C); end
+
+int fgetch(class ifx_iostream f)
+	if(f.getch)
+		return f.getch(f.impl);
+	else
+		error("iostream error: getch not set");
+	end
+end
+
+int getch() return fgetch(std_in); end
+
+int fhasch(class ifx_iostream f)
+	if(f.hasch)
+		return f.hasch(f.impl);
+	else
+		error("iostream error: hasch not set");
+	end	
+end
+
+int hasch() return fhasch(std_in); end
+
+int fputs(class ifx_iostream f, char *str)
+	int printed = 0;
+	while(*str)
+		if(fputch(f, *str++) != 0) printed++; end
+	end
+	return printed;
+end
+
+int puts(char *str) return fputs(std_out, str); end
+#file "data_in/big/classy/printf_io.txt"
+#line 3
+
+int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+
+int printf(char *fmt, varargs)
+	void *parg = (void*)&fmt; 
+	parg++;
+	return fprintf_v(std_out, fmt, parg);
+end
+
+int fprintf(class ifx_iostream io, char *fmt, varargs)
+	void *parg = (void*)&fmt; 
+	parg++;
+	return fprintf_v(io, fmt, parg);
+end
+
+int fprintf_v(class ifx_iostream io, char *fmt, void *parg)
+	int printed = 0;
+	while(*fmt)
+		char c = *fmt++;
+		int inc = 0;
+		if(c == '%')
+			char c2 = *fmt++;
+			if(c2 == 'd') int i   = *(int*)parg++;   inc = io_itoa(io, i); 			end
+			if(c2 == 'f') float f = *(float*)parg++; inc = io_ftoa(io, f, 4); 		end
+			if(c2 == 's') char *s = *(char**)parg++; inc = fputs(io, s); 			end
+			if(c2 == 'c') char c  = *(char*)parg++;  inc = (fputch(io, c) != 0); 	end
+			if(c2 == '%') 							 inc = (fputch(io, '%') != 0); 	end
+		else
+			if(c == '\\')
+				char c2 = *fmt++;
+				inc = (fputch(io, unescape_char(c2)) != 0);
+			else
+				inc = (fputch(io, c) != 0);
+			end
+		end
+		printed = printed + inc;
+	end
+	return printed;
+end
+
+char unescape_char(char C)
+	if (C == 'n') return '\n'; end
+	if (C == 'r') return '\r'; end
+	if (C == 'f') return charcode_FILL; end
+	if (C == 'b') return '\b'; end
+	if (C == 'e') return '\e'; end
+	if (C == '\\') return '\\'; end
+end
+			   
+char escape_char(char C)
+	if (C == '\n') return 'n'; end
+	if (C == '\r') return 'r'; end
+	if (C == charcode_FILL) return 'f'; end
+	if (C == '\b') return 'b'; end
+	if (C == '\e') return 'e'; end
+	if (C == '\\') return '\\'; end
+end
+
+
+void itoa(int num, char *str) int2str(num, str); end
+void ftoa(float num, int prec, char *str) float2str(num, prec, str); end
+int io_itoa(class ifx_iostream io, int num)
+	char buff[20];
+	itoa(num, &buff);
+	fputs(io, &buff);
+	return strlen(&buff);
+end
+
+int io_ftoa(class ifx_iostream io, float num, int prec)
+	char buff[20];
+	ftoa(num, prec, &buff);
+	fputs(io, &buff);
+	return strlen(&buff);
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+#file "data_in/lazy2.txt"
+#line 8
+#file "data_in/big/classy/allocators/bump_allocator.txt"
+#line 1
+/// bump allocator
+
+#file "data_in/big/classy/ifx_malloc.txt"
+#line 1
+// abstract interface for allocators (malloc implementations)
+
+class malloc_info
+	int size_free;
+	int size_used;
+	int blocks_free;
+	int blocks_used;
+end
+
+class ifx_malloc
+	void *impl = 0;
+	void **malloc = 0;  // void* malloc(int size);
+	void *free = 0;     // void free(void *p);
+	void **realloc = 0; // void* realloc(void *p, int size);
+	class malloc_info *malloc_get_counts = 0;
+end
+
+class ifx_malloc cur_allocator;
+
+
+void *malloc(int size)
+	if(cur_allocator.malloc)
+		return cur_allocator.malloc(cur_allocator.impl, size);
+		//
+		// is this same as void **p = cur_allocator.malloc; p() ?
+		// or are we accidentally setting 'this'
+		// or do we WANT to set 'this'?
+	else
+		error("malloc error: cur_allocator.malloc not set");
+	end
+end
+
+void free(void *p)
+	if(cur_allocator.free)
+		cur_allocator.free(cur_allocator.impl, p);
+	else
+		error("malloc error: cur_allocator.free not set");
+	end
+end
+
+void *realloc(void *p, int size)
+	if(cur_allocator.realloc)
+		return cur_allocator.realloc(cur_allocator.impl, p, size);
+	else
+		error("malloc error: cur_allocator.realloc not set");
+	end
+end
+
+class malloc_info malloc_get_counts()
+	if(cur_allocator.malloc_get_counts)
+		return cur_allocator.malloc_get_counts(cur_allocator.impl);
+	else
+		error("malloc error: cur_allocator.malloc_get_counts not set");
+	end
+end
+#file "data_in/big/classy/allocators/bump_allocator.txt"
+#line 3
+
+class Bump_allocator
+	void *heap = 0;
+	void *heap_free_ptr = 0;
+	void *heap_max = 0;
+	
+	class ifx_malloc ifx;
+
+	void init(void *new_heap, int heap_size)
+		heap = new_heap;
+		heap_free_ptr = heap;
+		heap_max = heap + heap_size;
+
+		ifx.impl = this;
+		ifx.malloc = this.ba_malloc;
+		ifx.realloc = this.ba_realloc;
+		ifx.free = this.ba_free;
+		ifx.malloc_get_counts = this.ba_malloc_get_counts;
+	end
+	
+	void *ba_malloc(int size)
+		if((heap_free_ptr + size) < heap_max)
+			void *p = heap_free_ptr;
+			heap_free_ptr = heap_free_ptr + size;
+		else
+			error("bumpalloc: OUT OF RAM");
+			return 0;
+		end
+	end
+	
+	void ba_free(void *p)
+	end
+	
+	void *ba_realloc(void *p, int size)
+		void *p2 = malloc(size);
+		memmove(p2, p, size);
+	end
+	
+	class malloc_info ba_malloc_get_counts()
+		class malloc_info mi;
+		int size = (int)heap_max - (int)heap;
+		int size_used = (int)heap_free_ptr - (int)heap_max;
+		int size_free = size - size_used;
+		mi.size_free = size_free;
+		mi.size_used = size_used;
+		mi.blocks_free = 1;
+		mi.blocks_used = 1;
+		return mi;
+	end
+end
+#file "data_in/lazy2.txt"
+#line 9
 
 
 int main()
 	setup();
-	
-	init_printf();
-	printf("Running LazyComp unit tests\n");
 	run_all_tests();
-	Prints("All tests green",90); 	
-	screen_clear(); setPrintCursor(0,0);
-
-	printf("Hello [%s] %d!\n", "world", 123456);
-	printf("NL = [%d][%c]\n", (int)'\n', '\n');
-	class Dev_address_bus addr_bus;
 	
-	
-	class CScreen scr;
-	
-	
-	class CSPrinter printer;
-	printf("bus %d, CScreen %d, CSPrinter %d\n", &addr_bus, &scr, &printer);
-	addr_bus.constructor(65536, 20000, 20000, 20000);
-
-	scr.constructor();
-	scr.set(addr_bus.addr[2]);
-	//printer.init();
-	printer.scr = &scr;
+	class Address_bus addr_bus(65536, 20000, 20000, 20000);
+	class CScreen scr; scr.set(addr_bus.addr[2]);
+	class CSPrinter printer; printer.scr = &scr;
+	std_out = printer.ifx;
 	scr.clear();
-	printer.puts("Hello from CSPrinter!\n");
-	printer.puts("bam pam\npa-ram\n");
-	for(int i = 0; i < 100; i++)
-		printer.cs_printn(i, 999); printer.puts("\n");	
-	end
+	printf("Hello [%s] %d!\n", "world", 123456);
+	
+	class Bump_allocator bumpalloc;
+	int heap = 30000;
+	int heap_size = 10000;
+	bumpalloc.init((void*)heap, heap_size);
+	cur_allocator = bumpalloc.ifx;	
+	printf("malloc initialized\n");
+	printf("malloc(10) p1 = %d\n", (int)malloc(10));
+	printf("malloc(20) p2 = %d\n", (int)malloc(20));
 
 	infloop();
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

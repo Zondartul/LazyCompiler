@@ -287,7 +287,9 @@ char unescape_char(char c){
 		case 'r': return '\r'; break;
 		case 't': return '\t'; break;
 		case 'b': return '\b'; break;
+		case 'e': return '\e'; break;
 		case '0': return '\0'; break;
+		case '\\': return '\\'; break;
 		default: error("unknown character escape sequence \\%c", c);
 	}
 	assert(!"unreachable");
@@ -619,7 +621,8 @@ void semantic_analyze_expr_call(ast_node* node, expr_settings stg) {
 			struct type_name *arg_expected = m(*(T->args), get, i+1);
 			struct type_name *arg_got = res.T;
 			/// checking compatibility
-			enum TypeCheckVal compat = get_type_compatibility(arg_expected, arg_got, IS_CALL);
+			const char *diag = 0;
+			enum TypeCheckVal compat = get_type_compatibility(arg_expected, arg_got, IS_CALL, &diag);
 			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP){
 				vec_printf(&vstr, " %s", res.val);
 			}else if(compat == TC_CONVERTIBLE_IMPL){
@@ -1042,11 +1045,12 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg) {
 		struct type_name *T2 = res2.T; //src
 		const char *T1_str = type_name_to_string(T1);
 		const char *T2_str = type_name_to_string(T2);
-		enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL);
+		const char *diag = 0;
+		enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL, &diag);
 		if((int)compat >= (int)TC_CONVERTIBLE_EXPL){
 			if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprSrc = res2.val;}
 			else												{exprSrc = emit_type_conversion(T1, T2, res2);}
-		}else													{error("Semantic error: can't assign %s <- %s", T1_str, T2_str);}
+		}else													{error("Semantic error: can't assign %s <- %s (%s)", T1_str, T2_str, diag);}
 	}else{
 		exprSrc = res2.val;
 	}
@@ -1148,12 +1152,12 @@ void semantic_analyze_expr_cast(ast_node* node, expr_settings stg){
 		return;
 	}
 	*/
-
-	enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL);
+	const char *diag = 0;
+	enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL, &diag);
 	if((int)compat >= (int)TC_CONVERTIBLE_EXPL){
 		if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP)	{exprResult = res1.val;}
 		else												{exprResult = emit_type_conversion(T1, T2, res1);}
-	}else													{error("Semantic error: can't cast %s <- %s", T1_str, T2_str);}
+	}else													{error("Semantic error: can't cast %s <- %s (%s)", T1_str, T2_str, diag);}
 
 	assert(exprResult);
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = T1, .author = author };

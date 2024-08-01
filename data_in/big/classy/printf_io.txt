@@ -1,6 +1,8 @@
 //printf designed for iostreams
 #include "data_in/big/classy/ifx_iostream.txt"
 
+int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
+
 int printf(char *fmt, varargs)
 	void *parg = (void*)&fmt; 
 	parg++;
@@ -63,14 +65,14 @@ int io_itoa(class ifx_iostream io, int num)
 	char buff[20];
 	itoa(num, &buff);
 	fputs(io, &buff);
-	return strlen(buff);
+	return strlen(&buff);
 end
 
 int io_ftoa(class ifx_iostream io, float num, int prec)
 	char buff[20];
 	ftoa(num, prec, &buff);
 	fputs(io, &buff);
-	return strlen(buff);
+	return strlen(&buff);
 end
 
 

@@ -1,5 +1,6 @@
 // class CSPrinter - handles screen extents and scrolling logic
-#include "data_in/big/class_screen.txt"
+#include "data_in/big/classy/class_screen.txt"
+#include "data_in/big/number.txt"
 
 class CSPrinter
 	class CScreen *scr = 0;

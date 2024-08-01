@@ -73,7 +73,7 @@ const char *emit_type_conversion(struct type_name *T_dest, struct type_name *T_s
 	return exprRes;
 }
 
-enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_name *T_src, int is_call){
+enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_name *T_src, int is_call, const char** out_diag){
 	enum TypeCheckVal compat = TC_ERROR;
 	/// hierarchy of type parameters:
 	/// array of... 	(is_array, arraysize)
@@ -96,7 +96,7 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 	///
 	/// pointer <- not pointer:
 	///		pointer <- primitive: allowed as TC_CONVERTIBLE_EXPL (to manually set pointers)
-    ///     pointer to void <- function: allowed as TC_CONVERTIBLE_IMPL_NOOP
+    ///     pointer <- function: allowed as TC_CONVERTIBLE_IMPL_NOOP (as long as pointed-to type is the same as return type)
     ///     pointer to char <- string: allowed as TC_CONVERTIBLE_IMPL_NOOP
 	///		otherwise:			  forbidden, diagnostic "try &"		
 	///
@@ -120,52 +120,56 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 	///	
 	///	not literal <- literal is TC_CONVERTIBLE_IMPL_NOOP if both-not-literal would be TC_SAME 
 	/// literal <- forbidden
-
-	if(T_dest->is_array && !T_src->is_array){return TC_INCOMPATIBLE;}
+	#define DIAG(x) if(out_diag){*out_diag = x;}
+	if(T_dest->is_array && !T_src->is_array){DIAG("non-array to array"); return TC_INCOMPATIBLE;}
 	if(T_dest->is_array && T_src->is_array){
-		if(T_dest->arraysize != T_src->arraysize){return TC_INCOMPATIBLE;}
+		if(T_dest->arraysize != T_src->arraysize){DIAG("arrays of different size"); return TC_INCOMPATIBLE;}
 		struct type_name *T2_dest = type_name_shallow_copy(T_dest);
 		struct type_name *T2_src = type_name_shallow_copy(T_src);
 		T2_dest->is_array = 0; T2_dest->arraysize = 0;
 		T2_src->is_array = 0; T2_src->arraysize = 0;
 		enum TypeCheckVal compat = TC_ERROR;
-		compat = get_type_compatibility(T2_dest, T2_src, is_call);
+		const char *diag = 0;
+		compat = get_type_compatibility(T2_dest, T2_src, is_call, &diag);
 		if((int)compat >= (int)TC_CONVERTIBLE_IMPL_NOOP){return compat;}
-		else{return TC_INCOMPATIBLE;} // can't explicit-cast a whole array
+		else{DIAG("arrays of types that are too different"); return TC_INCOMPATIBLE;} // can't explicit-cast a whole array
 	}
-	if(!T_dest->is_array && T_src->is_array){return TC_INCOMPATIBLE;}
+	if(!T_dest->is_array && T_src->is_array){DIAG("array to non-array"); return TC_INCOMPATIBLE;}
 	/// both are not arrays
 
 	if(T_dest->points_to && !T_src->points_to){
-		if(is_numeric(T_src)){return TC_CONVERTIBLE_EXPL;}
-		else if(is_void_ptr(T_dest) && T_src->args){return TC_CONVERTIBLE_IMPL_NOOP;}
-        else if(is_char_ptr(T_dest) && is_string(T_src)){return TC_CONVERTIBLE_IMPL_NOOP;}
-        else{return TC_INCOMPATIBLE;}
+		if(is_numeric(T_src)){DIAG("number to pointer needs expicit cast"); return TC_CONVERTIBLE_EXPL;}
+		//else if(is_void_ptr(T_dest) && T_src->args){return TC_CONVERTIBLE_IMPL_NOOP;}
+        else if(T_src->args){
+			if(type_name_equals(m(*(T_src->args), get, 0), T_dest->points_to)){return TC_CONVERTIBLE_IMPL_NOOP;}
+			else{DIAG("pointer type does not match function return type"); return TC_INCOMPATIBLE;}
+        }else if(is_char_ptr(T_dest) && is_string(T_src)){return TC_CONVERTIBLE_IMPL_NOOP;}
+        else{DIAG("source not convertible to pointer"); return TC_INCOMPATIBLE;}
 	}
 	if(!T_dest->points_to && T_src->points_to){
-		if(is_numeric(T_dest)){return TC_CONVERTIBLE_EXPL;}
-		else{return TC_INCOMPATIBLE;}
+		if(is_numeric(T_dest)){DIAG("pointer to number needs explicit cast"); return TC_CONVERTIBLE_EXPL;}
+		else{DIAG("pointer not convertible to dest"); return TC_INCOMPATIBLE;}
 	}
-	if(T_dest->points_to && T_src->points_to){compat = TC_CONVERTIBLE_EXPL; goto literal_check;}
+	if(T_dest->points_to && T_src->points_to){DIAG("pointers of different types need explicit cast"); compat = TC_CONVERTIBLE_EXPL; goto literal_check;}
 	/// both are not pointers
 
 	if(T_dest->args && T_src->args && is_call){
 		if(all_compatible(T_dest->args, T_src->args, 1, 0, is_call)){compat = TC_CONVERTIBLE_IMPL; goto literal_check;}
-		else{return TC_INCOMPATIBLE;}
+		else{DIAG("function arguments mismatch"); return TC_INCOMPATIBLE;}
 	}
 	/// not in a call, can't assign to or from functions
-	if(T_dest->args || T_src->args){return TC_INCOMPATIBLE;}
+	if(T_dest->args || T_src->args){DIAG("can't convert between functions and non-functions"); return TC_INCOMPATIBLE;}
 	/// both are not functions
 
 	if(T_dest->symclass && T_src->symclass){
 		if(T_dest->symclass == T_src->symclass){compat = TC_SAME; goto literal_check;}
-		else{return TC_INCOMPATIBLE;}
+		else{DIAG("can't convert different classes"); return TC_INCOMPATIBLE;}
 	}
 	/// both not a class
 
 	/// both primtive
 	if(is_void(T_dest) && is_void(T_src) && is_call){compat = TC_SAME; goto literal_check;}
-	if(is_void(T_dest) || is_void(T_src)){return TC_INCOMPATIBLE;} /// can't assign to or from void
+	if(is_void(T_dest) || is_void(T_src)){DIAG("can't convert to or from void"); return TC_INCOMPATIBLE;} /// can't assign to or from void
 	/// not void
 
 	/// both numeric
@@ -183,7 +187,7 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 
 	if(type_name_equals(T_dest, T_src)){return TC_SAME;}
 	/// not exactly same
-	if(T_dest->is_literal){return TC_INCOMPATIBLE;} // can't assign to literal
+	if(T_dest->is_literal){DIAG("can't assign to literal"); return TC_INCOMPATIBLE;} // can't assign to literal
 	if(!T_dest->is_literal && T_src->is_literal){
 		/// try to un-literal the source
 		struct type_name *T3_src = type_name_shallow_copy(T_src);
@@ -203,7 +207,8 @@ int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *ar
     for(int i = first; i < last; i++){
 		struct type_name *T1 = m(*args_expect, get, i);
 		struct type_name *T2 = m(*args_got, get, i);
-		enum TypeCheckVal compat = get_type_compatibility(T1, T2, is_call);
+		const char *diag = 0;
+		enum TypeCheckVal compat = get_type_compatibility(T1, T2, is_call, &diag);
 		if((int)compat < (int)TC_CONVERTIBLE_IMPL){return 0;}
 	}
 	return 1;

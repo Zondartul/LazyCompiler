@@ -37,7 +37,7 @@ int is_string(struct type_name *T);
 int is_numeric(struct type_name *T);
 
 const char *emit_type_conversion(struct type_name *T_dest, struct type_name *T_src, val_handle src_res);
-enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_name *T_src, int is_call);
+enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_name *T_src, int is_call, const char **out_diag);
 int all_compatible(vector2_ptr_type_name *args_expect, vector2_ptr_type_name *args_got, int first, int last, int is_call);
 
 ///-------------------- operator typechecking --------

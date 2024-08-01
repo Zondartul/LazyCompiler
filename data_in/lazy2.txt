@@ -1,10 +1,12 @@
 #include "data_in/big/unit_tests.txt"
 #include "data_in/big/error.txt"
 #include "data_in/big/testOutput.txt"
-#include "data_in/big/simple/printf.txt"
+//#include "data_in/big/simple/printf.txt"
+#include "data_in/big/classy/class_address_bus.txt"
 #include "data_in/big/classy/class_csprinter.txt"
-#include "data_in/big/classy/allocators/bump_allocator.txt"
 #include "data_in/big/classy/printf_io.txt"
+#include "data_in/big/classy/allocators/bump_allocator.txt"
+
 
 int main()
 	setup();
@@ -17,11 +19,11 @@ int main()
 	scr.clear();
 	printf("Hello [%s] %d!\n", "world", 123456);
 	
-	class bump_allocator;
+	class Bump_allocator bumpalloc;
 	int heap = 30000;
 	int heap_size = 10000;
-	bump_allocator.init((void*)heap, heap_size);
-	cur_allocator = bump_allocator.ifx;	
+	bumpalloc.init((void*)heap, heap_size);
+	cur_allocator = bumpalloc.ifx;	
 	printf("malloc initialized\n");
 	printf("malloc(10) p1 = %d\n", (int)malloc(10));
 	printf("malloc(20) p2 = %d\n", (int)malloc(20));

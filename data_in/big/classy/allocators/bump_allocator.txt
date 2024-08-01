@@ -2,7 +2,7 @@
 #include "data_in/big/string.txt" // for memmove
 #include "data_in/big/classy/ifx_malloc.txt"
 
-class bump_allocator
+class Bump_allocator
 	void *heap = 0;
 	void *heap_free_ptr = 0;
 	void *heap_max = 0;
@@ -15,13 +15,13 @@ class bump_allocator
 		heap_max = heap + heap_size;
 
 		ifx.impl = this;
-		ifx.malloc = this.malloc;
-		ifx.realloc = this.realloc;
-		ifx.free = this.free;
-		ifx.malloc_get_counts = this.malloc_get_counts;
+		ifx.malloc = this.ba_malloc;
+		ifx.realloc = this.ba_realloc;
+		ifx.free = this.ba_free;
+		ifx.malloc_get_counts = this.ba_malloc_get_counts;
 	end
 	
-	void *malloc(int size)
+	void *ba_malloc(int size)
 		if((heap_free_ptr + size) < heap_max)
 			void *p = heap_free_ptr;
 			heap_free_ptr = heap_free_ptr + size;
@@ -31,15 +31,15 @@ class bump_allocator
 		end
 	end
 	
-	void free(void *p)
+	void ba_free(void *p)
 	end
 	
-	void realloc(void *p, int size)
+	void *ba_realloc(void *p, int size)
 		void *p2 = malloc(size);
 		memmove(p2, p, size);
 	end
 	
-	class malloc_info malloc_get_counts()
+	class malloc_info ba_malloc_get_counts()
 		class malloc_info mi;
 		int size = (int)heap_max - (int)heap;
 		int size_used = (int)heap_free_ptr - (int)heap_max;

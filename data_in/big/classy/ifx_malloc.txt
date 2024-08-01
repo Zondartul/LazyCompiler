@@ -1,6 +1,11 @@
 // abstract interface for allocators (malloc implementations)
 
-class ifx_malloc cur_allocator;
+class malloc_info
+	int size_free;
+	int size_used;
+	int blocks_free;
+	int blocks_used;
+end
 
 class ifx_malloc
 	void *impl = 0;
@@ -10,12 +15,8 @@ class ifx_malloc
 	class malloc_info *malloc_get_counts = 0;
 end
 
-class malloc_info
-	int size_free;
-	int size_used;
-	int blocks_free;
-	int blocks_used;
-end
+class ifx_malloc cur_allocator;
+
 
 void *malloc(int size)
 	if(cur_allocator.malloc)
@@ -46,8 +47,8 @@ void *realloc(void *p, int size)
 end
 
 class malloc_info malloc_get_counts()
-	if(cur_alloc.malloc_get_counts)
-		return cur_allocator.malloc_get_counts(cur_allocator.impl)
+	if(cur_allocator.malloc_get_counts)
+		return cur_allocator.malloc_get_counts(cur_allocator.impl);
 	else
 		error("malloc error: cur_allocator.malloc_get_counts not set");
 	end

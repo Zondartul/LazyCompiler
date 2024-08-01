@@ -437,7 +437,7 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 		//error("syntax error. yytext: [%s]\n",(char*)yylval);
 		//error("[PARSE] Syntax error: %s\n", s);
 		fprintf(stderr, "%s[PARSE] %s\n%s", KRED, s, KNRM);
-		//exit(1);
+		exit(1); /// we have to exit to get out of an error loop for some reason
 		//return 1;
 	}
 

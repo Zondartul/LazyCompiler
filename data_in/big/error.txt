@@ -10,7 +10,7 @@ void error(char *str)
 	crash();
 end
 
-void crash() int x = 1/0; end
+//void crash() int x = 1/0; end
 
-void assert(int cond) if(!cond) crash() end end
+void assert(int cond) if(!cond) crash(); end end
 

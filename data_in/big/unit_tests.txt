@@ -419,7 +419,7 @@ int test_4_helper()
 end
 
 int test_4_funcptr()
-	expect_global(4, 1, (int)(void*)test_4_helper,  1098);
+	expect_global(4, 1, (int)(int*)test_4_helper,  1098);
 	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
 	int p2 = test_4_helper;
@@ -582,7 +582,7 @@ int test_7_class_local()
 	expect_basic(7, 5, derp1.sum(4),	  9);
 	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
 	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
-	expect_global(7, 6, (int)(void*)derp1.sum,    4573);
+	expect_global(7, 6, (int)(int*)derp1.sum,    4573);
 	return CODE_OK;
 end
 
@@ -592,7 +592,7 @@ int test_7_class_by_val(class Test_7_class_derp derp2)
 	expect_basic(7, 8, derp2.x,		  3);
 	expect_basic(7, 9, derp2.y,		  4);
 	expect_basic(7, 10, derp2.sum(5),  12);
-	expect_global(7, 11, (int)(void*)derp2.sum,   4573);
+	expect_global(7, 11, (int)(int*)derp2.sum,   4573);
 	return CODE_OK;
 end
 
@@ -603,7 +603,7 @@ int test_7_class_by_ptr(class Test_7_class_derp *derp3)
 	expect_basic(7, 15, derp3.x,		  5);
 	expect_basic(7, 16, derp3.y,		  6);
 	expect_basic(7, 17, derp3.sum(7),	 18);
-	expect_global(7, 18, (int)(void*)derp3.sum,   4573);
+	expect_global(7, 18, (int)(int*)derp3.sum,   4573);
 	return CODE_OK;
 end
 
