@@ -9,6 +9,14 @@
         "*.y": "yacc",
         "assert.h": "c",
         "semantic.h": "c",
-        "typecheck.h": "c"
+        "typecheck.h": "c",
+        "deque": "c",
+        "string": "c",
+        "vector": "c",
+        "array": "c",
+        "memory": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }

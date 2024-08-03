@@ -36,5 +36,6 @@ void gen_command_comment();
 void gen_command_floor();
 void gen_command_convert();
 void gen_command_exit();
+void gen_command_asm();
 
 #endif

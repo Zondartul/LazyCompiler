@@ -315,7 +315,7 @@ Not all rules and not all tokens have precedence. If either the rule
 	or the lookahead token has no precedence, then the default is to shift.
 */
 
-%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC VARARGS
+%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC VARARGS ASM
 
 /// precedence-coding tokens:
 /// INDEX SUBEXPR BRACELIST CALL DOT EXPR MULDIV ADDSUB CAST LNEG LOGIC COMPARE ASSIGN POSTOP PREOP REF DEREF PRENEG 
@@ -455,9 +455,12 @@ imp_stmt	:	if_block						{$$ = production("imp_stmt",0,NULL,@$,$1,0,0,0);}
 			|	RETURN ';'						{$$ = production("imp_stmt",3,NULL,@$,0,0,0,0);}
 			|	RETURN expr ';'					{$$ = production("imp_stmt",4,NULL,@$,$2,0,0,0);} //repaired from 5
 			|	for_loop						{$$ = production("imp_stmt",5,NULL,@$,$1,0,0,0);}
+			|   asm_stmt ';'					{$$ = production("imp_stmt",6,NULL,@$,$1,0,0,0);}
 			|	error 							{$$ = error_production(STR_ERR_END_OR_SEMICOLON, @$);}
 			;
 			
+asm_stmt	:	ASM '(' STRING ')'				{$$ = production("asm_stmt",0,$3->token.value,@$,0,0,0,0);}
+
 class_def	:	CLASS ID decl_stmt_list END		{const char *id_str = $2->token.value; $$ = production("class_def",0,id_str,@$,$2,$3,0,0);}
 
 STAR		:   '*'	 							{$$ = production("stars",0,"*",@$,0,0,0,0);}

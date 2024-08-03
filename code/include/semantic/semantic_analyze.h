@@ -16,6 +16,7 @@ void semantic_analyze_if_block(ast_node *node);
 void semantic_analyze_if_then(ast_node *node, if_settings stg);
 void semantic_analyze_while_loop(ast_node *node);
 void semantic_analyze_for_loop(ast_node *node);
+void semantic_analyze_asm_stmt(ast_node *node);
 void semantic_analyze_class_def(ast_node *node);
 void semantic_analyze_expr_list(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_id(ast_node *node, expr_settings stg);

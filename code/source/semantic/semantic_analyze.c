@@ -1040,6 +1040,9 @@ void semantic_analyze_imp_stmt(ast_node *node){
 		case(5)://for_loop
 			semantic_general_analyze(ast_get_child(node,0)); //for_loop
 			break;
+		case(6)://asm_stmt
+			semantic_general_analyze(ast_get_child(node,0)); //asm_stmt
+			break;
 		default:
 			error("semantic error: unknown switch case");
 			break;
@@ -1400,6 +1403,16 @@ void semantic_analyze_for_loop(ast_node *node){
 		 emit_code("COMMENT SOURCE \"end for\" // semantic_analyze.c:1395");//"/* end for */");
 		
 		pop_symbol_table();
+	}
+}
+
+
+void semantic_analyze_asm_stmt(ast_node *node){
+	if(semantic_decl){
+		/// do nothing
+	}else{
+		const char *asm_str = escape_string(node->token.value);
+		emit_code("ASM \"%s\" // smeanitc_analyze.c:1414", sanitize_string(asm_str));
 	}
 }
 

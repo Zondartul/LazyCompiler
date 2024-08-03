@@ -1391,6 +1391,7 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"FLOOR")==0)		{gen_command_floor();		return;}
 		if(strcmp(codegen_tok,"CONVERT")==0)	{gen_command_convert();		return;}
 		if(strcmp(codegen_tok,"EXIT")==0)		{gen_command_exit();		return;}
+		if(strcmp(codegen_tok,"ASM")==0)		{gen_command_asm();			return;}
 		asm_println("*RECORD SCRATCH*\n");
 		error("[CODE GEN] Error: unsupported command [%s] (line %d)",codegen_tok,CurCMD+1);
 		/*
