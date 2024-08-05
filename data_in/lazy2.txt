@@ -12,7 +12,7 @@
 class stack_frame
 	int *p_ebp = 0;
 
-	void set_current()
+	void constructor()
 		int *x = 0;		/// first variable in this function has addr EBP:-1
 		x = &x + 1;		/// pointer points to the cell after itself (EBP:-1:+1 == EBP)
 		p_ebp = x;		/// frame of the "set_current" function
@@ -22,10 +22,18 @@ class stack_frame
 	class stack_frame prev_frame()
 		class stack_frame F;
 		if(p_ebp) F.p_ebp = *p_ebp; end
-		return p_ebp;
+		return F;
 	end
 	
-	int get_ret_ip() return p_ebp[-1]; end	
+	int get_ret_ip() 
+		int ip = p_ebp[1];
+		//err_printf(999, "get_ret_ip(ebp=%d):\n",(int)p_ebp);
+		//err_printf(999, "  -1: %d\n", p_ebp[-1]);
+		//err_printf(999, "   0: %d\n", p_ebp[0]);
+		//err_printf(999, "  +1: %d\n", p_ebp[ 1]);
+		//err_printf(999, "  ... ret %d\n", ip);
+		return ip;//p_ebp[-1]; 
+	end	
 end
 
 class debug_info_func
@@ -38,6 +46,7 @@ class debug_info_func
 	char *user_name = 0;
 	
 	void deserialize(int *p)
+		int *p_initial = p;
 		record_len = *p++;
 		lbl_entrance = *p++;
 		lbl_exit = *p++;
@@ -45,6 +54,7 @@ class debug_info_func
 		ir_name = p; p = p + ir_name_len;
 		user_name_len = *p++;
 		user_name = p;
+		err_printf(999, "di_func @ %d:\n got [%s]\n", (int)p_initial, ir_name);
 	end
 end
 
@@ -73,6 +83,17 @@ class debug_info_var
 	end
 end
 
+int get_var_at_ip_helper(int ip, class debug_info_var var)
+	var.pos = 10;									/// this works
+	//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) 	/// this doesn't
+	int x = var.lbl_from;
+	int y = var.lbl_to;
+	if(!(x > ip) & !(y < ip)) 	/// this works? /// BUG: symtable of IF is broken
+		return 1;
+	end
+	return -1;
+end
+
 class debug_info_var_db
 	class debug_info_var vars[1000];
 	int n_vars = 0;
@@ -87,10 +108,17 @@ class debug_info_var_db
 	end
 	
 	int get_var_at_ip(int ip, int from_idx)
+		class debug_info_var var;
 		for(int i = from_idx; i < n_vars; i++)
-			if(!(vars[i].lbl_from > ip) & !(vars[i].lbl_to < ip)) // need >= and <=
-				return i;
-			end
+			
+			//if(!(vars[i].lbl_from > ip) & !(vars[i].lbl_to < ip)) // need >= and <= /// bug: array[i].member doesn't work (actually any obj.member)
+			//class debug_info_var var = vars[i]; /// bug: var_4, declared inside a for-loop, is missing a "symbol X" declaration in iR
+			//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) // bug, can't access var.member from another class
+			//	return i;
+			//end
+			var = vars[i];
+			int res = get_var_at_ip_helper(ip, var);
+			if(res != -1) return i; end
 		end
 		return -1;
 	end
@@ -100,18 +128,53 @@ class debug_info_func_db
 	class debug_info_func funcs[1000];
 	int n_funcs = 0;
 	
+	// this whole constructor breaks all the shit
+	/*
+	int constructor()
+		writePort(4, 1);
+		n_funcs = 0;
+		for(int i = 0; i < 1000; i++)
+			//funcs[i].record_len = 0;
+			class debug_info_func *p = (class debug_info_func*)(&funcs + i);
+			p.record_len = 0;
+			//funcs[i].ir_name = "<ERROR>";
+			p.ir_name = "<ERROR>";
+			// this seems broken? array base is dereferenced before indexing, it shouldn't be.
+			  //COMMENT SOURCE "funcs[i].ir_name = "<ERROR>";" // semantic_analyze.c:1014 
+			  //ADD temp_1283 this_49 funcs    this.id [funcs]  // semantic_expr_op.c:286
+			  //    out(L <- P): *temp_1283 from temp_1283 (rename_star) //auth: to expr_index array (arr[]) from expr_id 
+			  //    global id [i]  // semantic_expr_op.c:286
+			  //    out(R <- L): i_15 from i_15 (pass) //auth: to expr_index index ([idx]) from expr_id 
+			  //ADD temp_1284 *temp_1283 i_15 // semantic_expr_op.c:463
+			  //    out(P <- P): temp_1284 from temp_1284 (pass) //auth: to expr_dot object(o.) from expr_index 
+			  //ADD temp_1285 temp_1284 ir_name    this.id [ir_name]  // semantic_expr_op.c:286
+  
+		end
+		writePort(4, 2);
+	end
+	*/
+	//
+	
 	void deserialize(int *p)
 		n_funcs = *p++;
+		err_printf(999, "func_db: n_funcs = %d\n", n_funcs);
 		class debug_info_func func;
 		for(int i = 0; i < n_funcs; i++)
 			func.deserialize(p);
+			funcs[i] = func;
 			p = p+func.record_len;
 		end
 	end
 	
 	int get_func_at_ip(int ip)
 		for(int i = 0; i < n_funcs; i++)
-			if(!(vars[i].lbl_entrance > ip) & !(vars[i].lbl_exit < ip))
+			//if(!(funcs[i].lbl_entrance > ip) & !(funcs[i].lbl_exit < ip))	
+			int x = funcs[i].lbl_entrance;
+			int y = funcs[i].lbl_exit;
+			if(ip == 0) error("get_func_at_ip: input ip = 0\n"); end
+			if(x == 0) error("get_func_at_ip: lbl_entrance = 0\n"); end
+			if(y == 0) error("get_func_at_ip: lbl_exit = 0\n"); end
+			if((!(x > ip)) & (!(y < ip)))//should be same as if(!(x > ip) & !(y < ip))
 				return i;
 			end
 		end
@@ -125,16 +188,29 @@ class T_stack_trace
 	
 	void trace()
 		class stack_frame frame;
-		frame.set_current();
+		int check_ebp = 0;
+		asm("mov $S[check_ebp], EBP");
+		err_printf(999, "trace:\n frame.ebp = %d\n check_ebp = %d\n", (int)frame.p_ebp, check_ebp);
 		int frame_n = 0;
 		while(frame.p_ebp)
 			int ip = frame.get_ret_ip();
-			class debug_info_func func = func_db.get_func_at_ip(ip);
-			int offset = ip - func.lbl_entrance;
-			char *name = func.user_name;
-			err_printf(999, "%d:%d (%s + %d)\n", frame_n, ip, name, offset);
+			//class debug_info_func func = func_db.get_func_at_ip(ip); //bug: this shouldn't be allowed due to typecheck
+			int func_id = func_db.get_func_at_ip(ip);
+			err_printf(999, ".. func_id = %d\n", func_id);
+			if(func_id != -1)
+				class debug_info_func func = func_db.funcs[func_id];
+				int offset = ip - func.lbl_entrance;
+				char *name = func.ir_name;//user_name;
+				err_printf(999, "%d:%d (%s + %d)\n", frame_n, ip, name, offset);
+			else
+				err_printf(999, "%d:%d (unknown)\n", frame_n, ip);
+			end
 			frame = frame.prev_frame();
 			frame_n++;
+			if(!frame.p_ebp)
+				err_printf(999, "... pause\n");
+				infloop();
+			end
 		end
 	end
 end
@@ -149,26 +225,36 @@ void init_stack_trace()
 // $S[...] means "create temporary, use it here, and later save it"
 // $R[...] means "load (read) as R-value"
 // $L[...] means "load (copy) as modifiable L-value"
-	asm( "mov $S[p_debug_info_func], debug_info_func" ); 
+	asm( "mov $S[p_debug_info_func], debug_info_funcs" ); 
 	func_db.deserialize(p_debug_info_func);
+	stack_trace.func_db = &func_db;
 	err_printf(999, "Func db ready\n");
 end
 
 /// we probably need asm to actually give the debug info to these functions
+
+void test_stack_trace()
+	stack_trace.trace();
+end
 
 int main()
 	setup();
 	err_printf(990, "Running unit tests...\n");
 	run_all_tests();
 	err_printf(90,  "All tests pass.\n");
-	delay(1); err_printf(999, "1");
-	delay(1); err_printf(999, "2");
-	delay(1); err_printf(999, "3");
-	delay(1); err_printf(999, "4");
-	delay(1); err_printf(999, "5");
-	delay(1); err_printf(999, "6");
+	//delay(1); err_printf(999, "1");
+	//delay(1); err_printf(999, "2");
+	//delay(1); err_printf(999, "3");
+	//delay(1); err_printf(999, "4");
+	//delay(1); err_printf(999, "5");
+	//delay(1); err_printf(999, "6");
 
 	init_stack_trace();
+	
+	test_stack_trace();
+
+	err_printf(999, "End of program\n");
+	infloop();
 
 	class Address_bus addr_bus(65536, 20000, 20000, 20000);
 	class CScreen scr; scr.set(addr_bus.addr[2]);

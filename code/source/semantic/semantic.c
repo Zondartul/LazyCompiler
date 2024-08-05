@@ -195,6 +195,8 @@ int semantic_dispatch_general(struct ast_node* node) {
 		semantic_analyze_for_loop(node);			return 1; }
 	if (!strcmp(node->token.type, "class_def"))		{ 
 		semantic_analyze_class_def(node);			return 1; }
+	if (!strcmp(node->token.type, "asm_stmt"))			{
+		semantic_analyze_asm_stmt(node);			return 1; }
 	//it could be an expression (imperative statement)
 	//where we ignore the result.
 	if (semantic_dispatch_expr(node, stg)) {

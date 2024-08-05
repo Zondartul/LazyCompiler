@@ -68,7 +68,17 @@ void err_puts(char *str, int col)
 	while(*str)
 		char C = *str++;
 		if(C == '\n')
-			err_scr_I = err_scr_I + (err_scr_width - (err_scr_I % err_scr_width));
+			int col = err_scr_I % err_scr_width;
+			writePort(1, col);
+			int rem = err_scr_width - col;
+			writePort(2, rem);
+			err_scr_I = err_scr_I + rem;//(err_scr_width - (err_scr_I % err_scr_width));
+			while(err_scr_I > (err_scr_width * 16))
+				writePort(0, err_scr_I);
+				err_scr_I = err_scr_I - err_scr_width;
+				adr_scr[2038] = 1; // scroll the screen by 1 line
+			end
+			p = adr_scr + 2*err_scr_I;
 		else
 			*p++ = C;
 			*p++ = col;

@@ -6,6 +6,7 @@
 #include "ast_gen.h"
 #include <assert.h>
 #include "typecheck.h"
+#include "asm_template.h"
 
 void semantic_analyze_program(ast_node *node){
 	//program :	decl_stmt_list	;
@@ -1017,19 +1018,19 @@ void semantic_analyze_imp_stmt(ast_node *node){
 				}
 			}//"expression";}
 			emit_code("COMMENT SOURCE \"%s%s\" // semantic_analyze.c:1014 ",//"/* %s */", 
-				warning, str);
+				escape_string(warning), escape_string(str));
 			semantic_general_analyze(ast_get_child(node,0)); //expr (unusued, increment or function call)
 			break;
 		case(3)://return
 			if(semantic_decl){return;}
 			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1020 ",//"/* %s */",
-				sanitize_string(removeComments(get_source_text2(node->token.pos))));
+				sanitize_string(escape_string(removeComments(get_source_text2(node->token.pos)))));
 			emit_code("RET // semantic_analyze.c:1022");
 			break;
 		case(4)://return expr
 			if(semantic_decl){return;}
 			emit_code("COMMENT SOURCE \"%s\" // semantic_analyze.c:1026 ", //"/* %s */",
-				sanitize_string(removeComments(get_source_text2(node->token.pos))));
+				sanitize_string(escape_string(removeComments(get_source_text2(node->token.pos)))));
 			PREP_RES(res1, E_RVAL);
 			res1stg.dest.author = "return expr";
 			semantic_expr_analyze(ast_get_child(node,0), res1stg); //expr (what to return)
@@ -1411,7 +1412,39 @@ void semantic_analyze_asm_stmt(ast_node *node){
 	if(semantic_decl){
 		/// do nothing
 	}else{
-		const char *asm_str = escape_string(node->token.value);
+		//#pragma warning need to replace asm_stmt usernames with IR_names!
+		printf("semantic_analyze_asm_stmt: debug, token val is [%s]\n", node->token.value);
+		struct asm_template tmpl = parse_asm_template(node->token.value);
+		vector2_char vstr = vector2_char_here();
+
+		const char *str_iter = tmpl.src_text;
+
+		for(int i = 0; i < tmpl.seq_begin.size; i++){
+			const char *seq_begin = m(tmpl.seq_begin, get, i);
+			const char *seq_end   = m(tmpl.seq_end, get, i);
+			const char *raw_text_before = substr(str_iter, seq_begin);
+			printf("i=%d, raw_text_before = [%s]\n", i, raw_text_before);
+				const char *seq = substr(seq_begin, seq_end);
+				printf("  seq = [%s]\n", seq);
+
+			str_iter = seq_end;
+
+			const char *username = asm_templ_val_name(&tmpl, i);
+			struct symbol *S = lookup_symbol(username);
+			if(!S){error("Semantic error: unknown symbol %s (only pre-existing symbols can be used in an asm statement)", username);}
+			const char *IR_name = S->IR_name;
+				printf("  username = [%s], IR_name = [%s]\n", username, IR_name);
+			
+			vec_printf(&vstr, "%s$%c[%s]", raw_text_before, seq_begin[1], IR_name);
+		}
+		/// last bit
+		const char *raw_text_after = str_iter;//substr(str_iter, tmpl.src_text+strlen(tmpl.src_text));
+		vec_printf(&vstr, "%s", raw_text_after);
+		
+		const char *asm_str = vstr.data;
+
+		printf("Resulting tmpl text is [%s]", asm_str);
+		//const char *asm_str = escape_string(node->token.value);
 		emit_code("ASM \"%s\" // smeanitc_analyze.c:1414", sanitize_string(asm_str));
 	}
 }

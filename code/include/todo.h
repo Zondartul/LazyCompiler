@@ -105,6 +105,14 @@
 * [bug 59] classes are not fully copied during = assignment
 *	- see unit 7.40
 * [todo 60] add "assembly verification" step to make sure no invalid asm is generated
+* [bug 61] member access from inside an 'if' is wonky?
+* [bug 62] member access + array access + member access is wonky:			
+*			//funcs[i].ir_name = "<ERROR>"; - one too many indirections on this::func before index is applied
+* [bug 63] assignment of int to class is allowed if class is size 1?
+*			//class debug_info_func func = func_db.get_func_at_ip(ip);
+* [todo 64] add <= and >= (same as [todo 2])
+* [todo 65] verify operator ordering: ( !(x > i) & !(y < i) ) === ( (!(x > i)) & (!(y < i)) )
+* [bug 66] codegen doesn't parse string arguments correctly if they contain (\")
 *
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators

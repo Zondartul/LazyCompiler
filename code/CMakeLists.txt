@@ -38,6 +38,7 @@ include_directories(
 	include/preproc
 	include/semantic
 	include/semantic/types
+	include/semantic/template
 	include/util
 	generated
 )

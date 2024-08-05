@@ -178,6 +178,12 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 		if(is_int(T_dest) && is_char(T_src)){compat = TC_CONVERTIBLE_IMPL_NOOP; goto literal_check;}
 		compat = TC_CONVERTIBLE_IMPL; goto literal_check;
 	}
+
+	/// strings?
+	if(is_string(T_src)){
+		/// should have been handled above in the is_pointer / is_ptr_char
+		DIAG("A string can only be converted to a char pointer"); return TC_INCOMPATIBLE;
+	}
 	/// all cases checked, unless the type system changes we should never get down here
 	assert(!"unreachable");
 

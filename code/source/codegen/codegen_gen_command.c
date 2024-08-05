@@ -2,6 +2,7 @@
 #include "codegen.h"
 #include "semantic.h"
 #include "assert.h"
+#include "asm_template.h"
 
 int countMembers() {
 	int n = 0;
@@ -1058,216 +1059,6 @@ void gen_command_exit(){
 	}
 }
 
-struct asm_template{
-	vector2_ptr_char seq_begin; // pointers to starts of escape sequences
-	vector2_ptr_char seq_end;	// pointers to ends of escape sequences
-	vector2_ptr_char vals;		// unique values encountered
-	vector2_ptr_char regs;		// registers associated with those values
-	const char *src_text;		// r/o copy of the source text
-	char *res_text;				// resulting text with substitutions
-};
-
-int asm_template_lookup_val_idx(struct asm_template *templ, const char *val){
-	for(int i = 0; i < templ->vals.size; i++){
-		const char *val2 = m(templ->vals, get, i);
-		if(strcmp(val2, val)==0){
-			return i;
-		}
-	}
-	return -1;
-}
-
-/// returns the register associated with a value if there is one
-const char* asm_template_lookup_val(struct asm_template *templ, const char *val){
-	int idx = asm_template_lookup_val_idx(templ, val);
-	if(idx != -1){
-		return m(templ->regs, get, idx);
-	}else{
-		return 0;
-	}
-}
-
-struct asm_template asm_template_here0(){
-	struct asm_template tmpl;
-	tmpl.seq_begin = vector2_ptr_char_here();
-	tmpl.seq_end = vector2_ptr_char_here();
-	tmpl.src_text = 0;
-	tmpl.res_text = 0;
-	return tmpl;
-}
-
-struct asm_template parse_asm_template(const char *str){
-	/// find escape sequences
-	/// $$ -> $
-	/// $S[x] -> storeValue(x, reg)
-	/// $L[x] -> reg = loadLValue(x)
-	/// $R[x] -> reg = loadRValue(x)
-	struct asm_template tmpl = asm_template_here0();
-	tmpl.src_text = str;
-	tmpl.res_text = stralloc(str);
-	/// create a template along the way
-	const char *str_iter = str;
-	while(1){
-		char *seq_begin = 0;
-		char *seq_end = 0;
-		char *p = strchr(str_iter, '$');
-		if(p){
-			seq_begin = p;
-			str_iter = p++;
-			
-			if(*p == '$'){
-					seq_end = p; 
-					goto save_seq;
-			}else if(
-				(*p == 'S') || 
-				(*p == 'L') ||
-				(*p == 'R')){
-					p++;
-					assert(*p == '[');
-					p = strchr(str_iter, ']');
-					assert(p);
-					seq_end = p;
-					str_iter = p++;
-					goto save_seq;
-			}
-		}
-		assert(!"unreachable");
-		save_seq:
-		m(tmpl.seq_begin, push_back, seq_begin);
-		m(tmpl.seq_end, push_back, seq_end);
-	}		
-}
-
-char asm_templ_seq_type(struct asm_template *tmpl, int idx){
-	return m(tmpl->seq_begin, get, idx)[1];
-}
-
-const char *asm_templ_val_name(struct asm_template *tmpl, int idx){
-	///  $S[hello]
-	///  ^  |   |^
-	///  p  |   |p2
-	///   p+3   p2-1
-	///  len = 5 = (p2-1) - (p+3) + 1 = 4 + 1
-
-	const char *p = m(tmpl->seq_begin, get, idx);
-	const char *p2 = m(tmpl->seq_end, get, idx);
-	const char *n_begin = p+3;
-	const char *n_end = p2-1;
-	int len = n_end - n_begin + 1;
-	char *valname = (char*)malloc(len+1);
-	strcpy(valname, n_begin);
-	return valname;	
-}
-
-void checkTemplateVals(struct asm_template *tmpl){
-	for(int i = 0; i < tmpl->seq_begin.size; i++){
-		char Ct = asm_templ_seq_type(tmpl, i);
-		if(Ct == 'S'){
-			const char *valname = asm_templ_val_name(tmpl, i);
-			checkResult(valname);
-		}
-	}
-}
-
-void load_template_registers(struct asm_template *tmpl){
-	for(int i = 0; i < tmpl->seq_begin.size; i++){
-		char Ct = asm_templ_seq_type(tmpl, i);
-		if(Ct == 'R'){
-			const char *valname = asm_templ_val_name(tmpl, i);
-			const char *prev_reg = asm_template_lookup_val(tmpl, valname);
-			if(!prev_reg){
-				const char *reg = loadRValue(valname);
-				m(tmpl->vals, push_back, valname);
-				m(tmpl->regs, push_back, reg);
-			}
-		}
-		else if(Ct == 'L'){
-			const char *valname = asm_templ_val_name(tmpl, i);
-			const char *prev_reg = asm_template_lookup_val(tmpl, valname);
-			if(!prev_reg){
-				const char *reg = loadLValue(valname);
-				m(tmpl->vals, push_back, valname);
-				m(tmpl->regs, push_back, reg);
-			}
-		}
-		else if(Ct == 'S'){
-			const char *valname = asm_templ_val_name(tmpl, i);
-			const char *prev_reg = asm_template_lookup_val(tmpl, valname);
-			if(!prev_reg){
-				ptr_reg  R = allocRegister();
-				m(tmpl->vals, push_back, valname);
-				m(tmpl->regs, push_back, R->val);
-			}
-		}
-		else if(Ct == '$'){
-			/// do nothing
-		}else{assert(!"unreachable");}
-	}
-}
-
-void store_template_registers(struct asm_template *tmpl){
-	for(int i = 0; i < tmpl->seq_begin.size; i++){
-		char Ct = asm_templ_seq_type(tmpl, i);
-		if(Ct == 'S'){
-			const char *valname = asm_templ_val_name(tmpl, i);
-			int val_idx = asm_template_lookup_val_idx(tmpl, valname);
-			const char *reg = m(tmpl->regs, get, val_idx);
-			if(reg){
-				storeValue(valname, reg);
-				m(tmpl->regs, set, 0, val_idx);
-			}
-		}
-	}
-}
-
-char *substr(const char *idx_from, const char *idx_to){
-	int len = (int)(idx_to - idx_from);
-	char *buff = (char*)malloc(len+1);
-	memcpy(buff, idx_from, len);
-	return buff;
-}
-
-const char *asm_templ_get_seq_replacement(struct asm_template *tmpl, int idx){
-	const char *valname = asm_templ_val_name(tmpl, idx);
-	char Ct = asm_templ_seq_type(tmpl, idx);
-	if(Ct == '$'){return "$";}
-	else{
-		const char *reg = asm_template_lookup_val(tmpl, valname);
-		return reg;
-	}
-}
-
-void stitch_asm_template(struct asm_template *tmpl){
-	/// calculate the string size
-	/// set size for the longest reg-name+1
-	/// (max(strlen(regs))+1) * n_sequences
-
-	/// or just use vec printf to allocate the string as we go
-	
-	vector2_char vstr = vector2_char_here();
-	int src_len = strlen(tmpl->src_text);
-	const char *prev_end = tmpl->src_text;
-	const char *end_of_text = tmpl->src_text + src_len;
-	for(int i = 0; i < tmpl->seq_begin.size; i++){
-		/// [raw text]? + [seq replacement]?
-		const char* seq_begin = m(tmpl->seq_begin, get, i);
-		const char* seq_end = m(tmpl->seq_end, get, i);
-		/// returns "" if nothing there
-		const char *raw_text_snip = substr(prev_end, seq_begin);
-		/// also returns "" if repl is empty
-		const char *repl = asm_templ_get_seq_replacement(tmpl, i);
-		prev_end = seq_end;
-		vec_printf(&vstr, "%s%s",raw_text_snip, repl);
-	}
-	/// there is raw text before and after all the replacements
-	/// this is the last 'after' block.
-	if(prev_end < end_of_text){
-		char *raw_text_snip = substr(prev_end, end_of_text);
-		vec_printf(&vstr, "%s", raw_text_snip);
-	}
-	tmpl->res_text = stralloc(vstr.data);
-}
-
 void gen_command_asm(){
 	if(codegen_decl){
 		const char* cmdstring = strstr(codegen_str, "ASM") + strlen("ASM ");
@@ -1278,14 +1069,25 @@ void gen_command_asm(){
 	}else{
 		const char* cmdstring = strstr(codegen_str, "ASM") + strlen("ASM ");
 		const char* str = unescape_string(cmdstring);
+		const char* arg_str_begin = str+1;
+		const char* arg_str_end = strchr(arg_str_begin, '"');
+		assert(arg_str_end);
+		str = substr(arg_str_begin, arg_str_end);
+
+			printf("gen_command_asm begin;");
+			printf("  cmdstring = [%s]\n",cmdstring);
+			printf("  str = [%s]\n", str);
 		
 		struct asm_template tmpl = parse_asm_template(str);
+			printf("  tmpl.src_text = [%s]\n", tmpl.src_text);
 		load_template_registers(&tmpl);
 		stitch_asm_template(&tmpl);
+			printf("  tmpl.res_text = [%s]\n", tmpl.res_text);
 
 		printindent(); asm_println("// --- asm block begin ---");
 		asm_println("%s", tmpl.res_text);
 		printindent(); asm_println("// --- asm block end ---"); 
 		store_template_registers(&tmpl);
+			printf("gen_command_asm end.");
 	}
 }

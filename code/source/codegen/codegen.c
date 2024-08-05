@@ -493,7 +493,7 @@ void printDebugInfo(){
 					int str2len = 0;
 					if (S->username) { str2len = strlen(S->username); }
 					int record2len = str2len + 1;
-					int recordlen = 3 + record1len + record2len;
+					int recordlen = 5 + record1len + record2len;
 					//fprintf(fasm,"DB %d, %s, %s,\"%s\",0\n",recordlen,F->entrance,F->exit,F->name);
 					asm_println("DB %d, ", recordlen);
 					asm_printdb_nonnull(S->lbl_from); //asm_println("%s, ", S->lbl_from);
@@ -571,15 +571,11 @@ int allocStackArg(int size){
 //some register = value
 //returns something you can put into "mov eax, X"
 const char* loadRValue(const char* val) {
-	//if(strcmp(val, "x_2") == 0){
-	//	printf("debug breakpoint");
-	//}
+
 
 	if (!val) { goto err_null_val; }
 	if (isnumber(val)) { goto out_val; }
-	//DEBUG_CHECK("&derp"){
-	//	printf("debug breakpoint");
-	//}
+
 	int acc_deref = 0;
 	int acc_ref = 0;
 	int acc_none = 0;
@@ -709,99 +705,6 @@ out_deref_stack_pos:
 	vec_printf(&vstr, "EBP:#%d", S->pos);
 	return stralloc(vstr.data);
 
-/*
-	if (!strcmp(S->type, "FUNC")) {
-		if (deref) { error("[CODE GEN] can't dereference a function "); }
-		if (ref) { error("[CODE GEN] function names are already references (line %d)", CurCMD + 1); }
-		return out_val(val);//goto ret_val; //return val;
-	}
-	if (!strcmp(S->type, "LABEL")) {
-		if (deref) { return out_deref_val(&vstr, val);}//vec_printf(&vstr, "#%s", val); goto ret_vstr;}//return stralloc(vstr.data); }
-		if (ref) { error("[CODE GEN] labels are already references "); }
-		else { return out_val(val); }//goto ret_val; }//return val; }
-	}
-	if (!strcmp(S->type, "STRING")) {
-		if (deref) { CHECK_vec_printf1(&vstr, "#%s", S->lbl_at); goto ret_vstr;}//return stralloc(vstr.data); }
-		if (ref) { error("[CODE GEN] const strings are already references "); }
-		else { goto ret_lbl_at;}//return S->lbl_at; }
-	}
-	if (!strcmp(S->type, "MEMBER")) {
-		if (deref) {
-			//todo: check if some register already contains that val
-			ptr_reg R = allocRegister();
-			const char* reg = R->name;
-			R->val = stralloc(val);
-			printindent();
-			CHECK_asm_println_ss("mov %s, #%s", reg, S->lbl_at);
-			CHECK_vec_printf_d(&vstr, "#%s", reg);
-			goto ret_vstr;
-		}
-		if (ref || S->arraysize) {
-			CHECK_vec_printf_d(&vstr, "%d", S->pos);
-			goto ret_vstr;
-		}
-		CHECK_vec_printf1(&vstr, "#%s", S->lbl_at);
-		goto ret_vstr;//return stralloc(vstr.data); //return stralloc(buff);
-	}
-	if (!strcmp(S->type, "VAR") || !strcmp(S->type, "ARG")) {
-		if (S->framedepth == 0) {
-			//global var
-			if (deref) {
-				//todo: check if some register already contains that val
-				ptr_reg R = allocRegister();
-				const char* reg = R->name;
-				R->val = stralloc(val);
-				printindent();
-				CHECK_asm_println2("mov %s, #%s", reg, S->lbl_at);
-				if(S->arraysize){
-					CHECK_vec_printf1(&vstr, "%s", reg);
-				}else{
-					CHECK_vec_printf1(&vstr, "#%s", reg);
-				}
-				goto ret_vstr;
-			}
-			if (ref || S->arraysize) {
-				//vec_printf(&vstr, "%d", S->pos);
-				//return stralloc(vstr.data);//return stralloc(buff);
-				/// hold on, if the var is global, then we should just plop down the label?
-				goto ret_lbl_at;
-			}
-			CHECK_vec_printf1(&vstr, "#%s", S->lbl_at);
-			goto ret_vstr;
-		}
-		else {
-			//local var
-			if (deref) {
-				//todo: check if some register already contains that val
-				ptr_reg R = allocRegister();
-				const char* reg = R->name;
-				R->val = stralloc(val);
-				printindent();
-				CHECK_asm_println2("rstack %s, EBP:%d", reg, S->pos);
-				if(S->arraysize){
-					CHECK_vec_printf1(&vstr, "%s", reg);
-				}else{
-					CHECK_vec_printf1(&vstr, "#%s", reg);
-				}
-				goto ret_vstr;
-			}
-			if (ref || S->arraysize) {
-				CHECK_vec_printf1(&vstr, "EBP:%d", S->pos);
-				goto ret_vstr;
-			}
-			CHECK_vec_printf1(&vstr, "EBP:#%d", S->pos);
-			goto ret_vstr;
-		}
-	}
-	error("[CODE GEN] trying to load unsupported symbol type %s ", S->type);
-	return 0;
-
-
-
-ret_vstr:	CHECK_AND_RETURN(vstr.data);
-ret_lbl_at:	CHECK_AND_RETURN(S->lbl_at);
-ret_val:	CHECK_AND_RETURN(val);
-*/
 }
 
 void load_lbl_and_deref_n_times(const char* reg_name, const char *src, int derefs_requested){
@@ -829,8 +732,6 @@ void load_stack_and_deref_n_times(const char* reg_name, int pos, int derefs_requ
 		default: assert(!"unreachable");
 	}
 }
-
-
 
 int count_derefs(int acc_ref, int acc_deref, int is_array, int is_pointer){
 	int derefs_requested = 0;
@@ -965,98 +866,6 @@ out_load_pos:
 	printindent(); asm_println("mov %s, %d", reg->name, S->pos);
 	// reg and reg->val are premade
 	return stralloc(reg->name);
-
-
-/*
-	if(isnumber(val)){
-		//immediate value
-		reg = allocRegister();
-		if(comments){printindent(); asm_println("//load %s into %s",val, reg->name);}
-		reg->val = stralloc(val);
-		printindent();
-		asm_println("mov %s, %s",reg->name,val);
-		goto ret_reg_name;
-	}else{
-		//stored value
-		int ref = 0;
-		int deref = 0;
-		if(val[0] == '*'){deref = 1; val++;}
-		if(val[0] == '&'){ref = 1; val++;}
-		//ptr_symbol S = find_symbol_by_ir_name(CurCS->scope,val);
-		ptr_IR_symbol S = find_IR_symbol(val);
-		if(S){
-			int adr = S->pos;//S->store_adr+1; //because #[EBP:0] is prevEBP
-			reg = allocRegister();
-			int framediff = curframe->depth-S->framedepth;
-			if(comments){printindent(); CHECK_asm_println4("//load %s into %s (cf:%d, fd:%d)",val,reg->name,curframe->depth,S->framedepth);}
-			if (!strcmp(S->type, "MEMBER")) {
-				if (ref) { printindent(); CHECK_asm_println2("mov %s, %s", reg->name, S->lbl_at); }
-				else {
-					error("codegen error: member var %s may only be used as '&%s'", val, val);
-				}
-				//else { printindent(); asm_println("mov %s, #%s", reg->name, S->lbl_at); }
-				//if (deref) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
-				//if (S->pointerlevel) { printindent(); asm_println("mov %s, #%s", reg->name, reg->name); }
-
-
-				reg->val = stralloc(val);
-				goto ret_reg_name;
-			}
-			if(!strcmp(S->type,"VAR") || !strcmp(S->type,"ARG")){
-				//if(adr < 0){fprintf(fasm,"*RECORD SCRATCH*\n");error("[CODE GEN] Error: unknown address for val [%s]",val);}
-				//it is negative for func arguments
-				if(S->framedepth == 0){
-					//global
-					if(ref || S->arraysize)	{printindent(); CHECK_asm_println2("mov %s, %s",reg->name,S->lbl_at);}
-					else				{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,S->lbl_at);}
-					if(deref)			{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-					if(S->pointerlevel)	{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-				}else{
-					//local
-					if(framediff < 0){asm_println("*RECORD SCRATCH*");error("[CODE GEN] Error: attempt to access val [%s] in a deeper frame (%d) than current (%d)",val,S->framedepth,curframe);}
-					if(framediff == 0){
-						if(ref || S->arraysize)				{printindent(); CHECK_asm_println2("mov %s, EBP:%d", reg->name, adr);} //reg = ESP+adr
-						else				{printindent(); CHECK_asm_println2("rstack %s, EBP:%d", reg->name, adr);}
-						if(deref)			{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-						if(S->pointerlevel)	{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-					}else{
-						//error("[CODE GEN] Error: frame-climbing is disabled\n");
-						if(comments){printindent(); CHECK_asm_println1("//climbing %d frames",framediff);}
-						printindent(); CHECK_asm_println1("mov %s, #EBP",reg->name); //frame climbing (r7 = EBP_prev)
-						int i;
-						for(i = 1; i < framediff; i++){
-							printindent(); CHECK_asm_println2("mov %s, #%s", reg->name,reg->name);
-						}
-						printindent(); CHECK_asm_println3("mov %s, %s:%d", reg->name, reg->name, adr);
-						if(!(ref || S->arraysize))	{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);} //reg = ESP+adr
-						if(deref)			{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-						if(S->pointerlevel)	{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-					}
-				}
-				reg->val = stralloc(val);
-				goto ret_reg_name;
-			}
-			if(!strcmp(S->type,"LABEL") || !strcmp(S->type,"FUNC")){
-				if(deref){
-					printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,val);
-				}else{
-					printindent(); CHECK_asm_println2("mov %s, %s",reg->name,val); //also label
-				}
-				if(S->pointerlevel)	{printindent(); CHECK_asm_println2("mov %s, #%s",reg->name,reg->name);}
-				reg->val = stralloc(val);
-				goto ret_reg_name;
-			}
-			
-			error("[CODE GEN] trying to load unsupported symbol type %s ",S->type);
-			
-		}else{
-			error("[CODE GEN] Error: undefined value [%s]\n",val);
-			return 0;
-		}
-	}
-	assert(!"unreachable");
-	return 0;
-*/
 }
 
 

@@ -849,9 +849,16 @@ void semantic_analyze_expr_deref(ast_node* node, expr_settings stg) {
 
 	//const char* exprResult = IR_next_name(namespace_semantic, "temp");
 	//emit_code("MOV %s *%s  /* deref */", exprResult, res1.val);
+	const char* exprResult = res1.val;
+
+	if(res1.val[0] == '*'){
+		const char *temp = IR_next_name(namespace_semantic, "temp");
+		emit_code("MOV %s %s // semantic_expr_op.c:855", temp, res1.val);
+		exprResult = temp;
+	}
 
 	//reinterpret
-	const char* exprResult = rename_star(res1.val);
+	exprResult = rename_star(exprResult);
 	val_handle result = { .val = exprResult, .rv_type = E_LVAL, .T = T2, .author = author };
 
 	
