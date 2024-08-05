@@ -797,6 +797,10 @@ void push_symbol(struct symbol *S){
 	m(currentSymbolTable->symbols,push_back,S);
 }
 
+/// in semantic_expr_op.c
+char unescape_char(char C);
+int escape_char(char C);
+
 char *escape_string(const char *str){
 	int i = 0;
 	int len = 0;
@@ -821,11 +825,13 @@ char *escape_string(const char *str){
 		C = str[i++];
 		//printf("C = [%c]\n",C);
 		if(C == 0){break;}
-		if(C == '\n'){buff[buffi++] = '\\'; buff[buffi++] = 'n'; continue;}
-		if(C == '\t'){buff[buffi++] = '\\'; buff[buffi++] = 't'; continue;}
-		if(C == '\"'){buff[buffi++] = '\\'; buff[buffi++] = '\"'; continue;}
-		if(C == '\''){buff[buffi++] = '\\'; buff[buffi++] = '\''; continue;}
-		if(C == '\\'){buff[buffi++] = '\\'; buff[buffi++] = '\\'; continue;}
+		int esc = escape_char(C);
+		if(esc != -1){buff[buffi++] = '\\'; buff[buffi++] = esc; continue;}
+		// if(C == '\n'){buff[buffi++] = '\\'; buff[buffi++] = 'n'; continue;}
+		// if(C == '\t'){buff[buffi++] = '\\'; buff[buffi++] = 't'; continue;}
+		// if(C == '\"'){buff[buffi++] = '\\'; buff[buffi++] = '\"'; continue;}
+		// if(C == '\''){buff[buffi++] = '\\'; buff[buffi++] = '\''; continue;}
+		// if(C == '\\'){buff[buffi++] = '\\'; buff[buffi++] = '\\'; continue;}
 		buff[buffi++] = C;
 		assert(buffi < (len+1));
 	}
@@ -847,12 +853,15 @@ char *unescape_string(const char *str){
 		if(C == 0){break;}
 		if(C == '\\'){
 			C2 = str[i++];
-			if(C2 == 'n'){buff[buffi++] = '\n'; continue;}
-			if(C2 == 't'){buff[buffi++] = '\t'; continue;}
-			if(C2 == '\"'){buff[buffi++] = '\"'; continue;}
-			if(C2 == '\''){buff[buffi++] = '\''; continue;}
-			if(C2 == '\\'){buff[buffi++] = '\\'; continue;}
-			error("error: unescape_string: unrecognized escape sequence \'%c%c\' ",C,C2);
+			buff[buffi++] = unescape_char(C2); continue;
+			// if(C2 == 'n'){buff[buffi++] = '\n'; continue;}
+			// if(C2 == 't'){buff[buffi++] = '\t'; continue;}
+			// if(C2 == 'r'){buff[buffi++] = '\r'; continue;}
+			// if(C2 == 'b'){buff[buffi++] = '\b'; continue;}
+			// if(C2 == '\"'){buff[buffi++] = '\"'; continue;}
+			// if(C2 == '\''){buff[buffi++] = '\''; continue;}
+			// if(C2 == '\\'){buff[buffi++] = '\\'; continue;}
+			//error("error: unescape_string: unrecognized escape sequence \'%c%c\' ",C,C2);
 		}
 		assert(buffi < (len+1));
 		buff[buffi++] = C;
@@ -1075,6 +1084,7 @@ int getNumVariables(){
 	return N;
 }
 
+
 int getTypeSize(ptr_type_name T){
 	if(T->points_to != 0){
 		//is a pointer
@@ -1096,7 +1106,13 @@ int getTypeSize(ptr_type_name T){
 				size = size + getTypeSize(S->symvariable.type);
 			}
 		}
+		if(T->is_array){
+			size = size * T->arraysize;
+		}
 		return size? size : 1;
+	}
+	if(T->is_array){
+		return T->arraysize;
 	}
 	//is a primitive
 	return 1;

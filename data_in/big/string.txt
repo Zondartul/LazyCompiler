@@ -37,6 +37,14 @@ void strmove(char *dest, char *src)
 	memmove(dest, src, len+1); //includes terminating zero
 end
 
+void strncpy(char *dest, char *src, int n)
+	while(n--)
+		char C = *src++;
+		*dest++ = C;
+		if(C == 0) return; end
+	end
+end
+
 
 //if the string is shorter than padlen, pads in with padchar
 void strPadBegin(char *str, int padlen, char padchar)

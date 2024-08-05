@@ -289,8 +289,27 @@ char unescape_char(char c){
 		case 'b': return '\b'; break;
 		case 'e': return '\e'; break;
 		case '0': return '\0'; break;
+		case '\'': return '\''; break;
+		case '\"': return '\"'; break;
 		case '\\': return '\\'; break;
 		default: error("unknown character escape sequence \\%c", c);
+	}
+	assert(!"unreachable");
+	return 0;
+}
+
+int escape_char(char c){
+	switch(c){
+		case '\n': return 'n'; break;
+		case '\r': return 'r'; break;
+		case '\t': return 't'; break;
+		case '\b': return 'b'; break;
+		case '\e': return 'e'; break;
+		case '\0': return '0'; break;
+		case '\'': return '\''; break;
+		case '\"': return '\"'; break;
+		case '\\': return '\\'; break;
+		default: return -1;
 	}
 	assert(!"unreachable");
 	return 0;
@@ -379,10 +398,10 @@ void semantic_analyze_expr_const(ast_node* node, expr_settings stg) {
 
 		push_code_segment();
 		currentCodeSegment = init_CS;
-		emit_code("SYMBOL %s STRING %s", // no comment here cause string is until the end of line 
+		emit_code("SYMBOL %s STRING \"%s\"", // no comment here cause string is until the end of line 
 			sanitize_string(str_name), 
 			//sanitize_string(escape_string(node->token.value))
-			sanitize_string(escape_string(unescape_string(node->token.value)))
+			sanitize_string(escape_string(unescape_string(node->token.value))) /// why are we unescaping and then escaping?
 		);
 		pop_code_segment();
 		

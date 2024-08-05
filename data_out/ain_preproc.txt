@@ -55,6 +55,14 @@ void strmove(char *dest, char *src)
 	memmove(dest, src, len+1); //includes terminating zero
 end
 
+void strncpy(char *dest, char *src, int n)
+	while(n--)
+		char C = *src++;
+		*dest++ = C;
+		if(C == 0) return; end
+	end
+end
+
 
 //if the string is shorter than padlen, pads in with padchar
 void strPadBegin(char *str, int padlen, char padchar)
@@ -849,45 +857,52 @@ end
 #file "data_in/big/err_printf.txt"
 #line 1
 /// printf for errors in case stuff borks
-int err_sprintf(char *buff, char *fmt, void *parg)
+int err_snprintf(char *buff, int max_len, char *fmt, void *parg)
 	int printed = 0;
-	while(*fmt)
+	int stop = 0;
+	while(!stop)
 		char c = *fmt;
-		if(c == '%')
-			fmt++;
-			char c2 = *fmt;
-			fmt++;
-			if(c2 == 'd') int2str(*(int*)parg, buff); parg++; end
-			if(c2 == 'f') float2str(*(float*)parg, 4, buff); parg++; end
-			if(c2 == 's') /*debug_s_arg(*parg);*/ strmove(buff, *(char**)parg); parg++; end
-			if(c2 == 'c') buff[0] = *(char*)parg; parg++; buff[1] = 0; end
-			if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
-			int inc = strlen(buff);
-			printed = printed + inc;
-			buff = buff + inc;
-		end
-		if(c != '%')
-			if(c == '\')
+		int rem = max_len - printed;
+		if(rem > 10)
+			if(c == '%')
 				fmt++;
 				char c2 = *fmt;
 				fmt++;
-				if(c2 == 'n') buff[0] = '\n'; buff[1] = 0; end
-				if(c2 == 'r') buff[0] = '\r'; buff[1] = 0; end
-				if(c2 == 'f') buff[0] = 15; buff[1] = 0; end
-				if(c2 == 'b') buff[0] = '\b'; buff[1] = 0; end
-				if(c2 == 'e') buff[0] = '\e'; buff[1] = 0; end
-				if(c2 == '\\') buff[0] = '\\'; buff[1] = 0; end
+				if(c2 == 'd') int2str(*(int*)parg, buff); parg++; end
+				if(c2 == 'f') float2str(*(float*)parg, 4, buff); parg++; end
+				if(c2 == 's') /*strmove*/ strncpy(buff, *(char**)parg, rem); parg++; end
+				if(c2 == 'c') buff[0] = *(char*)parg; parg++; buff[1] = 0; end
+				if(c2 == '%') buff[0] = '%'; buff[1] = 0; end
 				int inc = strlen(buff);
 				printed = printed + inc;
-				buff = buff+inc;
+				buff = buff + inc;
 			end
-			if(c != '\\')
-				buff[0] = c;
-				buff[1] = 0;
-				printed++;
-				buff++;
-				fmt++;
+			if(c != '%')
+				if(c == '\')
+					fmt++;
+					char c2 = *fmt;
+					fmt++;
+					if(c2 == 'n') buff[0] = '\n'; buff[1] = 0; end
+					if(c2 == 'r') buff[0] = '\r'; buff[1] = 0; end
+					if(c2 == 'f') buff[0] = 15; buff[1] = 0; end
+					if(c2 == 'b') buff[0] = '\b'; buff[1] = 0; end
+					if(c2 == 'e') buff[0] = '\e'; buff[1] = 0; end
+					if(c2 == '\\') buff[0] = '\\'; buff[1] = 0; end
+					int inc = strlen(buff);
+					printed = printed + inc;
+					buff = buff+inc;
+				end
+				if(c != '\\')
+					buff[0] = c;
+					buff[1] = 0;
+					printed++;
+					buff++;
+					fmt++;
+				end
 			end
+			if(!*fmt) stop = 1; end
+		else
+			stop = 1;
 		end
 	end
 	return printed;
@@ -896,9 +911,10 @@ end
 int err_printf(int col, char *fmt, varargs)
 	int printed = 0;
 	char buff[80];
+	buff[79] = 0;
 	void *parg = (void*)&fmt; 
 	parg++;
-	printed = err_sprintf(&buff, fmt, parg);
+	printed = err_snprintf(&buff, 78, fmt, parg);
 	err_puts(&buff, col);
 	return printed;
 end
@@ -1754,6 +1770,8 @@ class debug_info_func_db
 	class debug_info_func funcs[1000];
 	int n_funcs = 0;
 	
+	// this whole constructor breaks all the shit
+	/*
 	int constructor()
 		writePort(4, 1);
 		n_funcs = 0;
@@ -1765,17 +1783,19 @@ class debug_info_func_db
 			p.ir_name = "<ERROR>";
 			// this seems broken? array base is dereferenced before indexing, it shouldn't be.
 			  //COMMENT SOURCE "funcs[i].ir_name = "<ERROR>";" // semantic_analyze.c:1014 
-			  //ADD temp_1283 this_49 funcs   /* this.id [funcs] */ // semantic_expr_op.c:286
-			  //   /* out(L <- P): *temp_1283 from temp_1283 (rename_star) //auth: to expr_index array (arr[]) from expr_id */
-			  //   /* global id [i] */ // semantic_expr_op.c:286
-			  //   /* out(R <- L): i_15 from i_15 (pass) //auth: to expr_index index ([idx]) from expr_id */
+			  //ADD temp_1283 this_49 funcs    this.id [funcs]  // semantic_expr_op.c:286
+			  //    out(L <- P): *temp_1283 from temp_1283 (rename_star) //auth: to expr_index array (arr[]) from expr_id 
+			  //    global id [i]  // semantic_expr_op.c:286
+			  //    out(R <- L): i_15 from i_15 (pass) //auth: to expr_index index ([idx]) from expr_id 
 			  //ADD temp_1284 *temp_1283 i_15 // semantic_expr_op.c:463
-			  //   /* out(P <- P): temp_1284 from temp_1284 (pass) //auth: to expr_dot object(o.) from expr_index */
-			  //ADD temp_1285 temp_1284 ir_name   /* this.id [ir_name] */ // semantic_expr_op.c:286
+			  //    out(P <- P): temp_1284 from temp_1284 (pass) //auth: to expr_dot object(o.) from expr_index 
+			  //ADD temp_1285 temp_1284 ir_name    this.id [ir_name]  // semantic_expr_op.c:286
   
 		end
 		writePort(4, 2);
 	end
+	*/
+	//
 	
 	void deserialize(int *p)
 		n_funcs = *p++;
@@ -1816,14 +1836,28 @@ class T_stack_trace
 		int frame_n = 0;
 		while(frame.p_ebp)
 			int ip = frame.get_ret_ip();
+			if(ip == 0) infloop(); end
 			//class debug_info_func func = func_db.get_func_at_ip(ip); //bug: this shouldn't be allowed due to typecheck
 			int func_id = func_db.get_func_at_ip(ip);
 			err_printf(999, ".. func_id = %d\n", func_id);
 			if(func_id != -1)
-				class debug_info_func func = func_db.funcs[func_id];
+				//class debug_info_func func = func_db.funcs[func_id];
+				err_printf(990, "1");
+				class debug_info_func *p_func = &(func_db.funcs) + func_id;
+				err_printf(990, "2");
+				class debug_info_func func = *p_func;
+				err_printf(999, "p_func = %d\n", (int)p_func);
+				err_printf(999, " &func = %d\n", (int)&func);
+				
+				err_printf(990, "3");
 				int offset = ip - func.lbl_entrance;
+				err_printf(990, "4");
 				char *name = func.ir_name;//user_name;
+				err_printf(990, "5");
 				err_printf(999, "%d:%d (%s + %d)\n", frame_n, ip, name, offset);
+				err_printf(990, "6");
+				
+				err_printf(999, "\n");
 			else
 				err_printf(999, "%d:%d (unknown)\n", frame_n, ip);
 			end

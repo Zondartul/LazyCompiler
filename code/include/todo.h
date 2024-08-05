@@ -112,8 +112,10 @@
 *			//class debug_info_func func = func_db.get_func_at_ip(ip);
 * [todo 64] add <= and >= (same as [todo 2])
 * [todo 65] verify operator ordering: ( !(x > i) & !(y < i) ) === ( (!(x > i)) & (!(y < i)) )
-* [bug 66] codegen doesn't parse string arguments correctly if they contain (\")
-*
+* [FIXED bug 66] codegen doesn't parse string arguments correctly if they contain (\")
+*		-- replaced unescape_string(cmdstring) with read_string_arg(str) 
+* [FIXED bug 67] IR: symbol declaration for class array doesn't consider array-size
+*		-- added T->arraysize to getTypeSize(T)
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators
 * [FIXED Todo 9] display the source code location during semantic errors

@@ -4,6 +4,25 @@
 #include "assert.h"
 #include "asm_template.h"
 
+
+/// parses a string argument and returns it as a new string
+char *read_string_argument(const char *str){
+	const char *p1 = str;
+	const char *p2 = p1;
+	assert(str);
+	assert(*p1 == '\"');
+	p1++; p2 = p1;
+	while(*p2){
+		if(*p2 == '\\'){p2+=2;} // skip escape chars
+		else if(*p2 == '\"'){break;}
+		else{p2++;}
+	}
+	char *res = substr(p1,p2);
+	res = unescape_string(res);
+	printf("read_string_argument(%s) = [%s]\n", str, res);
+	return res;
+}
+
 int countMembers() {
 	int n = 0;
 	for (int i = 0; i < curframe->symbols.size; i++) {
@@ -77,7 +96,7 @@ void gen_command_symbol() {
 		if (!strcmp(type, "STRING")) {
 			if (curframe->parent) { error("[CODE GEN] constant strings can only be defined in global IR scope "); }
 			const char* cmdstring = strstr(codegen_str, "STRING") + strlen("STRING ");
-			const char* str2 = unescape_string(cmdstring);
+			const char* str2 = read_string_argument(cmdstring);//unescape_string(cmdstring);
 			S->str = str2;
 			S->lbl_at = IR_inexact_name(curframe->namespace, val);
 		}
@@ -936,7 +955,9 @@ void gen_command_comment(){
 		codegen_tok = strtok(0, " ");
 		if (!codegen_tok) { error("[CODE GEN] bad command"); }
 		if (TOK_IS("GENERAL") || TOK_IS("SOURCE") || TOK_IS("LINE")) {
-			const char *str = strtok(0,"\"");
+			codegen_tok = strtok(0,"\0");
+			assert(codegen_tok);
+			const char *str = read_string_argument(codegen_tok);//strtok(0,"\"");
 			asm_println("// %s", str);
 			return;
 		}else error("[CODE GEN] bad command");
@@ -1062,17 +1083,17 @@ void gen_command_exit(){
 void gen_command_asm(){
 	if(codegen_decl){
 		const char* cmdstring = strstr(codegen_str, "ASM") + strlen("ASM ");
-		const char* str = unescape_string(cmdstring);
+		const char* str = read_string_argument(cmdstring);//unescape_string(cmdstring);
 		
 		struct asm_template tmpl = parse_asm_template(str);
 		checkTemplateVals(&tmpl);
 	}else{
 		const char* cmdstring = strstr(codegen_str, "ASM") + strlen("ASM ");
-		const char* str = unescape_string(cmdstring);
-		const char* arg_str_begin = str+1;
-		const char* arg_str_end = strchr(arg_str_begin, '"');
-		assert(arg_str_end);
-		str = substr(arg_str_begin, arg_str_end);
+		const char* str = read_string_argument(cmdstring);//unescape_string(cmdstring);
+		//const char* arg_str_begin = str+1;
+		//const char* arg_str_end = strchr(arg_str_begin, '"');
+		//assert(arg_str_end);
+		//str = substr(arg_str_begin, arg_str_end);
 
 			printf("gen_command_asm begin;");
 			printf("  cmdstring = [%s]\n",cmdstring);

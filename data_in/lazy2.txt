@@ -194,14 +194,28 @@ class T_stack_trace
 		int frame_n = 0;
 		while(frame.p_ebp)
 			int ip = frame.get_ret_ip();
+			if(ip == 0) infloop(); end
 			//class debug_info_func func = func_db.get_func_at_ip(ip); //bug: this shouldn't be allowed due to typecheck
 			int func_id = func_db.get_func_at_ip(ip);
 			err_printf(999, ".. func_id = %d\n", func_id);
 			if(func_id != -1)
-				class debug_info_func func = func_db.funcs[func_id];
+				//class debug_info_func func = func_db.funcs[func_id];
+				err_printf(990, "1");
+				class debug_info_func *p_func = &(func_db.funcs) + func_id;
+				err_printf(990, "2");
+				class debug_info_func func = *p_func;
+				err_printf(999, "p_func = %d\n", (int)p_func);
+				err_printf(999, " &func = %d\n", (int)&func);
+				
+				err_printf(990, "3");
 				int offset = ip - func.lbl_entrance;
+				err_printf(990, "4");
 				char *name = func.ir_name;//user_name;
+				err_printf(990, "5");
 				err_printf(999, "%d:%d (%s + %d)\n", frame_n, ip, name, offset);
+				err_printf(990, "6");
+				
+				err_printf(999, "\n");
 			else
 				err_printf(999, "%d:%d (unknown)\n", frame_n, ip);
 			end
