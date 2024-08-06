@@ -44,6 +44,8 @@ void semantic_analyze_expr_equals(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_notequal(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_greater(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_less(ast_node *node, expr_settings stg);
+void semantic_analyze_expr_less_equal(ast_node *node, expr_settings stg);
+void semantic_analyze_expr_greater_equal(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_assign(ast_node *node, expr_settings stg);
 void semantic_analyze_expr_cast(ast_node *node, expr_settings stg);
 

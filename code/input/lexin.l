@@ -113,6 +113,8 @@ elseif										{yylval = ast_node_new(ast_token_here("ELSEIF",	0,NULL,				tokPo
 while										{yylval = ast_node_new(ast_token_here("WHILE",	0,NULL,				tokPos()),	v2pan_here()); return(WHILE);}
 for											{yylval = ast_node_new(ast_token_here("FOR",	0,NULL,				tokPos()), v2pan_here()); return(FOR);}
 \=\=										{yylval = ast_node_new(ast_token_here("EQUAL",	0,NULL,				tokPos()), v2pan_here()); return(EQUAL);}
+\<\=										{yylval = ast_node_new(ast_token_here("LEQUAL",	0,NULL,				tokPos()), v2pan_here()); return(LEQUAL);}
+\>\=										{yylval = ast_node_new(ast_token_here("GEQUAL",	0,NULL,				tokPos()), v2pan_here()); return(GEQUAL);}
 \!\=										{yylval = ast_node_new(ast_token_here("NOTEQUAL",0,NULL,			tokPos()), v2pan_here()); return(NOTEQUAL);}
 \-\-										{yylval = ast_node_new(ast_token_here("DEC",	0,NULL,				tokPos()), v2pan_here()); return(DEC);}
 \+\+										{yylval = ast_node_new(ast_token_here("INC",	0,NULL,				tokPos()), v2pan_here()); return(INC);}

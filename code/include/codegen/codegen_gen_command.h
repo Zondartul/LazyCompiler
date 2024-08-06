@@ -26,6 +26,8 @@ void gen_command_equal();
 void gen_command_notequal();
 void gen_command_greater();
 void gen_command_less();
+void gen_command_leq();
+void gen_command_geq();
 void gen_command_alloc();
 void gen_command_struct();
 void gen_command_using();

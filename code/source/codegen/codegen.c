@@ -1190,6 +1190,8 @@ void codegen_gen_command(/*ptr_code_segment CS unused,*/ const char *str, int ne
 		if(strcmp(codegen_tok,"NOTEQUAL")==0)	{gen_command_notequal();	return;}
 		if(strcmp(codegen_tok,"GREATER")==0)	{gen_command_greater();		return;}
 		if(strcmp(codegen_tok,"LESS")==0)		{gen_command_less();		return;}
+		if(strcmp(codegen_tok,"LEQ")==0)		{gen_command_leq();			return;}
+		if(strcmp(codegen_tok,"GEQ")==0)		{gen_command_geq();			return;}
 		if(strcmp(codegen_tok,"ALLOC")==0)		{gen_command_alloc();		return;}
 		if(strcmp(codegen_tok,"STRUCT")==0)		{gen_command_struct();		return;}
 		if(strcmp(codegen_tok,"USING")==0)		{gen_command_using();		return;}

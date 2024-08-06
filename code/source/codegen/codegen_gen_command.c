@@ -615,17 +615,10 @@ void gen_command_equal() {
 		const char* result = strtok(0, " ");
 		const char* arg1 = loadLValue(strtok(0, " "));
 		const char* arg2 = loadRValue(strtok(0, " "));
-		//storeValue(result, loadValue(arg2));
-		//const char *rA = loadValue(result);
-		//const char *rB = loadValue(arg1);
-		printindent();
-		asm_println("sub %s, %s", arg1, arg2);
-		printindent();
-		asm_println("fabs %s, %s", arg1, arg1);
-		printindent();
-		asm_println("fsgn %s, %s", arg1, arg1);
-		printindent();
-		asm_println("lneg %s", arg1);
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fabs %s, %s", arg1, arg1);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("lneg %s", arg1);
 		storeValue(result, arg1);
 	}
 	return;
@@ -642,15 +635,9 @@ void gen_command_notequal() {
 		const char* result = strtok(0, " ");
 		const char* arg1 = loadLValue(strtok(0, " "));
 		const char* arg2 = loadRValue(strtok(0, " "));
-		//storeValue(result, loadValue(arg2));
-		//const char *rA = loadValue(result);
-		//const char *rB = loadValue(arg1);
-		printindent();
-		asm_println("sub %s, %s", arg1, arg2);
-		printindent();
-		asm_println("fabs %s, %s", arg1, arg1);
-		printindent();
-		asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fabs %s, %s", arg1, arg1);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
 		storeValue(result, arg1);
 	}
 	return;
@@ -667,15 +654,9 @@ void gen_command_greater() {
 		const char* result = strtok(0, " ");
 		const char* arg1 = loadLValue(strtok(0, " "));
 		const char* arg2 = loadRValue(strtok(0, " "));
-		//storeValue(result, loadValue(arg1));
-		//const char *rA = loadValue(result);
-		//const char *rB = loadValue(arg2);
-		printindent();
-		asm_println("sub %s, %s", arg1, arg2);
-		printindent();
-		asm_println("fsgn %s, %s", arg1, arg1);
-		printindent();
-		asm_println("max %s, 0", arg1);
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("max %s, 0", arg1);
 		storeValue(result, arg1);
 	}
 	return;
@@ -692,21 +673,60 @@ void gen_command_less() {
 		const char* result = strtok(0, " ");
 		const char* arg1 = loadLValue(strtok(0, " "));
 		const char* arg2 = loadRValue(strtok(0, " "));
-		//storeValue(result, loadValue(arg2));
-		//const char *rA = loadValue(result);
-		//const char *rB = loadValue(arg1);
-		printindent();
-		asm_println("sub %s, %s", arg1, arg2);
-		printindent();
-		asm_println("fsgn %s, %s", arg1, arg1);
-		printindent();
-		asm_println("min %s, 0", arg1);
-		printindent();
-		asm_println("neg %s", arg1);
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("min %s, 0", arg1);
+		printindent(); asm_println("neg %s", arg1);
 		storeValue(result, arg1);
 	}
 	return;
 }
+
+
+void gen_command_leq() {
+	if (codegen_decl) {
+		//do nothing
+		const char* result = strtok(0, " ");
+		checkResult(result);
+	}
+	else {
+		printTrace();
+		const char* result = strtok(0, " ");
+		const char* arg1 = loadLValue(strtok(0, " "));
+		const char* arg2 = loadRValue(strtok(0, " "));
+		//storeValue(result, loadValue(arg2));
+		//const char *rA = loadValue(result);
+		//const char *rB = loadValue(arg1);
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("max %s, 0", arg1);
+		printindent(); asm_println("lneg %s", arg1);
+		storeValue(result, arg1);
+	}
+	return;
+}
+
+void gen_command_geq() {
+	if (codegen_decl) {
+		//do nothing
+		const char* result = strtok(0, " ");
+		checkResult(result);
+	}
+	else {
+		printTrace();
+		const char* result = strtok(0, " ");
+		const char* arg1 = loadLValue(strtok(0, " "));
+		const char* arg2 = loadRValue(strtok(0, " "));
+		printindent(); asm_println("sub %s, %s", arg1, arg2);
+		printindent(); asm_println("fsgn %s, %s", arg1, arg1);
+		printindent(); asm_println("min %s, 0", arg1);
+		printindent(); asm_println("neg %s", arg1);
+		printindent(); asm_println("lneg %s", arg1);
+		storeValue(result, arg1);
+	}
+	return;
+}
+
 
 void gen_command_alloc() {
 	error("[CODE GEN] deprecated ");

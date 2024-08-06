@@ -315,7 +315,7 @@ Not all rules and not all tokens have precedence. If either the rule
 	or the lookahead token has no precedence, then the default is to shift.
 */
 
-%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC VARARGS ASM
+%token RETURN CLASS ID TYPE END IF ELSE ELSEIF WHILE FOR INTEGER INTEGERX INTEGERB FLOATING CHARACTER STRING EQUAL NOTEQUAL INC DEC VARARGS ASM LEQUAL GEQUAL
 
 /// precedence-coding tokens:
 /// INDEX SUBEXPR BRACELIST CALL DOT EXPR MULDIV ADDSUB CAST LNEG LOGIC COMPARE ASSIGN POSTOP PREOP REF DEREF PRENEG 
@@ -350,6 +350,7 @@ Not all rules and not all tokens have precedence. If either the rule
 ///		  & used in both LOGIC and DEREF ( isA & isB, &x)
 ///
 
+/*
 %right '=' ASSIGN
 %left LOGIC
 %left EQUAL NOTEQUAL COMPARE
@@ -358,17 +359,15 @@ Not all rules and not all tokens have precedence. If either the rule
 %right PREOP INC DEC NEG '!' LNEG CAST DEREF '&' REF // '*' '-' 
 %left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
 %precedence SUBEXPR
-
-/*
-%precedence SUBEXPR
-%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
-%right PREOP INC DEC '-' NEG '!' LNEG CAST '*' DEREF '&' REF
-%left '/' '%' MULDIV EXP  // *
-%left '+' ADDSUB // -
-%left EQUAL NOTEQUAL COMPARE
-%left LOGIC
-%right '=' ASSIGN
 */
+%right '=' ASSIGN
+%left LOGIC '&'
+%left EQUAL NOTEQUAL COMPARE
+%left '+' '-' ADDSUB
+%left '/' '%' '*' MULDIV EXP
+%right PREOP INC DEC NEG '!' LNEG CAST DEREF REF // '*' '-' '&'
+%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
+%precedence SUBEXPR
 
 
 /*
@@ -544,6 +543,8 @@ expr	:	ID									{$$ = production("expr_id",0,$1->token.value,@$,yylval,0,0,0);
 		|	expr NOTEQUAL expr %prec COMPARE	{$$ = production("expr_!=",0,NULL,@$,$1,$3,0,0);}
 		|	expr '>' expr	%prec COMPARE 		{$$ = production("expr_>",0,NULL,@$,$1,$3,0,0);}
 		|	expr '<' expr	%prec COMPARE 		{$$ = production("expr_<",0,NULL,@$,$1,$3,0,0);}
+		|	expr LEQUAL expr %prec COMPARE 		{$$ = production("expr_<=",0,NULL,@$,$1,$3,0,0);}
+		|	expr GEQUAL expr %prec COMPARE 		{$$ = production("expr_>=",0,NULL,@$,$1,$3,0,0);}
 		|	expr '=' expr	%prec ASSIGN		{$$ = production("expr_=",0,NULL,@$,$1,$3,0,0);}
 		|	expr INC	%prec POSTOP			{$$ = production("expr_++",0,NULL,@$,$1,0,0,0);}
 		|	INC	expr    %prec PREOP				{$$ = production("expr_++",1,NULL,@$,$2,0,0,0);} // note: repaired from $1

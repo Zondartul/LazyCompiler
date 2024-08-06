@@ -112,6 +112,8 @@ int semantic_dispatch_expr_op(struct ast_node* node, expr_settings stg) {
 	if (!strcmp(node->token.type, "expr_!="))	{ semantic_analyze_expr_notequal	(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_>"))	{ semantic_analyze_expr_greater		(node, stg);	return 1; }
 	if (!strcmp(node->token.type, "expr_<"))	{ semantic_analyze_expr_less		(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_<="))	{ semantic_analyze_expr_less_equal	(node, stg);	return 1; }
+	if (!strcmp(node->token.type, "expr_>="))	{ semantic_analyze_expr_greater_equal(node, stg);	return 1; }
 	return 0;
 }
 

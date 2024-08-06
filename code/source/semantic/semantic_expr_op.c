@@ -84,6 +84,8 @@ void semantic_analyze_expr_equals(ast_node* node, expr_settings stg)	{ semantic_
 void semantic_analyze_expr_notequal(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "NOTEQUAL", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
 void semantic_analyze_expr_greater(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "GREATER", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
 void semantic_analyze_expr_less(ast_node* node, expr_settings stg)		{ semantic_analyze_expr_op_ifx(node, "LESS", stg);		stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
+void semantic_analyze_expr_less_equal(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "LEQ", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
+void semantic_analyze_expr_greater_equal(ast_node* node, expr_settings stg)	{ semantic_analyze_expr_op_ifx(node, "GEQ", stg);	stg.actual->T = type_name_new("int",0,0,0,0,0,0);}
 
 void semantic_analyze_expr_list(ast_node* node, expr_settings stg) {
 	//expr_list:	expr_list_ne | ;
@@ -1161,50 +1163,7 @@ void semantic_analyze_expr_cast(ast_node* node, expr_settings stg){
 		
 	const char *T1_str = type_name_to_string(T1);
 	const char *T2_str = type_name_to_string(T2);
-	/*
-	int T1_is_array = (T1->is_array != 0);
-	int T2_is_array = (T2->is_array != 0);
 
-	int T1_is_ptr = (T1->points_to != 0);
-	int T2_is_ptr = (T2->points_to != 0);
-
-	int arg1_is_int  =  strcmp(T1_str, "int") ==0;
-	int arg2_is_int  =  strcmp(T2_str, "int") ==0;
-	int arg1_is_char =  strcmp(T1_str, "char")==0;
-	int arg2_is_char =  strcmp(T2_str, "char")==0;
-	int arg1_is_float = strcmp(T1_str, "float")==0;
-	int arg2_is_float = strcmp(T2_str, "float")==0;
-	int arg1_is_number = arg1_is_int || arg1_is_char || arg1_is_float;
-	int arg2_is_number = arg2_is_int || arg2_is_char || arg2_is_float;
-
-
-	if(type_name_equals(T1,T2)){exprResult = res1.val;} /// conversion to what it already is, lol
-	else if(T1_is_array || T2_is_array){error("Semantic error: [cast error 1: %s <- %s]: can't cast between types of arrays", T1_str, T2_str);}
-	else if(T1_is_ptr != T2_is_ptr){error("Semantic error: [cast error 2: %s <- %s]:can't convert between pointer and non-pointer (use * &)", T1_str, T2_str);}
-	else if(T1_is_ptr && T2_is_ptr){exprResult = res1.val;}/// pointer cast is no-op
-	else if(arg1_is_number && arg2_is_number){
-		/// number to number implicit cast is allowed!
-		const char *ir_type1 = 0;
-		if(arg1_is_int)		{ir_type1 = "I32";}
-		if(arg1_is_char)	{ir_type1 = "U8";}
-		if(arg1_is_float)	{ir_type1 = "F64";}
-		assert(ir_type1);
-
-		const char *ir_type2 = 0;
-		if(arg2_is_int)		{ir_type2 = "I32";}
-		if(arg2_is_char)	{ir_type2 = "U8";}
-		if(arg2_is_float)	{ir_type2 = "F64";}
-		assert(ir_type2);
-
-		assert(strcmp(ir_type1, ir_type2) != 0);
-
-		/// emit conversion and copy
-		exprResult = IR_next_name(namespace_semantic, "temp");
-		emit_code("CONVERT %s %s %s %s", sanitize_string(exprResult), sanitize_string(res1.val), ir_type1, ir_type2);
-		emit_code("MOV %s %s //=",sanitize_string(res1.val), sanitize_string(exprResult));
-		return;
-	}
-	*/
 	const char *diag = 0;
 	enum TypeCheckVal compat = get_type_compatibility(T1, T2, NOT_A_CALL, &diag);
 	if((int)compat >= (int)TC_CONVERTIBLE_EXPL){

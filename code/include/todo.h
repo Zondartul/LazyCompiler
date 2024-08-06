@@ -2,7 +2,7 @@
 /* num tickets: 41
 * ----------- preproc bugs: -------------------------------
 * [Bug 1] can't find an include in the same directory as source file
-* [Todo 2] implement >=
+* [DONE Todo 2] implement >=
 * ---------- lexer / parser bugs: ------------------
 * [bug 3] lexer or yacc can't handle '\\'.
 * \[note] neither can HL-ZASM but '\' is fine
@@ -110,12 +110,23 @@
 *			//funcs[i].ir_name = "<ERROR>"; - one too many indirections on this::func before index is applied
 * [bug 63] assignment of int to class is allowed if class is size 1?
 *			//class debug_info_func func = func_db.get_func_at_ip(ip);
-* [todo 64] add <= and >= (same as [todo 2])
-* [todo 65] verify operator ordering: ( !(x > i) & !(y < i) ) === ( (!(x > i)) & (!(y < i)) )
+* [DONE todo 64] add <= and >= (same as [todo 2])
+* [DONE todo 65] verify operator ordering: ( !(x > i) & !(y < i) ) === ( (!(x > i)) & (!(y < i)) )
 * [FIXED bug 66] codegen doesn't parse string arguments correctly if they contain (\")
 *		-- replaced unescape_string(cmdstring) with read_string_arg(str) 
 * [FIXED bug 67] IR: symbol declaration for class array doesn't consider array-size
 *		-- added T->arraysize to getTypeSize(T)
+* [todo 68] for debug_info funcs and vars: instead of records, use a flat table with links to strings,
+*			so it doesn't need to be copied when reading.
+*
+*
+*
+*
+*
+*
+*
+*
+*
 * ----- FIXED bugs: ----------------
 * [FIXED Issue 8] lots of repeated code in semantic_analyze of operators
 * [FIXED Todo 9] display the source code location during semantic errors
