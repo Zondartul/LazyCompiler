@@ -721,7 +721,7 @@ void semantic_analyze_var_decl(ast_node *node){
 	//put into symbol table
 }
 
-void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
+void semantic_analyze_var_decl_assign(ast_node *node, expr_settings){
 	//int discardResult = (strcmp(res, "DISCARD") == 0);
 
 	//production | typename ID '=' expr
@@ -779,27 +779,32 @@ void semantic_analyze_var_decl_assign(ast_node *node, expr_settings stg){
 	}else{
 		if(semantic_context != SEMANTIC_MEMBER){
 			S = lookup_symbol(node->token.value);
-			//const char *result1 = S->IR_name; struct type_name* result1type = S->symvariable.type;
-			val_handle res1 = { .val = S->IR_name, .T = S->symvariable.type };
+			//val_handle res1 = { .val = S->IR_name, .T = S->symvariable.type };
 
 			push_code_segment();
 			if(!currentSymbolTable->parent){
 				currentCodeSegment = init_CS;
 			}
-			
-			//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
-			//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
-			//semantic_expr_analyze(node_expr, stg2); //expr (what to assign)
+			/*
 			PREP_RES(res2, E_RVAL); // R=read, L=write //E_LVAL);
 			res2stg.dest.author = "var_decl_asign expr (= ...)";
 			semantic_expr_analyze(node_expr, res2stg);
 			VERIFY_RES(res2);
 
 			emit_code("MOV %s %s // semantic_analyze.c:792", sanitize_string(res1.val), sanitize_string(res2.val));
-			//if (stg.res_type == E_ERROR) {stg.res_type = E_DISCARD;}
-			//output_res(stg, result1, result1type);
+			
 			res2.author = "var_decl_assign";
 			output_res(stg, res2, YES_EMIT);
+			*/
+
+			struct ast_node *node_dest = ast_gen_id(S->username);
+			struct ast_node *node_src = node_expr;
+			struct ast_node *node_assign = ast_gen_assign(node_dest, node_src);
+
+			PREP_RES(res2, E_DISCARD);
+			res2stg.dest.author = "var_decl_assign";
+			semantic_expr_analyze(node_assign, res2stg);
+
 			pop_code_segment();
 		}
 	}

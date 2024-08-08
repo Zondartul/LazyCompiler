@@ -106,10 +106,13 @@
 *	- see unit 7.40
 * [todo 60] add "assembly verification" step to make sure no invalid asm is generated
 * [bug 61] member access from inside an 'if' is wonky?
-* [bug 62] member access + array access + member access is wonky:			
+* [FIXED bug 62] member access + array access + member access is wonky:			
 *			//funcs[i].ir_name = "<ERROR>"; - one too many indirections on this::func before index is applied
-* [bug 63] assignment of int to class is allowed if class is size 1?
+*			// fixed indirections, also fixed member size in array (pst: non-array pointers are still byte-based)
+* [FIXED bug 63] assignment of int to class is allowed if class is size 1?
 *			//class debug_info_func func = func_db.get_func_at_ip(ip);
+*			-- turns out var_decl_assign didn't use the same code as assign,
+*				so I de-duplicated by generating an AST for a separate assignment and parsing that.
 * [DONE todo 64] add <= and >= (same as [todo 2])
 * [DONE todo 65] verify operator ordering: ( !(x > i) & !(y < i) ) === ( (!(x > i)) & (!(y < i)) )
 * [FIXED bug 66] codegen doesn't parse string arguments correctly if they contain (\")
@@ -118,8 +121,8 @@
 *		-- added T->arraysize to getTypeSize(T)
 * [todo 68] for debug_info funcs and vars: instead of records, use a flat table with links to strings,
 *			so it doesn't need to be copied when reading.
-*
-*
+* [todo 69] use Dot/GraphViz to show the flow of temporary IR values for debugging
+* 
 *
 *
 *

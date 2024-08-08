@@ -476,7 +476,7 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	//val_handle res1; val_handle res1dest = { .rv_type = E_RVAL };
 	//expr_settings stg1 = { .dest = res1dest, .actual = &res1 };
-	PREP_RES(res1, E_LVAL);
+	PREP_RES(res1, E_ASIS);//E_PTR);//E_LVAL);
 	res1stg.dest.author = "expr_index array (arr[])";
 	semantic_expr_analyze(ast_get_child(node, 0), res1stg); //expr (array)
 	VERIFY_RES(res1);
@@ -486,17 +486,23 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	//val_handle res2; val_handle res2dest = { .rv_type = E_LVAL };
 	//expr_settings stg2 = { .dest = res2dest, .actual = &res2 };
+
+	struct type_name* T = res1.T;
+	struct type_name* T2 = dereffed_type(T);
+	// we need to multiply by size
+	struct ast_node *node_byte_index = ast_get_child(node, 1);
+	struct ast_node *node_size = ast_gen_num(getTypeSize(T2));
+	struct ast_node *node_obj_index = ast_gen_op(node_byte_index, "expr_*", node_size);
+
 	PREP_RES(res2, E_RVAL);//E_LVAL);
 	res2stg.dest.author = "expr_index index ([idx])";
-	semantic_expr_analyze(ast_get_child(node, 1), res2stg); //expr (index)
+	semantic_expr_analyze(node_obj_index, res2stg);//(ast_get_child(node, 1), res2stg); //expr (index)
 	VERIFY_RES(res2);
 	const char* ptr = res2.val;
 
 	//okay first of all, expr isn't necessarily a symtable symbol but
 	//it could just be an rvalue expression (i.e. temporary value)
 
-	struct type_name* T = res1.T;
-	struct type_name* T2 = dereffed_type(T);
 
 	const char* resultExpr = IR_next_name(namespace_semantic, "temp");
 
@@ -717,7 +723,7 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 		res1.T = T;
 
 		if(stg.out_sem_this){
-			vector2_char vstr = vector2_char_here();
+			//vector2_char vstr = vector2_char_here();
 			if(res1.val[0] == '&'){
 					/// referencing further causes pointer-to-pointer-to-obj,
 					/// implying that the original type should have had T->pointed_to...
@@ -727,8 +733,14 @@ void semantic_analyze_expr_dot(ast_node* node, expr_settings stg) {
 				//res_this.val = stralloc(vstr.data);
 				res_this.val = res1.val;
 			}else{
-				vec_printf(&vstr, "&%s", res1.val);
-				res_this.val = stralloc(vstr.data);
+				/// ok so in case of arr[0].foo(), our res_this is temp = (&(arr[0]))
+				/// we don't want to add another & and get &&(arr[0])
+				/// is there a case where we want a & and how to distinguish them?
+				/// nope, doesn't look like it.
+				
+				//vec_printf(&vstr, "&%s", res1.val);
+				//res_this.val = stralloc(vstr.data);
+				res_this.val = res1.val;
 			}
 		}
 	}

@@ -522,7 +522,7 @@ int test_4_funcptr()
 	expect_global(4, 1, (int)(int*)test_4_helper,  1098);
 	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
 	int *p1 = test_4_helper;
-	int p2 = test_4_helper;
+	int p2 = (int)(int*)test_4_helper;
 	expect_global(4, 3, (int)p1,             1098);
 	expect_global(4, 4, p2,             1098);
 	int res = p1();
@@ -801,7 +801,64 @@ int test_7_class()
 	return CODE_OK;
 end
 
-int test_8_bugs()
+class Test_8_A
+	int x = 10;
+	int y = 20;
+	int foo()
+		return (int)this+x+y;
+	end
+end
+
+class Test_8_B
+	int x = 30;
+	int y = 40;
+	class Test_8_A arr[10];
+	int bar()
+		class Test_8_A a1;
+		class Test_8_A a2;
+		a2.x = 11;
+		a2.y = 22;
+		arr[0] = a2;
+		expect_basic(8,1,x,30);
+		expect_basic(8,2,y,40);
+		expect_basic(8,3,a1.x,10);
+		expect_basic(8,4,a1.y,20);
+		expect_basic(8,5,a2.x,11);
+		expect_basic(8,6,a2.y,22);
+		
+		void *p = this;
+		expect_basic(8,7,(int)&x, (int)(p+0));
+		expect_basic(8,8,(int)&y, (int)(p+1));
+		expect_basic(8,9,(int)&arr, (int)(p+2));
+		void *p_arr = &arr;
+		int s = 2; //size of Test_8_A
+		void *p_arr_0 = p_arr+s*0;
+		void *p_arr_1 = p_arr+s*1;
+		void *p_arr_2 = p_arr+s*2;
+		expect_basic(8,10,(int)&(arr[0]), (int)p_arr_0);
+		expect_basic(8,11,(int)&(arr[1]), (int)p_arr_1);
+		expect_basic(8,12,(int)&(arr[2]), (int)p_arr_2);
+		
+		void *p_a2 = &a2;
+		expect_basic(8,13,(int)&(a2.x), (int)p_a2);
+		expect_basic(8,14,(int)&(a2.y),(int)(p_a2+1));
+		
+		class Test_8_A *pca0 = p_arr_0;
+		class Test_8_A *pca1 = p_arr_1;
+		class Test_8_A *pca2 = p_arr_2;
+		
+		expect_basic(8,15,(int)&(arr[0].x), (int)pca0);
+		expect_basic(8,16,(int)&(arr[1].y), (int)(pca1+1)); //Q: should pointer arithmetic respect type?
+		
+		expect_basic(8,17,arr[0].foo(), ((int)pca0)+pca0.x+pca0.y);
+		expect_basic(8,18,arr[1].foo(), ((int)pca1)+pca1.x+pca1.y);
+	end
+end
+
+int test_8_class_array()
+	class Test_8_B B;
+	B.bar();
+	return CODE_OK;
 end
 
 // void expect(int test_num,int subtest_num, int val, int ref, int type)
@@ -870,7 +927,7 @@ void run_all_tests()
 	//unit_test_ignore_global_address = 0;
 	//unit_test_ignore_stack_address = 0;
 	test_7_class();
-	test_8_bugs();
+	test_8_class_array();
 	report_all_ok();
 end
 
@@ -1756,7 +1813,7 @@ int get_var_at_ip_helper(int ip, class debug_info_var var)
 	//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) 	/// this doesn't
 	int x = var.lbl_from;
 	int y = var.lbl_to;
-	if(!(x > ip) & !(y < ip)) 	/// this works? /// BUG: symtable of IF is broken
+	if((ip >= x) & (ip <= y)) 	/// this works? /// BUG: symtable of IF is broken
 		return 1;
 	end
 	return -1;
@@ -1842,7 +1899,7 @@ class debug_info_func_db
 			if(ip == 0) error("get_func_at_ip: input ip = 0\n"); end
 			if(x == 0) error("get_func_at_ip: lbl_entrance = 0\n"); end
 			if(y == 0) error("get_func_at_ip: lbl_exit = 0\n"); end
-			if((!(x > ip)) & (!(y < ip)))//should be same as if(!(x > ip) & !(y < ip))
+			if((ip >= x) & (ip <= y))//should be same as if(!(x > ip) & !(y < ip))
 				return i;
 			end
 		end
@@ -1863,7 +1920,7 @@ class T_stack_trace
 		while(frame.p_ebp)
 			int ip = frame.get_ret_ip();
 			if(ip == 0) infloop(); end
-			//class debug_info_func func = func_db.get_func_at_ip(ip); //bug: this shouldn't be allowed due to typecheck
+			//class debug_info_func func = func_db.get_func_at_ip(ip); //fixed bug: this shouldn't be allowed due to typecheck
 			int func_id = func_db.get_func_at_ip(ip);
 			err_printf(999, ".. func_id = %d\n", func_id);
 			if(func_id != -1)

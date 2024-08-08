@@ -88,7 +88,7 @@ int get_var_at_ip_helper(int ip, class debug_info_var var)
 	//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) 	/// this doesn't
 	int x = var.lbl_from;
 	int y = var.lbl_to;
-	if(!(x > ip) & !(y < ip)) 	/// this works? /// BUG: symtable of IF is broken
+	if((ip >= x) & (ip <= y)) 	/// this works? /// BUG: symtable of IF is broken
 		return 1;
 	end
 	return -1;
@@ -174,7 +174,7 @@ class debug_info_func_db
 			if(ip == 0) error("get_func_at_ip: input ip = 0\n"); end
 			if(x == 0) error("get_func_at_ip: lbl_entrance = 0\n"); end
 			if(y == 0) error("get_func_at_ip: lbl_exit = 0\n"); end
-			if((!(x > ip)) & (!(y < ip)))//should be same as if(!(x > ip) & !(y < ip))
+			if((ip >= x) & (ip <= y))//should be same as if(!(x > ip) & !(y < ip))
 				return i;
 			end
 		end
@@ -195,7 +195,7 @@ class T_stack_trace
 		while(frame.p_ebp)
 			int ip = frame.get_ret_ip();
 			if(ip == 0) infloop(); end
-			//class debug_info_func func = func_db.get_func_at_ip(ip); //bug: this shouldn't be allowed due to typecheck
+			//class debug_info_func func = func_db.get_func_at_ip(ip); //fixed bug: this shouldn't be allowed due to typecheck
 			int func_id = func_db.get_func_at_ip(ip);
 			err_printf(999, ".. func_id = %d\n", func_id);
 			if(func_id != -1)

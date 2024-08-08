@@ -44,3 +44,9 @@ struct ast_node *ast_gen_constructor_call(const char *name, struct ast_node *arg
 		arg_list
 	);
 }	
+
+struct ast_node *ast_gen_op(struct ast_node *A, const char *op, struct ast_node *B){
+	return ast_node_new(ast_token_here(op,0,NULL,nullPos()),
+		vector2_ptr_ast_node_here_from_list(2, A, B)
+	);
+}

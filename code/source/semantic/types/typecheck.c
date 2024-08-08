@@ -165,6 +165,9 @@ enum TypeCheckVal get_type_compatibility(struct type_name *T_dest, struct type_n
 		if(T_dest->symclass == T_src->symclass){compat = TC_SAME; goto literal_check;}
 		else{DIAG("can't convert different classes"); return TC_INCOMPATIBLE;}
 	}
+	if(T_dest->symclass || T_src->symclass){
+		DIAG("can't convert between class and non-class"); return TC_INCOMPATIBLE;
+	}
 	/// both not a class
 
 	/// both primtive
