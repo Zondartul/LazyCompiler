@@ -122,9 +122,9 @@
 * [todo 68] for debug_info funcs and vars: instead of records, use a flat table with links to strings,
 *			so it doesn't need to be copied when reading.
 * [todo 69] use Dot/GraphViz to show the flow of temporary IR values for debugging
-* 
-*
-*
+* [todo 70] figure out some unit test to check if array[1] = 10 actually accesses the stack instead of random global pos... 
+* [bug 71] asm_template craps out when there are multiple arguments ($S[a]... $S[b])
+* [todo 72] codegen: to support zCPU segment-based stack overflow protection, replace mov ebp with rstack/sstack 
 *
 *
 *

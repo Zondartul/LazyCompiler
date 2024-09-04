@@ -1,11 +1,11 @@
-#include "data_in/big/unit_tests.txt"
+//#include "data_in/big/unit_tests.txt"
 #include "data_in/big/error.txt"
 #include "data_in/big/testOutput.txt"
 //#include "data_in/big/simple/printf.txt"
-#include "data_in/big/classy/class_address_bus.txt"
-#include "data_in/big/classy/class_csprinter.txt"
-#include "data_in/big/classy/printf_io.txt"
-#include "data_in/big/classy/allocators/bump_allocator.txt"
+//#include "data_in/big/classy/class_address_bus.txt"
+//#include "data_in/big/classy/class_csprinter.txt"
+//#include "data_in/big/classy/printf_io.txt"
+//#include "data_in/big/classy/allocators/bump_allocator.txt"
 
 /// NEED NOW::: usercode stack trace in case of crash with emergency print
 
@@ -20,12 +20,14 @@ class stack_frame
 	end
 
 	class stack_frame prev_frame()
+			check_stack_size();
 		class stack_frame F;
 		if(p_ebp) F.p_ebp = *p_ebp; end
 		return F;
 	end
 	
 	int get_ret_ip() 
+			check_stack_size();
 		int ip = p_ebp[1];
 		//err_printf(999, "get_ret_ip(ebp=%d):\n",(int)p_ebp);
 		//err_printf(999, "  -1: %d\n", p_ebp[-1]);
@@ -46,6 +48,7 @@ class debug_info_func
 	char *user_name = 0;
 	
 	void deserialize(int *p)
+			check_stack_size();
 		int *p_initial = p;
 		record_len = *p++;
 		lbl_entrance = *p++;
@@ -71,6 +74,7 @@ class debug_info_var
 	char *user_name = 0;
 
 	void deserialize(int *p)
+			check_stack_size();
 		record_len = *p++;
 		lbl_from = *p++;
 		lbl_to = *p++;
@@ -84,6 +88,7 @@ class debug_info_var
 end
 
 int get_var_at_ip_helper(int ip, class debug_info_var var)
+			check_stack_size();
 	var.pos = 10;									/// this works
 	//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) 	/// this doesn't
 	int x = var.lbl_from;
@@ -99,6 +104,7 @@ class debug_info_var_db
 	int n_vars = 0;
 	
 	void deserialize(int *p)
+			check_stack_size();
 		n_vars = *p++;
 		class debug_info_var var;
 		for(int i = 0; i < n_vars; i++)
@@ -108,6 +114,7 @@ class debug_info_var_db
 	end
 	
 	int get_var_at_ip(int ip, int from_idx)
+			check_stack_size();
 		class debug_info_var var;
 		for(int i = from_idx; i < n_vars; i++)
 			
@@ -125,7 +132,7 @@ class debug_info_var_db
 end
 
 class debug_info_func_db
-	class debug_info_func funcs[1000];
+	class debug_info_func funcs[300];
 	int n_funcs = 0;
 	
 	// this whole constructor breaks all the shit
@@ -156,18 +163,28 @@ class debug_info_func_db
 	//
 	
 	void deserialize(int *p)
+		check_stack_size();
+		err_printf(999, "func_db: p = %d, n_funcs = %d\n", p, *p);
 		n_funcs = *p++;
-		err_printf(999, "func_db: n_funcs = %d\n", n_funcs);
 		class debug_info_func func;
+		err_printf(999, "func_db 1, n_funcs = %d\n", n_funcs);
+		int test = 0;
+		for(int j = 0; j == 0; j++)
+			err_printf(999, "func_db 2, j = %d\n, n_funcs = %d\n", j, n_funcs);
+		end
 		for(int i = 0; i < n_funcs; i++)
+			err_printf(999, "func_db[%d]\n", i);
+			test++;
 			func.deserialize(p);
 			funcs[i] = func;
 			p = p+func.record_len;
 		end
+		err_printf(999, "func_db test = %d\n", test);
 	end
 	
 	int get_func_at_ip(int ip)
 		for(int i = 0; i < n_funcs; i++)
+			check_stack_size();
 			//if(!(funcs[i].lbl_entrance > ip) & !(funcs[i].lbl_exit < ip))	
 			int x = funcs[i].lbl_entrance;
 			int y = funcs[i].lbl_exit;
@@ -193,6 +210,7 @@ class T_stack_trace
 		err_printf(999, "trace:\n frame.ebp = %d\n check_ebp = %d\n", (int)frame.p_ebp, check_ebp);
 		int frame_n = 0;
 		while(frame.p_ebp)
+			check_stack_size();
 			int ip = frame.get_ret_ip();
 			if(ip == 0) infloop(); end
 			//class debug_info_func func = func_db.get_func_at_ip(ip); //fixed bug: this shouldn't be allowed due to typecheck
@@ -250,12 +268,84 @@ end
 void test_stack_trace()
 	stack_trace.trace();
 end
+/// if screen doesn't scroll, try
+/// semantic_expr_op.c:492 uncomment block
+
+void check_stack_size()
+	int end_of_code = 0;
+	int esp;
+	// either asm with two arguments, or if's, are fucked
+	
+	//asm( "mov $S[end_of_code], data_segment_static_end\nmov $S[esp], esp");
+	
+	asm( "mov $S[end_of_code], data_segment_static_end");
+	asm( "mov $S[esp], esp");
+	err_printf(999, "esp %d, eoc %d\n", esp, end_of_code);
+	if((esp-100) < end_of_code) // a bit of a margin so printf works
+	//int x = esp - 100;
+	//if(x < end_of_code) /// are if's just completely fucked?
+		err_printf(900, "Stack overflow\nesp %d\nend_of_code %d\n", esp, end_of_code);
+		infloop();
+	end
+end
+
+void test_stack_overflow()
+	int esp;
+	int arr[100];
+	check_stack_size();
+	asm("mov $S[esp], esp");
+	err_printf(999, "test overflow: esp %d\n", esp);
+	test_stack_overflow();
+end
+
+int ss_size = 0;
+int ss_stack_top = 0;
+int ss_stack_btm = 0;
+int ss_esp = 0;
+int ss_ebp = 0;
+int ss_ret_ip = 0;
+
+void set_stack(int new_stack_btm, int new_stack_top, int new_esp, int new_ebp)
+	ss_stack_top = new_stack_top;
+	ss_stack_btm = new_stack_btm;
+	ss_esp = new_esp;
+	ss_ebp = new_ebp;
+	ss_size = new_stack_top - new_stack_btm;
+	err_printf(999, "set_stack, btm = %d, top = %d, size = %d, new_esp = %d, new_ebp = %d\n",
+		new_stack_btm, new_stack_top, ss_size, new_esp, new_ebp);
+	
+	asm("mov $S[ss_ret_ip], EBP:#1"); // save return ip
+	asm("mov SS, $R[ss_stack_btm]"); // set stack size
+	asm("mov ESP, $R[ss_esp]");		 // set stack pointer (should be ~= size)
+	asm("cpuset 9, $R[ss_size]");	 // set stack zero
+	asm("mov EBP, $R[ss_ebp]");		 // set frame base pointer
+	asm("jmp $R[ss_ret_ip]");		 // simulate return
+end
+
+int get_end_of_code()
+	int eoc = 0;
+	asm("mov $S[eoc], __programsize__");
+	return eoc;
+end
 
 int main()
 	setup();
-	err_printf(990, "Running unit tests...\n");
-	run_all_tests();
-	err_printf(90,  "All tests pass.\n");
+	//err_printf(990, "Running unit tests...\n");
+	//run_all_tests();
+	//err_printf(90,  "All tests pass.\n");
+	
+	err_printf(999, "Hello world!\n");
+	int eoc = get_end_of_code();
+	int stack_size = 65535 - eoc;
+
+	writePort(0,123);
+	set_stack(eoc, eoc+stack_size, stack_size-20, stack_size);
+	writePort(0,456);
+	main_rest();
+end
+
+int main_rest()
+	test_stack_overflow();
 	//delay(1); err_printf(999, "1");
 	//delay(1); err_printf(999, "2");
 	//delay(1); err_printf(999, "3");
@@ -270,13 +360,13 @@ int main()
 	err_printf(999, "End of program\n");
 	infloop();
 
-	class Address_bus addr_bus(65536, 20000, 20000, 20000);
-	class CScreen scr; scr.set(addr_bus.addr[2]);
-	class CSPrinter printer; printer.scr = &scr;
-	printer.init();
-	std_out = printer.ifx;
-	scr.clear();
-	printf("Hello [%s] %d!\n", "world", 123456);
+	//class Address_bus addr_bus(65536, 20000, 20000, 20000);
+	//class CScreen scr; scr.set(addr_bus.addr[2]);
+	//class CSPrinter printer; printer.scr = &scr;
+	//printer.init();
+	//std_out = printer.ifx;
+	//scr.clear();
+	//printf("Hello [%s] %d!\n", "world", 123456);
 	
 	/*
 	class Bump_allocator bumpalloc;

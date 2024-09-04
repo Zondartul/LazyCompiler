@@ -39,3 +39,4 @@ void semantic_analyze_expr_assign(ast_node* node, expr_settings stg);
 /// internal use - check types before doing stuff
 void typecheck_assign(val_handle res1, val_handle res2);
 struct type_name* dereffed_type(struct type_name* T);
+val_handle convert_rv_type(val_handle res_in, enum expr_type new_rv, const char *author);

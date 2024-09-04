@@ -489,6 +489,18 @@ void semantic_analyze_expr_index(ast_node* node, expr_settings stg) {
 
 	struct type_name* T = res1.T;
 	struct type_name* T2 = dereffed_type(T);
+	
+	/// never needed this but seems like a good idea?
+	if(!T->is_array){
+		if(T->points_to){
+			/// we need to convert the pointer to RValue before indexing
+			res1 = convert_rv_type(res1, E_RVAL, "expr_index array from ptr (*arr[])");
+		}else{
+			const char *str_T = type_name_to_string(T);
+			error("Semantic error: Can't index into %s", str_T);
+		}
+	}
+
 	// we need to multiply by size
 	struct ast_node *node_byte_index = ast_get_child(node, 1);
 	struct ast_node *node_size = ast_gen_num(getTypeSize(T2));

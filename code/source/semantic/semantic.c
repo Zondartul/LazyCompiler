@@ -521,13 +521,16 @@ void emit_all_decl_helper(){
 			 || (S->type == SYMBOL_PARAM)) {
 				int size = S->symvariable.size;
 				if (size != 1) {
+					if(S->symvariable.type->is_array){
+						size = size / S->symvariable.type->arraysize;
+					}
 					vec_printf(&vstr, " SIZE %d", size);
 				}
 			}
 
 			if (S->symvariable.type->is_array){//S->symvariable.array) {
 				vec_printf(&vstr, " ARRAY %d", S->symvariable.type->arraysize);
-			}
+			} 
 			emit_code("%s // semantic.c:527", vstr.data);
 			//if(S->symvariable.array){
 			//	if(S->type == SYMBOL_PARAM){

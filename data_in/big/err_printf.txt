@@ -1,3 +1,5 @@
+#include "data_in/big/number.txt"
+
 /// printf for errors in case stuff borks
 int err_snprintf(char *buff, int max_len, char *fmt, void *parg)
 	int printed = 0;

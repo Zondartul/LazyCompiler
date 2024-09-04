@@ -1,19 +1,13 @@
 #file "data_in/lazy2.txt"
 #line 1
-#file "data_in/big/unit_tests.txt"
+//#include "data_in/big/unit_tests.txt"
+#file "data_in/big/error.txt"
 #line 1
-/// Unit test for LazyTongue 
-/// PS: because pointers are hard-coded, this should be the first include file in main.lz
-//int tests[10];
-int CODE_OK = -1;
-int TYPE_BASIC = 1;
-int TYPE_STACK = 2;
-int TYPE_GLOBAL = 3;
-int unit_test_ignore_global_address = 0;
-int unit_test_ignore_stack_address = 0;
-int unit_test_adaptive_stack = 1;
-int unit_test_stack_offset = 0;
-
+/// error.txt
+#file "data_in/big/err_printf.txt"
+#line 1
+#file "data_in/big/number.txt"
+#line 1
 #file "data_in/big/string.txt"
 #line 1
 int strlen(char *str)
@@ -86,859 +80,123 @@ void strPadEnd(char *str, int padlen, char padchar)
 		str[padlen] = 0;
 	end
 end
-#file "data_in/big/unit_tests.txt"
-#line 14
-/// tests:
-/// 1 - plain arguments
-/// 2 - global vars
-/// 3 - pointer (val, &val, *val)
-/// 4 - funcptr
-/// 5 - auto unit test
-
-class test0_asc_derp
-	int m0;
-	int m1;
-	int m2;
-	int *p;
-end
-
-void test_0_associativity()
-	int x = 0;
-	int arr[5];
-	arr = {10,20,30,40,50};
-	class test0_asc_derp derp;
-	writePort(0, 0);
-	
-	/* data dump! last working version of precedence rules in YACC/BISON:
-	
-				/// HOW TO SET UP PRECEDENCE AND ASSOCIATIVITY:
-			/// a method that seems to work, 20 July 2024:
-			/// 1. use both operator tokens (e.g. '=')
-			///    and production tokens (e.g. ASSIGN).
-			///		- explanation: when the bottom up parser encounters the next operator, and it's at the end of a production,
-			///		  there is a shift/reduce conflict. Shift means 'prefer the incoming operator, it has higher precedence'.
-			///		  Reduce means 'prefer the existing production, it has higher precedence'. The prec. of production and token are compared.
-			///		  associativity also does something, idk.
-			///		  operator token associativity marks the token itself, while production token creates a fake token for an expression,
-			///		  because the precedence of a production comes from the last token and that happens to be 'expr' which is used in multiple productions
-			///		  and so one value of precedence for 'expr' doesn't help us.
-			///	2. use %right and %left when possible - they set associativity and precedence simultaneously.
-			///	   if not possible, use %precedence to set only precedence without associativity.
-			///  3. Things that appear later in the %right %left list (on a lower line) are "more important".
-			///  4. Use the 'C operator precedence list' and write it down upside-down while following rule 1.
-			///  5. Check unit-tests and compare actual ASTs to check if production is correct.
-			///  6. suspect ambiguous tokens as it is unclear which line to put them on 
-			///		suspect tokens:
-			///		  INC / NEG are tokens in both POSTOP and PREOP (++x, x++, --x, x--)
-			/// 	  '*' used in both DEREF and MULDIV (1*2, *ptr)
-			///		  - used in both NEG and ADDSUB (-x, 2-1)
-			///		  ( used in CALL, CAST and SUBEXPR ( foo(), (int)x, 1*(2+3))
-			///		  & used in both LOGIC and DEREF ( isA & isB, &x)
-			///
-
-		%right '=' ASSIGN
-		%left LOGIC
-		%left EQUAL NOTEQUAL COMPARE
-		%left '+' '-' ADDSUB
-		%left '/' '%' '*' MULDIV EXP
-		%right PREOP INC DEC NEG '!' LNEG CAST DEREF '&' REF // '*' '-' 
-		%left '(' '[' '.' POSTOP CALL INDEX DOT BRACELIST // INC DEC
-		%precedence SUBEXPR
-	
-	*/
-	
-	// PEMDAS
-	// MULDIV before ADDSUB
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_+
-	  // |  |   +expr_const "1"
-	  // |  |   |\INTEGER "1"
-	  // |  |   \expr_*
-	  // |  |    +expr_const "2"
-	  // |  |    |\INTEGER "2"
-	  // |  |    \expr_const "3"
-	  // |  |     \INTEGER "3"
-	writePort(1, 1);
-	x = 1 + 2*3; // 7 or 9?
-	writePort(2, x);
-	if ( x != 7) crash(); end
-	x = 0;
-	
-	// reverse order
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_+
-	  // |  |   +expr_*
-	  // |  |   |+expr_const "3"
-	  // |  |   ||\INTEGER "3"
-	  // |  |   |\expr_const "2"
-	  // |  |   | \INTEGER "2"
-	  // |  |   \expr_const "1"
-	  // |  |    \INTEGER "1"
-	writePort(1, 2);
-	x = 3*2 + 1;
-	writePort(2, x);
-	if ( x != 7) crash(); end
-	x = 0;
-	
-	// EXP before MULDIV
-	// correct?...
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_/
-	  // |  |   +expr_*
-	  // |  |   |+expr_const "2"
-	  // |  |   ||\INTEGER "2"
-	  // |  |   |\expr_^
-	  // |  |   | +expr_const "3"
-	  // |  |   | |\INTEGER "3"
-	  // |  |   | \expr_const "4"
-	  // |  |   |  \INTEGER "4"
-	  // |  |   \expr_const "2"
-	  // |  |    \INTEGER "2"
-	writePort(1, 3);
-	x = 2 * 3 ^ 4 / 2; // good: (2 * (3^4)) / 2 = 81; bad: (((2*3)^4)/2) = 648;  2 * (3^(4/2)) = 18;
-					   // bad: 2 * ((3^4)/2) = 80 (due to 81/2 = 40.5 -> 40)
-	writePort(2, x);
-	if (x != 81) crash(); end
-	x = 0;
-	
-	// parenthesis before exp
-	//writePort(1, 3);
-	//x = 2 * (3 - 1) ^ 4; //idk
-	
-	// ref before equals
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_==
-	  // |  |   +expr_ref
-	  // |  |   |\expr_id "x"
-	  // |  |   | \ID "x"
-	  // |  |   \expr_ref
-	  // |  |    \expr_id "x"
-	  // |  |     \ID "x"
-	writePort(1, 4);
-	x = &x == &x;
-	writePort(2, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	// another
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_subexpr
-	  // |  |   \expr_==
-	  // |  |    +expr_ref
-	  // |  |    |\expr_index
-	  // |  |    | +expr_id "arr"
-	  // |  |    | |\ID "arr"
-	  // |  |    | \expr_const "3"
-	  // |  |    |  \INTEGER "3"
-	  // |  |    \expr_ref
-	  // |  |     \expr_subexpr
-	  // |  |      \expr_index
-	  // |  |       +expr_id "arr"
-	  // |  |       |\ID "arr"
-	  // |  |       \expr_const "3"
-	  // |  |        \INTEGER "3"
-	writePort(1, 5);
-	x = (&arr[3] == &(arr[3]));
-	writePort(2, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	// member access before address
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_==
-	  // |  |   +expr_ref
-	  // |  |   |\expr_.
-	  // |  |   | +expr_id "derp"
-	  // |  |   | |\ID "derp"
-	  // |  |   | \expr_id "m1"
-	  // |  |   |  \ID "m1"
-	  // |  |   \expr_ref
-	  // |  |    \expr_subexpr
-	  // |  |     \expr_.
-	  // |  |      +expr_id "derp"
-	  // |  |      |\ID "derp"
-	  // |  |      \expr_id "m1"
-	  // |  |       \ID "m1"
-	writePort(1, 6);
-	derp.m0 = 100;
-	derp.m1 = 200;
-	derp.m2 = 300;
-	x = &derp.m1 == &(derp.m1);
-	writePort(2, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	// post-inc before indirection
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_deref
-	  // |  |   \expr_++
-	  // |  |    \expr_.
-	  // |  |     +expr_id "derp"
-	  // |  |     |\ID "derp"
-	  // |  |     \expr_id "p"
-	  // |  |      \ID "p"
-	writePort(1, 7);
-	derp.p = &derp.m1;
-	x = *derp.p++; // was &(m1 == 200), now &(m2 == 300)
-	writePort(2, x);
-	if (x != 200) crash(); end
-	x = 0;
-	
-	// now check if it actually incremented
-	// correct:
-		// |  +stmt
-		// |  |\imp_stmt
-		// |  | \expr_=
-		// |  |  +expr_id "x"
-		// |  |  |\ID "x"
-		// |  |  \expr_subexpr
-		// |  |   \expr_==
-		// |  |    +expr_.
-		// |  |    |+expr_id "derp"
-		// |  |    ||\ID "derp"
-		// |  |    |\expr_id "p"
-		// |  |    | \ID "p"
-		// |  |    \expr_ref
-		// |  |     \expr_.
-		// |  |      +expr_id "derp"
-		// |  |      |\ID "derp"
-		// |  |      \expr_id "m2"
-		// |  |       \ID "m2"
-	x = (derp.p == &derp.m2);
-	writePort(1, 8);
-	writePort(2, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	// does & behave as AND or as REF?  should happen before addition.
-	// correct:
-	  // |  +stmt
-	  // |  |\imp_stmt
-	  // |  | \expr_=
-	  // |  |  +expr_id "x"
-	  // |  |  |\ID "x"
-	  // |  |  \expr_==
-	  // |  |   +expr_subexpr
-	  // |  |   |\expr_+
-	  // |  |   | +expr_ref
-	  // |  |   | |\expr_id "derp"
-	  // |  |   | | \ID "derp"
-	  // |  |   | \expr_const "1"
-	  // |  |   |  \INTEGER "1"
-	  // |  |   \expr_subexpr
-	  // |  |    \expr_+
-	  // |  |     +expr_subexpr
-	  // |  |     |\expr_ref
-	  // |  |     | \expr_id "derp"
-	  // |  |     |  \ID "derp"
-	  // |  |     \expr_const "1"
-	  // |  |      \INTEGER "1"
-	writePort(1, 8);
-	x = (&derp + 1) == ((&derp) + 1);
-	writePort(2, x);
-	if (x != 1) crash(); end
-	x = 0;
-
-	/// does SUB have left-to-right associativity?
-	// correct:
-		// |  +stmt
-		// |  |\imp_stmt
-		// |  | \expr_=
-		// |  |  +expr_id "x"
-		// |  |  |\ID "x"
-		// |  |  \expr_-
-		// |  |   +expr_-
-		// |  |   |+expr_const "10"
-		// |  |   ||\INTEGER "10"
-		// |  |   |\expr_const "2"
-		// |  |   | \INTEGER "2"
-		// |  |   \expr_const "1"
-		// |  |    \INTEGER "1"
-	writePort(1, 9);
-	x = 10 - 2 - 1; // good: (10-2)-1 = 7; bad: 10 - (2-1) = 9
-	writePort(2, x);
-	if (x != 7) crash(); end
-	x = 0;
-
-	/// does DIV have left-to-right associavitiy?
-	// correct:
-		// |  +stmt
-		// |  |\imp_stmt
-		// |  | \expr_=
-		// |  |  +expr_id "x"
-		// |  |  |\ID "x"
-		// |  |  \expr_/
-		// |  |   +expr_/
-		// |  |   |+expr_const "360"
-		// |  |   ||\INTEGER "360"
-		// |  |   |\expr_const "12"
-		// |  |   | \INTEGER "12"
-		// |  |   \expr_const "3"
-		// |  |    \INTEGER "3"
-	writePort(1, 10);
-	x = 360 / 12 / 3; // good (360/12)/3 = 30/3 = 10; bad: 360 / (12/3) = 360/4 = 90;
-	writePort(3, x);
-	if (x != 10) crash(); end
-	x = 0;
-	
-	/// logic stuff
-	writePort(1, 11);
-	x = !(20 < 10) & !(20 > 30);
-	writePort(3, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	writePort(1, 12);
-	x = !1 & !1; // (!1) & (!1) == 0 & 0 == 0; !(1 & !1) == !(1 & 0) == !(0) = 1;
-	writePort(3, x);
-	if (x != 0) crash(); end
-	x = 0;
-	
-	writePort(1, 13);
-	x = 20 <= 30 & 20 >= 10;    //  (20 <= 30) & (20 >= 10) == 1 & 1 == 1;
-								//  20 <= (30 & (20 >= 10)) == 20 <= (30 & 1) == 20 <= 1 == 0; 
-	writePort(1, x);
-	if (x != 1) crash(); end
-	x = 0;
-	
-	
-	
-
-end
-
-
-void test_1_args_plain()
-	test_1_args_plain_helper(1, 2, 3);	
-end
-
-
-void test_1_args_plain_helper(int x, int y, int z)
-	writePort(0, 1);
-	if((x == 1) & (y == 2) & (z == 3))
-		return;
-	end
-	crash();
-end
-
-int test_2_var = 123;
-void test_2_global_vars()
-	expect_basic(2,1,test_2_var, 123);
-	test_2_var = 234;
-	expect_basic(2,2,test_2_var, 234);
-	test_2_var = 123;
-end
-
-void test_3_pointer()
-	test_3_local_pointer();
-	test_3_global_pointer();
-	test_3_array_pointer();
-end
-
-void test_3_local_pointer()
-	int derp = 6;
-	expect_basic(3, 1, derp,       6);
-	expect_stack(3, 2, (int)&derp,-5);
-	int *p = derp; /// *derp is forbidden by compiler
-	expect_basic(3, 3, (int)p,     6); 
-	expect_global(3, 4, *p,       14);
-end
-
-int test3_var = 7;
-void test_3_global_pointer()
-	expect_basic(3, 5, test3_var,      7);
-	expect_global(3, 6, (int)&test3_var, 12402);
-	int *p = test3_var; /// *test3_var is forbidden by compiler
-	expect_global(3, 7, *p, 25);
-end
-
-int *arr_addr = 0;
-void test_3_array_pointer()
-	int arr[4];
-	arr[0] = 10;
-	arr[1] = 11;
-	arr[2] = 12;
-	arr[3] = 13;
-	arr_addr = &arr;
-	expect_stack(3, 8,  (int)&arr,   -8);
-	expect_basic(3, 9,  arr[0], 10);
-	expect_basic(3, 10, arr[2], 12);
-	expect_basic(3, 11, arr_addr[2], 12);
-	int d = arr[1];
-	expect_basic(3, 12, d, 11);
-	test_3_array_arg(&arr); // array-by-ptr
-	// btw now we also need to test array-by-val
-end
-
-void test_3_array_arg(int* arg)
-	expect_basic(3, 13, (int)arg,(int)arr_addr);
-	expect_stack(3, 14, (int)arg,      -8);
-	expect_stack(3, 15, (int)&arg,    -27);
-	expect_basic(3, 16, arg[2],   12);
-	expect_basic(3, 17, *arg,     10);
-	expect_basic(3, 18, *(arg+1), 11);
-end
-
-int test_4_var = 0;
-int test_4_helper()
-	test_4_var = 1;
-	return 10;
-end
-
-int test_4_funcptr()
-	expect_global(4, 1, (int)(int*)test_4_helper,  1098);
-	//expect(4, 2, &test_4_helper, 1098, TYPE_GLOBAL);
-	int *p1 = test_4_helper;
-	int p2 = (int)(int*)test_4_helper;
-	expect_global(4, 3, (int)p1,             1098);
-	expect_global(4, 4, p2,             1098);
-	int res = p1();
-	expect_basic(4, 5, res,              10);
-	expect_basic(4, 6, test_4_var,        1); ///ps: missing semicolon here is reported as "no source text"
-	return CODE_OK;
-end
-
-int test_5_arithmetic()
-	test_5_arithmetic_integer();
-	test_5_arithmetic_float();
-end
-
-int test_5_arithmetic_integer()
-	int x = 10;
-	int y = 20;
-
-	expect_basic(5,  1, x+y, 30);
-	expect_basic(5,  2, x-y, -10);
-	expect_basic(5,  3, x*y, 200);
-	expect_basic(5,  4, (int)(float)(x/y), 0);
-	expect_basic(5,  5, y/x, 2);
-	expect_basic(5,  6, x>y, 0);
-	expect_basic(5,  7, x<y, 1);
-	expect_basic(5,  8, y<x, 0);
-	expect_basic(5,  9, y>x, 1);
-	expect_basic(5, 10, x==y, 0);
-	expect_basic(5, 11, x!=y, 1);
-	expect_basic(5, 12, x&y, 1);
-	expect_basic(5, 13, x|y, 1);
-	expect_basic(5, 14, !x, 0);
-	expect_basic(5, 15, !!x, 1);
-	
-	return CODE_OK;
-end
-
-int test_5_arithmetic_float()
-	float pi = 3.14;
-	float x = 0.1;
-	expect_basic(5, 16, pi, 3);
-	expect_basic(5, 17, x, 0);
-	expect_basic(5, 18, pi*10, 31);
-	expect_basic(5, 19, x*10, 1);
-	expect_basic(5, 20, pi*x, 0);
-	//ps. conversion from float to int should happen through
-	//expression (op) typechecks, but that's not yet implemented
-	expect_basic(5, 21, (int)(float)(2*pi/x), 62); 
-	//printf("pi = %f\n", pi);
-end
-
-void set_buff_mario(char *buff)
-	buff[0] = 'm';
-	buff[1] = 'a';
-	buff[2] = 'r';
-	buff[3] = 'i';
-	buff[4] = 'o';
-	buff[5] = 0;
-end
-
-void set_buff_warudo(char *buff)
-	buff[0] = 'w';
-	buff[1] = 'a';
-	buff[2] = 'r';
-	buff[3] = 'u';
-	buff[4] = 'd';
-	buff[5] = 'o';
-	buff[6] = 0;
-end
-
-int test_6_arrays()
-	char arr[10];
-	set_buff_mario(&arr);		// pass array by pointer
-	/// arr == {mario}
-	expect_basic(6, 1, arr[0], 'm');
-	expect_basic(6, 2, *arr, 'm');	// array is filled through literal index
-	expect_basic(6, 3, arr[1], 'a');
-	expect_basic(6, 4, arr[2], 'r');
-	expect_basic(6, 5, arr[3], 'i');
-	expect_basic(6, 6, arr[4], 'o');
-	expect_basic(6, 7, arr[5], 0);	// array is zero-terminated
-	int i = 1;
-	arr[i] = 'o';	
-	/// arr == {morio}			
-	expect_basic(6, 8, arr[1], 'o');	// array is writeable by local var index
-	expect_basic(6, 9, arr[i], 'o');	// array is readible by local var index
-	int b1 = (&(arr[i]) == (&arr)+i); // index is a (PTR or LVAL) whose address is equivalent to a sum of PTR+RVAL
-	expect_basic(6, 10, b1, 1);		
-	arr[i+2] = 'e';	// array is writeable by arithmetic expression
-	/// arr == {moreo}
-	expect_basic(6, 11, arr[3], 'e');
-	expect_basic(6, 12, arr[i+3], 'o');	// array is readible by arithmetic expression
-
-	int L = strlen(&arr);
-	expect_basic(6, 13, L, 5);			// stdlib function "strlen" works
-
-	char arr2[20];
-	set_buff_warudo(&arr2);			// another test buffer
-	/// arr  == {moreo\0}
-	/// arr2 == {warudo\0}
-	expect_basic(6, 14, arr2[0], 'w');
-	expect_basic(6, 15, arr2[1], 'a');
-	expect_basic(6, 16, arr2[2], 'r');
-	expect_basic(6, 17, arr2[3], 'u');
-	expect_basic(6, 18, arr2[4], 'd');
-	expect_basic(6, 19, arr2[5], 'o');
-	expect_basic(6, 20, arr2[6], 0);
-
-	memmove(&arr2, &arr, L+1);
-	/// arr  == {moreo\0}
-	/// arr2 == {moreo\0\0}
-	expect_basic(6, 21, arr2[0], 'm'); // stdlib function "memmove" works
-	expect_basic(6, 22, arr2[1], 'o');
-	expect_basic(6, 23, arr2[2], 'r');
-	expect_basic(6, 24, arr2[3], 'e');
-	expect_basic(6, 25, arr2[4], 'o');
-	expect_basic(6, 26, arr2[5], 0);
-	expect_basic(6, 27, arr2[6], 0);
-end
-
-
-class Test_7_class_derp //class Derp
-	int x = 1;
-	int y;
-	int sum(int z)
-		int w = x+y+z;
-		return w;
-	end
-	int test71()
-		//printf("derp.t71:  x = %d\n", x);
-		//printf("derp.t71: &x = %d\n", (int)&x);
-		//printf("derp.t71: this = %d\n", this);
-		//printf("derp.t71: y1 = %d\n", y);
-		y = 3;
-		//printf("derp.t71: y2 = %d\n", y);
-	end
-	int set_y(int new_y)
-		y = new_y;
-	end
-	int report_y()
-		//printf("derp.ry: y = %d\n", y);	
-	end
-end
-
-int test_7_class_local()
-	class Test_7_class_derp derp1;
-	//printf("test7: &derp1 = %d\n", (int)&derp1);
-	//printf("test7: &(derp1.x) = %d\n", (int)&(derp1.x));
-	//printf("test7: derp1.x = %d\n", derp1.x);
-	derp1.test71();
-	expect_stack(7, 1, (int)&derp1,		-23);
-	derp1.y = 12;
-	expect_basic(7, 2, derp1.y,	     12);
-	derp1.report_y();
-	derp1.set_y(4);
-	expect_basic(7, 3, derp1.y,		  4);
-	expect_basic(7, 4, derp1.x,		  1);
-	expect_basic(7, 5, derp1.sum(4),	  9);
-	//expect(7, 5, &(derp1.sum),   2496, TYPE_GLOBAL); // semantic error: function is already an address
-	//expect(7, 5, &derp1.sum,   2496, TYPE_GLOBAL);   // semantic error: function is already an address
-	expect_global(7, 6, (int)(int*)derp1.sum,    4573);
-	return CODE_OK;
-end
-
-int test_7_class_by_val(class Test_7_class_derp derp2)
-	writePort(6, 199999);
-	expect_stack(7, 7, (int)&derp2,		 -21);
-	expect_basic(7, 8, derp2.x,		  3);
-	expect_basic(7, 9, derp2.y,		  4);
-	expect_basic(7, 10, derp2.sum(5),  12);
-	expect_global(7, 11, (int)(int*)derp2.sum,   4573);
-	return CODE_OK;
-end
-
-int test_7_class_by_ptr(class Test_7_class_derp *derp3)
-	expect_stack(7, 12, (int)derp3,		 -3);
-	expect_stack(7, 13, (int)&derp3,	     -20);
-	expect_basic(7, 14, (*derp3).x,	  5);
-	expect_basic(7, 15, derp3.x,		  5);
-	expect_basic(7, 16, derp3.y,		  6);
-	expect_basic(7, 17, derp3.sum(7),	 18);
-	expect_global(7, 18, (int)(int*)derp3.sum,   4573);
-	return CODE_OK;
-end
-
-class Test_7_class_derp derp4;
-
-int test_7_class_global()
-	expect_global(7, 19, (int)&derp4,	  999);
-	void *p1 = &derp4;
-	expect_global(7, 20, (int)p1,		  999);
-	void *px = &(derp4.x);
-	void *py = &(derp4.y);
-	int b1 = (p1 == px);
-	int b2 = ((p1 + 1) == py);
-	expect_basic(7, 21, b1, 			1);
-	expect_basic(7, 22, b2,			1);
-	expect_basic(7, 23, *(int*)px,		1);
-	expect_basic(7, 24, derp4.x,		1);
-	derp4.y = 4;
-	expect_basic(7, 25, *(int*)py,			4);
-	expect_basic(7, 26, derp4.y,		4);
-	expect_basic(7, 27, derp4.sum(10),15);
-	return CODE_OK;
-end
-
-void* test_7_class1_addr = 0;
-void* test_7_class2_addr = 0;
-
-class Test_7_class1
-	int x = 10;
-	void foo(int y)
-		expect_basic(7, 28, (int)this, (int)test_7_class1_addr);
-		expect_basic(7, 29, x, 10);
-		expect_basic(7, 30, y, 20);
-	end
-	
-	void baz(int y)
-		expect_basic(7, 35, (int)this, (int)test_7_class1_addr);
-		expect_basic(7, 36, x, 10);
-		expect_basic(7, 37, y, 50);
-	end
-end
-
-class Test_7_class2
-	int x = 30;
-	class Test_7_class1* c1;
-	void bar(int y)
-		expect_basic(7, 31, (int)this, (int)test_7_class2_addr);
-		expect_basic(7, 32, x, 30);
-		expect_basic(7, 33, y, 40);
-		expect_basic(7, 34, (int)c1, (int)test_7_class1_addr);
-		c1.baz(50);
-	end
-end
-
-class Test_7_class1 derp_c1;
-class Test_7_class2 derp_c2;
-
-int test_7_class_method()
-	test_7_class1_addr = &derp_c1;
-	test_7_class2_addr = &derp_c2;
-
-	derp_c1.foo(20);
-	derp_c2.c1 = &derp_c1;
-	derp_c2.bar(40);
-end
-
-int test_7_class_copy()
-	class Test_7_class_derp derp6;
-	class Test_7_class_derp derp7;
-	derp6.x = 10;
-	derp6.y = 20;
-	derp7.x = 30;
-	derp7.y = 40;
-	expect_basic(7, 35, derp6.x, 10);
-	expect_basic(7, 36, derp6.y, 20);
-	expect_basic(7, 37, derp7.x, 30);
-	expect_basic(7, 38, derp7.y, 40);
-	derp6 = derp7;
-	expect_basic(7, 39, derp6.x, 30);
-	expect_basic(7, 40, derp6.y, 40);
-	return CODE_OK;
-end
-
-int test_7_class()
-	test_7_class_local();
-	class Test_7_class_derp derp4;
-	derp4.x = 3; derp4.y = 4;
-	test_7_class_by_val(derp4);
-	class Test_7_class_derp derp5;
-	derp5.x = 5; derp5.y = 6;
-	test_7_class_by_ptr(&derp5);
-	test_7_class_global();
-	test_7_class_method();
-	test_7_class_copy();
-	return CODE_OK;
-end
-
-class Test_8_A
-	int x = 10;
-	int y = 20;
-	int foo()
-		return (int)this+x+y;
-	end
-end
-
-class Test_8_B
-	int x = 30;
-	int y = 40;
-	class Test_8_A arr[10];
-	int bar()
-		class Test_8_A a1;
-		class Test_8_A a2;
-		a2.x = 11;
-		a2.y = 22;
-		arr[0] = a2;
-		expect_basic(8,1,x,30);
-		expect_basic(8,2,y,40);
-		expect_basic(8,3,a1.x,10);
-		expect_basic(8,4,a1.y,20);
-		expect_basic(8,5,a2.x,11);
-		expect_basic(8,6,a2.y,22);
-		
-		void *p = this;
-		expect_basic(8,7,(int)&x, (int)(p+0));
-		expect_basic(8,8,(int)&y, (int)(p+1));
-		expect_basic(8,9,(int)&arr, (int)(p+2));
-		void *p_arr = &arr;
-		int s = 2; //size of Test_8_A
-		void *p_arr_0 = p_arr+s*0;
-		void *p_arr_1 = p_arr+s*1;
-		void *p_arr_2 = p_arr+s*2;
-		expect_basic(8,10,(int)&(arr[0]), (int)p_arr_0);
-		expect_basic(8,11,(int)&(arr[1]), (int)p_arr_1);
-		expect_basic(8,12,(int)&(arr[2]), (int)p_arr_2);
-		
-		void *p_a2 = &a2;
-		expect_basic(8,13,(int)&(a2.x), (int)p_a2);
-		expect_basic(8,14,(int)&(a2.y),(int)(p_a2+1));
-		
-		class Test_8_A *pca0 = p_arr_0;
-		class Test_8_A *pca1 = p_arr_1;
-		class Test_8_A *pca2 = p_arr_2;
-		
-		expect_basic(8,15,(int)&(arr[0].x), (int)pca0);
-		expect_basic(8,16,(int)&(arr[1].y), (int)(pca1+1)); //Q: should pointer arithmetic respect type?
-		
-		expect_basic(8,17,arr[0].foo(), ((int)pca0)+pca0.x+pca0.y);
-		expect_basic(8,18,arr[1].foo(), ((int)pca1)+pca1.x+pca1.y);
-	end
-end
-
-int test_8_class_array()
-	class Test_8_B B;
-	B.bar();
-	return CODE_OK;
-end
-
-// void expect(int test_num,int subtest_num, int val, int ref, int type)
-	// if ((type == TYPE_STACK) & unit_test_ignore_stack_address) return; end
-	// if ((type == TYPE_GLOBAL) & unit_test_ignore_global_address) return; end
-	// writePort(0, test_num);
-	// writePort(1, subtest_num);
-	// if ((type == TYPE_STACK) & unit_test_adaptive_stack) val = val - unit_test_stack_offset; end
-	// writePort(2, val);
-	// writePort(3, ref);
-	// if(val != ref) crash(); end
-// end
-
-void expect_basic(int test_num,int subtest_num, int val, int ref)
-	writePort(0, test_num);
-	writePort(1, subtest_num);
-	writePort(2, val);
-	writePort(3, ref);
-	if(val != ref) crash(); end
-end
-void expect_global(int test_num,int subtest_num, int val, int ref)
-	if( unit_test_ignore_global_address) return; end
-	writePort(0, test_num);
-	writePort(1, subtest_num);
-	writePort(2, val);
-	writePort(3, ref);
-	if(val != ref) crash(); end
-end
-void expect_stack(int test_num,int subtest_num, int val, int ref)
-	if( unit_test_ignore_stack_address ) return; end
-	writePort(0, test_num);
-	writePort(1, subtest_num);
-	if ( unit_test_adaptive_stack) val = val - unit_test_stack_offset; end
-	writePort(2, val);
-	writePort(3, ref);
-	if(val != ref) crash(); end
-end
-
-
-void report_all_ok()
-	writePort(0, -1);
-	writePort(1, -1);
-	writePort(2, -1);
-	writePort(3, -1);	
-end
-
-void unit_test_set_base_offset()
-	int base = 0;
-	unit_test_stack_offset = (int)&base;
-	writePort(7, unit_test_stack_offset);
-end
-
-void run_all_tests()
-	unit_test_ignore_global_address = 1;
-	unit_test_ignore_stack_address = 1;
-	unit_test_adaptive_stack = 1;
-	
-	unit_test_set_base_offset();
-	test_0_associativity();
-	test_1_args_plain();
-	test_2_global_vars();
-	test_3_pointer();
-	test_4_funcptr();
-	test_5_arithmetic();
-	test_6_arrays();
-	//unit_test_ignore_global_address = 0;
-	//unit_test_ignore_stack_address = 0;
-	test_7_class();
-	test_8_class_array();
-	report_all_ok();
-end
-
-
-#file "data_in/lazy2.txt"
+#file "data_in/big/number.txt"
 #line 2
-#file "data_in/big/error.txt"
-#line 1
-/// error.txt
+
+//returns the (floored) log10 of a number, i.e. number of digits in floor(num).
+//assumes num is positive
+int ilog10(float num)
+	for(int i = 0; i < 10; i++)
+		if(num < 10) return i; end
+		num = num / 10;
+	end
+end
+
+//returns 10^num
+int ipow10(int num)
+	int x = 1;
+	for(int i = 0; i < num; i++)
+		x = x*10;
+	end
+	return x;
+end
+
+int numDigits(float num) return ilog10(num)+1; end
+
+int getNdigit(float num, int dig)
+	//1. remove the lower parts
+	num = num / ipow10(dig);
+	//2. get the lowest remaining digit
+	num = num % 10;
+	return num;
+end
+
+int floor(float num)
+	int res = 0;
+	int n = numDigits(num);
+	for(int i = 0; i < n; i++)
+		int d = getNdigit(num, i);
+		res = res + d * ipow10(i);
+	end
+	return res;
+end
+
+int floorPrec(float num, int prec)
+	//printf("floorPrec(%d):\n", num);
+	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
+	num = num * k; 			//printf(" num*k = %d\n", num);
+	num = floor(num);		//printf(" floor(num) = %d\n", num);
+	num = num / k;			//printf(" num/k = %d\n", num);
+	return num;
+end
+
+float frac(float num)
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	float f = num - floor(num);
+	if(isNeg) f = -f; end
+	return f;
+end
+
+
+
+void int2str(int num, char *buff)
+	char *buffInit = buff;
+//	if(num == 0)
+//		buff[0] = '0';//*buff++ = '0';
+//		buff++;
+//		buff[0] = 1;//*buff = 0;
+//	end
+	int isNeg = 0;
+	if(num < 0) isNeg = 1; num = -num; end
+	int End = 0;
+	while(End==0)
+		int d = num % 10;	
+		buff[0] = '0'+d;
+		buff++;
+		num = num / 10;
+		
+		if(num<1) //if(num == 0)
+			if(isNeg) buff[0] = '-'; buff++; end
+			buff[0] = 0;
+			End = 1;
+		end
+	end
+	string_reverse(buffInit);
+end
+
+
+
+
+void float2str(float num, int prec, char *buff)
+	char *buffInit = buff;
+	int isNeg = (num < 0);
+	if(isNeg) num = -num; end
+	int num_fl = floor(num);
+	float num_fr = frac(num);
+	float num_frpr = floorPrec(num_fr, prec);
+	//printf("float2str(%d, %d):\n",num, prec);
+	//printf("  num_fl = %d\n", num_fl);
+	//printf("  num_fr*1000 = %d\n", num_fr*1000);
+	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
+	//if(isNeg) *buff++ = '-'; end
+	if(isNeg) buff[0] = '-'; buff++; end
+	int2str(num_fl, buff);
+	buff = buff + strlen(buff);
+	//if(num_fr)
+		//*buff++ = '.';
+		buff[0] = '.';
+		buff++;
+		int k = ipow10(prec);
+		float num_final = floor(num_frpr*k);
+		//printf("  num_final = %d\n", num_final);
+		int2str(num_final, buff);
+		strPadBegin(buff, prec, '0');
+	//end
+end
 #file "data_in/big/err_printf.txt"
-#line 1
+#line 2
+
 /// printf for errors in case stuff borks
 int err_snprintf(char *buff, int max_len, char *fmt, void *parg)
 	int printed = 0;
@@ -1104,633 +362,10 @@ void delay(float n) n = n * 10000; for(int i = 0; i < n; i++) end end
 #file "data_in/lazy2.txt"
 #line 4
 //#include "data_in/big/simple/printf.txt"
-#file "data_in/big/classy/class_address_bus.txt"
-#line 1
-/// wiremod address bus
-
-class Address_bus
-	int addr[4];
-	void constructor(int base_offset, int size1, int size2, int size3)
-		addr[0] = base_offset;
-		addr[1] = addr[0] + size1;
-		addr[2] = addr[1] + size2;
-		addr[3] = addr[2] + size3;
-	end
-	void write(int dev_num, int* offset, int byte)
-		int *ptr = addr[dev_num] + offset;
-		*ptr = byte;
-	end
-	int read(int dev_num, int* offset) /// variable was shadowed (addr)
-		int *ptr = addr[dev_num] + offset;
-		int byte = *ptr;
-		return *ptr;
-	end
-end
-#file "data_in/lazy2.txt"
-#line 6
-#file "data_in/big/classy/class_csprinter.txt"
-#line 1
-// class CSPrinter - handles screen extents and scrolling logic
-#file "data_in/big/classy/class_screen.txt"
-#line 1
-/// driver for a console screen
-class CScreen
-	int* mem_scr;
-	int x_max;
-	int y_max;
-	int col;
-
-	void constructor()
-		mem_scr = 65536;
-		x_max = 30;
-		y_max = 19;
-		col = 999;
-		//printf("CScreen constructed @ %d\n", this);
-	end
-
- 
-	void putchXY(char C, int x, int y)
-		int adr = (x+x_max*y)*2;
-		mem_scr[adr] = C;      //this says "array access into non-pointer type char"
-		mem_scr[adr+1] = col;
-	end
-
-	void set(int scr_adr) 
-		mem_scr = (int*)scr_adr; 
-		//printf("set mem_scr to %d, new mem_scr is %d\n", scr_adr, mem_scr);
-	end
-
-	void clear() 							mem_scr[2041] = 1; 			end
-	void cursor_enable() 					mem_scr[2046] = 1; 			end
-	void cursor_disable() 					mem_scr[2046] = 0; 			end
-	void set_cursor_pos(int pos) 			mem_scr[2045] = 2*pos; 		end
-	void set_cursor_pos_xy(int x, int y) 	mem_scr[2045] = 2*(30*y+x); end
-	void force_refresh() 					mem_scr[2020] = 1; delay(1); end
-
-
-	void set_shift_box(int x1, int x2, int y1, int y2)
-		mem_scr[2031] = x1;
-		mem_scr[2032] = x2;
-		mem_scr[2033] = y1;
-		mem_scr[2034] = y2;
-	end
-
-	void shift_vertical(int n) 				mem_scr[2038] = n; 			end
-	void shift_horizontal(int n) 			mem_scr[2037] = n; 			end
-
-
-end
-#file "data_in/big/classy/class_csprinter.txt"
-#line 3
-#file "data_in/big/number.txt"
-#line 1
-
-
-//returns the (floored) log10 of a number, i.e. number of digits in floor(num).
-//assumes num is positive
-int ilog10(float num)
-	for(int i = 0; i < 10; i++)
-		if(num < 10) return i; end
-		num = num / 10;
-	end
-end
-
-//returns 10^num
-int ipow10(int num)
-	int x = 1;
-	for(int i = 0; i < num; i++)
-		x = x*10;
-	end
-	return x;
-end
-
-int numDigits(float num) return ilog10(num)+1; end
-
-int getNdigit(float num, int dig)
-	//1. remove the lower parts
-	num = num / ipow10(dig);
-	//2. get the lowest remaining digit
-	num = num % 10;
-	return num;
-end
-
-int floor(float num)
-	int res = 0;
-	int n = numDigits(num);
-	for(int i = 0; i < n; i++)
-		int d = getNdigit(num, i);
-		res = res + d * ipow10(i);
-	end
-	return res;
-end
-
-int floorPrec(float num, int prec)
-	//printf("floorPrec(%d):\n", num);
-	int k = ipow10(prec); 	//printf(" ipow10(%d) = %d\n", prec, k);
-	num = num * k; 			//printf(" num*k = %d\n", num);
-	num = floor(num);		//printf(" floor(num) = %d\n", num);
-	num = num / k;			//printf(" num/k = %d\n", num);
-	return num;
-end
-
-float frac(float num)
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	float f = num - floor(num);
-	if(isNeg) f = -f; end
-	return f;
-end
-
-
-
-void int2str(int num, char *buff)
-	char *buffInit = buff;
-//	if(num == 0)
-//		buff[0] = '0';//*buff++ = '0';
-//		buff++;
-//		buff[0] = 1;//*buff = 0;
-//	end
-	int isNeg = 0;
-	if(num < 0) isNeg = 1; num = -num; end
-	int End = 0;
-	while(End==0)
-		int d = num % 10;	
-		buff[0] = '0'+d;
-		buff++;
-		num = num / 10;
-		
-		if(num<1) //if(num == 0)
-			if(isNeg) buff[0] = '-'; buff++; end
-			buff[0] = 0;
-			End = 1;
-		end
-	end
-	string_reverse(buffInit);
-end
-
-
-
-
-void float2str(float num, int prec, char *buff)
-	char *buffInit = buff;
-	int isNeg = (num < 0);
-	if(isNeg) num = -num; end
-	int num_fl = floor(num);
-	float num_fr = frac(num);
-	float num_frpr = floorPrec(num_fr, prec);
-	//printf("float2str(%d, %d):\n",num, prec);
-	//printf("  num_fl = %d\n", num_fl);
-	//printf("  num_fr*1000 = %d\n", num_fr*1000);
-	//printf("  num_frpr*1000 = %d\n", num_frpr*1000);
-	//if(isNeg) *buff++ = '-'; end
-	if(isNeg) buff[0] = '-'; buff++; end
-	int2str(num_fl, buff);
-	buff = buff + strlen(buff);
-	//if(num_fr)
-		//*buff++ = '.';
-		buff[0] = '.';
-		buff++;
-		int k = ipow10(prec);
-		float num_final = floor(num_frpr*k);
-		//printf("  num_final = %d\n", num_final);
-		int2str(num_final, buff);
-		strPadBegin(buff, prec, '0');
-	//end
-end
-#file "data_in/big/classy/class_csprinter.txt"
-#line 4
-#file "data_in/big/classy/ifx_iostream.txt"
-#line 1
-// abstract interface for input-output character streams
-
-class ifx_iostream /// input-output stream interface
-	void *impl = 0; // used by implementations to store state
-	int EOF = -1;
-	/// int impl::putch(char C) // returns the character if succesful, else returns 0
-	int *putch = 0; // void putch(void* impl, char C);
-	/// int impl::getch() // returns the next character in the stream or EOF
-	int *getch = 0;
-	/// int impl::hasch() // returns 1 if there is a character to read
-	int *hasch = 0;
-end
-
-class ifx_iostream std_in;
-class ifx_iostream std_out;
-
-int fputch(class ifx_iostream f, char C)
-	if(f.putch)
-		return f.putch(f.impl, C);
-	else
-		error("iostream error: putch not set");
-	end
-end
-
-int putch(char C) return fputch(std_out, C); end
-
-int fgetch(class ifx_iostream f)
-	if(f.getch)
-		return f.getch(f.impl);
-	else
-		error("iostream error: getch not set");
-	end
-end
-
-int getch() return fgetch(std_in); end
-
-int fhasch(class ifx_iostream f)
-	if(f.hasch)
-		return f.hasch(f.impl);
-	else
-		error("iostream error: hasch not set");
-	end	
-end
-
-int hasch() return fhasch(std_in); end
-
-int fputs(class ifx_iostream f, char *str)
-	int printed = 0;
-	while(*str)
-		if(fputch(f, *str++) != 0) 
-		printed++;
-		end
-	end
-	return printed;
-end
-
-int puts(char *str) return fputs(std_out, str); end
-#file "data_in/big/classy/class_csprinter.txt"
-#line 5
-
-class CSPrinter
-	class CScreen *scr = 0;
-	
-	int box_x_min = 0;
-	int box_y_min = 0;
-	int box_x_max = 30;
-	int box_y_max = 19;
-
-	int last_x = 29;
-	int last_y = 17;
-	int cur_x = 0;
-	int cur_y = 0;
-
-	int charcode_NL = '\n';//10; //same as enter
-	int charcode_BACK = 13; //same as backspace
-	int charcode_CR = 14; //same as backspace -> go to prev char or end of prev line
-	int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-	int charcode_BELL = 16; //make a beep or something
-
-	class ifx_iostream ifx;
-
-	/*
-	void init()
-		//printf("CSPrinter init, this = %d\n", (int)this);
-		printf("CSPrinter constructor @ %d\n", (int)this);
-		scr = 0;
-		box_x_min = 0;
-		box_y_min = 0;
-		box_x_max = 30;
-		box_y_max = 19;
-		last_x = 29;
-		last_y = 17;
-		cur_x = 0;
-		cur_y = 0;
-	end
-	*/
-
-	void init()
-		ifx.impl = (void*)this;
-		ifx.putch = this.cs_putch;
-	end
-	
-	void set_print_cursor(int x, int y) cur_x = x; cur_y = y; end
-
-
-	//sequences: 
-	//NL -> print pointer is at the beginning of the next line
-	//FILL -> line filled with spaces; print pointer at the end of this line
-	//CR -> print pointer at the beginning of this line
-	//CR FILL CR -> the line is blank and you are at the beginning
-	//BACK CR -> go to beginning of prev line
-	//hello BACK z -> hellz
-
-	int cs_putch(char C)		
-		writePort(0, 70);
-		this.print_char(C, scr.col); 
-		writePort(0, 71);
-		return C;	
-		writePort(0, 72);
-	end
-	int cs_puts(char *str)		this.cs_prints(str, scr.col); return strlen(str);	end
-
-	void print_char(char C, int col)
-		writePort(0, 73);
-		if(C == charcode_NL)	this.cs_newline(); return; end
-		writePort(0, 74);
-		if(C == charcode_BACK)	this.cs_prevcol();	return; end
-		writePort(0, 75);
-		if(C == charcode_CR)	cur_x = 0;			return; end
-		writePort(0, 76);
-		if(C == charcode_FILL)
-		writePort(0, 77);
-			for(int i = cur_x; i < last_x; i++)
-		writePort(0, 78);
-				scr.putchXY(' ', i, cur_y);
-		writePort(0, 79);
-			end
-		writePort(0, 80);
-			cur_x = last_x;
-		writePort(0, 81);
-			return;
-		writePort(0, 82);
-		end
-		writePort(0, 83);
-		if(C == charcode_BELL)	this.cs_beep();		return; end
-		writePort(0, 84);
-		//if(C > 31)
-		scr.putchXY(C, cur_x, cur_y);
-		writePort(0, 85);
-		this.cs_newcol();
-		writePort(0, 86);
-		//end
-	end
-
-	void cs_prints(char *str2, int col) //maybe str conflicts with the str in print?
-		while(*str2)
-			print_char(*str2++, col);
-		end
-	end
-
-	void cs_printn(int num, int col)
-		char buff[20];
-		int2str(num, &buff);
-		this.cs_prints(&buff, col);
-	end
-
-	void cs_newline()
-		cur_x = 0;
-		cur_y++;
-		if(cur_y > last_y-1)
-			this.shift_up();
-		end
-	end
-
-	void cs_prevline()
-		cur_x = last_x;
-		cur_y--;
-		if(cur_y < 0)
-			this.shift_down();
-		end
-	end
-
-	void cs_newcol()
-		cur_x++;
-		if(cur_x > last_x)
-			this.cs_newline();
-		end
-	end
-
-	void cs_prevcol()
-		cur_x--;
-		if(cur_x < 0)
-			this.cs_prevline();
-		end
-	end
-
-	void cs_beep() end
-
-	void shift_up()
-		if(cur_y > last_y-1)
-			scr.shift_vertical(1);
-			cur_y--;
-		end
-	end
-
-	void shift_down()
-		if(cur_y < 0)
-			scr.shift_vertical(-1);
-			cur_y++;
-		end
-	end
-
-	void set_print_box(int x1, int y1, int x2, int y2)
-		box_x_min = x1;
-		box_y_min = y1;
-		box_x_max = x2;
-		box_y_max = y2;
-	end
-end
-
-#file "data_in/lazy2.txt"
-#line 7
-#file "data_in/big/classy/printf_io.txt"
-#line 1
-//printf designed for iostreams
-
-
-int charcode_FILL = 15; //means "fill the line" (and stop at the last char)
-
-int printf(char *fmt, varargs)
-	void *parg = (void*)&fmt; 
-	parg++;
-	return fprintf_v(std_out, fmt, parg);
-end
-
-int fprintf(class ifx_iostream io, char *fmt, varargs)
-	void *parg = (void*)&fmt; 
-	parg++;
-	return fprintf_v(io, fmt, parg);
-end
-
-int fprintf_v(class ifx_iostream io, char *fmt, void *parg)
-	int printed = 0;
-	while(*fmt)
-		char c = *fmt++;
-		int inc = 0;
-		if(c == '%')
-			char c2 = *fmt++;
-			if(c2 == 'd') int i   = *(int*)parg++;   inc = io_itoa(io, i); 			end
-			if(c2 == 'f') float f = *(float*)parg++; inc = io_ftoa(io, f, 4); 		end
-			if(c2 == 's') char *s = *(char**)parg++; inc = fputs(io, s); 			end
-			if(c2 == 'c') char c  = *(char*)parg++;  inc = (fputch(io, c) != 0); 	end
-			if(c2 == '%') 							 inc = (fputch(io, '%') != 0); 	end
-		else
-			if(c == '\\')
-				char c2 = *fmt++;
-				inc = (fputch(io, unescape_char(c2)) != 0);
-			else
-				inc = (fputch(io, c) != 0);
-			end
-		end
-		printed = printed + inc;
-	end
-	return printed;
-end
-
-char unescape_char(char C)
-	if (C == 'n') return '\n'; end
-	if (C == 'r') return '\r'; end
-	if (C == 'f') return charcode_FILL; end
-	if (C == 'b') return '\b'; end
-	if (C == 'e') return '\e'; end
-	if (C == '\\') return '\\'; end
-end
-			   
-char escape_char(char C)
-	if (C == '\n') return 'n'; end
-	if (C == '\r') return 'r'; end
-	if (C == charcode_FILL) return 'f'; end
-	if (C == '\b') return 'b'; end
-	if (C == '\e') return 'e'; end
-	if (C == '\\') return '\\'; end
-end
-
-
-void itoa(int num, char *str) int2str(num, str); end
-void ftoa(float num, int prec, char *str) float2str(num, prec, str); end
-int io_itoa(class ifx_iostream io, int num)
-	char buff[20];
-	itoa(num, &buff);
-	fputs(io, &buff);
-	return strlen(&buff);
-end
-
-int io_ftoa(class ifx_iostream io, float num, int prec)
-	char buff[20];
-	ftoa(num, prec, &buff);
-	fputs(io, &buff);
-	return strlen(&buff);
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-#file "data_in/lazy2.txt"
-#line 8
-#file "data_in/big/classy/allocators/bump_allocator.txt"
-#line 1
-/// bump allocator
-
-#file "data_in/big/classy/ifx_malloc.txt"
-#line 1
-// abstract interface for allocators (malloc implementations)
-
-class malloc_info
-	int size_free;
-	int size_used;
-	int blocks_free;
-	int blocks_used;
-end
-
-class ifx_malloc
-	void *impl = 0;
-	void **malloc = 0;  // void* malloc(int size);
-	void *free = 0;     // void free(void *p);
-	void **realloc = 0; // void* realloc(void *p, int size);
-	class malloc_info *malloc_get_counts = 0;
-end
-
-class ifx_malloc cur_allocator;
-
-
-void *malloc(int size)
-	if(cur_allocator.malloc)
-		return cur_allocator.malloc(cur_allocator.impl, size);
-		//
-		// is this same as void **p = cur_allocator.malloc; p() ?
-		// or are we accidentally setting 'this'
-		// or do we WANT to set 'this'?
-	else
-		error("malloc error: cur_allocator.malloc not set");
-	end
-end
-
-void free(void *p)
-	if(cur_allocator.free)
-		cur_allocator.free(cur_allocator.impl, p);
-	else
-		error("malloc error: cur_allocator.free not set");
-	end
-end
-
-void *realloc(void *p, int size)
-	if(cur_allocator.realloc)
-		return cur_allocator.realloc(cur_allocator.impl, p, size);
-	else
-		error("malloc error: cur_allocator.realloc not set");
-	end
-end
-
-class malloc_info malloc_get_counts()
-	if(cur_allocator.malloc_get_counts)
-		return cur_allocator.malloc_get_counts(cur_allocator.impl);
-	else
-		error("malloc error: cur_allocator.malloc_get_counts not set");
-	end
-end
-#file "data_in/big/classy/allocators/bump_allocator.txt"
-#line 3
-
-class Bump_allocator
-	void *heap = 0;
-	void *heap_free_ptr = 0;
-	void *heap_max = 0;
-	
-	class ifx_malloc ifx;
-
-	void init(void *new_heap, int heap_size)
-		heap = new_heap;
-		heap_free_ptr = heap;
-		heap_max = heap + heap_size;
-
-		ifx.impl = this;
-		ifx.malloc = this.ba_malloc;
-		ifx.realloc = this.ba_realloc;
-		ifx.free = this.ba_free;
-		ifx.malloc_get_counts = this.ba_malloc_get_counts;
-	end
-	
-	void *ba_malloc(int size)
-		if((heap_free_ptr + size) < heap_max)
-			void *p = heap_free_ptr;
-			heap_free_ptr = heap_free_ptr + size;
-		else
-			error("bumpalloc: OUT OF RAM");
-			return 0;
-		end
-	end
-	
-	void ba_free(void *p)
-	end
-	
-	void *ba_realloc(void *p, int size)
-		void *p2 = malloc(size);
-		memmove((char*)p2, (char*)p, size);
-	end
-	
-	class malloc_info ba_malloc_get_counts()
-		class malloc_info mi;
-		int size = (int)heap_max - (int)heap;
-		int size_used = (int)heap_free_ptr - (int)heap_max;
-		int size_free = size - size_used;
-		mi.size_free = size_free;
-		mi.size_used = size_used;
-		mi.blocks_free = 1;
-		mi.blocks_used = 1;
-		return mi;
-	end
-end
-#file "data_in/lazy2.txt"
-#line 9
+//#include "data_in/big/classy/class_address_bus.txt"
+//#include "data_in/big/classy/class_csprinter.txt"
+//#include "data_in/big/classy/printf_io.txt"
+//#include "data_in/big/classy/allocators/bump_allocator.txt"
 
 /// NEED NOW::: usercode stack trace in case of crash with emergency print
 
@@ -1745,12 +380,14 @@ class stack_frame
 	end
 
 	class stack_frame prev_frame()
+			check_stack_size();
 		class stack_frame F;
 		if(p_ebp) F.p_ebp = *p_ebp; end
 		return F;
 	end
 	
 	int get_ret_ip() 
+			check_stack_size();
 		int ip = p_ebp[1];
 		//err_printf(999, "get_ret_ip(ebp=%d):\n",(int)p_ebp);
 		//err_printf(999, "  -1: %d\n", p_ebp[-1]);
@@ -1771,6 +408,7 @@ class debug_info_func
 	char *user_name = 0;
 	
 	void deserialize(int *p)
+			check_stack_size();
 		int *p_initial = p;
 		record_len = *p++;
 		lbl_entrance = *p++;
@@ -1796,6 +434,7 @@ class debug_info_var
 	char *user_name = 0;
 
 	void deserialize(int *p)
+			check_stack_size();
 		record_len = *p++;
 		lbl_from = *p++;
 		lbl_to = *p++;
@@ -1809,6 +448,7 @@ class debug_info_var
 end
 
 int get_var_at_ip_helper(int ip, class debug_info_var var)
+			check_stack_size();
 	var.pos = 10;									/// this works
 	//if(!(var.lbl_from > ip) & !(var.lbl_to < ip)) 	/// this doesn't
 	int x = var.lbl_from;
@@ -1824,6 +464,7 @@ class debug_info_var_db
 	int n_vars = 0;
 	
 	void deserialize(int *p)
+			check_stack_size();
 		n_vars = *p++;
 		class debug_info_var var;
 		for(int i = 0; i < n_vars; i++)
@@ -1833,6 +474,7 @@ class debug_info_var_db
 	end
 	
 	int get_var_at_ip(int ip, int from_idx)
+			check_stack_size();
 		class debug_info_var var;
 		for(int i = from_idx; i < n_vars; i++)
 			
@@ -1850,7 +492,7 @@ class debug_info_var_db
 end
 
 class debug_info_func_db
-	class debug_info_func funcs[1000];
+	class debug_info_func funcs[300];
 	int n_funcs = 0;
 	
 	// this whole constructor breaks all the shit
@@ -1881,18 +523,28 @@ class debug_info_func_db
 	//
 	
 	void deserialize(int *p)
+		check_stack_size();
+		err_printf(999, "func_db: p = %d, n_funcs = %d\n", p, *p);
 		n_funcs = *p++;
-		err_printf(999, "func_db: n_funcs = %d\n", n_funcs);
 		class debug_info_func func;
+		err_printf(999, "func_db 1, n_funcs = %d\n", n_funcs);
+		int test = 0;
+		for(int j = 0; j == 0; j++)
+			err_printf(999, "func_db 2, j = %d\n, n_funcs = %d\n", j, n_funcs);
+		end
 		for(int i = 0; i < n_funcs; i++)
+			err_printf(999, "func_db[%d]\n", i);
+			test++;
 			func.deserialize(p);
 			funcs[i] = func;
 			p = p+func.record_len;
 		end
+		err_printf(999, "func_db test = %d\n", test);
 	end
 	
 	int get_func_at_ip(int ip)
 		for(int i = 0; i < n_funcs; i++)
+			check_stack_size();
 			//if(!(funcs[i].lbl_entrance > ip) & !(funcs[i].lbl_exit < ip))	
 			int x = funcs[i].lbl_entrance;
 			int y = funcs[i].lbl_exit;
@@ -1918,6 +570,7 @@ class T_stack_trace
 		err_printf(999, "trace:\n frame.ebp = %d\n check_ebp = %d\n", (int)frame.p_ebp, check_ebp);
 		int frame_n = 0;
 		while(frame.p_ebp)
+			check_stack_size();
 			int ip = frame.get_ret_ip();
 			if(ip == 0) infloop(); end
 			//class debug_info_func func = func_db.get_func_at_ip(ip); //fixed bug: this shouldn't be allowed due to typecheck
@@ -1975,12 +628,84 @@ end
 void test_stack_trace()
 	stack_trace.trace();
 end
+/// if screen doesn't scroll, try
+/// semantic_expr_op.c:492 uncomment block
+
+void check_stack_size()
+	int end_of_code = 0;
+	int esp;
+	// either asm with two arguments, or if's, are fucked
+	
+	//asm( "mov $S[end_of_code], data_segment_static_end\nmov $S[esp], esp");
+	
+	asm( "mov $S[end_of_code], data_segment_static_end");
+	asm( "mov $S[esp], esp");
+	err_printf(999, "esp %d, eoc %d\n", esp, end_of_code);
+	if((esp-100) < end_of_code) // a bit of a margin so printf works
+	//int x = esp - 100;
+	//if(x < end_of_code) /// are if's just completely fucked?
+		err_printf(900, "Stack overflow\nesp %d\nend_of_code %d\n", esp, end_of_code);
+		infloop();
+	end
+end
+
+void test_stack_overflow()
+	int esp;
+	int arr[100];
+	check_stack_size();
+	asm("mov $S[esp], esp");
+	err_printf(999, "test overflow: esp %d\n", esp);
+	test_stack_overflow();
+end
+
+int ss_size = 0;
+int ss_stack_top = 0;
+int ss_stack_btm = 0;
+int ss_esp = 0;
+int ss_ebp = 0;
+int ss_ret_ip = 0;
+
+void set_stack(int new_stack_btm, int new_stack_top, int new_esp, int new_ebp)
+	ss_stack_top = new_stack_top;
+	ss_stack_btm = new_stack_btm;
+	ss_esp = new_esp;
+	ss_ebp = new_ebp;
+	ss_size = new_stack_top - new_stack_btm;
+	err_printf(999, "set_stack, btm = %d, top = %d, size = %d, new_esp = %d, new_ebp = %d\n",
+		new_stack_btm, new_stack_top, ss_size, new_esp, new_ebp);
+	
+	asm("mov $S[ss_ret_ip], EBP:#1"); // save return ip
+	asm("mov SS, $R[ss_stack_btm]"); // set stack size
+	asm("mov ESP, $R[ss_esp]");		 // set stack pointer (should be ~= size)
+	asm("cpuset 9, $R[ss_size]");	 // set stack zero
+	asm("mov EBP, $R[ss_ebp]");		 // set frame base pointer
+	asm("jmp $R[ss_ret_ip]");		 // simulate return
+end
+
+int get_end_of_code()
+	int eoc = 0;
+	asm("mov $S[eoc], __programsize__");
+	return eoc;
+end
 
 int main()
 	setup();
-	err_printf(990, "Running unit tests...\n");
-	run_all_tests();
-	err_printf(90,  "All tests pass.\n");
+	//err_printf(990, "Running unit tests...\n");
+	//run_all_tests();
+	//err_printf(90,  "All tests pass.\n");
+	
+	err_printf(999, "Hello world!\n");
+	int eoc = get_end_of_code();
+	int stack_size = 65535 - eoc;
+
+	writePort(0,123);
+	set_stack(eoc, eoc+stack_size, stack_size-20, stack_size);
+	writePort(0,456);
+	main_rest();
+end
+
+int main_rest()
+	test_stack_overflow();
 	//delay(1); err_printf(999, "1");
 	//delay(1); err_printf(999, "2");
 	//delay(1); err_printf(999, "3");
@@ -1995,13 +720,13 @@ int main()
 	err_printf(999, "End of program\n");
 	infloop();
 
-	class Address_bus addr_bus(65536, 20000, 20000, 20000);
-	class CScreen scr; scr.set(addr_bus.addr[2]);
-	class CSPrinter printer; printer.scr = &scr;
-	printer.init();
-	std_out = printer.ifx;
-	scr.clear();
-	printf("Hello [%s] %d!\n", "world", 123456);
+	//class Address_bus addr_bus(65536, 20000, 20000, 20000);
+	//class CScreen scr; scr.set(addr_bus.addr[2]);
+	//class CSPrinter printer; printer.scr = &scr;
+	//printer.init();
+	//std_out = printer.ifx;
+	//scr.clear();
+	//printf("Hello [%s] %d!\n", "world", 123456);
 	
 	/*
 	class Bump_allocator bumpalloc;

@@ -408,6 +408,10 @@ void test_3_global_pointer()
 	expect_global(3, 7, *p, 25);
 end
 
+void foo_array()
+	int arr[10];
+end
+
 int *arr_addr = 0;
 void test_3_array_pointer()
 	int arr[4];
@@ -415,7 +419,11 @@ void test_3_array_pointer()
 	arr[1] = 11;
 	arr[2] = 12;
 	arr[3] = 13;
+	writePort(4, arr[2]);
+	writePort(5, (int)&arr);
 	arr_addr = &arr;
+	writePort(6, (int)arr_addr);
+	writePort(7, (int)&(arr_addr[2]));
 	expect_stack(3, 8,  (int)&arr,   -8);
 	expect_basic(3, 9,  arr[0], 10);
 	expect_basic(3, 10, arr[2], 12);
