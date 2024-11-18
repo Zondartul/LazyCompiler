@@ -19,8 +19,10 @@ data_out/*
 
 # don't track the build folder
 build/*
+code_lzir_sim/build/*
 
 # don't track binaries
 bin/*
 code/bin/*
+code_lzir_sim/bin/*
 
